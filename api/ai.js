@@ -15,8 +15,9 @@ if (!HF_TOKEN) {
 return res.status(500).json({ error: "HF_TOKEN missing in Vercel" });
 }
 
+
 const response = await fetch(
-"https://router.huggingface.co/hf-inference/v1/models/mistralai/Mistral-7B-Instruct-v0.2",
+"https://router.huggingface.co/v1/chat/completions",
 {
 method: "POST",
 headers: {
@@ -24,10 +25,22 @@ headers: {
 "Content-Type": "application/json"
 },
 body: JSON.stringify({
-inputs: "You are a wise Vedic astrologer giving guidance. Question: " + question
+model: "mistralai/Mistral-7B-Instruct-v0.2",
+messages: [
+{
+role: "system",
+content: "You are a wise Vedic astrologer giving calm spiritual guidance."
+},
+{
+role: "user",
+content: question
+}
+],
+max_tokens: 300
 })
 }
 );
+
 
 const text = await response.text()
 
