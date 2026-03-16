@@ -62,14 +62,17 @@ const card = document.createElement("div");
 
 card.className = "card";
 
+```javascript
 card.innerHTML =
-"<div data-aos='fade-up'>" +
-"<img src='"+a.img+"'>" +
+"<img src='"+a.img+"' alt='"+a.name+"' style='width:80px;border-radius:50%;'>" +
 "<h3>"+a.name+"</h3>" +
 "<p>"+a.skill+"</p>" +
 "<p>⭐ "+a.rating+"</p>" +
-"<p>₹"+a.price+"/min</p>" +
-"</div>";
+"<p style='color:"+(a.status==="online"?"#2ecc71":"gray")+"'>● "+a.status+"</p>" +
+"<p class='price'>₹"+a.price+"/min</p>" +
+"<button onclick='openChat(\""+a.name+"\")'>Chat Now</button>";
+```
+
 
 container.appendChild(card);
 
