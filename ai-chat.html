@@ -30,10 +30,10 @@
 </div>
 
 </div>
-```html
+
 <script>
 
-const API_KEY = "AIzaSyAAAtAUgdadDPbpsP4wM2Zh1-eW8gv7uro";
+const API_KEY = "YOUR_GEMINI_API_KEY";
 
 async function askAI(){
 
@@ -50,7 +50,7 @@ document.getElementById("aiResponse").innerHTML =
 try{
 
 let response = await fetch(
-"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key="+API_KEY,
+"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key="+API_KEY,
 {
 method:"POST",
 headers:{
@@ -61,8 +61,7 @@ contents:[
 {
 parts:[
 {
-text:
-"You are a calm Vedic astrologer. Answer spiritually and wisely. Question: "+question
+text:"You are a helpful Vedic astrologer. Answer this question: "+question
 }
 ]
 }
@@ -73,24 +72,35 @@ text:
 
 let data = await response.json();
 
+if(data.candidates){
+
 let answer = data.candidates[0].content.parts[0].text;
 
 document.getElementById("aiResponse").innerHTML =
 "<p>"+answer+"</p>";
 
-}catch(error){
+}else{
 
 document.getElementById("aiResponse").innerHTML =
-"<p>AI service unavailable right now.</p>";
+"<p>AI couldn't generate a response.</p>";
+
+console.log(data);
+
+}
+
+}catch(error){
 
 console.log(error);
+
+document.getElementById("aiResponse").innerHTML =
+"<p>Error contacting AI service.</p>";
 
 }
 
 }
 
 </script>
-```
+
 
 </body>
 </html>
