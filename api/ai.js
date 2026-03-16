@@ -9,7 +9,7 @@ try {
 
 const { question } = req.body;
 
-const HF_TOKEN = "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";
+const HF_TOKEN = "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";
 
 const response = await fetch(
 "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2",
