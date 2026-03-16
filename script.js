@@ -92,7 +92,12 @@ container.appendChild(card);
 });
 
 }
+function openChat(name){
 
+window.location.href =
+"chat.html?name="+encodeURIComponent(name)
+
+}
 function openProfile(id){
 window.location.href = "profile.html?id=" + id;
 }
