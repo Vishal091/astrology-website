@@ -30,13 +30,27 @@
 </div>
 
 </div>
+```html
 <script>
+
+const API_KEY = "AIzaSyAAAtAUgdadDPbpsP4wM2Zh1-eW8gv7uro";
+
 async function askAI(){
 
-let question = document.getElementById("question").value
+let question = document.getElementById("question").value;
+
+if(!question){
+alert("Please enter a question");
+return;
+}
+
+document.getElementById("aiResponse").innerHTML =
+"<p>Consulting the stars...</p>";
+
+try{
 
 let response = await fetch(
-"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyAAAtAUgdadDPbpsP4wM2Zh1-eW8gv7uro",
+"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key="+API_KEY,
 {
 method:"POST",
 headers:{
@@ -47,22 +61,37 @@ contents:[
 {
 parts:[
 {
-text:"You are a helpful Vedic astrologer. Answer this question: "+question
+text:
+"You are a calm Vedic astrologer. Answer spiritually and wisely. Question: "+question
 }
 ]
 }
 ]
 })
-})
+}
+);
 
-let data = await response.json()
+let data = await response.json();
 
-let answer = data.candidates[0].content.parts[0].text
+let answer = data.candidates[0].content.parts[0].text;
 
 document.getElementById("aiResponse").innerHTML =
-"<p>"+answer+"</p>"
+"<p>"+answer+"</p>";
+
+}catch(error){
+
+document.getElementById("aiResponse").innerHTML =
+"<p>AI service unavailable right now.</p>";
+
+console.log(error);
+
 }
+
+}
+
 </script>
+```
+
 </body>
 </html>
 
