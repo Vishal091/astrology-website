@@ -107,7 +107,7 @@ color:#F9CA24;
 font-weight:bold;
 }
 
-```css
+
 .slider{
 overflow:hidden;
 position:relative;
@@ -137,7 +137,7 @@ border:3px solid #6C5CE7;
 0%{transform:translateX(0);}
 100%{transform:translateX(-50%);}
 }
-```
+
 
 .card img{
 width:80px;
@@ -153,15 +153,17 @@ color:white;
 cursor:pointer;
 }
 
+
 .wallet{
-position:fixed;
-top:20px;
-right:20px;
 background:#F9CA24;
 color:black;
-padding:10px;
-border-radius:6px;
+padding:8px 14px;
+border-radius:8px;
+font-weight:bold;
+margin-left:20px;
 }
+
+
 
 footer{
 text-align:center;
