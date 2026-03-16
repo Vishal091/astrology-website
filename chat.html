@@ -60,27 +60,35 @@ const name = params.get("name")
 document.getElementById("astroName").innerText =
 "Chat with " + name
 
+
 function sendMessage(){
 
-let input = document.getElementById("msg")
-
-let text = input.value
+let input=document.getElementById("msg")
+let text=input.value
 
 if(!text) return
 
-let box = document.getElementById("messages")
+let box=document.getElementById("messages")
 
-box.innerHTML += "<p><b>You:</b> "+text+"</p>"
-
-setTimeout(()=>{
-
-box.innerHTML += "<p><b>"+name+":</b> The stars indicate positive movement in your life.</p>"
-
-},1000)
+box.innerHTML+="<p><b>You:</b> "+text+"</p>"
 
 input.value=""
 
+box.innerHTML+="<p id='typing'><i>Astrologer is typing...</i></p>"
+
+setTimeout(()=>{
+
+document.getElementById("typing").remove()
+
+box.innerHTML+="<p><b>"+name+":</b> The planetary alignment shows positive outcomes ahead.</p>"
+
+box.scrollTop=box.scrollHeight
+
+},1500)
+
 }
+
+
 
 </script>
 
