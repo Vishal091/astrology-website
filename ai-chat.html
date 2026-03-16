@@ -41,7 +41,7 @@ async function askAI(){
 let question = document.getElementById("question").value;
 
 if(!question){
-alert("Please ask a question");
+alert("Please enter a question");
 return;
 }
 
@@ -60,30 +60,43 @@ headers:{
 },
 body:JSON.stringify({
 inputs:
-"You are a wise Vedic astrologer giving spiritual guidance.\nUser question: "+question
+"You are a wise Vedic astrologer giving calm spiritual advice.\nUser question: "+question
 })
 }
 );
 
 let data = await response.json();
 
+console.log(data);
+
+if(data.error){
+
+document.getElementById("aiResponse").innerHTML =
+"<p>The cosmic model is waking up. Try again in a few seconds.</p>";
+
+return;
+
+}
+
 let answer = data[0].generated_text;
 
 document.getElementById("aiResponse").innerHTML =
 "<p>"+answer+"</p>";
 
-}catch(error){
+}catch(err){
 
-console.log(error);
+console.log(err);
 
 document.getElementById("aiResponse").innerHTML =
-"<p>The cosmic energies are unclear right now.</p>";
+"<p>AI connection failed.</p>";
 
 }
 
 }
 
 </script>
+
+
 
 
 
