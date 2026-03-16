@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Free Kundli - Astrodhani</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.formbox{
+max-width:500px;
+margin:auto;
+background:white;
+color:black;
+padding:30px;
+border-radius:10px;
+}
+
+input{
+width:100%;
+padding:10px;
+margin:10px 0;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">🔮 Astrodhani</div>
+
+<nav>
+
+<a href="index.html">Home</a>
+<a href="astrologers.html">Astrologers</a>
+<a href="horoscope.html">Horoscope</a>
+<a href="kundli.html">Free Kundli</a>
+
+</nav>
+
+</header>
+
+<section class="container">
+
+<div class="formbox">
+
+<h2>Free Kundli Generator</h2>
+
+<input id="name" placeholder="Your Name">
+
+<input id="dob" type="date">
+
+<input id="time" type="time">
+
+<input id="place" placeholder="Birth Place">
+
+<button onclick="generateKundli()">
+Generate Kundli
+</button>
+
+<div id="result"></div>
+
+</div>
+
+</section>
+
+<script>
+
+function generateKundli(){
+
+let name = document.getElementById("name").value
+
+let dob = document.getElementById("dob").value
+
+let place = document.getElementById("place").value
+
+if(!name || !dob){
+
+alert("Please fill details")
+
+return
+
+}
+
+let zodiac = [
+"Aries","Taurus","Gemini","Cancer",
+"Leo","Virgo","Libra","Scorpio",
+"Sagittarius","Capricorn","Aquarius","Pisces"
+]
+
+let sign = zodiac[Math.floor(Math.random()*12)]
+
+document.getElementById("result").innerHTML =
+
+"<h3>Kundli Result</h3>" +
+
+"<p>Name: "+name+"</p>" +
+
+"<p>Zodiac Sign: "+sign+"</p>" +
+
+"<p>Prediction: The stars indicate positive changes ahead.</p>"
+
+}
+
+</script>
+
+</body>
+
+</html>
+
