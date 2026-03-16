@@ -107,6 +107,37 @@ color:#F9CA24;
 font-weight:bold;
 }
 
+```css
+.slider{
+overflow:hidden;
+position:relative;
+width:100%;
+}
+
+.slide-track{
+display:flex;
+width:calc(250px * 8);
+animation:scroll 20s linear infinite;
+}
+
+.slide{
+width:250px;
+text-align:center;
+padding:20px;
+}
+
+.slide img{
+width:80px;
+height:80px;
+border-radius:50%;
+border:3px solid #6C5CE7;
+}
+
+@keyframes scroll{
+0%{transform:translateX(0);}
+100%{transform:translateX(-50%);}
+}
+```
 
 .card img{
 width:80px;
