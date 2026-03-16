@@ -85,6 +85,15 @@ window.location.href =
 "chat.html?name="+encodeURIComponent(name)
 
 }
+function recharge(amount){
+
+wallet += amount
+
+document.getElementById("wallet").innerText = wallet
+
+alert("Wallet recharged ₹"+amount)
+
+}
 function openProfile(id){
 window.location.href = "profile.html?id=" + id;
 }
