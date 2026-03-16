@@ -31,16 +31,17 @@
 
 </div>
 
+
 <script>
 
-const API_KEY = "AIzaSyAAwy3aOru1KAPvzR3HjxGiJEYUj7sAlgQ";
+const HF_TOKEN = "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";
 
 async function askAI(){
 
 let question = document.getElementById("question").value;
 
 if(!question){
-alert("Please enter a question");
+alert("Please ask a question");
 return;
 }
 
@@ -50,57 +51,40 @@ document.getElementById("aiResponse").innerHTML =
 try{
 
 let response = await fetch(
-"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key="+API_KEY,
+"https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2",
 {
 method:"POST",
 headers:{
+"Authorization":"Bearer "+HF_TOKEN,
 "Content-Type":"application/json"
 },
 body:JSON.stringify({
-contents:[
-{
-role:"user",
-parts:[
-{
-text:"You are a calm Vedic astrologer. Answer spiritually but avoid absolute predictions. Question: "+question
-}
-]
-}
-]
+inputs:
+"You are a wise Vedic astrologer giving spiritual guidance.\nUser question: "+question
 })
 }
 );
 
 let data = await response.json();
 
-console.log(data);   // useful for debugging
-
-if(data.candidates && data.candidates.length > 0){
-
-let answer = data.candidates[0].content.parts[0].text;
+let answer = data[0].generated_text;
 
 document.getElementById("aiResponse").innerHTML =
 "<p>"+answer+"</p>";
 
-}else{
-
-document.getElementById("aiResponse").innerHTML =
-"<p>The stars are unclear right now. Please try another question.</p>";
-
-}
-
 }catch(error){
 
-console.error(error);
+console.log(error);
 
 document.getElementById("aiResponse").innerHTML =
-"<p>AI connection error.</p>";
+"<p>The cosmic energies are unclear right now.</p>";
 
 }
 
 }
 
 </script>
+
 
 
 </body>
