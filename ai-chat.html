@@ -57,7 +57,7 @@ let data = await response.json()
 if(data[0]){
 
 document.getElementById("aiResponse").innerHTML =
-"<p>"+data[0].generated_text+"</p>"
+"<p>" + data.answer + "</p>";
 
 }else{
 
