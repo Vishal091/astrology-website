@@ -24,6 +24,7 @@
 
 </section>
 
+```html
 <script>
 
 const params = new URLSearchParams(window.location.search)
@@ -32,6 +33,12 @@ const id = params.get("id")
 const astro = astrologers.find(a => a.id == id)
 
 if(astro){
+
+let reviewsHTML = ""
+
+astro.reviews.forEach(r=>{
+reviewsHTML += "<p>⭐ "+r+"</p>"
+})
 
 document.getElementById("profile").innerHTML = `
 
@@ -47,9 +54,13 @@ document.getElementById("profile").innerHTML = `
 
 <p>₹${astro.price}/min</p>
 
-<button onclick="alert('Chat started')">
+<button onclick="openChat('${astro.name}')">
 Start Chat
 </button>
+
+<h3>Reviews</h3>
+
+${reviewsHTML}
 
 </div>
 
@@ -58,6 +69,8 @@ Start Chat
 }
 
 </script>
+```
+
 
 </body>
 </html>
