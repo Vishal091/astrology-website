@@ -27,8 +27,9 @@ const response = await fetch(
 "https://router.huggingface.co/hf-inference/models/mistralai/Mistral-7B-Instruct-v0.2",
 {
 method: "POST",
+
 headers: {
-Authorization: `Bearer ${HF_TOKEN}`,
+"Authorization": "Bearer " + HF_TOKEN,
 "Content-Type": "application/json"
 },
 body: JSON.stringify({
