@@ -30,7 +30,7 @@
 </div>
 
 </div>
-
+<script>
 async function askAI(){
 
 let question = document.getElementById("question").value
@@ -62,7 +62,7 @@ let answer = data.candidates[0].content.parts[0].text
 document.getElementById("aiResponse").innerHTML =
 "<p>"+answer+"</p>"
 }
-
+</script>
 </body>
 </html>
 
