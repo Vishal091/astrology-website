@@ -1,8 +1,8 @@
 
 let wallet = 500;
 
-
 const astrologers = [
+
 {
 id:1,
 name:"Shubham Shastri",
@@ -10,7 +10,7 @@ skill:"Vedic Astrology",
 price:25,
 rating:4.9,
 status:"online",
-img:"https://images.unsplash.com/photo-1603415526960-f7e0328c63b1"
+img:"https://i.pravatar.cc/100?img=65"
 },
 
 {
@@ -20,7 +20,7 @@ skill:"Palmistry",
 price:20,
 rating:4.7,
 status:"offline",
-img:"https://images.unsplash.com/photo-1547425260-76bcadfb4f2c"
+img:"https://i.pravatar.cc/100?img=60"
 },
 
 {
@@ -30,7 +30,7 @@ skill:"Numerology",
 price:30,
 rating:4.8,
 status:"online",
-img:"https://images.unsplash.com/photo-1599566150163-29194dcaad36"
+img:"https://i.pravatar.cc/100?img=12"
 },
 
 {
@@ -40,11 +40,10 @@ skill:"Tarot Reading",
 price:18,
 rating:4.6,
 status:"online",
-img:"https://images.unsplash.com/photo-1607746882042-944635dfe10e"
+img:"https://i.pravatar.cc/100?img=32"
 }
+
 ];
-
-
 
 function loadAstrologers(list = astrologers){
 
@@ -66,17 +65,9 @@ card.innerHTML = `
 <h3>${a.name}</h3>
 <p>${a.skill}</p>
 <p>⭐ ${a.rating}</p>
-
-<p style="color:${statusColor}">
-● ${a.status}
-</p>
-
+<p style="color:${statusColor}">● ${a.status}</p>
 <p>₹${a.price}/min</p>
-
-<button onclick="openProfile(${a.id})">
-View Profile
-</button>
-
+<button onclick="openProfile(${a.id})">View Profile</button>
 `;
 
 container.appendChild(card);
@@ -84,22 +75,3 @@ container.appendChild(card);
 });
 
 }
-
-function searchAstrologer(name){
-
-let filtered = astrologers.filter(a =>
-a.name.toLowerCase().includes(name.toLowerCase())
-)
-
-loadAstrologers(filtered)
-
-}
-
-function openProfile(id){
-
-window.location.href = "profile.html?id=" + id
-
-}
-
-document.addEventListener("DOMContentLoaded", loadAstrologers);
-```
