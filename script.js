@@ -1,8 +1,8 @@
 
 let wallet = 500;
 
-const astrologers = [
 
+const astrologers = [
 {
 id:1,
 name:"Shubham Shastri",
@@ -10,12 +10,7 @@ skill:"Vedic Astrology",
 price:25,
 rating:4.9,
 status:"online",
-reviews:[
-"Very accurate prediction!",
-"Helped me with marriage timing",
-"Highly recommended"
-],
-img:"https://i.pravatar.cc/100?img=65"
+img:"https://randomuser.me/api/portraits/men/11.jpg"
 },
 
 {
@@ -25,11 +20,7 @@ skill:"Palmistry",
 price:20,
 rating:4.7,
 status:"offline",
-reviews:[
-"Very knowledgeable astrologer",
-"Explained my career path clearly"
-],
-img:"https://i.pravatar.cc/100?img=60"
+img:"https://randomuser.me/api/portraits/men/55.jpg"
 },
 
 {
@@ -39,11 +30,7 @@ skill:"Numerology",
 price:30,
 rating:4.8,
 status:"online",
-reviews:[
-"Very practical guidance",
-"Numerology reading was accurate"
-],
-img:"https://i.pravatar.cc/100?img=12"
+img:"https://randomuser.me/api/portraits/men/32.jpg"
 },
 
 {
@@ -53,14 +40,11 @@ skill:"Tarot Reading",
 price:18,
 rating:4.6,
 status:"online",
-reviews:[
-"Tarot reading was insightful",
-"Very friendly astrologer"
-],
-img:"https://i.pravatar.cc/100?img=32"
+img:"https://randomuser.me/api/portraits/men/25.jpg"
 }
-
 ];
+
+
 
 
 
