@@ -42,14 +42,15 @@ max_tokens: 300
 );
 
 
-const text = await response.text()
+const data = await response.json();
 
-let data
-try {
-data = JSON.parse(text)
-} catch {
-return res.status(500).json({ error: text })
+if (!data.choices) {
+return res.status(500).json(data);
 }
+
+return res.status(200).json({
+answer: data.choices[0].message.content
+});
 
 console.log("HF RESPONSE:", data);
 
