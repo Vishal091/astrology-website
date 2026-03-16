@@ -2,43 +2,67 @@
 let wallet = 500;
 
 const astrologers = [
+
 {
-id: 1,
-name: "Shubham Shastri",
-skill: "Vedic Astrology",
-price: 25,
-rating: 4.9,
-status: "online",
-img: "https://i.pravatar.cc/100?img=65"
+id:1,
+name:"Shubham Shastri",
+skill:"Vedic Astrology",
+price:25,
+rating:4.9,
+status:"online",
+reviews:[
+"Very accurate prediction!",
+"Helped me with marriage timing",
+"Highly recommended"
+],
+img:"https://i.pravatar.cc/100?img=65"
 },
+
 {
-id: 2,
-name: "Shrinath Gautam",
-skill: "Palmistry",
-price: 20,
-rating: 4.7,
-status: "offline",
-img: "https://i.pravatar.cc/100?img=60"
+id:2,
+name:"Shrinath Gautam",
+skill:"Palmistry",
+price:20,
+rating:4.7,
+status:"offline",
+reviews:[
+"Very knowledgeable astrologer",
+"Explained my career path clearly"
+],
+img:"https://i.pravatar.cc/100?img=60"
 },
+
 {
-id: 3,
-name: "Vishal Vats",
-skill: "Numerology",
-price: 30,
-rating: 4.8,
-status: "online",
-img: "https://i.pravatar.cc/100?img=12"
+id:3,
+name:"Vishal Vats",
+skill:"Numerology",
+price:30,
+rating:4.8,
+status:"online",
+reviews:[
+"Very practical guidance",
+"Numerology reading was accurate"
+],
+img:"https://i.pravatar.cc/100?img=12"
 },
+
 {
-id: 4,
-name: "Rahul Gautam",
-skill: "Tarot Reading",
-price: 18,
-rating: 4.6,
-status: "online",
-img: "https://i.pravatar.cc/100?img=32"
+id:4,
+name:"Rahul Gautam",
+skill:"Tarot Reading",
+price:18,
+rating:4.6,
+status:"online",
+reviews:[
+"Tarot reading was insightful",
+"Very friendly astrologer"
+],
+img:"https://i.pravatar.cc/100?img=32"
 }
+
 ];
+
+
 
 function loadAstrologers(list = astrologers) {
 
