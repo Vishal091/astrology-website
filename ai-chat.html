@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>AI Astrologer</title>
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+<div class="logo">🔮 Astrodhani AI</div>
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Ask the AI Astrologer</h2>
+
+<input id="question" placeholder="Ask about your future">
+
+<button onclick="askAI()">Ask</button>
+
+<div id="aiResponse"></div>
+
+</div>
+
+</div>
+
+<script>
+
+function askAI(){
+
+let q=document.getElementById("question").value
+
+let responses=[
+"The stars suggest new opportunities coming soon.",
+"Saturn indicates patience is required.",
+"Your career path shows strong growth ahead.",
+"A positive change in relationships is possible."
+]
+
+let r=responses[Math.floor(Math.random()*responses.length)]
+
+document.getElementById("aiResponse").innerHTML="<p>"+r+"</p>"
+
+}
+
+</script>
+
+</body>
+</html>
+
