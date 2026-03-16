@@ -64,7 +64,7 @@ card.className = "card";
 
 card.innerHTML =
 "<div data-aos='fade-up'>" +
-"<img src='"+a.img+"'>" +
+"<img src='"+a.img+"' alt='"+a.name+"'>"
 "<h3>"+a.name+"</h3>" +
 "<p>"+a.skill+"</p>" +
 "<p>⭐ "+a.rating+"</p>" +
