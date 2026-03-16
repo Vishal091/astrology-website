@@ -62,7 +62,7 @@ const card = document.createElement("div");
 
 card.className = "card";
 
-```javascript
+
 card.innerHTML =
 "<img src='"+a.img+"' alt='"+a.name+"' style='width:80px;border-radius:50%;'>" +
 "<h3>"+a.name+"</h3>" +
@@ -71,7 +71,7 @@ card.innerHTML =
 "<p style='color:"+(a.status==="online"?"#2ecc71":"gray")+"'>● "+a.status+"</p>" +
 "<p class='price'>₹"+a.price+"/min</p>" +
 "<button onclick='openChat(\""+a.name+"\")'>Chat Now</button>";
-```
+
 
 
 container.appendChild(card);
