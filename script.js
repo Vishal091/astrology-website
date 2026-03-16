@@ -79,13 +79,15 @@ const card = document.createElement("div");
 card.className = "card";
 
 card.innerHTML =
+"<div data-aos='fade-up'>" +
 "<img src='"+a.img+"'>" +
 "<h3>"+a.name+"</h3>" +
 "<p>"+a.skill+"</p>" +
 "<p>⭐ "+a.rating+"</p>" +
-"<p style='color:"+(a.status==="online"?"green":"gray")+"'>● "+a.status+"</p>" +
-"<p>₹"+a.price+"/min</p>" +
-"<button onclick='openProfile("+a.id+")'>View Profile</button>";
+"<p style='color:"+(a.status==="online"?"#2ecc71":"gray")+"'>● "+a.status+"</p>" +
+"<p class='price'>₹"+a.price+"/min</p>" +
+"<button onclick='openProfile("+a.id+")'>View Profile</button>" +
+"</div>";
 
 container.appendChild(card);
 
