@@ -1,0 +1,89 @@
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Astrodhani Chat</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.chatbox{
+max-width:600px;
+margin:auto;
+background:white;
+color:black;
+padding:20px;
+border-radius:10px;
+}
+
+.messages{
+height:300px;
+overflow:auto;
+border:1px solid #ddd;
+padding:10px;
+margin-bottom:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">🔮 Astrodhani</div>
+
+</header>
+
+<div class="chatbox">
+
+<h2 id="astroName"></h2>
+
+<div class="messages" id="messages"></div>
+
+<input id="msg" placeholder="Ask your question">
+
+<button onclick="sendMessage()">Send</button>
+
+</div>
+
+<script>
+
+const params = new URLSearchParams(window.location.search)
+
+const name = params.get("name")
+
+document.getElementById("astroName").innerText =
+"Chat with " + name
+
+function sendMessage(){
+
+let input = document.getElementById("msg")
+
+let text = input.value
+
+if(!text) return
+
+let box = document.getElementById("messages")
+
+box.innerHTML += "<p><b>You:</b> "+text+"</p>"
+
+setTimeout(()=>{
+
+box.innerHTML += "<p><b>"+name+":</b> The stars indicate positive movement in your life.</p>"
+
+},1000)
+
+input.value=""
+
+}
+
+</script>
+
+</body>
+</html>
+```
