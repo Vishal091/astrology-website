@@ -1,4 +1,4 @@
-
+```javascript
 export default async function handler(req, res) {
 
 if (req.method !== "POST") {
@@ -7,9 +7,17 @@ return res.status(405).json({ error: "Method not allowed" });
 
 try {
 
-const { question } = req.body;
+const body = typeof req.body === "string"
+? JSON.parse(req.body)
+: req.body;
 
-const HF_TOKEN = process.env.HF_TOKEN
+const question = body.question;
+
+if (!question) {
+return res.status(400).json({ error: "Question missing" });
+}
+
+const HF_TOKEN = process.env.HF_TOKEN;
 
 const response = await fetch(
 "https://router.huggingface.co/hf-inference/models/mistralai/Mistral-7B-Instruct-v0.2",
@@ -20,24 +28,32 @@ Authorization: `Bearer ${HF_TOKEN}`,
 "Content-Type": "application/json"
 },
 body: JSON.stringify({
-inputs: `You are a wise Vedic astrologer giving spiritual guidance. Question: ${question}`
+inputs:
+`You are a calm Vedic astrologer giving spiritual guidance.
+User question: ${question}`
 })
 }
 );
 
 const data = await response.json();
 
+console.log("HF RESPONSE:", data);
+
+if (data.error) {
+return res.status(500).json({ error: data.error });
+}
+
 return res.status(200).json(data);
 
-} catch (error) {
+} catch (err) {
 
-console.error(error);
+console.error("SERVER ERROR:", err);
 
 return res.status(500).json({
-error: "AI request failed"
+error: "Server error contacting AI"
 });
 
 }
 
 }
-
+```
