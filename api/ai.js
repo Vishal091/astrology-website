@@ -16,7 +16,7 @@ return res.status(500).json({ error: "HF_TOKEN missing in Vercel" });
 }
 
 const response = await fetch(
-"https://router.huggingface.co/hf-inference/models/mistralai/Mistral-7B-Instruct-v0.2",
+"https://router.huggingface.co/hf-inference/v1/models/mistralai/Mistral-7B-Instruct-v0.2",
 {
 method: "POST",
 headers: {
@@ -29,7 +29,14 @@ inputs: "You are a wise Vedic astrologer giving guidance. Question: " + question
 }
 );
 
-const data = await response.json();
+const text = await response.text()
+
+let data
+try {
+data = JSON.parse(text)
+} catch {
+return res.status(500).json({ error: text })
+}
 
 console.log("HF RESPONSE:", data);
 
