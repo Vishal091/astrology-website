@@ -1,27 +1,27 @@
 const astrologers = [
 {
-name:"Rahul Sharma",
+name:"Shubham Shastri",
 skill:"Vedic Astrology",
 price:20,
 rating:4.8,
 img:"https://i.pravatar.cc/100?img=12"
 },
 {
-name:"Priya Verma",
+name:"Srinath Gautam",
 skill:"Tarot Reading",
 price:15,
 rating:4.7,
 img:"https://i.pravatar.cc/100?img=25"
 },
 {
-name:"Amit Joshi",
+name:"Vishal Vats",
 skill:"Numerology",
 price:25,
 rating:4.9,
 img:"https://i.pravatar.cc/100?img=32"
 },
 {
-name:"Sanjay Mishra",
+name:"Rahul Gautam",
 skill:"Palmistry",
 price:18,
 rating:4.6,
