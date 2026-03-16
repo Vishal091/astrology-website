@@ -3,306 +3,54 @@
 <html>
 
 <head>
-<title>AstroMitra</title>
-
-<style>
-
-body{
-font-family:Arial;
-margin:0;
-background:#eef0ff;
-}
-
-header{
-background:#4338ca;
-color:white;
-text-align:center;
-padding:20px;
-}
-
-.search{
-text-align:center;
-margin:20px;
-}
-
-.search input{
-padding:10px;
-width:300px;
-border-radius:6px;
-border:1px solid #ccc;
-}
-
-.wallet{
-position:fixed;
-top:20px;
-right:20px;
-background:white;
-padding:10px 15px;
-border-radius:10px;
-box-shadow:0 2px 6px rgba(0,0,0,0.2);
-}
-
-.container{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:20px;
-padding:20px;
-}
-
-.card{
-background:white;
-width:250px;
-padding:20px;
-border-radius:10px;
-box-shadow:0 4px 12px rgba(0,0,0,0.1);
-text-align:center;
-}
-
-.card img{
-width:80px;
-border-radius:50%;
-}
-
-button{
-background:#4338ca;
-color:white;
-border:none;
-padding:10px 15px;
-border-radius:6px;
-cursor:pointer;
-margin-top:10px;
-}
-
-button:hover{
-background:#3730a3;
-}
-
-.horoscope{
-background:white;
-margin:40px;
-padding:20px;
-border-radius:10px;
-}
-
-.signs{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:10px;
-}
-
-.sign{
-background:#e0e7ff;
-padding:10px;
-border-radius:6px;
-text-align:center;
-}
-
-.chatbox{
-position:fixed;
-bottom:20px;
-right:20px;
-width:300px;
-background:white;
-border-radius:10px;
-box-shadow:0 4px 10px rgba(0,0,0,0.2);
-display:none;
-flex-direction:column;
-}
-
-.chatheader{
-background:#4338ca;
-color:white;
-padding:10px;
-border-radius:10px 10px 0 0;
-}
-
-.chatmessages{
-height:150px;
-overflow:auto;
-padding:10px;
-font-size:14px;
-}
-
-.chatinput{
-display:flex;
-}
-
-.chatinput input{
-flex:1;
-border:none;
-padding:10px;
-}
-
-.chatinput button{
-border-radius:0;
-}
-
-</style>
+<title>Astrodhani</title>
+<link rel="stylesheet" href="style.css">
+<script src="script.js"></script>
 </head>
-
 
 <body>
 
 <header>
 
-<h1>AstroMitra 🔮</h1>
-<p>Talk to Trusted Indian Astrologers</p>
+<div class="logo">🔮 Astrodhani</div>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="astrologers.html">Astrologers</a>
+<a href="horoscope.html">Horoscope</a>
+</nav>
 
 </header>
 
 <div class="wallet">
-Wallet: ₹<span id="balance">500</span>
+Wallet ₹<span id="wallet">500</span>
 </div>
 
-<div class="search">
-<input type="text" placeholder="Search astrologer..." onkeyup="searchAstrologer(this.value)">
-</div>
+<section class="hero">
 
-<div class="container" id="astroContainer"></div>
+<h1>Your Destiny, Decoded</h1>
 
-<div class="horoscope">
+<p>Talk to trusted astrologers across India</p>
 
-<h2>Daily Horoscope</h2>
+<button onclick="location.href='astrologers.html'">
+Talk to Astrologer
+</button>
 
-<div class="signs" id="signs"></div>
+</section>
 
-</div>
+<section class="container">
 
+<h2>Top Astrologers</h2>
 
-<div class="chatbox" id="chatbox">
+<div class="grid" id="astrologers"></div>
 
-<div class="chatheader">
-Chat with Astrologer
-</div>
+</section>
 
-<div class="chatmessages" id="messages"></div>
+<footer>
 
-<div class="chatinput">
-<input id="msg" placeholder="Ask your question">
-<button onclick="sendMessage()">Send</button>
-</div>
+© 2026 Astrodhani
 
-</div>
-
-
-<script>
-
-let wallet = 500
-
-let astrologers = [
-
-{name:"Rahul Sharma",skill:"Vedic Astrology",price:20,rating:4.8,img:"https://i.pravatar.cc/100?img=12"},
-
-{name:"Priya Verma",skill:"Tarot Reading",price:15,rating:4.7,img:"https://i.pravatar.cc/100?img=25"},
-
-{name:"Amit Joshi",skill:"Numerology",price:25,rating:4.9,img:"https://i.pravatar.cc/100?img=32"},
-
-{name:"Sanjay Mishra",skill:"Palm Reading",price:18,rating:4.6,img:"https://i.pravatar.cc/100?img=50"}
-
-]
-
-
-function renderAstrologers(list){
-
-let container=document.getElementById("astroContainer")
-
-container.innerHTML=""
-
-list.forEach(a=>{
-
-container.innerHTML+=`
-
-<div class="card">
-
-<img src="${a.img}">
-
-<h3>${a.name}</h3>
-
-<p>${a.skill}</p>
-
-<p>⭐ ${a.rating}</p>
-
-<p>₹${a.price}/min</p>
-
-<button onclick="startChat(${a.price})">Chat</button>
-
-</div>
-
-`
-
-})
-
-}
-
-renderAstrologers(astrologers)
-
-
-
-function searchAstrologer(name){
-
-let filtered = astrologers.filter(a =>
-a.name.toLowerCase().includes(name.toLowerCase())
-)
-
-renderAstrologers(filtered)
-
-}
-
-
-function startChat(price){
-
-if(wallet < price){
-
-alert("Insufficient balance")
-
-return
-
-}
-
-wallet -= price
-
-document.getElementById("balance").innerText=wallet
-
-document.getElementById("chatbox").style.display="flex"
-
-}
-
-
-function sendMessage(){
-
-let input=document.getElementById("msg")
-
-let msg=input.value
-
-if(!msg) return
-
-let messages=document.getElementById("messages")
-
-messages.innerHTML += "<div>You: "+msg+"</div>"
-
-setTimeout(()=>{
-
-messages.innerHTML += "<div>Astrologer: Stars indicate positive energy today.</div>"
-
-},1000)
-
-input.value=""
-
-}
-
-
-let zodiac=["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"]
-
-let signsContainer=document.getElementById("signs")
-
-zodiac.forEach(sign=>{
-
-signsContainer.innerHTML += `<div class="sign">${sign}</div>`
-
-})
-
-</script>
+</footer>
 
 </body>
 </html>
