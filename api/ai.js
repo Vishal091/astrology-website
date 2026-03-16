@@ -16,6 +16,7 @@ return res.status(500).json({ error: "HF_TOKEN missing in Vercel" });
 }
 
 
+
 const response = await fetch(
 "https://router.huggingface.co/v1/chat/completions",
 {
@@ -25,7 +26,7 @@ headers: {
 "Content-Type": "application/json"
 },
 body: JSON.stringify({
-model: "mistralai/Mistral-7B-Instruct-v0.2",
+model: "meta-llama/Llama-3.1-8B-Instruct",
 messages: [
 {
 role: "system",
@@ -42,15 +43,11 @@ max_tokens: 300
 );
 
 
-const data = await response.json();
-
-if (!data.choices) {
-return res.status(500).json(data);
-}
+const data = await response.json()
 
 return res.status(200).json({
 answer: data.choices[0].message.content
-});
+})
 
 console.log("HF RESPONSE:", data);
 
