@@ -36,63 +36,39 @@
 
 const HF_TOKEN = "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";
 
+
 async function askAI(){
 
-let question = document.getElementById("question").value;
-
-if(!question){
-alert("Please enter a question");
-return;
-}
+let question = document.getElementById("question").value
 
 document.getElementById("aiResponse").innerHTML =
-"<p>Consulting the stars...</p>";
+"<p>Consulting the stars...</p>"
 
-try{
-
-let response = await fetch(
-"https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2",
-{
+let response = await fetch("/api/ai",{
 method:"POST",
 headers:{
-"Authorization":"Bearer "+HF_TOKEN,
 "Content-Type":"application/json"
 },
-body:JSON.stringify({
-inputs:
-"You are a wise Vedic astrologer giving calm spiritual advice.\nUser question: "+question
+body:JSON.stringify({question})
 })
-}
-);
 
-let data = await response.json();
+let data = await response.json()
 
-console.log(data);
-
-if(data.error){
+if(data[0]){
 
 document.getElementById("aiResponse").innerHTML =
-"<p>The cosmic model is waking up. Try again in a few seconds.</p>";
+"<p>"+data[0].generated_text+"</p>"
 
-return;
-
-}
-
-let answer = data[0].generated_text;
+}else{
 
 document.getElementById("aiResponse").innerHTML =
-"<p>"+answer+"</p>";
-
-}catch(err){
-
-console.log(err);
-
-document.getElementById("aiResponse").innerHTML =
-"<p>AI connection failed.</p>";
+"<p>The stars are unclear right now.</p>"
 
 }
 
 }
+
+
 
 </script>
 
