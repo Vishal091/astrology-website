@@ -4,8 +4,7 @@
 <head>
 <title>Astrodhani</title>
 <link rel="stylesheet" href="style.css">
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <script>
 AOS.init();
@@ -31,11 +30,24 @@ AOS.init();
 Wallet ₹<span id="wallet">500</span>
 </div>
 
+
 <section class="hero">
 
-<h1>Your Destiny, Decoded</h1>
+<h1 data-aos="fade-up">
+Discover Your Destiny
+</h1>
 
-<p>Talk to trusted astrologers across India</p>
+<p data-aos="fade-up" data-aos-delay="200">
+Talk to trusted astrologers across India and unlock your future
+</p>
+
+<button onclick="location.href='astrologers.html'" data-aos="zoom-in" data-aos-delay="400">
+Talk to an Astrologer
+</button>
+
+</section>
+```
+
 
 <button onclick="location.href='astrologers.html'">
 Talk to Astrologer
@@ -57,6 +69,8 @@ Talk to Astrologer
 
 </footer>
 <script src="./script.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </body>
 </html>
 ```
