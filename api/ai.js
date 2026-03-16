@@ -11,13 +11,17 @@ const body = typeof req.body === "string"
 ? JSON.parse(req.body)
 : req.body;
 
-const question = body.question;
+const question = body?.question;
 
 if (!question) {
 return res.status(400).json({ error: "Question missing" });
 }
 
 const HF_TOKEN = process.env.HF_TOKEN;
+
+if (!HF_TOKEN) {
+return res.status(500).json({ error: "HF_TOKEN not configured" });
+}
 
 const response = await fetch(
 "https://router.huggingface.co/hf-inference/models/mistralai/Mistral-7B-Instruct-v0.2",
@@ -28,9 +32,7 @@ Authorization: `Bearer ${HF_TOKEN}`,
 "Content-Type": "application/json"
 },
 body: JSON.stringify({
-inputs:
-`You are a calm Vedic astrologer giving spiritual guidance.
-User question: ${question}`
+inputs: `You are a wise Vedic astrologer giving guidance. Question: ${question}`
 })
 }
 );
@@ -45,12 +47,12 @@ return res.status(500).json({ error: data.error });
 
 return res.status(200).json(data);
 
-} catch (err) {
+} catch (error) {
 
-console.error("SERVER ERROR:", err);
+console.error("SERVER ERROR:", error);
 
 return res.status(500).json({
-error: "Server error contacting AI"
+error: "Internal server error"
 });
 
 }
