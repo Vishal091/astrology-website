@@ -33,7 +33,7 @@
 
 <script>
 
-const API_KEY = "AIzaSyAAAtAUgdadDPbpsP4wM2Zh1-eW8gv7uro";
+const API_KEY = "YOUR_GEMINI_API_KEY";
 
 async function askAI(){
 
@@ -50,7 +50,7 @@ document.getElementById("aiResponse").innerHTML =
 try{
 
 let response = await fetch(
-"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key="+API_KEY,
+"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key="+API_KEY,
 {
 method:"POST",
 headers:{
@@ -59,9 +59,10 @@ headers:{
 body:JSON.stringify({
 contents:[
 {
+role:"user",
 parts:[
 {
-text:"You are a helpful Vedic astrologer. Answer this question: "+question
+text:"You are a calm Vedic astrologer. Answer spiritually but avoid absolute predictions. Question: "+question
 }
 ]
 }
@@ -72,7 +73,9 @@ text:"You are a helpful Vedic astrologer. Answer this question: "+question
 
 let data = await response.json();
 
-if(data.candidates){
+console.log(data);   // useful for debugging
+
+if(data.candidates && data.candidates.length > 0){
 
 let answer = data.candidates[0].content.parts[0].text;
 
@@ -82,18 +85,16 @@ document.getElementById("aiResponse").innerHTML =
 }else{
 
 document.getElementById("aiResponse").innerHTML =
-"<p>AI couldn't generate a response.</p>";
-
-console.log(data);
+"<p>The stars are unclear right now. Please try another question.</p>";
 
 }
 
 }catch(error){
 
-console.log(error);
+console.error(error);
 
 document.getElementById("aiResponse").innerHTML =
-"<p>Error contacting AI service.</p>";
+"<p>AI connection error.</p>";
 
 }
 
