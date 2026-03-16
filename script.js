@@ -1,62 +1,87 @@
-```javascript
-let wallet=500
 
-let astrologers=[
-{name:"Shubham Shastri",skill:"Vedic Astrology",price:20,rating:4.8,img:"https://i.pravatar.cc/100?img=12"},
-{name:"Vishal Vats",skill:"Tarot Reading",price:15,rating:4.7,img:"https://i.pravatar.cc/100?img=25"},
-{name:"Srinath Gautam",skill:"Numerology",price:25,rating:4.9,img:"https://i.pravatar.cc/100?img=32"},
-{name:"Rahul Gautam",skill:"Palmistry",price:18,rating:4.6,img:"https://i.pravatar.cc/100?img=50"}
-]
+let wallet = 500;
+
+const astrologers = [
+{
+name: "Shubham Shastri",
+skill: "Vedic Astrology",
+price: 20,
+rating: 4.8,
+img: "https://i.pravatar.cc/100?img=12"
+},
+{
+name: "Shrinath Gautam",
+skill: "Tarot Reading",
+price: 15,
+rating: 4.7,
+img: "https://i.pravatar.cc/100?img=25"
+},
+{
+name: "Vishal Vats",
+skill: "Numerology",
+price: 25,
+rating: 4.9,
+img: "https://i.pravatar.cc/100?img=32"
+},
+{
+name: "Rahul Gautam",
+skill: "Palmistry",
+price: 18,
+rating: 4.6,
+img: "https://i.pravatar.cc/100?img=50"
+}
+];
 
 function loadAstrologers(){
 
-let container=document.getElementById("astrologers")
+const container = document.getElementById("astrologers");
 
-if(!container) return
+if(!container){
+console.log("Astrologer container not found");
+return;
+}
 
-astrologers.forEach(a=>{
+container.innerHTML = "";
 
-container.innerHTML+=`
+astrologers.forEach((astro)=>{
 
-<div class="card">
+const card = document.createElement("div");
 
-<img src="${a.img}">
+card.className = "card";
 
-<h3>${a.name}</h3>
+card.innerHTML = `
+<img src="${astro.img}">
+<h3>${astro.name}</h3>
+<p>${astro.skill}</p>
+<p>⭐ ${astro.rating}</p>
+<p class="price">₹${astro.price}/min</p>
+<button onclick="startChat(${astro.price})">Chat</button>
+`;
 
-<p>${a.skill}</p>
+container.appendChild(card);
 
-<p>⭐ ${a.rating}</p>
-
-<p class="price">₹${a.price}/min</p>
-
-<button onclick="chat(${a.price})">Chat</button>
-
-</div>
-
-`
-
-})
+});
 
 }
 
-function chat(price){
+function startChat(price){
 
-if(wallet<price){
+if(wallet < price){
+alert("Wallet balance low");
+return;
+}
 
-alert("Wallet balance low")
+wallet -= price;
 
-return
+const walletElement = document.getElementById("wallet");
+
+if(walletElement){
+walletElement.innerText = wallet;
+}
+
+alert("Chat started 🔮");
 
 }
 
-wallet-=price
-
-document.getElementById("wallet").innerText=wallet
-
-alert("Chat started with astrologer")
-
-}
-
-window.onload=loadAstrologers
+window.onload = loadAstrologers;
 ```
