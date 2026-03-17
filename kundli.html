@@ -1,55 +1,29 @@
-
 <!DOCTYPE html>
 <html>
 
 <head>
-
-<title>Free Kundli - Astrodhani</title>
-
+<title>Astrodhani - Free Kundli</title>
 <link rel="stylesheet" href="style.css">
-
-<style>
-
-.formbox{
-max-width:500px;
-margin:auto;
-background:white;
-color:black;
-padding:30px;
-border-radius:10px;
-}
-
-input{
-width:100%;
-padding:10px;
-margin:10px 0;
-border-radius:6px;
-border:1px solid #ccc;
-}
-
-</style>
-
 </head>
 
 <body>
 
 <header>
-
 <div class="logo">🔮 Astrodhani</div>
 
 <nav>
-
 <a href="index.html">Home</a>
 <a href="astrologers.html">Astrologers</a>
 <a href="horoscope.html">Horoscope</a>
 <a href="kundli.html">Free Kundli</a>
-
 </nav>
 
+<div class="wallet">
+₹<span id="wallet">500</span>
+</div>
 </header>
 
-<section class="container">
-
+<div class="container">
 
 <div class="formbox">
 
@@ -63,22 +37,80 @@ border:1px solid #ccc;
 
 <input id="place" placeholder="Birth Place">
 
-<button onclick="generateKundli()">
-Generate Kundli
-</button>
+<button onclick="generateKundli()">Generate Kundli</button>
 
 <div id="result"></div>
 
 </div>
 
+</div>
 
+<style>
 
-</section>
+body{
+background:#0B0F2A;
+color:white;
+font-family:Arial;
+}
 
+.container{
+padding:40px;
+}
+
+.formbox{
+max-width:500px;
+margin:auto;
+background:#141A40;
+padding:30px;
+border-radius:12px;
+}
+
+.formbox input{
+width:100%;
+padding:10px;
+margin:10px 0;
+border-radius:6px;
+border:none;
+}
+
+.formbox button{
+width:100%;
+padding:12px;
+background:#6C5CE7;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+#result{
+margin-top:20px;
+}
+
+.kundli-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+margin-top:20px;
+}
+
+.kundli-card{
+background:#141A40;
+padding:20px;
+border-radius:12px;
+color:white;
+box-shadow:0 0 15px rgba(108,92,231,0.4);
+}
+
+.kundli-card h3{
+margin-bottom:10px;
+color:#F9CA24;
+}
+
+</style>
 
 <script>
 
-"
 async function generateKundli(){
 
 console.log("clicked")
@@ -110,8 +142,11 @@ question:
 "DOB: " + dob + "\n" +
 "Time: " + time + "\n" +
 "Place: " + place + "\n\n" +
-"Respond in format:\n" +
-"ZODIAC: ...\nPERSONALITY: ...\nCAREER: ...\nLOVE: ..."
+"Respond ONLY in this format:\n" +
+"ZODIAC: ...\n" +
+"PERSONALITY: ...\n" +
+"CAREER: ...\n" +
+"LOVE: ..."
 })
 })
 
@@ -162,13 +197,8 @@ document.getElementById("result").innerHTML =
 
 }
 
-
-
 </script>
 
-
-
 </body>
-
 </html>
 
