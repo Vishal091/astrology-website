@@ -59,6 +59,25 @@ color:#ddd;
 text-decoration:none;
 }
 
+#result {
+color: white;
+margin-top: 20px;
+line-height: 1.6;
+}
+
+
+#result .card{
+background: linear-gradient(135deg, #1A1F4A, #0B0F2A);
+padding: 20px;
+border-radius: 12px;
+color: #ffffff;
+box-shadow: 0 0 20px rgba(108,92,231,0.4);
+margin-top: 20px;
+}
+
+#result *{
+color: #ffffff !important;
+}
 .hero{
 padding:100px 20px;
 text-align:center;
