@@ -112,7 +112,7 @@ color:#F9CA24;
 <script>
 
 async function generateKundli(){
-
+let zodiacReal = getZodiac(dob)
 console.log("clicked")
 
 let name = document.getElementById("name").value
@@ -143,10 +143,10 @@ question:
 "Time: " + time + "\n" +
 "Place: " + place + "\n\n" +
 "Respond ONLY in this format:\n" +
-"ZODIAC: ...\n" +
 "PERSONALITY: ...\n" +
 "CAREER: ...\n" +
-"LOVE: ..."
+"LOVE: ..." + 
+zodiacReal
 })
 })
 
@@ -168,7 +168,7 @@ let match = text.match(regex)
 return match ? match[1].trim() : "Not available"
 }
 
-let zodiac = extract("ZODIAC")
+let zodiac = zodiacReal
 let personality = extract("PERSONALITY")
 let career = extract("CAREER")
 let love = extract("LOVE")
@@ -176,13 +176,10 @@ let love = extract("LOVE")
 document.getElementById("result").innerHTML =
 "<div class='kundli-grid'>" +
 
-"<div class='kundli-card'><h3>🔥 Zodiac</h3><p>"+zodiac+"</p></div>" +
-
-"<div class='kundli-card'><h3>🧠 Personality</h3><p>"+personality+"</p></div>" +
-
-"<div class='kundli-card'><h3>💼 Career</h3><p>"+career+"</p></div>" +
-
-"<div class='kundli-card'><h3>❤️ Love</h3><p>"+love+"</p></div>" +
+"<div class='kundli-card zodiac'><h3>🔥 Zodiac</h3><p>"+zodiac+"</p></div>" +
+"<div class='kundli-card personality'><h3>🧠 Personality</h3><p>"+personality+"</p></div>" +
+"<div class='kundli-card career'><h3>💼 Career</h3><p>"+career+"</p></div>" +
+"<div class='kundli-card love'><h3>❤️ Love</h3><p>"+love+"</p></div>"
 
 "</div>"
 
@@ -196,6 +193,31 @@ document.getElementById("result").innerHTML =
 }
 
 }
+
+
+function getZodiac(date){
+
+let d = new Date(date)
+let day = d.getDate()
+let month = d.getMonth() + 1
+
+if((month==3 && day>=21) || (month==4 && day<=19)) return "Aries"
+if((month==4 && day>=20) || (month==5 && day<=20)) return "Taurus"
+if((month==5 && day>=21) || (month==6 && day<=20)) return "Gemini"
+if((month==6 && day>=21) || (month==7 && day<=22)) return "Cancer"
+if((month==7 && day>=23) || (month==8 && day<=22)) return "Leo"
+if((month==8 && day>=23) || (month==9 && day<=22)) return "Virgo"
+if((month==9 && day>=23) || (month==10 && day<=22)) return "Libra"
+if((month==10 && day>=23) || (month==11 && day<=21)) return "Scorpio"
+if((month==11 && day>=22) || (month==12 && day<=21)) return "Sagittarius"
+if((month==12 && day>=22) || (month==1 && day<=19)) return "Capricorn"
+if((month==1 && day>=20) || (month==2 && day<=18)) return "Aquarius"
+if((month==2 && day>=19) || (month==3 && day<=20)) return "Pisces"
+
+return "Unknown"
+}
+
+
 
 </script>
 
