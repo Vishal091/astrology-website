@@ -77,6 +77,27 @@ grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 gap:20px;
 }
 
+.formbox{
+max-width:500px;
+margin:auto;
+background:#141A40;
+padding:30px;
+border-radius:12px;
+}
+
+.formbox input{
+width:100%;
+padding:10px;
+margin:10px 0;
+border-radius:6px;
+border:none;
+}
+
+.formbox button{
+width:100%;
+}
+
+
 
 .card{
 background:#141A40;
