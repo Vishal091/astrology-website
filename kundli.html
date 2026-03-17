@@ -137,16 +137,18 @@ headers:{
 },
 body: JSON.stringify({
 question:
-"Generate a Vedic astrology birth chart.\n" +
-"Name: " + name + "\n" +
-"DOB: " + dob + "\n" +
-"Time: " + time + "\n" +
-"Place: " + place + "\n\n" +
-"Respond ONLY in this format:\n" +
-"PERSONALITY: ...\n" +
-"CAREER: ...\n" +
-"LOVE: ..." + 
-zodiacReal
+"Act as a Vedic astrologer.\n" +
+"User zodiac: " + zodiacReal + "\n\n" +
+
+"Give response EXACTLY in this format:\n" +
+
+"PERSONALITY: <text>\n" +
+"CAREER: <text>\n" +
+"LOVE: <text>\n\n" +
+
+"Do NOT change labels. Do NOT add extra headings."
+
+
 })
 })
 
