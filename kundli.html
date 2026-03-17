@@ -120,6 +120,21 @@ let dob = document.getElementById("dob").value
 let time = document.getElementById("time").value
 let place = document.getElementById("place").value
 let zodiacReal = getZodiac(dob)
+let planets = [
+"Sun - Aries",
+"Moon - Taurus",
+"Mars - Gemini",
+"Mercury - Cancer",
+"Jupiter - Leo",
+"Venus - Virgo",
+"Saturn - Libra"
+]
+let houses = [
+"1st House - Personality",
+"2nd House - Wealth",
+"7th House - Marriage",
+"10th House - Career"
+]
 if(!name || !dob){
 alert("Please fill required details")
 return
@@ -176,15 +191,17 @@ let career = extract("CAREER")
 let love = extract("LOVE")
 
 document.getElementById("result").innerHTML =
-"<div class='kundli-grid'>" +
-
-"<div class='kundli-card zodiac'><h3>🔥 Zodiac</h3><p>"+zodiac+"</p></div>" +
-"<div class='kundli-card personality'><h3>🧠 Personality</h3><p>"+personality+"</p></div>" +
-"<div class='kundli-card career'><h3>💼 Career</h3><p>"+career+"</p></div>" +
-"<div class='kundli-card love'><h3>❤️ Love</h3><p>"+love+"</p></div>"
-
+"<div class='kundli-card'>" +
+"<h3>🧾 Basic Details</h3>" +
+"<p><b>Name:</b> "+name+"</p>" +
+"<p><b>Zodiac:</b> "+zodiac+"</p>" +
+"<p><b>DOB:</b> "+dob+"</p>" +
+"<p><b>Place:</b> "+place+"</p>" +
 "</div>"
-
+"<div class='kundli-card'>" +
+"<h3>🪐 Planetary Positions</h3>" +
+planets.map(p => "<p>"+p+"</p>").join("") +
+"</div>"
 }catch(err){
 
 console.log(err)
