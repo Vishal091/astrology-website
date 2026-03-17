@@ -112,14 +112,14 @@ color:#F9CA24;
 <script>
 
 async function generateKundli(){
-let zodiacReal = getZodiac(dob)
+
 console.log("clicked")
 
 let name = document.getElementById("name").value
 let dob = document.getElementById("dob").value
 let time = document.getElementById("time").value
 let place = document.getElementById("place").value
-
+let zodiacReal = getZodiac(dob)
 if(!name || !dob){
 alert("Please fill required details")
 return
