@@ -99,21 +99,24 @@ headers:{
 "Content-Type":"application/json"
 },
 body: JSON.stringify({
-question:
-`Generate a Vedic astrology birth chart analysis.
+question: `
+Generate a Vedic astrology birth chart analysis.
 
 Name: ${name}
 Date of Birth: ${dob}
 Time: ${time}
 Place: ${place}
 
-Include:
-- Zodiac sign
-- Personality traits
-- Career insights
-- Love and marriage outlook
+Respond STRICTLY in this format:
 
-Respond in a structured format.`
+ZODIAC: ...
+PERSONALITY: ...
+CAREER: ...
+LOVE: ...
+
+Keep each section 2-3 lines only.
+
+
 })
 })
 
@@ -121,15 +124,49 @@ let data = await res.json()
 
 if(data.answer){
 
-document.getElementById("result").innerHTML =
-"<div class='card'><pre style='white-space:pre-wrap;font-family:inherit;'>"+data.answer+"</pre></div>"
+let text = data.answer
 
-}else{
+function extract(label){
+let regex = new RegExp(label + ":(.*)", "i")
+let match = text.match(regex)
+return match ? match[1].trim() : "Not available"
+}
+
+let zodiac = extract("ZODIAC")
+let personality = extract("PERSONALITY")
+let career = extract("CAREER")
+let love = extract("LOVE")
 
 document.getElementById("result").innerHTML =
-"<p>Unable to generate kundli right now.</p>"
+`
+<div class="kundli-grid">
+
+<div class="kundli-card">
+<h3>🔥 Zodiac Sign</h3>
+<p>${zodiac}</p>
+</div>
+
+<div class="kundli-card">
+<h3>🧠 Personality</h3>
+<p>${personality}</p>
+</div>
+
+<div class="kundli-card">
+<h3>💼 Career</h3>
+<p>${career}</p>
+</div>
+
+<div class="kundli-card">
+<h3>❤️ Love Life</h3>
+<p>${love}</p>
+</div>
+
+</div>
+
 
 }
+
+
 
 }
 
