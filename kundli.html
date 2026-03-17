@@ -50,9 +50,10 @@ border:1px solid #ccc;
 
 <section class="container">
 
+
 <div class="formbox">
 
-<h2>Free Kundli Generator</h2>
+<h2>Free AI Kundli Generator 🔮</h2>
 
 <input id="name" placeholder="Your Name">
 
@@ -70,47 +71,71 @@ Generate Kundli
 
 </div>
 
+
+
 </section>
+
 
 <script>
 
-function generateKundli(){
+async function generateKundli(){
 
 let name = document.getElementById("name").value
-
 let dob = document.getElementById("dob").value
-
+let time = document.getElementById("time").value
 let place = document.getElementById("place").value
 
 if(!name || !dob){
-
-alert("Please fill details")
-
+alert("Please fill required details")
 return
-
 }
 
-let zodiac = [
-"Aries","Taurus","Gemini","Cancer",
-"Leo","Virgo","Libra","Scorpio",
-"Sagittarius","Capricorn","Aquarius","Pisces"
-]
+document.getElementById("result").innerHTML =
+"<p>Generating your kundli...</p>"
 
-let sign = zodiac[Math.floor(Math.random()*12)]
+let res = await fetch("/api/ai",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body: JSON.stringify({
+question:
+`Generate a Vedic astrology birth chart analysis.
+
+Name: ${name}
+Date of Birth: ${dob}
+Time: ${time}
+Place: ${place}
+
+Include:
+- Zodiac sign
+- Personality traits
+- Career insights
+- Love and marriage outlook
+
+Respond in a structured format.`
+})
+})
+
+let data = await res.json()
+
+if(data.answer){
 
 document.getElementById("result").innerHTML =
+"<div class='card'><p>"+data.answer+"</p></div>"
 
-"<h3>Kundli Result</h3>" +
+}else{
 
-"<p>Name: "+name+"</p>" +
+document.getElementById("result").innerHTML =
+"<p>Unable to generate kundli right now.</p>"
 
-"<p>Zodiac Sign: "+sign+"</p>" +
-
-"<p>Prediction: The stars indicate positive changes ahead.</p>"
+}
 
 }
 
 </script>
+
+
 
 </body>
 
