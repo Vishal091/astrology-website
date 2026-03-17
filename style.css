@@ -90,6 +90,33 @@ margin:auto;
 padding:40px 20px;
 }
 
+.kundli-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+margin-top:20px;
+}
+
+.kundli-card{
+background:#141A40;
+padding:20px;
+border-radius:12px;
+color:white;
+box-shadow:0 0 15px rgba(108,92,231,0.4);
+transition:0.3s;
+}
+
+.kundli-card:hover{
+transform:translateY(-5px);
+box-shadow:0 0 25px rgba(108,92,231,0.7);
+}
+
+.kundli-card h3{
+margin-bottom:10px;
+color:#F9CA24;
+}
+
+
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
