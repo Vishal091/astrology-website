@@ -78,8 +78,11 @@ Generate Kundli
 
 <script>
 
+"
 async function generateKundli(){
+
 console.log("clicked")
+
 let name = document.getElementById("name").value
 let dob = document.getElementById("dob").value
 let time = document.getElementById("time").value
@@ -93,36 +96,34 @@ return
 document.getElementById("result").innerHTML =
 "<p>Generating your kundli...</p>"
 
+try{
+
 let res = await fetch("/api/ai",{
 method:"POST",
 headers:{
 "Content-Type":"application/json"
 },
 body: JSON.stringify({
-question: `
-Generate a Vedic astrology birth chart analysis.
-
-Name: ${name}
-Date of Birth: ${dob}
-Time: ${time}
-Place: ${place}
-
-Respond STRICTLY in this format:
-
-ZODIAC: ...
-PERSONALITY: ...
-CAREER: ...
-LOVE: ...
-
-Keep each section 2-3 lines only.
-
-
+question:
+"Generate a Vedic astrology birth chart.\n" +
+"Name: " + name + "\n" +
+"DOB: " + dob + "\n" +
+"Time: " + time + "\n" +
+"Place: " + place + "\n\n" +
+"Respond in format:\n" +
+"ZODIAC: ...\nPERSONALITY: ...\nCAREER: ...\nLOVE: ..."
 })
 })
 
 let data = await res.json()
 
-if(data.answer){
+console.log(data)
+
+if(!data.answer){
+document.getElementById("result").innerHTML =
+"<p>AI not responding</p>"
+return
+}
 
 let text = data.answer
 
@@ -138,37 +139,30 @@ let career = extract("CAREER")
 let love = extract("LOVE")
 
 document.getElementById("result").innerHTML =
-`
-<div class="kundli-grid">
+"<div class='kundli-grid'>" +
 
-<div class="kundli-card">
-<h3>🔥 Zodiac Sign</h3>
-<p>${zodiac}</p>
-</div>
+"<div class='kundli-card'><h3>🔥 Zodiac</h3><p>"+zodiac+"</p></div>" +
 
-<div class="kundli-card">
-<h3>🧠 Personality</h3>
-<p>${personality}</p>
-</div>
+"<div class='kundli-card'><h3>🧠 Personality</h3><p>"+personality+"</p></div>" +
 
-<div class="kundli-card">
-<h3>💼 Career</h3>
-<p>${career}</p>
-</div>
+"<div class='kundli-card'><h3>💼 Career</h3><p>"+career+"</p></div>" +
 
-<div class="kundli-card">
-<h3>❤️ Love Life</h3>
-<p>${love}</p>
-</div>
+"<div class='kundli-card'><h3>❤️ Love</h3><p>"+love+"</p></div>" +
 
-</div>
+"</div>"
 
+}catch(err){
+
+console.log(err)
+
+document.getElementById("result").innerHTML =
+"<p>Error generating kundli</p>"
+
+}
 
 }
 
 
-
-}
 
 </script>
 
