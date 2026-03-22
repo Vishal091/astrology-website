@@ -174,5 +174,29 @@ applySmartDiscount()
 
 </script>
 
+<script>
+
+function generateReviews(){
+
+document.querySelectorAll(".product-card").forEach(card => {
+
+let rating = (4 + Math.random()).toFixed(1) // 4.0–5.0
+let count = Math.floor(Math.random()*2000)+100
+
+let stars = "★★★★★"
+
+// update UI
+card.querySelector(".rating-text").innerText = rating + " (" + count + " reviews)"
+
+})
+
+}
+
+generateReviews()
+
+</script>
+
+
+
 </body>
 </html>
