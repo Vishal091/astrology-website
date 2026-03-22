@@ -134,6 +134,76 @@ if((month==2 && day>=19)||(month==3 && day<=20)) return "Pisces"
 return "Unknown"
 }
 
+// ================= PLANET LOGIC =================
+function getPlanets(zodiac){
+
+const signs = [
+"Aries","Taurus","Gemini","Cancer","Leo","Virgo",
+"Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"
+]
+
+let index = signs.indexOf(zodiac)
+
+return [
+{name:"Sun", sign:zodiac},
+{name:"Moon", sign:signs[(index+1)%12]},
+{name:"Mars", sign:signs[(index+2)%12]},
+{name:"Mercury", sign:signs[(index+3)%12]},
+{name:"Jupiter", sign:signs[(index+4)%12]},
+{name:"Venus", sign:signs[(index+5)%12]},
+{name:"Saturn", sign:signs[(index+6)%12]}
+]
+}
+
+// ================= HOUSE LOGIC =================
+function getHouses(zodiac){
+
+const signs = [
+"Aries","Taurus","Gemini","Cancer","Leo","Virgo",
+"Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"
+]
+
+let index = signs.indexOf(zodiac)
+
+let houses = []
+
+for(let i=0;i<12;i++){
+houses.push({
+house:i+1,
+sign:signs[(index+i)%12]
+})
+}
+
+return houses
+}
+
+// ================= PLANET → HOUSE =================
+function mapPlanetsToHouses(planets, houses){
+
+return planets.map(p=>{
+let houseIndex = houses.findIndex(h=>h.sign === p.sign)
+return {
+...p,
+house: houseIndex+1
+}
+})
+}
+
+// ================= CHART UI =================
+function renderChart(houses){
+
+return `
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:20px">
+${houses.map(h=>`
+<div style="border:1px solid #fff;padding:15px;text-align:center">
+H${h.house}<br>${h.sign}
+</div>
+`).join("")}
+</div>
+`
+}
+
+
 async function generateKundli(){
 
 let name = document.getElementById("name").value
@@ -145,7 +215,9 @@ if(!name || !dob){
 alert("Fill required fields")
 return
 }
-
+let planets = getPlanets(zodiacReal)
+let houses = getHouses(zodiacReal)
+let mapped = mapPlanetsToHouses(planets, houses)
 let zodiacReal = getZodiac(dob)
 
 document.getElementById("result").innerHTML = "Generating..."
@@ -175,7 +247,9 @@ let career = extract("CAREER")
 let love = extract("LOVE")
 
 // mock planets
-let planets = ["Sun - Aries","Moon - Taurus","Mars - Gemini","Venus - Leo"]
+"<div class='kundli-card'><h3>🪐 Planets in Houses</h3>" +
+mapped.map(p=>"<p>"+p.name+" → "+p.sign+" (House "+p.house+")</p>").join("") +
+"</div>"
 
 // mock houses
 let houses = ["1st House - Personality","7th House - Marriage","10th House - Career"]
@@ -195,7 +269,9 @@ planets.map(p=>"<p>"+p+"</p>").join("")+"</div>"+
 
 "<div class='kundli-card'><h3>🏠 Houses</h3>"+
 houses.map(h=>"<p>"+h+"</p>").join("")+"</div>"+
-
++ "<div class='kundli-card'><h3>🔷 Kundli Chart</h3>" +
+renderChart(houses) +
+"</div>"
 "<div class='kundli-card personality'><h3>🧠 Personality</h3><p>"+personality+"</p></div>"+
 
 "<div class='kundli-card career'><h3>💼 Career</h3><p>"+career+"</p></div>"+
