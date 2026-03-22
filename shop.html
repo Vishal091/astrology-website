@@ -4,7 +4,6 @@
 <head>
 <title>Astrodhani Shop</title>
 <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
@@ -13,38 +12,152 @@
 <div class="logo">🔮 Astrodhani</div>
 <nav>
 <a href="index.html">Home</a>
-<a href="shop.html">Shop</a>
 <a href="services.html">Services</a>
 <a href="cart.html">🛒 Cart</a>
 </nav>
 </header>
 
-<section class="shop-hero">
-<h1>✨ Spiritual Store</h1>
-<p>Energy. Healing. Transformation.</p>
-</section>
-
+<!-- ================= BRACELETS ================= -->
+<h2 class="category-title">💰 Bracelets</h2>
 <div class="shop-container">
 
+<script>
+const bracelets = [
+["Money Magnet Bracelet",399],
+["Dhan Yog Bracelet",499],
+["Pyrite Bracelet",449],
+["Rose Quartz Bracelet",349],
+["Evil Eye Bracelet",299],
+["7 Chakra Bracelet",399],
+["Tiger Eye Bracelet",399],
+["Amethyst Bracelet",349],
+["Black Obsidian Bracelet",399],
+["Lapis Bracelet",449],
+["Green Jade Bracelet",399],
+["Citrine Bracelet",449],
+["Healing Bracelet",299],
+["Protection Bracelet",349],
+["Premium Energy Bracelet",599]
+]
 
+document.write(bracelets.map(p=>`
 <div class="product-card">
-
-<img src="https://images.unsplash.com/photo-1611078489935-0cb964de46d6">
-
-<h3>Money Magnet Bracelet</h3>
-<p>₹399</p>
-
-<button onclick="addToCart('Money Magnet Bracelet',399)">
-Add to Cart
-</button>
+<img src="https://source.unsplash.com/300x300/?bracelet">
+<h3>${p[0]}</h3>
+<p>₹${p[1]}</p>
+<button onclick="addToCart('${p[0]}',${p[1]})">Add to Cart</button>
+</div>
+`).join(""))
+</script>
 
 </div>
 
+<!-- ================= RUDRAKSHA ================= -->
+<h2 class="category-title">🔴 Rudraksha</h2>
+<div class="shop-container">
 
+<script>
+const rudraksha = [
+["1 Mukhi Rudraksha",3999],
+["2 Mukhi Rudraksha",1999],
+["3 Mukhi Rudraksha",999],
+["4 Mukhi Rudraksha",799],
+["5 Mukhi Rudraksha",399],
+["6 Mukhi Rudraksha",499],
+["7 Mukhi Rudraksha",599],
+["8 Mukhi Rudraksha",699],
+["9 Mukhi Rudraksha",899],
+["10 Mukhi Rudraksha",999],
+["11 Mukhi Rudraksha",1499],
+["12 Mukhi Rudraksha",1999],
+["Gauri Shankar Rudraksha",4999],
+["Rudraksha Mala",799],
+["Rudraksha Bracelet",499]
+]
 
+document.write(rudraksha.map(p=>`
+<div class="product-card">
+<img src="https://source.unsplash.com/300x300/?rudraksha">
+<h3>${p[0]}</h3>
+<p>₹${p[1]}</p>
+<button onclick="addToCart('${p[0]}',${p[1]})">Add to Cart</button>
+</div>
+`).join(""))
+</script>
 
 </div>
 
+<!-- ================= CRYSTALS ================= -->
+<h2 class="category-title">🔮 Crystals</h2>
+<div class="shop-container">
+
+<script>
+const crystals = [
+["Pyrite Stone",499],
+["Rose Quartz",299],
+["Amethyst",349],
+["Citrine",399],
+["Black Tourmaline",449],
+["Clear Quartz",299],
+["Selenite",349],
+["Labradorite",499],
+["Fluorite",399],
+["Carnelian",349],
+["Moonstone",449],
+["Aquamarine",499],
+["Garnet",399],
+["Opal",599],
+["Healing Crystal Set",699]
+]
+
+document.write(crystals.map(p=>`
+<div class="product-card">
+<img src="https://source.unsplash.com/300x300/?crystal">
+<h3>${p[0]}</h3>
+<p>₹${p[1]}</p>
+<button onclick="addToCart('${p[0]}',${p[1]})">Add to Cart</button>
+</div>
+`).join(""))
+</script>
+
+</div>
+
+<!-- ================= SPIRITUAL ================= -->
+<h2 class="category-title">🛕 Spiritual Items</h2>
+<div class="shop-container">
+
+<script>
+const spiritual = [
+["Shree Yantra",399],
+["Kuber Yantra",499],
+["Navgraha Yantra",499],
+["Hanuman Idol",599],
+["Ganesh Idol",499],
+["7 Horses Frame",799],
+["Pyrite Tortoise",599],
+["Evil Eye Hanging",299],
+["Vastu Pyramid",399],
+["Brass Diya",299],
+["Copper Kalash",499],
+["Tulsi Mala",299],
+["Navratna Ring",799],
+["Spiritual Pendant",299],
+["Energy Pyramid",399]
+]
+
+document.write(spiritual.map(p=>`
+<div class="product-card">
+<img src="https://source.unsplash.com/300x300/?spiritual">
+<h3>${p[0]}</h3>
+<p>₹${p[1]}</p>
+<button onclick="addToCart('${p[0]}',${p[1]})">Add to Cart</button>
+</div>
+`).join(""))
+</script>
+
+</div>
+
+<!-- ================= CART JS ================= -->
 <script>
 
 let cart = JSON.parse(localStorage.getItem("cart")) || []
@@ -57,9 +170,6 @@ alert(name + " added to cart 🛒")
 
 </script>
 
-
-
 </body>
 </html>
-
 
