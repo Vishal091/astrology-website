@@ -1,3 +1,85 @@
-cart.map(item =>
-"<p>"+item.name+" - ₹"+item.price+"</p>"
-)
+
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Astrodhani Cart</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+<div class="logo">🛒 Cart</div>
+<a href="shop.html">⬅ Back to Shop</a>
+</header>
+
+<div class="container">
+
+<h2>Your Cart</h2>
+
+<div id="cart-items"></div>
+
+<h3 id="total"></h3>
+
+<button onclick="clearCart()">Clear Cart</button>
+<button onclick="checkout()">Checkout</button>
+
+</div>
+
+<script>
+
+let cart = JSON.parse(localStorage.getItem("cart")) || []
+
+function renderCart(){
+
+let container = document.getElementById("cart-items")
+
+if(cart.length === 0){
+container.innerHTML = "<p>Cart is empty</p>"
+document.getElementById("total").innerHTML = ""
+return
+}
+
+let total = 0
+
+container.innerHTML = cart.map((item, index) => {
+
+total += item.price
+
+return `
+<div class="card">
+<p>${item.name} - ₹${item.price}</p>
+<button onclick="removeItem(${index})">Remove</button>
+</div>
+`
+
+}).join("")
+
+document.getElementById("total").innerHTML = "Total: ₹" + total
+
+}
+
+function removeItem(index){
+cart.splice(index,1)
+localStorage.setItem("cart", JSON.stringify(cart))
+renderCart()
+}
+
+function clearCart(){
+localStorage.removeItem("cart")
+cart = []
+renderCart()
+}
+
+function checkout(){
+alert("Proceeding to payment 💰 (Razorpay next)")
+}
+
+renderCart()
+
+</script>
+
+</body>
+</html>
+
