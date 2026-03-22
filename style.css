@@ -511,6 +511,28 @@ font-family:Arial, sans-serif;
 }
 
 
+.old-price{
+text-decoration:line-through;
+color:#aaa;
+font-size:14px;
+}
+
+.new-price{
+color:#00ffae;
+font-size:20px;
+font-weight:bold;
+}
+
+.urgency{
+color:#ff7675;
+font-size:13px;
+}
+
+.social-proof{
+color:#fdcb6e;
+font-size:13px;
+}
+
 /* ================= MOBILE ================= */
 @media(max-width:600px){
 
