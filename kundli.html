@@ -4,114 +4,35 @@
 
 <head>
 <title>Astrodhani - Free Kundli</title>
-<link rel="stylesheet" href="style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
-<body>
+<body style="background:#0B0F2A;color:white;font-family:Arial;">
 
-<header>
-<div class="logo">🔮 Astrodhani</div>
+<h2 style="text-align:center">🔮 Astrodhani Kundli</h2>
 
-<nav>
-<a href="index.html">Home</a>
-<a href="astrologers.html">Astrologers</a>
-<a href="horoscope.html">Horoscope</a>
-<a href="kundli.html">Free Kundli</a>
-</nav>
+<div style="max-width:500px;margin:auto">
 
-<div class="wallet">₹<span id="wallet">500</span></div>
-</header>
+<input id="name" placeholder="Name" style="width:100%;padding:10px;margin:10px 0">
+<input id="dob" type="date" style="width:100%;padding:10px;margin:10px 0">
+<input id="time" type="time" style="width:100%;padding:10px;margin:10px 0">
+<input id="place" placeholder="Place" style="width:100%;padding:10px;margin:10px 0">
 
-<div class="container">
-
-<div class="formbox">
-
-<h2>Free AI Kundli Generator 🔮</h2>
-
-<input id="name" placeholder="Your Name">
-<input id="dob" type="date">
-<input id="time" type="time">
-<input id="place" placeholder="Birth Place">
-
-<button onclick="generateKundli()">Generate Kundli</button>
+<button onclick="generateKundli()" style="width:100%;padding:12px;background:#6C5CE7;color:white;border:none">
+Generate Kundli
+</button>
 
 <div id="result"></div>
 
-<button onclick="downloadPDF()">Download Kundli PDF</button>
+<button onclick="downloadPDF()" style="width:100%;padding:12px;margin-top:10px">
+Download PDF
+</button>
 
 </div>
-
-</div>
-
-<style>
-
-body{
-background:#0B0F2A;
-color:white;
-font-family:Arial;
-}
-
-.container{padding:40px;}
-
-.formbox{
-max-width:500px;
-margin:auto;
-background:#141A40;
-padding:30px;
-border-radius:12px;
-}
-
-.formbox input{
-width:100%;
-padding:10px;
-margin:10px 0;
-border-radius:6px;
-border:none;
-}
-
-.formbox button{
-width:100%;
-padding:12px;
-margin-top:10px;
-background:#6C5CE7;
-color:white;
-border:none;
-border-radius:6px;
-cursor:pointer;
-}
-
-.kundli-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-margin-top:20px;
-}
-
-.kundli-card{
-background:#141A40;
-padding:20px;
-border-radius:12px;
-color:white;
-box-shadow:0 0 15px rgba(108,92,231,0.4);
-}
-
-.kundli-card h3{
-color:#F9CA24;
-margin-bottom:10px;
-}
-
-.zodiac{border-left:4px solid #f39c12;}
-.personality{border-left:4px solid #6c5ce7;}
-.career{border-left:4px solid #00cec9;}
-.love{border-left:4px solid #e84393;}
-
-</style>
 
 <script>
 
-let lastKundli = {}
-
+// ===== Zodiac =====
 function getZodiac(date){
 
 let d = new Date(date)
@@ -134,7 +55,7 @@ if((month==2 && day>=19)||(month==3 && day<=20)) return "Pisces"
 return "Unknown"
 }
 
-// ================= PLANET LOGIC =================
+// ===== Planets =====
 function getPlanets(zodiac){
 
 const signs = [
@@ -155,7 +76,7 @@ return [
 ]
 }
 
-// ================= HOUSE LOGIC =================
+// ===== Houses =====
 function getHouses(zodiac){
 
 const signs = [
@@ -165,6 +86,7 @@ const signs = [
 
 let index = signs.indexOf(zodiac)
 
+let houses = []
 
 for(let i=0;i<12;i++){
 houses.push({
@@ -176,7 +98,7 @@ sign:signs[(index+i)%12]
 return houses
 }
 
-// ================= PLANET → HOUSE =================
+// ===== Map planets =====
 function mapPlanetsToHouses(planets, houses){
 
 return planets.map(p=>{
@@ -188,13 +110,13 @@ house: houseIndex+1
 })
 }
 
-// ================= CHART UI =================
+// ===== Chart =====
 function renderChart(houses){
 
 return `
 <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:20px">
 ${houses.map(h=>`
-<div style="border:1px solid #fff;padding:15px;text-align:center">
+<div style="border:1px solid white;padding:10px;text-align:center">
 H${h.house}<br>${h.sign}
 </div>
 `).join("")}
@@ -202,7 +124,10 @@ H${h.house}<br>${h.sign}
 `
 }
 
+// ===== PDF storage =====
+let lastKundli = {}
 
+// ===== MAIN FUNCTION =====
 async function generateKundli(){
 
 let name = document.getElementById("name").value
@@ -214,10 +139,12 @@ if(!name || !dob){
 alert("Fill required fields")
 return
 }
-let planets = getPlanets(zodiacReal)
-let houses = getHouses(zodiacReal)
+
+let zodiac = getZodiac(dob)
+
+let planets = getPlanets(zodiac)
+let houses = getHouses(zodiac)
 let mapped = mapPlanetsToHouses(planets, houses)
-let zodiacReal = getZodiac(dob)
 
 document.getElementById("result").innerHTML = "Generating..."
 
@@ -226,14 +153,13 @@ method:"POST",
 headers:{ "Content-Type":"application/json" },
 body: JSON.stringify({
 question:
-"Act as Vedic astrologer.\nZodiac: "+zodiacReal+"\n\n"+
-"Respond EXACTLY:\nPERSONALITY: ...\nCAREER: ...\nLOVE: ..."
+"Act as Vedic astrologer.\nZodiac: "+zodiac+"\n\n"+
+"Give strictly:\nPERSONALITY: ...\nCAREER: ...\nLOVE: ..."
 })
 })
 
 let data = await res.json()
-
-let text = data.answer
+let text = data.answer || ""
 
 function extract(label){
 let regex = new RegExp(label+":(.*?)(?=\\n[A-Z]+:|$)","is")
@@ -245,45 +171,33 @@ let personality = extract("PERSONALITY")
 let career = extract("CAREER")
 let love = extract("LOVE")
 
-// mock planets
-"<div class='kundli-card'><h3>🪐 Planets in Houses</h3>" +
-mapped.map(p=>"<p>"+p.name+" → "+p.sign+" (House "+p.house+")</p>").join("") +
-"</div>"
-
-// mock houses
-
-
 document.getElementById("result").innerHTML =
 
-"<div class='kundli-grid'>" +
+"<div>" +
 
-"<div class='kundli-card zodiac'><h3>🔥 Basic Details</h3>"+
+"<h3>🔥 Basic Details</h3>"+
 "<p>Name: "+name+"</p>"+
-"<p>Zodiac: "+zodiacReal+"</p>"+
-"<p>DOB: "+dob+"</p>"+
-"<p>Place: "+place+"</p></div>"+
+"<p>Zodiac: "+zodiac+"</p>"+
 
-"<div class='kundli-card'><h3>🪐 Planetary Positions</h3>"+
-planets.map(p=>"<p>"+p+"</p>").join("")+"</div>"+
+"<h3>🪐 Planets</h3>"+
+mapped.map(p=>"<p>"+p.name+" → "+p.sign+" (House "+p.house+")</p>").join("")+
 
-"<div class='kundli-card'><h3>🏠 Houses</h3>"+
-houses.map(h=>"<p>"+h+"</p>").join("")+"</div>"+
-+ "<div class='kundli-card'><h3>🔷 Kundli Chart</h3>" +
-renderChart(houses) +
-"</div>"
-"<div class='kundli-card personality'><h3>🧠 Personality</h3><p>"+personality+"</p></div>"+
+"<h3>🔷 Kundli Chart</h3>"+
+renderChart(houses)+
 
-"<div class='kundli-card career'><h3>💼 Career</h3><p>"+career+"</p></div>"+
+"<h3>🧠 Personality</h3><p>"+personality+"</p>"+
 
-"<div class='kundli-card love'><h3>❤️ Love</h3><p>"+love+"</p></div>"+
+"<h3>💼 Career</h3><p>"+career+"</p>"+
+
+"<h3>❤️ Love</h3><p>"+love+"</p>"+
 
 "</div>"
 
-// save for PDF
-lastKundli = { name, zodiacReal, personality, career, love }
+lastKundli = { name, zodiac, personality, career, love }
 
 }
 
+// ===== PDF =====
 function downloadPDF(){
 
 if(!lastKundli.name){
@@ -296,7 +210,7 @@ const doc = new jsPDF()
 
 doc.text("Astrodhani Kundli Report",20,20)
 doc.text("Name: "+lastKundli.name,20,40)
-doc.text("Zodiac: "+lastKundli.zodiacReal,20,50)
+doc.text("Zodiac: "+lastKundli.zodiac,20,50)
 
 doc.text("Personality:",20,70)
 doc.text(lastKundli.personality,20,80,{maxWidth:170})
@@ -315,4 +229,3 @@ doc.save("kundli.pdf")
 
 </body>
 </html>
-
