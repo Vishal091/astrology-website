@@ -113,16 +113,35 @@ house: houseIndex+1
 // ===== Chart =====
 function renderChart(houses){
 
-return `
-<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:20px">
-${houses.map(h=>`
-<div style="border:1px solid white;padding:10px;text-align:center">
-H${h.house}<br>${h.sign}
-</div>
-`).join("")}
-</div>
-`
+function getSign(h){
+let house = houses.find(x=>x.house===h)
+return house ? house.sign : ""
 }
+
+return `
+<div style="width:300px;margin:20px auto">
+
+<div style="display:grid;grid-template-columns:repeat(3,1fr);text-align:center">
+
+<div>${getSign(10)}</div>
+<div>${getSign(11)}</div>
+<div>${getSign(12)}</div>
+
+<div>${getSign(9)}</div>
+<div style="border:2px solid white;padding:20px">♦</div>
+<div>${getSign(1)}</div>
+
+<div>${getSign(8)}</div>
+<div>${getSign(7)}</div>
+<div>${getSign(6)}</div>
+
+</div>
+
+</div>
+
+}
+
+
 
 // ===== PDF storage =====
 let lastKundli = {}
@@ -182,7 +201,7 @@ document.getElementById("result").innerHTML =
 "<h3>🪐 Planets</h3>"+
 mapped.map(p=>"<p>"+p.name+" → "+p.sign+" (House "+p.house+")</p>").join("")+
 
-"<h3>🔷 Kundli Chart</h3>"+
+""<h3 style='text-align:center'>🔷 North Indian Kundli</h3>""+
 renderChart(houses)+
 
 "<h3>🧠 Personality</h3><p>"+personality+"</p>"+
