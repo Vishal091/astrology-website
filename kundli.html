@@ -94,31 +94,35 @@ return {...p,house:h+1}
 function renderChart(houses){
 
 function g(n){
-let h=houses.find(x=>x.house===n)
-return h?h.sign:""
+let h = houses.find(x=>x.house===n)
+return h ? h.sign : ""
 }
 
 return `
-<div style="width:280px;margin:20px auto;text-align:center">
+<div class="kundli-wrapper">
 
-<div style="display:grid;grid-template-columns:repeat(3,1fr)">
+<div class="diamond">
 
-<div>${g(10)}</div>
-<div>${g(11)}</div>
-<div>${g(12)}</div>
-
-<div>${g(9)}</div>
-<div style="border:2px solid white;padding:20px">♦</div>
-<div>${g(1)}</div>
-
-<div>${g(8)}</div>
-<div>${g(7)}</div>
-<div>${g(6)}</div>
+<div class="box h1">${g(1)}</div>
+<div class="box h2">${g(2)}</div>
+<div class="box h3">${g(3)}</div>
+<div class="box h4">${g(4)}</div>
+<div class="box h5">${g(5)}</div>
+<div class="box h6">${g(6)}</div>
+<div class="box h7">${g(7)}</div>
+<div class="box h8">${g(8)}</div>
+<div class="box h9">${g(9)}</div>
+<div class="box h10">${g(10)}</div>
+<div class="box h11">${g(11)}</div>
+<div class="box h12">${g(12)}</div>
 
 </div>
+
 </div>
 `
 }
+
+
 
 let lastKundli={}
 
