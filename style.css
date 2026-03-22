@@ -283,6 +283,28 @@ width:100%;
 }
 
 
+.service-card{
+background:rgba(20,26,64,0.8);
+border-radius:16px;
+padding:25px;
+text-align:center;
+backdrop-filter:blur(10px);
+transition:0.3s;
+border:1px solid rgba(255,255,255,0.1);
+}
+
+.service-card:hover{
+transform:translateY(-10px);
+box-shadow:
+0 0 20px rgba(249,202,36,0.6),
+0 0 40px rgba(249,202,36,0.3);
+}
+
+.service-card h3{
+color:#F9CA24;
+margin-bottom:10px;
+}
+
 /* ================= MOBILE ================= */
 @media(max-width:600px){
 
