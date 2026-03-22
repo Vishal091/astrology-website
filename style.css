@@ -119,6 +119,50 @@ margin-bottom:10px;
 color:#F9CA24;
 }
 
+.kundli-wrapper{
+display:flex;
+justify-content:center;
+margin-top:20px;
+}
+
+.diamond{
+position:relative;
+width:300px;
+height:300px;
+transform:rotate(45deg);
+border:2px solid white;
+}
+
+.box{
+position:absolute;
+width:70px;
+height:70px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:12px;
+text-align:center;
+transform:rotate(-45deg);
+border:1px solid rgba(255,255,255,0.3);
+}
+
+/* Positioning */
+
+.h1 { top:115px; left:115px; background:#1f2a60; }
+
+.h2 { top:0; left:115px; }
+.h3 { top:40px; left:200px; }
+.h4 { top:115px; left:230px; }
+.h5 { top:200px; left:200px; }
+.h6 { top:230px; left:115px; }
+.h7 { top:200px; left:40px; }
+.h8 { top:115px; left:0; }
+.h9 { top:40px; left:40px; }
+.h10 { top:80px; left:115px; }
+.h11 { top:115px; left:80px; }
+.h12 { top:80px; left:40px; }
+
+
 
 .zodiac{border-left:4px solid #f39c12;}
 .personality{border-left:4px solid #6c5ce7;}
