@@ -533,6 +533,21 @@ color:#fdcb6e;
 font-size:13px;
 }
 
+.reviews{
+margin:5px 0 10px;
+font-size:14px;
+}
+
+.stars{
+color:#FFD700;
+letter-spacing:2px;
+}
+
+.rating-text{
+color:#bbb;
+margin-left:5px;
+}
+
 /* ================= MOBILE ================= */
 @media(max-width:600px){
 
