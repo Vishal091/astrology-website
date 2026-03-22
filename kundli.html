@@ -3,7 +3,7 @@
 <html>
 
 <head>
-<title>Astrodhani - Free Kundli</title>
+<title>Astrodhani Kundli</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
@@ -34,214 +34,171 @@ Download PDF
 
 // ===== Zodiac =====
 function getZodiac(date){
+let d=new Date(date)
+let day=d.getDate()
+let month=d.getMonth()+1
 
-let d = new Date(date)
-let day = d.getDate()
-let month = d.getMonth()+1
+if((month==3&&day>=21)||(month==4&&day<=19))return"Aries"
+if((month==4&&day>=20)||(month==5&&day<=20))return"Taurus"
+if((month==5&&day>=21)||(month==6&&day<=20))return"Gemini"
+if((month==6&&day>=21)||(month==7&&day<=22))return"Cancer"
+if((month==7&&day>=23)||(month==8&&day<=22))return"Leo"
+if((month==8&&day>=23)||(month==9&&day<=22))return"Virgo"
+if((month==9&&day>=23)||(month==10&&day<=22))return"Libra"
+if((month==10&&day>=23)||(month==11&&day<=21))return"Scorpio"
+if((month==11&&day>=22)||(month==12&&day<=21))return"Sagittarius"
+if((month==12&&day>=22)||(month==1&&day<=19))return"Capricorn"
+if((month==1&&day>=20)||(month==2&&day<=18))return"Aquarius"
+if((month==2&&day>=19)||(month==3&&day<=20))return"Pisces"
 
-if((month==3 && day>=21)||(month==4 && day<=19)) return "Aries"
-if((month==4 && day>=20)||(month==5 && day<=20)) return "Taurus"
-if((month==5 && day>=21)||(month==6 && day<=20)) return "Gemini"
-if((month==6 && day>=21)||(month==7 && day<=22)) return "Cancer"
-if((month==7 && day>=23)||(month==8 && day<=22)) return "Leo"
-if((month==8 && day>=23)||(month==9 && day<=22)) return "Virgo"
-if((month==9 && day>=23)||(month==10 && day<=22)) return "Libra"
-if((month==10 && day>=23)||(month==11 && day<=21)) return "Scorpio"
-if((month==11 && day>=22)||(month==12 && day<=21)) return "Sagittarius"
-if((month==12 && day>=22)||(month==1 && day<=19)) return "Capricorn"
-if((month==1 && day>=20)||(month==2 && day<=18)) return "Aquarius"
-if((month==2 && day>=19)||(month==3 && day<=20)) return "Pisces"
-
-return "Unknown"
+return"Unknown"
 }
 
 // ===== Planets =====
 function getPlanets(zodiac){
+const signs=["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"]
+let i=signs.indexOf(zodiac)
 
-const signs = [
-"Aries","Taurus","Gemini","Cancer","Leo","Virgo",
-"Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"
-]
-
-let index = signs.indexOf(zodiac)
-
-return [
-{name:"Sun", sign:zodiac},
-{name:"Moon", sign:signs[(index+1)%12]},
-{name:"Mars", sign:signs[(index+2)%12]},
-{name:"Mercury", sign:signs[(index+3)%12]},
-{name:"Jupiter", sign:signs[(index+4)%12]},
-{name:"Venus", sign:signs[(index+5)%12]},
-{name:"Saturn", sign:signs[(index+6)%12]}
+return[
+{name:"Sun",sign:zodiac},
+{name:"Moon",sign:signs[(i+1)%12]},
+{name:"Mars",sign:signs[(i+2)%12]},
+{name:"Mercury",sign:signs[(i+3)%12]},
+{name:"Jupiter",sign:signs[(i+4)%12]},
+{name:"Venus",sign:signs[(i+5)%12]},
+{name:"Saturn",sign:signs[(i+6)%12]}
 ]
 }
 
 // ===== Houses =====
 function getHouses(zodiac){
+const signs=["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"]
+let i=signs.indexOf(zodiac)
 
-const signs = [
-"Aries","Taurus","Gemini","Cancer","Leo","Virgo",
-"Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"
-]
-
-let index = signs.indexOf(zodiac)
-
-let houses = []
-
-for(let i=0;i<12;i++){
-houses.push({
-house:i+1,
-sign:signs[(index+i)%12]
-})
+let houses=[]
+for(let x=0;x<12;x++){
+houses.push({house:x+1,sign:signs[(i+x)%12]})
 }
-
 return houses
 }
 
-// ===== Map planets =====
-function mapPlanetsToHouses(planets, houses){
-
+// ===== Map =====
+function mapPlanets(planets,houses){
 return planets.map(p=>{
-let houseIndex = houses.findIndex(h=>h.sign === p.sign)
-return {
-...p,
-house: houseIndex+1
-}
+let h=houses.findIndex(x=>x.sign===p.sign)
+return {...p,house:h+1}
 })
 }
 
-// ===== Chart =====
+// ===== Diamond Chart =====
 function renderChart(houses){
 
-function getSign(h){
-let house = houses.find(x=>x.house===h)
-return house ? house.sign : ""
+function g(n){
+let h=houses.find(x=>x.house===n)
+return h?h.sign:""
 }
 
 return `
-<div style="width:300px;margin:20px auto">
+<div style="width:280px;margin:20px auto;text-align:center">
 
-<div style="display:grid;grid-template-columns:repeat(3,1fr);text-align:center">
+<div style="display:grid;grid-template-columns:repeat(3,1fr)">
 
-<div>${getSign(10)}</div>
-<div>${getSign(11)}</div>
-<div>${getSign(12)}</div>
+<div>${g(10)}</div>
+<div>${g(11)}</div>
+<div>${g(12)}</div>
 
-<div>${getSign(9)}</div>
+<div>${g(9)}</div>
 <div style="border:2px solid white;padding:20px">♦</div>
-<div>${getSign(1)}</div>
+<div>${g(1)}</div>
 
-<div>${getSign(8)}</div>
-<div>${getSign(7)}</div>
-<div>${getSign(6)}</div>
-
-</div>
+<div>${g(8)}</div>
+<div>${g(7)}</div>
+<div>${g(6)}</div>
 
 </div>
-
+</div>
+`
 }
 
+let lastKundli={}
 
-
-// ===== PDF storage =====
-let lastKundli = {}
-
-// ===== MAIN FUNCTION =====
+// ===== MAIN =====
 async function generateKundli(){
 
-let name = document.getElementById("name").value
-let dob = document.getElementById("dob").value
-let time = document.getElementById("time").value
-let place = document.getElementById("place").value
+let name=document.getElementById("name").value
+let dob=document.getElementById("dob").value
 
-if(!name || !dob){
-alert("Fill required fields")
+if(!name||!dob){
+alert("Fill details")
 return
 }
 
-let zodiac = getZodiac(dob)
+let zodiac=getZodiac(dob)
 
-let planets = getPlanets(zodiac)
-let houses = getHouses(zodiac)
-let mapped = mapPlanetsToHouses(planets, houses)
+let planets=getPlanets(zodiac)
+let houses=getHouses(zodiac)
+let mapped=mapPlanets(planets,houses)
 
-document.getElementById("result").innerHTML = "Generating..."
+document.getElementById("result").innerHTML="Generating..."
 
-let res = await fetch("/api/ai",{
+let res=await fetch("/api/ai",{
 method:"POST",
-headers:{ "Content-Type":"application/json" },
-body: JSON.stringify({
-question:
-"Act as Vedic astrologer.\nZodiac: "+zodiac+"\n\n"+
-"Give strictly:\nPERSONALITY: ...\nCAREER: ...\nLOVE: ..."
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+question:"Act as astrologer. Zodiac:"+zodiac+"\nGive:\nPERSONALITY:...\nCAREER:...\nLOVE:..."
 })
 })
 
-let data = await res.json()
-let text = data.answer || ""
+let data=await res.json()
+let text=data.answer||""
 
-function extract(label){
-let regex = new RegExp(label+":(.*?)(?=\\n[A-Z]+:|$)","is")
-let match = text.match(regex)
-return match ? match[1].trim() : "Not available"
+function ex(l){
+let r=new RegExp(l+":(.*?)(?=\\n[A-Z]+:|$)","is")
+let m=text.match(r)
+return m?m[1].trim():"Not available"
 }
 
-let personality = extract("PERSONALITY")
-let career = extract("CAREER")
-let love = extract("LOVE")
+let personality=ex("PERSONALITY")
+let career=ex("CAREER")
+let love=ex("LOVE")
 
-document.getElementById("result").innerHTML =
+document.getElementById("result").innerHTML=
 
-"<div>" +
-
-"<h3>🔥 Basic Details</h3>"+
-"<p>Name: "+name+"</p>"+
-"<p>Zodiac: "+zodiac+"</p>"+
+"<h3>🔥 Basic</h3>"+
+"<p>"+name+" ("+zodiac+")</p>"+
 
 "<h3>🪐 Planets</h3>"+
-mapped.map(p=>"<p>"+p.name+" → "+p.sign+" (House "+p.house+")</p>").join("")+
+mapped.map(p=>"<p>"+p.name+" → "+p.sign+" (H"+p.house+")</p>").join("")+
 
-""<h3 style='text-align:center'>🔷 North Indian Kundli</h3>""+
+"<h3>🔷 Kundli</h3>"+
 renderChart(houses)+
 
 "<h3>🧠 Personality</h3><p>"+personality+"</p>"+
-
 "<h3>💼 Career</h3><p>"+career+"</p>"+
+"<h3>❤️ Love</h3><p>"+love+"</p>"
 
-"<h3>❤️ Love</h3><p>"+love+"</p>"+
-
-"</div>"
-
-lastKundli = { name, zodiac, personality, career, love }
-
+lastKundli={name,zodiac,personality,career,love}
 }
 
 // ===== PDF =====
 function downloadPDF(){
 
 if(!lastKundli.name){
-alert("Generate kundli first")
+alert("Generate first")
 return
 }
 
-const { jsPDF } = window.jspdf
-const doc = new jsPDF()
+const{jsPDF}=window.jspdf
+let doc=new jsPDF()
 
-doc.text("Astrodhani Kundli Report",20,20)
+doc.text("Astrodhani Kundli",20,20)
 doc.text("Name: "+lastKundli.name,20,40)
 doc.text("Zodiac: "+lastKundli.zodiac,20,50)
 
 doc.text("Personality:",20,70)
 doc.text(lastKundli.personality,20,80,{maxWidth:170})
 
-doc.text("Career:",20,110)
-doc.text(lastKundli.career,20,120,{maxWidth:170})
-
-doc.text("Love:",20,150)
-doc.text(lastKundli.love,20,160,{maxWidth:170})
-
 doc.save("kundli.pdf")
-
 }
 
 </script>
