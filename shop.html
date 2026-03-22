@@ -42,10 +42,6 @@ Add to Cart
 
 
 </div>
-
-</body>
-</html>
-
 let cart = JSON.parse(localStorage.getItem("cart")) || []
 
 function addToCart(name, price){
@@ -56,4 +52,8 @@ localStorage.setItem("cart", JSON.stringify(cart))
 
 alert(name + " added to cart 🛒")
 }
+
+</body>
+</html>
+
 
