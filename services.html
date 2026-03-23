@@ -17,25 +17,23 @@ color:#F9CA24;
 /* ===== GRID ===== */
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:22px;
 }
 
-/* ===== CARD (FIXED) ===== */
+/* ===== CARD ===== */
 .service-card{
 background:linear-gradient(145deg,#141A40,#0B0F2A);
 border-radius:18px;
-padding:18px;
+padding:22px;
 display:flex;
 flex-direction:column;
 align-items:center;
 text-align:center;
-
-min-height:260px; /* FIXED */
-
+min-height:300px;
 border:1px solid rgba(255,255,255,0.08);
-position:relative;
 transition:0.3s;
+position:relative;
 }
 
 .service-card:hover{
@@ -46,7 +44,7 @@ box-shadow:0 0 30px rgba(108,92,231,0.4);
 /* ICON */
 .service-icon{
 font-size:26px;
-margin-bottom:5px;
+margin-bottom:6px;
 }
 
 /* BADGES */
@@ -63,15 +61,42 @@ font-weight:bold;
 .recommended{background:#00cec9;}
 
 /* REVIEWS */
-.reviews{font-size:12px;}
+.reviews{
+font-size:12px;
+margin-bottom:8px;
+}
 .stars{color:#FFD700;}
 .rating-text{color:#bbb;}
 
-/* PRICE */
-.old-price{text-decoration:line-through;color:#888;font-size:12px;}
-.new-price{color:#00ffae;font-size:18px;font-weight:bold;}
+/* TEXT */
+.service-card h3{
+margin:10px 0;
+line-height:1.4;
+}
 
-/* BUTTON (FIXED) */
+/* PRICE */
+.old-price{
+text-decoration:line-through;
+color:#888;
+font-size:12px;
+margin-top:5px;
+}
+
+.new-price{
+color:#00ffae;
+font-size:18px;
+font-weight:bold;
+margin-bottom:5px;
+}
+
+/* EXTRA */
+.urgency,
+.social-proof{
+font-size:12px;
+margin-bottom:4px;
+}
+
+/* BUTTON */
 .service-card button{
 margin-top:auto;
 width:100%;
@@ -82,7 +107,6 @@ border:none;
 color:white;
 font-weight:bold;
 cursor:pointer;
-display:block;
 }
 
 </style>
@@ -131,61 +155,40 @@ display:block;
 
 <script>
 
-/* ===== GLOBAL BOOKING FUNCTION (FIXED) ===== */
-function handleBooking(btn){
-
-let card = btn.closest(".service-card")
-let name = card.querySelector("h3").innerText
-
-let priceText = card.querySelector(".new-price") 
-? card.querySelector(".new-price").innerText 
-: card.querySelector("p").innerText
-
-let price = parseInt(priceText.replace("₹",""))
-
-let cart = JSON.parse(localStorage.getItem("cart")) || []
-
-cart.push({name, price})
-localStorage.setItem("cart", JSON.stringify(cart))
-
-alert(name + " booked 🔮")
-
-}
-
-/* ===== LOAD DATA ===== */
-window.onload = function(){
-
+// ICONS
 const icons = {
 love:"❤️", money:"💰", evil:"🧿", pooja:"🛕",
 healing:"🔮", spell:"🧙", special:"✨", problem:"🧠"
 }
 
+// DATA
 const data = {
 
-love:["Love Attraction Healing","Attract True Love","Bring Back Ex","Love Binding","Relationship Healing","Detachment Healing","Trust Rebuild","Twin Flame Healing","Marriage Blessing","Soulmate Attraction","Unbreakable Bond"],
+love:["Love Attraction Healing","Bring Back Ex","Love Binding","Twin Flame Healing","Relationship Healing","Trust Rebuild","Soulmate Attraction"],
 
-money:["Money Magnet","Business Growth","Career Growth","Promotion Growth","Interview Success","Job Attraction","Customer Attraction","Profit Flow","Finance Healing","Success Attraction"],
+money:["Money Magnet","Business Growth","Career Growth","Job Attraction","Interview Success","Profit Flow"],
 
-evil:["Evil Eye Removal","Nazar Nivaran","Aura Cleansing","Protection Shield","Negativity Removal","Evil Eye Love","Evil Eye Career","Evil Eye Health","Evil Eye Finance","Evil Eye Family"],
+evil:["Evil Eye Removal","Nazar Nivaran","Aura Cleansing","Protection Shield","Negativity Removal"],
 
-pooja:["Maha Rudrabhishek","Navgraha Shanti","Shani Shanti","Rahu Ketu","Kaal Sarp Dosh","Vivah Badha","Mangal Dosh","Pitra Dosh","Lakshmi Pooja","Santaan Prapti","Shani Sade Sati","Rog Rin Nivaran","Baglamukhi","Maha Mrityunjaya"],
+pooja:["Maha Rudrabhishek","Navgraha Shanti","Shani Shanti","Rahu Ketu","Kaal Sarp Dosh","Lakshmi Pooja","Santaan Prapti"],
 
-healing:["Reiki Healing","Theta Healing","Heart Chakra","Business Healing","Marriage Healing","Money Healing","Angel Healing","Medical Healing","Career Healing","Prosperity Healing"],
+healing:["Reiki Healing","Theta Healing","Heart Chakra","Business Healing","Money Healing","Career Healing"],
 
-spell:["Love Spell","Bring Back Ex Spell","Career Spell","Money Spell","Protection Spell","Negativity Removal Spell","Marriage Spell","Evil Eye Spell","Interview Spell"],
+spell:["Love Spell","Money Spell","Protection Spell","Bring Back Ex Spell","Interview Spell"],
 
-special:["Face Reading","Past Life","Akashic Records","Birth Time","Kundli Matching","Vastu Home","Vastu Office","Vastu Marriage","Vastu Health"],
+special:["Face Reading","Past Life","Kundli Matching","Vastu","Birth Time"],
 
-problem:["Love Problem","Marriage Problem","Career Problem","Business Problem","Money Problem","Loan Mukti","Evil Eye Combo","Business Growth Combo","Dream Job Combo"]
+problem:["Love Problem","Career Problem","Money Problem","Business Problem","Loan Mukti"]
 
 }
 
+// RENDER
 function render(category, list){
 
 let container = document.getElementById(category)
 
-// pick 4 discounted
-let offers = [...list].sort(()=>0.5-Math.random()).slice(0,4)
+// pick 3 offers
+let offers = [...list].sort(()=>0.5-Math.random()).slice(0,3)
 
 list.forEach(item=>{
 
@@ -217,7 +220,7 @@ ${isOffer ? `
 <div class="social-proof">🔥 ${Math.floor(Math.random()*150)+50} booked today</div>
 ` : `<p>₹${price}</p>`}
 
-<button onclick="handleBooking(this)">Book Now</button>
+<button class="book-btn">Book Now</button>
 
 </div>
 `
@@ -226,15 +229,36 @@ ${isOffer ? `
 
 }
 
-// render all
+// RENDER ALL
 for(let key in data){
 render(key,data[key])
 }
 
+// ===== CLICK HANDLER (FINAL FIX) =====
+document.addEventListener("click", function(e){
+
+if(e.target.classList.contains("book-btn")){
+
+let card = e.target.closest(".service-card")
+
+let name = card.querySelector("h3").innerText
+
+let priceEl = card.querySelector(".new-price") || card.querySelector("p")
+let price = parseInt(priceEl.innerText.replace("₹",""))
+
+let cart = JSON.parse(localStorage.getItem("cart")) || []
+
+cart.push({name, price})
+
+localStorage.setItem("cart", JSON.stringify(cart))
+
+alert(name + " booked 🔮")
+
 }
+
+})
 
 </script>
 
 </body>
 </html>
-
