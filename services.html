@@ -258,6 +258,46 @@ alert(name + " booked 🔮")
 
 })
 
+// ===== FINAL CLICK FIX =====
+document.addEventListener("click", function(e){
+
+// DEBUG (remove later)
+console.log("Clicked:", e.target)
+
+if(e.target.classList.contains("book-btn")){
+
+console.log("Book button detected ✅")
+
+let card = e.target.closest(".service-card")
+
+if(!card){
+console.log("Card not found ❌")
+return
+}
+
+let name = card.querySelector("h3")?.innerText || "Service"
+
+let priceEl = card.querySelector(".new-price") || card.querySelector("p")
+
+if(!priceEl){
+console.log("Price not found ❌")
+return
+}
+
+let price = parseInt(priceEl.innerText.replace("₹","")) || 0
+
+let cart = JSON.parse(localStorage.getItem("cart")) || []
+
+cart.push({name, price})
+
+localStorage.setItem("cart", JSON.stringify(cart))
+
+alert(name + " booked 🔮")
+
+}
+
+})
+
 </script>
 
 </body>
