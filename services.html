@@ -169,12 +169,20 @@ problem:[
 }
 
 // ---------- RENDER ----------
+
+// ICON MAP
+const icons = {
+love:"❤️", money:"💰", evil:"🧿", pooja:"🛕",
+healing:"🔮", spell:"🧙", special:"✨", problem:"🧠"
+}
+
 function render(category, list){
 
 let container = document.getElementById(category)
 
-// pick 3–4 random for discount
-let selected = [...list].sort(()=>0.5-Math.random()).slice(0,4)
+// pick random badges
+let trendingItems = [...list].sort(()=>0.5-Math.random()).slice(0,2)
+let recommendedItems = [...list].sort(()=>0.5-Math.random()).slice(0,2)
 
 list.forEach(item=>{
 
@@ -182,10 +190,15 @@ let price = Math.floor(Math.random()*2000)+499
 let rating = (4+Math.random()).toFixed(1)
 let reviews = Math.floor(Math.random()*2000)+100
 
-let isOffer = selected.includes(item)
+let isOffer = Math.random() > 0.6
 
 container.innerHTML += `
 <div class="service-card">
+
+${trendingItems.includes(item) ? `<div class="badge trending">🔥 Trending</div>` : ""}
+${recommendedItems.includes(item) ? `<div class="badge recommended">⭐ Recommended</div>` : ""}
+
+<div class="service-icon">${icons[category]}</div>
 
 <div class="reviews">
 <span class="stars">★★★★★</span>
@@ -208,6 +221,7 @@ ${isOffer ? `
 })
 
 }
+
 
 // render all
 for(let key in data){
