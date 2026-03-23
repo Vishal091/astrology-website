@@ -126,7 +126,7 @@ cursor:pointer;
 
 
 <script>
-
+window.onload = function(){
 // CART
 let cart = JSON.parse(localStorage.getItem("cart")) || []
 
@@ -194,9 +194,34 @@ ${Math.random()>0.7 ? `<div class="badge recommended">⭐</div>`:""}
 
 ${priceHTML}
 
-<button onclick="addToCart('${item}', ${price})">
+<button onclick="handleBooking(this)">
 Book Now
 </button>
+
+function handleBooking(btn){
+
+let card = btn.closest(".service-card")
+
+let name = card.querySelector("h3").innerText
+
+// get price safely
+let priceText = card.querySelector(".new-price") 
+    ? card.querySelector(".new-price").innerText 
+    : card.querySelector("p").innerText
+
+let price = parseInt(priceText.replace("₹",""))
+
+let cart = JSON.parse(localStorage.getItem("cart")) || []
+
+cart.push({name, price})
+
+localStorage.setItem("cart", JSON.stringify(cart))
+
+alert(name + " booked 🔮")
+
+}
+
+
 
 </div>
 `
@@ -230,7 +255,7 @@ alert(name + " booked 🔮")
 }
 
 })
-
+window.onload = function(){
 </script>
 
 </body>
