@@ -14,34 +14,72 @@ font-size:24px;
 color:#F9CA24;
 }
 
-/* SERVICE CARD */
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+/* CARD */
 .service-card{
-background:#141A40;
+background:linear-gradient(145deg,#141A40,#0B0F2A);
+border-radius:18px;
 padding:20px;
-border-radius:12px;
-color:white;
-box-shadow:0 0 15px rgba(108,92,231,0.4);
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+align-items:center;
+text-align:center;
+aspect-ratio:1/1;
+border:1px solid rgba(255,255,255,0.08);
+position:relative;
 transition:0.3s;
 }
 
 .service-card:hover{
-transform:translateY(-5px);
-box-shadow:0 0 25px rgba(108,92,231,0.7);
+transform:translateY(-10px) scale(1.02);
+box-shadow:0 0 30px rgba(108,92,231,0.4);
 }
 
-/* REVIEWS */
-.reviews{
-font-size:13px;
-margin-bottom:5px;
+/* ICON */
+.service-icon{
+font-size:26px;
 }
+
+/* BADGES */
+.badge{
+position:absolute;
+top:10px;
+left:10px;
+font-size:11px;
+padding:4px 8px;
+border-radius:6px;
+font-weight:bold;
+}
+.trending{background:#ff7675;}
+.recommended{background:#00cec9;}
+
+/* REVIEWS */
+.reviews{font-size:12px;}
 .stars{color:#FFD700;}
 .rating-text{color:#bbb;}
 
-/* DISCOUNT */
-.old-price{text-decoration:line-through;color:#aaa;font-size:13px;}
+/* PRICE */
+.old-price{text-decoration:line-through;color:#888;font-size:12px;}
 .new-price{color:#00ffae;font-size:18px;font-weight:bold;}
-.urgency{color:#ff7675;font-size:12px;}
-.social-proof{color:#fdcb6e;font-size:12px;}
+
+/* BUTTON */
+.service-card button{
+width:100%;
+padding:10px;
+border-radius:10px;
+background:linear-gradient(90deg,#6C5CE7,#00CEC9);
+border:none;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
 
 </style>
 </head>
@@ -58,38 +96,29 @@ margin-bottom:5px;
 </header>
 
 <div class="container">
-
 <h1>✨ Premium Astrology Services</h1>
 
-<!-- ================= LOVE ================= -->
 <h2 class="category-title">❤️ Love & Relationship</h2>
 <div class="grid" id="love"></div>
 
-<!-- ================= MONEY ================= -->
 <h2 class="category-title">💰 Money / Career</h2>
 <div class="grid" id="money"></div>
 
-<!-- ================= EVIL EYE ================= -->
 <h2 class="category-title">🧿 Evil Eye Protection</h2>
 <div class="grid" id="evil"></div>
 
-<!-- ================= POOJA ================= -->
 <h2 class="category-title">🛕 Pooja Services</h2>
 <div class="grid" id="pooja"></div>
 
-<!-- ================= HEALING ================= -->
 <h2 class="category-title">🔮 Healing</h2>
 <div class="grid" id="healing"></div>
 
-<!-- ================= SPELL ================= -->
 <h2 class="category-title">🧙 Spells</h2>
 <div class="grid" id="spell"></div>
 
-<!-- ================= SPECIAL ================= -->
 <h2 class="category-title">✨ Special Services</h2>
 <div class="grid" id="special"></div>
 
-<!-- ================= PROBLEM ================= -->
 <h2 class="category-title">🧠 Problem Solving</h2>
 <div class="grid" id="problem"></div>
 
@@ -97,93 +126,34 @@ margin-bottom:5px;
 
 <script>
 
+// CART
 let cart = JSON.parse(localStorage.getItem("cart")) || []
 
-function addToCart(name, price){
-cart.push({name, price})
-localStorage.setItem("cart", JSON.stringify(cart))
-alert(name + " booked 🔮")
-}
-
-// ---------- DATA ----------
-const data = {
-
-love:[
-"Love Attraction Healing","Attract True Love","Bring Back Ex","Love Binding",
-"Relationship Healing","Detachment Healing","Trust Rebuild","Twin Flame Healing",
-"Marriage Blessing","Soulmate Attraction","Unbreakable Bond Healing"
-],
-
-money:[
-"Money Magnet Healing","Business Boom","Career Growth","Promotion Growth",
-"Interview Success","Job Attraction","Customer Attraction","Profit Flow",
-"Finance Healing","Success Attraction"
-],
-
-evil:[
-"Evil Eye Removal","Nazar Nivaran","Evil Eye for Love","Evil Eye for Career",
-"Evil Eye for Health","Evil Eye for Finance","Evil Eye for Family",
-"Evil Eye for Business","Evil Eye for Kids","Evil Eye for Pets",
-"Aura Cleansing","Protection Shield","Negativity Removal"
-],
-
-pooja:[
-"Maha Rudrabhishek","Navgraha Shanti","Shani Shanti","Rahu Ketu Shanti",
-"Kaal Sarp Dosh","Vivah Badha Nivaran","Mangal Dosh","Guru Chandal Dosh",
-"Grahan Dosh","Pitra Dosh","Sarva Grah Shanti","Lakshmi Pooja",
-"Shani Sade Sati","Rog Rin Nivaran","Karya Siddhi","Santaan Prapti",
-"Lakshmi Narayan","Shani Kavach","Rahu Anushthan","Vish Dosh",
-"Kaal Bhairav","Saraswati Pooja","Loan Mukti","Buri Nazar Maha Pooja",
-"Sudarshan","Prem Milan Rudra","Surya Grahan","Maha Mrityunjaya",
-"Baglamukhi","Hanuman Rog Mukti","Job Aakarshan","Vishnu Marriage",
-"Vyapar Vriddhi"
-],
-
-healing:[
-"Reiki Healing","Theta Healing","Heart Chakra","Business Healing",
-"Marriage Healing","Money Healing","Angel Healing","Medical Healing",
-"Career Healing","Prosperity Healing","Legal Healing","Property Healing",
-"Full Moon Healing","Pregnancy Healing"
-],
-
-spell:[
-"Love Spell","Bring Back Ex Spell","Career Spell","Family Protection Spell",
-"Finance Spell","Protection Spell","Negativity Removal Spell","Forever Love",
-"Marriage Spell","Evil Eye Spell","Aura Spell","Manifestation Spell",
-"Money Magnet Spell","Interview Success Spell"
-],
-
-special:[
-"Face Reading","Past Life Regression","Akashic Records",
-"Birth Time Rectification","Kundli Matching","Vastu Consultation",
-"Vastu Home","Vastu Office","Vastu Marriage","Vastu Health","Vastu Santaan"
-],
-
-problem:[
-"Love Problem Solution","Marriage Problem","Career Problem",
-"Business Problem","Money Problem","Loan Mukti Combo",
-"Evil Eye Combo","Business Growth Combo","Dream Job Combo",
-"Santaan Combo"
-]
-
-}
-
-// ---------- RENDER ----------
-
-// ICON MAP
+// ICONS
 const icons = {
 love:"❤️", money:"💰", evil:"🧿", pooja:"🛕",
 healing:"🔮", spell:"🧙", special:"✨", problem:"🧠"
 }
 
+// DATA (ALL SERVICES)
+const data = {
+love:["Love Attraction Healing","Bring Back Ex","Love Binding","Twin Flame Healing","Relationship Healing","Trust Rebuild","Soulmate Attraction"],
+money:["Money Magnet","Business Growth","Career Growth","Job Attraction","Interview Success","Profit Flow"],
+evil:["Evil Eye Removal","Nazar Nivaran","Aura Cleansing","Protection Shield","Negativity Removal"],
+pooja:["Maha Rudrabhishek","Navgraha Shanti","Shani Shanti","Rahu Ketu","Kaal Sarp Dosh","Lakshmi Pooja","Santaan Prapti"],
+healing:["Reiki Healing","Theta Healing","Heart Chakra","Business Healing","Money Healing","Career Healing"],
+spell:["Love Spell","Money Spell","Protection Spell","Bring Back Ex Spell","Interview Spell"],
+special:["Face Reading","Past Life","Kundli Matching","Vastu","Birth Time"],
+problem:["Love Problem","Career Problem","Money Problem","Business Problem","Loan Mukti"]
+}
 
+// RENDER
 function render(category, list){
 
 let container = document.getElementById(category)
 
-// pick badges
-let trendingItems = [...list].sort(()=>0.5-Math.random()).slice(0,2)
-let recommendedItems = [...list].sort(()=>0.5-Math.random()).slice(0,2)
+// pick 3-4 offers
+let offers = [...list].sort(()=>0.5-Math.random()).slice(0,4)
 
 list.forEach(item=>{
 
@@ -191,20 +161,13 @@ let price = Math.floor(Math.random()*2000)+499
 let rating = (4+Math.random()).toFixed(1)
 let reviews = Math.floor(Math.random()*2000)+100
 
-let isOffer = Math.random() > 0.6
-
-let discountHTML = isOffer ? `
-<div class="old-price">₹${price+800}</div>
-<div class="new-price">₹${price}</div>
-<div class="urgency">⚡ Only ${Math.floor(Math.random()*5)+1} left</div>
-<div class="social-proof">🔥 ${Math.floor(Math.random()*150)+50} booked today</div>
-` : `<p>₹${price}</p>`
+let isOffer = offers.includes(item)
 
 container.innerHTML += `
 <div class="service-card">
 
-${trendingItems.includes(item) ? `<div class="badge trending">🔥 Trending</div>` : ""}
-${recommendedItems.includes(item) ? `<div class="badge recommended">⭐ Recommended</div>` : ""}
+${Math.random()>0.7 ? `<div class="badge trending">🔥</div>`:""}
+${Math.random()>0.7 ? `<div class="badge recommended">⭐</div>`:""}
 
 <div class="service-icon">${icons[category]}</div>
 
@@ -215,7 +178,12 @@ ${recommendedItems.includes(item) ? `<div class="badge recommended">⭐ Recommen
 
 <h3>${item}</h3>
 
-${discountHTML}
+${isOffer ? `
+<div class="old-price">₹${price+800}</div>
+<div class="new-price">₹${price}</div>
+<div class="urgency">⚡ Only ${Math.floor(Math.random()*5)+1} left</div>
+<div class="social-proof">🔥 ${Math.floor(Math.random()*150)+50} booked today</div>
+` : `<p>₹${price}</p>`}
 
 <button class="book-btn" data-name="${item}" data-price="${price}">
 Book Now
@@ -228,19 +196,20 @@ Book Now
 
 }
 
+// RUN
+for(let key in data){
+render(key,data[key])
+}
 
-
+// BUTTON FIX
 document.addEventListener("click", function(e){
 
 if(e.target.classList.contains("book-btn")){
 
-let name = e.target.getAttribute("data-name")
-let price = parseInt(e.target.getAttribute("data-price"))
-
-let cart = JSON.parse(localStorage.getItem("cart")) || []
+let name = e.target.dataset.name
+let price = parseInt(e.target.dataset.price)
 
 cart.push({name, price})
-
 localStorage.setItem("cart", JSON.stringify(cart))
 
 alert(name + " booked 🔮")
@@ -249,18 +218,8 @@ alert(name + " booked 🔮")
 
 })
 
-
-
-
-
-
-
-// render all
-for(let key in data){
-render(key, data[key])
-}
-
 </script>
 
 </body>
 </html>
+
