@@ -716,6 +716,19 @@ font-weight:bold;
 .trending{background:#ff7675;}
 .recommended{background:#00cec9;}
 
+.service-card button{
+margin-top:auto;   /* THIS FIXES HIDDEN BUTTON ISSUE */
+width:100%;
+padding:10px;
+border-radius:10px;
+background:linear-gradient(90deg,#6C5CE7,#00CEC9);
+border:none;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+
 /* ================= MOBILE ================= */
 @media(max-width:600px){
 
