@@ -22,14 +22,11 @@ gap:22px;
 background:#141A40;
 border-radius:16px;
 padding:20px;
-
 display:flex;
 flex-direction:column;
 align-items:center;
 text-align:center;
-
 min-height:300px;
-
 border:1px solid rgba(255,255,255,0.08);
 transition:0.3s;
 }
@@ -83,18 +80,6 @@ border:none;
 color:white;
 cursor:pointer;
 }
-
-.badge{
-position:absolute;
-top:10px;
-left:10px;
-font-size:11px;
-padding:4px 6px;
-border-radius:6px;
-}
-.trending{background:#ff7675;}
-.recommended{background:#00cec9;}
-
 </style>
 </head>
 
@@ -141,8 +126,6 @@ border-radius:6px;
 
 <script>
 
-console.log("JS LOADED ✅")
-
 // ICONS
 const icons = {
 love:"❤️", money:"💰", evil:"🧿", pooja:"🛕",
@@ -151,23 +134,14 @@ healing:"🔮", spell:"🧙", special:"✨", problem:"🧠"
 
 // DATA
 const data = {
-
 love:["Love Attraction Healing","Bring Back Ex","Love Binding","Twin Flame Healing","Relationship Healing","Trust Rebuild","Soulmate Attraction"],
-
 money:["Money Magnet","Business Growth","Career Growth","Job Attraction","Interview Success","Profit Flow"],
-
 evil:["Evil Eye Removal","Nazar Nivaran","Aura Cleansing","Protection Shield","Negativity Removal"],
-
 pooja:["Maha Rudrabhishek","Navgraha Shanti","Shani Shanti","Rahu Ketu","Kaal Sarp Dosh","Lakshmi Pooja","Santaan Prapti"],
-
 healing:["Reiki Healing","Theta Healing","Heart Chakra","Business Healing","Money Healing","Career Healing"],
-
 spell:["Love Spell","Money Spell","Protection Spell","Bring Back Ex Spell","Interview Spell"],
-
 special:["Face Reading","Past Life","Kundli Matching","Vastu","Birth Time"],
-
 problem:["Love Problem","Career Problem","Money Problem","Business Problem","Loan Mukti"]
-
 }
 
 // RENDER
@@ -218,16 +192,16 @@ for(let key in data){
 render(key,data[key])
 }
 
-// ===== FINAL WORKING CLICK HANDLER =====
+// ===== FINAL WORKING BINDING =====
+setTimeout(() => {
 
+let buttons = document.querySelectorAll(".book-btn")
 
-document.addEventListener("click", function(e){
+console.log("Buttons found:", buttons.length)
 
-let btn = e.target.closest(".book-btn")
+buttons.forEach(btn => {
 
-if(btn){
-
-console.log("BOOK BUTTON CLICKED ✅")
+btn.addEventListener("click", function(){
 
 let card = btn.closest(".service-card")
 
@@ -244,15 +218,13 @@ localStorage.setItem("cart", JSON.stringify(cart))
 
 alert(name + " booked 🔮")
 
-}
+})
 
 })
 
-
-
+}, 300)
 
 </script>
 
 </body>
 </html>
-
