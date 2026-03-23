@@ -6,108 +6,94 @@
 <link rel="stylesheet" href="style.css">
 
 <style>
-
-/* ===== CATEGORY ===== */
 .category-title{
 margin-top:40px;
 font-size:24px;
 color:#F9CA24;
 }
 
-/* ===== GRID ===== */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
 gap:22px;
 }
 
-/* ===== CARD ===== */
 .service-card{
-background:linear-gradient(145deg,#141A40,#0B0F2A);
-border-radius:18px;
-padding:22px;
+background:#141A40;
+border-radius:16px;
+padding:20px;
+
 display:flex;
 flex-direction:column;
 align-items:center;
 text-align:center;
+
 min-height:300px;
+
 border:1px solid rgba(255,255,255,0.08);
 transition:0.3s;
-position:relative;
 }
 
 .service-card:hover{
 transform:translateY(-8px);
-box-shadow:0 0 30px rgba(108,92,231,0.4);
+box-shadow:0 0 25px rgba(108,92,231,0.4);
 }
 
-/* ICON */
 .service-icon{
-font-size:26px;
+font-size:24px;
+margin-bottom:5px;
+}
+
+.service-card h3{
+margin:10px 0;
+font-size:15px;
+}
+
+.reviews{
+font-size:12px;
 margin-bottom:6px;
 }
 
-/* BADGES */
-.badge{
-position:absolute;
-top:10px;
-left:10px;
-font-size:11px;
-padding:4px 8px;
-border-radius:6px;
-font-weight:bold;
-}
-.trending{background:#ff7675;}
-.recommended{background:#00cec9;}
-
-/* REVIEWS */
-.reviews{
-font-size:12px;
-margin-bottom:8px;
-}
 .stars{color:#FFD700;}
 .rating-text{color:#bbb;}
 
-/* TEXT */
-.service-card h3{
-margin:10px 0;
-line-height:1.4;
-}
-
-/* PRICE */
 .old-price{
 text-decoration:line-through;
 color:#888;
 font-size:12px;
-margin-top:5px;
 }
 
 .new-price{
 color:#00ffae;
 font-size:18px;
 font-weight:bold;
-margin-bottom:5px;
 }
 
-/* EXTRA */
-.urgency,
-.social-proof{
+.urgency,.social-proof{
 font-size:12px;
-margin-bottom:4px;
 }
 
-/* BUTTON */
 .service-card button{
 margin-top:auto;
 width:100%;
 padding:10px;
-border-radius:10px;
-background:linear-gradient(90deg,#6C5CE7,#00CEC9);
+border-radius:8px;
+background:#6C5CE7;
 border:none;
 color:white;
-font-weight:bold;
 cursor:pointer;
 }
+
+.badge{
+position:absolute;
+top:10px;
+left:10px;
+font-size:11px;
+padding:4px 6px;
+border-radius:6px;
+}
+.trending{background:#ff7675;}
+.recommended{background:#00cec9;}
 
 </style>
 </head>
@@ -187,7 +173,6 @@ function render(category, list){
 
 let container = document.getElementById(category)
 
-// pick 3 offers
 let offers = [...list].sort(()=>0.5-Math.random()).slice(0,3)
 
 list.forEach(item=>{
@@ -200,9 +185,6 @@ let isOffer = offers.includes(item)
 
 container.innerHTML += `
 <div class="service-card">
-
-${Math.random()>0.7 ? `<div class="badge trending">🔥</div>`:""}
-${Math.random()>0.7 ? `<div class="badge recommended">⭐</div>`:""}
 
 <div class="service-icon">${icons[category]}</div>
 
@@ -234,7 +216,7 @@ for(let key in data){
 render(key,data[key])
 }
 
-// ===== CLICK HANDLER (FINAL FIX) =====
+// ===== FINAL WORKING CLICK HANDLER =====
 document.addEventListener("click", function(e){
 
 if(e.target.classList.contains("book-btn")){
@@ -258,47 +240,8 @@ alert(name + " booked 🔮")
 
 })
 
-// ===== FINAL CLICK FIX =====
-document.addEventListener("click", function(e){
-
-// DEBUG (remove later)
-console.log("Clicked:", e.target)
-
-if(e.target.classList.contains("book-btn")){
-
-console.log("Book button detected ✅")
-
-let card = e.target.closest(".service-card")
-
-if(!card){
-console.log("Card not found ❌")
-return
-}
-
-let name = card.querySelector("h3")?.innerText || "Service"
-
-let priceEl = card.querySelector(".new-price") || card.querySelector("p")
-
-if(!priceEl){
-console.log("Price not found ❌")
-return
-}
-
-let price = parseInt(priceEl.innerText.replace("₹","")) || 0
-
-let cart = JSON.parse(localStorage.getItem("cart")) || []
-
-cart.push({name, price})
-
-localStorage.setItem("cart", JSON.stringify(cart))
-
-alert(name + " booked 🔮")
-
-}
-
-})
-
 </script>
 
 </body>
 </html>
+
