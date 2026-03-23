@@ -799,6 +799,23 @@ display:block;
 width:100%;
 }
 
+/* ===== FIX CLICK BLOCK ISSUE ===== */
+
+.service-card{
+position:relative;
+z-index:1;
+}
+
+.service-card button{
+position:relative;
+z-index:10;
+pointer-events:auto;
+}
+
+.service-card::before{
+pointer-events:none !important;
+}
+
 /* ================= MOBILE ================= */
 @media(max-width:600px){
 
