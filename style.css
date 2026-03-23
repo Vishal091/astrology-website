@@ -739,6 +739,53 @@ display:block !important;
 }
 
 
+.service-card{
+background:linear-gradient(145deg,#141A40,#0B0F2A);
+border-radius:18px;
+padding:22px;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+text-align:center;
+
+min-height:300px;   /* more breathing space */
+
+border:1px solid rgba(255,255,255,0.08);
+transition:0.3s;
+}
+
+.service-card h3{
+margin:10px 0;
+line-height:1.4;
+}
+
+.reviews{
+margin-bottom:8px;
+}
+
+.old-price{
+margin-top:5px;
+}
+
+.new-price{
+margin-bottom:5px;
+}
+
+.urgency,
+.social-proof{
+margin-bottom:4px;
+}
+
+/* button stays bottom */
+.service-card button{
+margin-top:auto;
+width:100%;
+padding:10px;
+border-radius:10px;
+}
+
+
 
 /* ================= MOBILE ================= */
 @media(max-width:600px){
