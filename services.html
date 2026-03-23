@@ -13,28 +13,16 @@
 <nav>
 <a href="index.html">Home</a>
 <a href="shop.html">Shop</a>
-<a href="services.html">Services</a>
-<a href="cart.html">🛒 Cart</a>
+<a href="cart.html">Cart</a>
 </nav>
 </header>
 
-<section class="shop-hero">
-<h1>🔮 Astrology Services</h1>
-<p>Get guidance from experts</p>
-</section>
+<div class="container">
 
-<div class="shop-container">
+<h1>✨ All Astrology Services</h1>
 
-
-
-<div class="service-card">
-
-<h3>💬 Chat with Astrologer</h3>
-<p>₹9/min</p>
-
-<button onclick="addToCart('Chat Astrologer',9)">
-Start Now
-</button>
+<!-- AUTO GENERATE -->
+<div id="services-container" class="grid"></div>
 
 </div>
 
@@ -45,17 +33,50 @@ let cart = JSON.parse(localStorage.getItem("cart")) || []
 function addToCart(name, price){
 cart.push({name, price})
 localStorage.setItem("cart", JSON.stringify(cart))
-alert(name + " added to cart 🛒")
+alert(name + " booked 🔮")
 }
+
+const services = [
+
+"Love Attraction Healing","Bring Back Ex","Love Binding","Twin Flame Healing",
+"Money Magnet Healing","Business Boom Healing","Career Growth Healing",
+"Evil Eye Removal","Nazar Nivaran","Aura Cleansing",
+
+"Maha Rudrabhishek","Navgraha Shanti","Shani Shanti","Rahu Ketu Shanti",
+"Kaal Sarp Dosh","Vivah Badha Nivaran","Mangal Dosh",
+
+"Reiki Healing","Theta Healing","Heart Chakra Healing","Prosperity Healing",
+"Career Healing","Medical Healing",
+
+"Love Spell","Money Spell","Protection Spell","Interview Success Spell",
+
+"Face Reading","Past Life Regression","Kundli Matching","Birth Time Rectification",
+
+"Vastu Consultation","Vastu for Home","Vastu for Office","Vastu for Marriage",
+
+"Love Problem Solution","Career Problem Solution","Business Problem Solution",
+"Money Problem Solution","Loan Mukti Combo"
+
+]
+
+const container = document.getElementById("services-container")
+
+services.forEach(service => {
+
+let price = Math.floor(Math.random()*2000)+499
+
+container.innerHTML += `
+<div class="card">
+<h3>${service}</h3>
+<p>₹${price}</p>
+<button onclick="addToCart('${service}',${price})">Book Now</button>
+</div>
+`
+
+})
 
 </script>
 
-
-
-
 </body>
 </html>
-
-
-
 
