@@ -548,6 +548,65 @@ color:#bbb;
 margin-left:5px;
 }
 
+/* ===== SQUARE SERVICE CARDS ===== */
+
+.service-card{
+background:#141A40;
+border-radius:16px;
+padding:20px;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+align-items:center;
+text-align:center;
+
+aspect-ratio:1/1;   /* THIS MAKES IT SQUARE */
+
+border:1px solid rgba(255,255,255,0.1);
+
+transition:all 0.3s ease;
+}
+
+.service-card:hover{
+transform:translateY(-10px);
+box-shadow:
+0 0 15px rgba(108,92,231,0.6),
+0 0 30px rgba(108,92,231,0.4);
+}
+
+/* CONTENT SPACING */
+.service-card h3{
+font-size:16px;
+margin:10px 0;
+min-height:40px;
+}
+
+/* PRICE */
+.service-card p,
+.new-price{
+font-size:18px;
+font-weight:bold;
+margin:5px 0;
+}
+
+/* BUTTON */
+.service-card button{
+margin-top:auto;
+width:100%;
+}
+
+/* REVIEWS FIX */
+.reviews{
+font-size:12px;
+}
+
+/* MAKE GRID CLEAN */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
 /* ================= MOBILE ================= */
 @media(max-width:600px){
 
