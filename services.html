@@ -220,38 +220,34 @@ render(key,data[key])
 
 // ===== FINAL WORKING CLICK HANDLER =====
 
+
 document.addEventListener("click", function(e){
 
-console.log("CLICK DETECTED:", e.target)
+let btn = e.target.closest(".book-btn")
 
-if(e.target.classList.contains("book-btn")){
+if(btn){
+
 console.log("BOOK BUTTON CLICKED ✅")
 
-let card = e.target.closest(".service-card")
+let card = btn.closest(".service-card")
 
-if(!card){
-console.log("❌ CARD NOT FOUND")
-return
-}
-
-let name = card.querySelector("h3")?.innerText
-console.log("SERVICE:", name)
+let name = card.querySelector("h3").innerText
 
 let priceEl = card.querySelector(".new-price") || card.querySelector("p")
-
-if(!priceEl){
-console.log("❌ PRICE NOT FOUND")
-return
-}
-
 let price = parseInt(priceEl.innerText.replace("₹",""))
-console.log("PRICE:", price)
 
-alert("WORKING ✅")
+let cart = JSON.parse(localStorage.getItem("cart")) || []
+
+cart.push({name, price})
+
+localStorage.setItem("cart", JSON.stringify(cart))
+
+alert(name + " booked 🔮")
 
 }
 
 })
+
 
 
 
