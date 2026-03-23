@@ -124,10 +124,17 @@ cursor:pointer;
 
 </div>
 
+
 <script>
 
 // CART
 let cart = JSON.parse(localStorage.getItem("cart")) || []
+
+function addToCart(name, price){
+cart.push({name, price})
+localStorage.setItem("cart", JSON.stringify(cart))
+alert(name + " booked 🔮")
+}
 
 // ICONS
 const icons = {
@@ -135,7 +142,7 @@ love:"❤️", money:"💰", evil:"🧿", pooja:"🛕",
 healing:"🔮", spell:"🧙", special:"✨", problem:"🧠"
 }
 
-// DATA (ALL SERVICES)
+// DATA (KEEP YOUR SAME DATA)
 const data = {
 love:["Love Attraction Healing","Bring Back Ex","Love Binding","Twin Flame Healing","Relationship Healing","Trust Rebuild","Soulmate Attraction"],
 money:["Money Magnet","Business Growth","Career Growth","Job Attraction","Interview Success","Profit Flow"],
@@ -147,7 +154,7 @@ special:["Face Reading","Past Life","Kundli Matching","Vastu","Birth Time"],
 problem:["Love Problem","Career Problem","Money Problem","Business Problem","Loan Mukti"]
 }
 
-// RENDER
+// RENDER FUNCTION (FIXED)
 function render(category, list){
 
 let container = document.getElementById(category)
@@ -162,6 +169,13 @@ let rating = (4+Math.random()).toFixed(1)
 let reviews = Math.floor(Math.random()*2000)+100
 
 let isOffer = offers.includes(item)
+
+let priceHTML = isOffer ? `
+<div class="old-price">₹${price+800}</div>
+<div class="new-price">₹${price}</div>
+<div class="urgency">⚡ Only ${Math.floor(Math.random()*5)+1} left</div>
+<div class="social-proof">🔥 ${Math.floor(Math.random()*150)+50} booked today</div>
+` : `<p>₹${price}</p>`
 
 container.innerHTML += `
 <div class="service-card">
@@ -178,14 +192,9 @@ ${Math.random()>0.7 ? `<div class="badge recommended">⭐</div>`:""}
 
 <h3>${item}</h3>
 
-${isOffer ? `
-<div class="old-price">₹${price+800}</div>
-<div class="new-price">₹${price}</div>
-<div class="urgency">⚡ Only ${Math.floor(Math.random()*5)+1} left</div>
-<div class="social-proof">🔥 ${Math.floor(Math.random()*150)+50} booked today</div>
-` : `<p>₹${price}</p>`}
+${priceHTML}
 
-<button class="book-btn" data-name="${item}" data-price="${price}">
+<button onclick="addToCart('${item}', ${price})">
 Book Now
 </button>
 
@@ -200,6 +209,10 @@ Book Now
 for(let key in data){
 render(key,data[key])
 }
+
+</script>
+
+
 
 // BUTTON FIX
 document.addEventListener("click", function(e){
