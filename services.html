@@ -28,12 +28,8 @@ align-items:center;
 text-align:center;
 min-height:300px;
 border:1px solid rgba(255,255,255,0.08);
-transition:0.3s;
-}
-
-.service-card:hover{
-transform:translateY(-8px);
-box-shadow:0 0 25px rgba(108,92,231,0.4);
+position:relative;
+z-index:1;
 }
 
 .service-icon{
@@ -79,6 +75,8 @@ background:#6C5CE7;
 border:none;
 color:white;
 cursor:pointer;
+z-index:10;
+position:relative;
 }
 </style>
 </head>
@@ -126,6 +124,9 @@ cursor:pointer;
 
 <script>
 
+// YOUR WHATSAPP NUMBER (CHANGE THIS)
+const phone = "918708833177"
+
 // ICONS
 const icons = {
 love:"❤️", money:"💰", evil:"🧿", pooja:"🛕",
@@ -148,7 +149,6 @@ problem:["Love Problem","Career Problem","Money Problem","Business Problem","Loa
 function render(category, list){
 
 let container = document.getElementById(category)
-
 let offers = [...list].sort(()=>0.5-Math.random()).slice(0,3)
 
 list.forEach(item=>{
@@ -156,7 +156,6 @@ list.forEach(item=>{
 let price = Math.floor(Math.random()*2000)+499
 let rating = (4+Math.random()).toFixed(1)
 let reviews = Math.floor(Math.random()*2000)+100
-
 let isOffer = offers.includes(item)
 
 container.innerHTML += `
@@ -174,7 +173,7 @@ container.innerHTML += `
 ${isOffer ? `
 <div class="old-price">₹${price+800}</div>
 <div class="new-price">₹${price}</div>
-<div class="urgency">⚡ Only ${Math.floor(Math.random()*5)+1} left</div>
+<div class="urgency">⚡ Only ${Math.floor(Math.random()*5)+1} slots left</div>
 <div class="social-proof">🔥 ${Math.floor(Math.random()*150)+50} booked today</div>
 ` : `<p>₹${price}</p>`}
 
@@ -192,12 +191,10 @@ for(let key in data){
 render(key,data[key])
 }
 
-// ===== FINAL WORKING BINDING =====
+// ===== WHATSAPP AUTOMATION (PRO) =====
 setTimeout(() => {
 
 let buttons = document.querySelectorAll(".book-btn")
-
-console.log("Buttons found:", buttons.length)
 
 buttons.forEach(btn => {
 
@@ -206,17 +203,27 @@ btn.addEventListener("click", function(){
 let card = btn.closest(".service-card")
 
 let name = card.querySelector("h3").innerText
-
 let priceEl = card.querySelector(".new-price") || card.querySelector("p")
 let price = parseInt(priceEl.innerText.replace("₹",""))
 
+// SAVE CART
 let cart = JSON.parse(localStorage.getItem("cart")) || []
-
 cart.push({name, price})
-
 localStorage.setItem("cart", JSON.stringify(cart))
 
-alert(name + " booked 🔮")
+// PRO MESSAGE
+let message = `Namaste 🙏
+
+I want to book this service urgently:
+
+🔮 Service: ${name}
+💰 Price: ₹${price}
+
+I saw limited slots available. Please confirm quickly.`
+
+let url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+
+window.open(url, "_blank")
 
 })
 
