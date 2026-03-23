@@ -728,6 +728,17 @@ font-weight:bold;
 cursor:pointer;
 }
 
+.service-card{
+display:flex;
+flex-direction:column;
+}
+
+.service-card button{
+margin-top:auto !important;
+display:block !important;
+}
+
+
 
 /* ================= MOBILE ================= */
 @media(max-width:600px){
