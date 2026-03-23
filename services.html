@@ -21,32 +21,35 @@ grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:20px;
 }
 
-/* ===== CARD ===== */
+/* ===== CARD (FIXED) ===== */
 .service-card{
 background:linear-gradient(145deg,#141A40,#0B0F2A);
 border-radius:18px;
-padding:20px;
+padding:18px;
 display:flex;
 flex-direction:column;
 align-items:center;
 text-align:center;
-aspect-ratio:1/1;
+
+min-height:260px; /* FIXED */
+
 border:1px solid rgba(255,255,255,0.08);
-transition:0.3s;
 position:relative;
+transition:0.3s;
 }
 
 .service-card:hover{
-transform:translateY(-10px);
+transform:translateY(-8px);
 box-shadow:0 0 30px rgba(108,92,231,0.4);
 }
 
-/* ===== ICON ===== */
+/* ICON */
 .service-icon{
 font-size:26px;
+margin-bottom:5px;
 }
 
-/* ===== BADGES ===== */
+/* BADGES */
 .badge{
 position:absolute;
 top:10px;
@@ -59,16 +62,16 @@ font-weight:bold;
 .trending{background:#ff7675;}
 .recommended{background:#00cec9;}
 
-/* ===== REVIEWS ===== */
+/* REVIEWS */
 .reviews{font-size:12px;}
 .stars{color:#FFD700;}
 .rating-text{color:#bbb;}
 
-/* ===== PRICE ===== */
+/* PRICE */
 .old-price{text-decoration:line-through;color:#888;font-size:12px;}
 .new-price{color:#00ffae;font-size:18px;font-weight:bold;}
 
-/* ===== BUTTON FIX ===== */
+/* BUTTON (FIXED) */
 .service-card button{
 margin-top:auto;
 width:100%;
@@ -97,6 +100,7 @@ display:block;
 </header>
 
 <div class="container">
+
 <h1>✨ Premium Astrology Services</h1>
 
 <h2 class="category-title">❤️ Love & Relationship</h2>
@@ -127,11 +131,7 @@ display:block;
 
 <script>
 
-window.onload = function(){
-
-// ===== CART =====
-let cart = JSON.parse(localStorage.getItem("cart")) || []
-
+/* ===== GLOBAL BOOKING FUNCTION (FIXED) ===== */
 function handleBooking(btn){
 
 let card = btn.closest(".service-card")
@@ -143,26 +143,30 @@ let priceText = card.querySelector(".new-price")
 
 let price = parseInt(priceText.replace("₹",""))
 
+let cart = JSON.parse(localStorage.getItem("cart")) || []
+
 cart.push({name, price})
 localStorage.setItem("cart", JSON.stringify(cart))
 
 alert(name + " booked 🔮")
+
 }
 
-// ===== ICONS =====
+/* ===== LOAD DATA ===== */
+window.onload = function(){
+
 const icons = {
 love:"❤️", money:"💰", evil:"🧿", pooja:"🛕",
 healing:"🔮", spell:"🧙", special:"✨", problem:"🧠"
 }
 
-// ===== FULL DATA =====
 const data = {
 
 love:["Love Attraction Healing","Attract True Love","Bring Back Ex","Love Binding","Relationship Healing","Detachment Healing","Trust Rebuild","Twin Flame Healing","Marriage Blessing","Soulmate Attraction","Unbreakable Bond"],
 
 money:["Money Magnet","Business Growth","Career Growth","Promotion Growth","Interview Success","Job Attraction","Customer Attraction","Profit Flow","Finance Healing","Success Attraction"],
 
-evil:["Evil Eye Removal","Nazar Nivaran","Aura Cleansing","Protection Shield","Negativity Removal","Evil Eye for Love","Evil Eye for Career","Evil Eye for Health","Evil Eye for Finance","Evil Eye for Family"],
+evil:["Evil Eye Removal","Nazar Nivaran","Aura Cleansing","Protection Shield","Negativity Removal","Evil Eye Love","Evil Eye Career","Evil Eye Health","Evil Eye Finance","Evil Eye Family"],
 
 pooja:["Maha Rudrabhishek","Navgraha Shanti","Shani Shanti","Rahu Ketu","Kaal Sarp Dosh","Vivah Badha","Mangal Dosh","Pitra Dosh","Lakshmi Pooja","Santaan Prapti","Shani Sade Sati","Rog Rin Nivaran","Baglamukhi","Maha Mrityunjaya"],
 
@@ -176,12 +180,11 @@ problem:["Love Problem","Marriage Problem","Career Problem","Business Problem","
 
 }
 
-// ===== RENDER =====
 function render(category, list){
 
 let container = document.getElementById(category)
 
-// pick 4 offers
+// pick 4 discounted
 let offers = [...list].sort(()=>0.5-Math.random()).slice(0,4)
 
 list.forEach(item=>{
@@ -223,7 +226,7 @@ ${isOffer ? `
 
 }
 
-// ===== RUN =====
+// render all
 for(let key in data){
 render(key,data[key])
 }
