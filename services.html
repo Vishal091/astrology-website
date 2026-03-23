@@ -176,11 +176,12 @@ love:"❤️", money:"💰", evil:"🧿", pooja:"🛕",
 healing:"🔮", spell:"🧙", special:"✨", problem:"🧠"
 }
 
+
 function render(category, list){
 
 let container = document.getElementById(category)
 
-// pick random badges
+// pick badges
 let trendingItems = [...list].sort(()=>0.5-Math.random()).slice(0,2)
 let recommendedItems = [...list].sort(()=>0.5-Math.random()).slice(0,2)
 
@@ -191,6 +192,13 @@ let rating = (4+Math.random()).toFixed(1)
 let reviews = Math.floor(Math.random()*2000)+100
 
 let isOffer = Math.random() > 0.6
+
+let discountHTML = isOffer ? `
+<div class="old-price">₹${price+800}</div>
+<div class="new-price">₹${price}</div>
+<div class="urgency">⚡ Only ${Math.floor(Math.random()*5)+1} left</div>
+<div class="social-proof">🔥 ${Math.floor(Math.random()*150)+50} booked today</div>
+` : `<p>₹${price}</p>`
 
 container.innerHTML += `
 <div class="service-card">
@@ -207,20 +215,44 @@ ${recommendedItems.includes(item) ? `<div class="badge recommended">⭐ Recommen
 
 <h3>${item}</h3>
 
-${isOffer ? `
-<div class="old-price">₹${price+800}</div>
-<div class="new-price">₹${price}</div>
-<div class="urgency">⚡ Only ${Math.floor(Math.random()*5)+1} left</div>
-<div class="social-proof">🔥 ${Math.floor(Math.random()*150)+50} booked today</div>
-` : `<p>₹${price}</p>`}
+${discountHTML}
 
-<button onclick="addToCart('${item}',${price})">Book Now</button>
+<button class="book-btn" data-name="${item}" data-price="${price}">
+Book Now
+</button>
 
 </div>
 `
+
 })
 
 }
+
+<script>
+
+document.addEventListener("click", function(e){
+
+if(e.target.classList.contains("book-btn")){
+
+let name = e.target.getAttribute("data-name")
+let price = parseInt(e.target.getAttribute("data-price"))
+
+let cart = JSON.parse(localStorage.getItem("cart")) || []
+
+cart.push({name, price})
+
+localStorage.setItem("cart", JSON.stringify(cart))
+
+alert(name + " booked 🔮")
+
+}
+
+})
+
+</script>
+
+
+
 
 
 // render all
