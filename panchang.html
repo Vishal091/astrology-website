@@ -140,17 +140,18 @@ let moonLon = Astronomy.EclipticLongitude("Moon", time)
 // Tithi
 let diff = (moonLon - sunLon + 360) % 360
 let tithiNum = Math.floor(diff / 12) + 1
+if(tithiNum > 30) tithiNum = 30
 let paksha = tithiNum <= 15 ? "Shukla Paksha" : "Krishna Paksha"
 
 // Nakshatra
 let nakNum = Math.floor(moonLon / (360/27)) + 1
-
+if(nakNum > 27) nakNum = 27
 // Yoga
 let yogaNum = Math.floor((sunLon + moonLon) % 360 / (360/27)) + 1
-
+if(yogaNum > 27) yogaNum = 27
 // Karana
 let karanaNum = Math.floor(diff / 6) + 1
-
+karanaNum = karanaNum % karanaNames.length
 let rahu = calculateRahuKaal(sunriseTime, sunsetTime)
 let muhurat = getMuhurat(tithiNum)
 
@@ -200,10 +201,10 @@ document.getElementById("result").innerHTML = `
 
 <hr>
 
-<p>🌙 <b>Tithi:</b> ${tithiNames[tithiNum-1]} (${paksha})</p>
-<p>⭐ <b>Nakshatra:</b> ${nakNames[nakNum-1]}</p>
-<p>🧘 <b>Yoga:</b> ${yogaNames[yogaNum-1]}</p>
-<p>🔗 <b>Karana:</b> ${karanaNames[karanaNum-1]}</p>
+<p>🌙 <b>Tithi:</b> ${tithiNames[tithiNum-1] || "N/A"} (${paksha})</p>
+<p>⭐ <b>Nakshatra:</b> ${nakNames[nakNum-1] || "N/A"}</p>
+<p>🧘 <b>Yoga:</b> ${yogaNames[yogaNum-1] || "N/A" }</p>
+<p>🔗 <b>Karana:</b> ${karanaNames[karanaNum-1] || "N/A"}</p>
 
 <hr>
 
