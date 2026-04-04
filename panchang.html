@@ -6,7 +6,6 @@
 
 <link rel="stylesheet" href="style.css">
 
-<!-- Astronomy Library -->
 <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.min.js"></script>
 
 <style>
@@ -55,8 +54,8 @@ box-shadow:0 0 15px rgba(108,92,231,0.4);
 
 <div class="container">
 
-<h1>🔮 Panchang</h1>
-<p>Accurate Panchang based on your location</p>
+<h1>🔮 Panchang (Pro)</h1>
+<p>Accurate Panchang based on sunrise & location</p>
 
 <input type="date" id="date">
 <button onclick="getLocation()">Get Panchang</button>
@@ -72,21 +71,14 @@ let userLon = null
 
 function getLocation(){
 
-if(!navigator.geolocation){
-alert("Geolocation not supported")
-return
-}
-
 navigator.geolocation.getCurrentPosition(
-(position)=>{
-userLat = position.coords.latitude
-userLon = position.coords.longitude
+(pos)=>{
+userLat = pos.coords.latitude
+userLon = pos.coords.longitude
 
 calculatePanchang()
 },
-()=>{
-alert("Location permission denied")
-}
+()=> alert("Location permission denied")
 )
 
 }
@@ -95,15 +87,25 @@ function calculatePanchang(){
 
 let dateInput = document.getElementById("date").value
 if(!dateInput){
-alert("Please select date")
+alert("Select date")
 return
 }
 
 let date = new Date(dateInput)
 
-// Sun & Moon
-let sun = Astronomy.SunPosition(date)
-let moon = Astronomy.MoonPosition(date)
+// Observer
+let observer = new Astronomy.Observer(userLat, userLon, 0)
+
+// Sunrise & Sunset
+let sunrise = Astronomy.SearchRiseSet("Sun", observer, +1, date, 1)
+let sunset = Astronomy.SearchRiseSet("Sun", observer, -1, date, 1)
+
+// ⭐ IMPORTANT: Use sunrise time for Panchang
+let calcTime = sunrise.date
+
+// Sun & Moon at sunrise
+let sun = Astronomy.SunPosition(calcTime)
+let moon = Astronomy.MoonPosition(calcTime)
 
 let sunLon = sun.elon
 let moonLon = moon.elon
@@ -111,6 +113,9 @@ let moonLon = moon.elon
 // Tithi
 let diff = (moonLon - sunLon + 360) % 360
 let tithiNum = Math.floor(diff / 12) + 1
+
+// Paksha
+let paksha = tithiNum <= 15 ? "Shukla Paksha" : "Krishna Paksha"
 
 // Nakshatra
 let nakNum = Math.floor(moonLon / (360/27)) + 1
@@ -120,17 +125,6 @@ let yogaNum = Math.floor((sunLon + moonLon) % 360 / (360/27)) + 1
 
 // Karana
 let karanaNum = Math.floor(diff / 6) + 1
-
-// Sunrise / Sunset
-let observer = new Astronomy.Observer(userLat, userLon, 0)
-
-let sunrise = Astronomy.SearchRiseSet("Sun", observer, +1, date, 1)
-let sunset = Astronomy.SearchRiseSet("Sun", observer, -1, date, 1)
-
-// Format time
-function formatTime(time){
-return new Date(time.date).toLocaleTimeString()
-}
 
 // Names
 const tithiNames = [
@@ -166,18 +160,24 @@ const karanaNames = [
 "Shakuni","Chatushpada","Naga","Kimstughna"
 ]
 
+// Format time
+function formatTime(t){
+return new Date(t.date).toLocaleTimeString()
+}
+
 // Display
 document.getElementById("result").innerHTML = `
 <div class="card">
 
 <h2>📅 ${dateInput}</h2>
-
-<p>📍 Location: ${userLat.toFixed(2)}, ${userLon.toFixed(2)}</p>
+<p>📍 ${userLat.toFixed(2)}, ${userLon.toFixed(2)}</p>
 
 <p>🌅 <b>Sunrise:</b> ${formatTime(sunrise)}</p>
 <p>🌇 <b>Sunset:</b> ${formatTime(sunset)}</p>
 
-<p>🌙 <b>Tithi:</b> ${tithiNames[tithiNum-1]}</p>
+<hr>
+
+<p>🌙 <b>Tithi:</b> ${tithiNames[tithiNum-1]} (${paksha})</p>
 <p>⭐ <b>Nakshatra:</b> ${nakNames[nakNum-1]}</p>
 <p>🧘 <b>Yoga:</b> ${yogaNames[yogaNum-1]}</p>
 <p>🔗 <b>Karana:</b> ${karanaNames[karanaNum-1]}</p>
@@ -197,3 +197,4 @@ Talk to Astrologer
 
 </body>
 </html>
+
