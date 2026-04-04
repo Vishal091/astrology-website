@@ -3,6 +3,10 @@
 <html>
 <head>
 <title>Astrodhani</title>
+
+<meta name="description" content="Accurate astrology predictions, kundli, horoscope and remedies. Talk to astrologer instantly.">
+<meta name="keywords" content="horoscope today, astrology india, kundli online, love horoscope, career astrology">
+
 <link rel="stylesheet" href="style.css">
 
 <style>
@@ -35,7 +39,7 @@ margin:15px 0;
 max-width:600px;
 }
 
-/* ===== BUTTON ===== */
+/* BUTTON */
 .hero button{
 padding:15px 35px;
 border-radius:12px;
@@ -53,7 +57,7 @@ box-shadow:
 0 0 40px #6C5CE7;
 }
 
-/* ===== TRUST ===== */
+/* TRUST */
 .trust{
 display:flex;
 gap:40px;
@@ -68,7 +72,7 @@ padding:15px 25px;
 border-radius:12px;
 }
 
-/* ===== SECTION ===== */
+/* SECTION */
 .section{
 padding:100px 20px;
 }
@@ -79,7 +83,7 @@ margin-bottom:50px;
 color:#F9CA24;
 }
 
-/* ===== CARD ===== */
+/* CARD */
 .card-premium{
 background:rgba(255,255,255,0.05);
 backdrop-filter:blur(12px);
@@ -97,7 +101,7 @@ box-shadow:
 0 0 50px rgba(0,206,201,0.3);
 }
 
-/* ===== REVEAL ===== */
+/* REVEAL */
 .reveal{
 opacity:0;
 transform:translateY(40px);
@@ -109,7 +113,7 @@ opacity:1;
 transform:translateY(0);
 }
 
-/* ===== TESTIMONIAL ===== */
+/* TESTIMONIAL */
 .slider{
 overflow:hidden;
 }
@@ -129,7 +133,7 @@ min-width:250px;
 100%{transform:translateX(-50%);}
 }
 
-/* ===== CTA ===== */
+/* CTA */
 .cta{
 padding:120px 20px;
 text-align:center;
@@ -139,7 +143,7 @@ url('https://images.unsplash.com/photo-1526403221220-3f7a56c3c4e4');
 background-size:cover;
 }
 
-/* ===== FLOAT BUTTON ===== */
+/* FLOAT BUTTON */
 .whatsapp-float{
 position:fixed;
 bottom:20px;
@@ -152,14 +156,14 @@ cursor:pointer;
 z-index:999;
 }
 
-/* ===== FLOATING ICONS ===== */
+/* FLOATING ICONS */
 .floating{
 position:absolute;
 font-size:24px;
 opacity:0.6;
 }
 
-/* ===== ORBS ===== */
+/* ORBS */
 .orb, .orb2{
 position:fixed;
 width:300px;
@@ -242,6 +246,24 @@ Explore Services
 </div>
 </div>
 
+<!-- 🔥 NEW SEO SECTION -->
+<div class="section">
+<h2>🔮 Daily Horoscope</h2>
+
+<div class="grid">
+
+<div class="card-premium reveal">
+<h3>Check Today's Horoscope</h3>
+<p>Love, Career & Money predictions for your zodiac</p>
+
+<button onclick="window.location.href='horoscope.html'">
+Check Now
+</button>
+</div>
+
+</div>
+</div>
+
 <!-- TESTIMONIAL -->
 <div class="section">
 <h2>💬 Real Results</h2>
@@ -264,18 +286,15 @@ Explore Services
 <h2>Talk to Astrologer Now</h2>
 <p>Instant WhatsApp guidance</p>
 
-<button onclick="window.open('https://wa.me/918708833177','_blank')">
+<button onclick="window.open('https://wa.me/91XXXXXXXXXX','_blank')">
 Chat Now
 </button>
 </div>
 
-
 <div class="whatsapp-float"
-onclick="window.open('https://wa.me/918708833177','_blank')">
+onclick="window.open('https://wa.me/91XXXXXXXXXX','_blank')">
 💬 Talk to Astrologer
 </div>
-
-
 
 <footer>
 © 2026 Astrodhani
@@ -283,7 +302,7 @@ onclick="window.open('https://wa.me/918708833177','_blank')">
 
 <script>
 
-/* TYPING EFFECT */
+/* TYPING */
 const text = "Unlock Your Destiny 🔮"
 let i = 0
 function typeEffect(){
@@ -329,36 +348,16 @@ el.style.transform = `translate(${x*20}px, ${y*20}px)`
 })
 })
 
+/* EXIT POPUP */
 document.addEventListener("mouseleave", function(e){
 if(e.clientY < 0){
-document.getElementById("exit-popup").style.display = "block"
+let popup = document.getElementById("exit-popup")
+if(popup) popup.style.display = "block"
 }
 })
 
-
 </script>
-
-<div id="exit-popup" style="
-display:none;
-position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-background:#141A40;
-padding:30px;
-border-radius:12px;
-z-index:9999;
-text-align:center;
-">
-
-<h2>Wait! 🔮</h2>
-<p>Get instant guidance on WhatsApp before leaving</p>
-
-<button onclick="window.open('https://wa.me/918708833177','_blank')">
-Chat Now
-</button>
-
-</div>
 
 </body>
 </html>
+
