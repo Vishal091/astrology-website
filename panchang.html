@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Panchang 🔮 | Astrodhani</title>
+
+<link rel="stylesheet" href="style.css">
+
+<!-- Astronomy Library -->
+<script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.min.js"></script>
+
+<style>
+
+.container{
+max-width:800px;
+margin:auto;
+padding:40px 20px;
+text-align:center;
+}
+
+input, button{
+padding:10px;
+margin:10px;
+border-radius:8px;
+border:none;
+}
+
+button{
+background:#6C5CE7;
+color:white;
+cursor:pointer;
+}
+
+.card{
+background:#141A40;
+padding:25px;
+border-radius:16px;
+margin-top:20px;
+box-shadow:0 0 15px rgba(108,92,231,0.4);
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">🔮 Astrodhani</div>
+<nav>
+<a href="index.html">Home</a>
+<a href="services.html">Services</a>
+<a href="shop.html">Shop</a>
+</nav>
+</header>
+
+<div class="container">
+
+<h1>🔮 Panchang</h1>
+<p>Get accurate Panchang based on real planetary positions</p>
+
+<input type="date" id="date">
+<button onclick="calculatePanchang()">Get Panchang</button>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+function calculatePanchang(){
+
+let dateInput = document.getElementById("date").value
+if(!dateInput){
+alert("Please select date")
+return
+}
+
+let date = new Date(dateInput)
+
+// Get Sun & Moon positions
+let sun = Astronomy.SunPosition(date)
+let moon = Astronomy.MoonPosition(date)
+
+// Longitude
+let sunLon = sun.elon
+let moonLon = moon.elon
+
+// Tithi
+let diff = (moonLon - sunLon + 360) % 360
+let tithiNum = Math.floor(diff / 12) + 1
+
+// Nakshatra
+let nakNum = Math.floor(moonLon / (360/27)) + 1
+
+// Yoga
+let yogaNum = Math.floor((sunLon + moonLon) % 360 / (360/27)) + 1
+
+// Karana
+let karanaNum = Math.floor(diff / 6) + 1
+
+// Names
+const tithiNames = [
+"Pratipada","Dwitiya","Tritiya","Chaturthi","Panchami","Shashthi",
+"Saptami","Ashtami","Navami","Dashami","Ekadashi","Dwadashi",
+"Trayodashi","Chaturdashi","Purnima",
+"Pratipada","Dwitiya","Tritiya","Chaturthi","Panchami","Shashthi",
+"Saptami","Ashtami","Navami","Dashami","Ekadashi","Dwadashi",
+"Trayodashi","Chaturdashi","Amavasya"
+]
+
+const nakNames = [
+"Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra",
+"Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni",
+"Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha",
+"Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishta",
+"Shatabhisha","Purva Bhadrapada","Uttara Bhadrapada","Revati"
+]
+
+const yogaNames = [
+"Vishkumbha","Priti","Ayushman","Saubhagya","Shobhana","Atiganda",
+"Sukarman","Dhriti","Shoola","Ganda","Vriddhi","Dhruva",
+"Vyaghata","Harshana","Vajra","Siddhi","Vyatipata","Variyana",
+"Parigha","Shiva","Siddha","Sadhya","Shubha","Shukla",
+"Brahma","Indra","Vaidhriti"
+]
+
+const karanaNames = [
+"Bava","Balava","Kaulava","Taitila","Garaja","Vanija","Vishti",
+"Bava","Balava","Kaulava","Taitila","Garaja","Vanija","Vishti",
+"Bava","Balava","Kaulava","Taitila","Garaja","Vanija","Vishti",
+"Bava","Balava","Kaulava","Taitila","Garaja","Vanija","Vishti",
+"Shakuni","Chatushpada","Naga","Kimstughna"
+]
+
+// Get names
+let tithi = tithiNames[tithiNum-1]
+let nak = nakNames[nakNum-1]
+let yoga = yogaNames[yogaNum-1]
+let karana = karanaNames[karanaNum-1]
+
+// Display
+document.getElementById("result").innerHTML = `
+<div class="card">
+
+<h2>📅 ${dateInput}</h2>
+
+<p>🌙 <b>Tithi:</b> ${tithi}</p>
+<p>⭐ <b>Nakshatra:</b> ${nak}</p>
+<p>🧘 <b>Yoga:</b> ${yoga}</p>
+<p>🔗 <b>Karana:</b> ${karana}</p>
+
+<br>
+
+<button onclick="window.open('https://wa.me/91XXXXXXXXXX','_blank')">
+Talk to Astrologer
+</button>
+
+</div>
+`
+
+}
+
+</script>
+
+</body>
+</html>
