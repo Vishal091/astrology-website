@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,9 +67,6 @@ let userLat = 28.6139
 let userLon = 77.2090
 
 function getLocation(){
-
-console.log("Button clicked")
-
 if(navigator.geolocation){
 navigator.geolocation.getCurrentPosition(
 (pos)=>{
@@ -78,19 +74,14 @@ userLat = pos.coords.latitude
 userLon = pos.coords.longitude
 calculatePanchang()
 },
-()=>{
-console.log("Using default location (Delhi)")
-calculatePanchang()
-}
+()=> calculatePanchang()
 )
 }else{
 calculatePanchang()
 }
-
 }
 
 function calculateRahuKaal(sunrise, sunset){
-
 let day = sunrise.getDay()
 let rahuMap = [8,2,7,5,6,4,3]
 
@@ -104,55 +95,58 @@ return {
 start: start.toLocaleTimeString(),
 end: end.toLocaleTimeString()
 }
-
 }
 
 function getMuhurat(tithiNum){
-
 if([4,9,14].includes(tithiNum)) return "❌ Ashubh"
 if([1,5,10].includes(tithiNum)) return "✅ Shubh"
-
 return "⚖️ Neutral"
 }
 
 function calculatePanchang(){
 
 let dateInput = document.getElementById("date").value
-
 if(!dateInput){
 alert("Please select date")
 return
 }
 
-// Approx sunrise/sunset
+// Safe sunrise/sunset
 let sunriseTime = new Date(dateInput + "T06:00:00")
 let sunsetTime = new Date(dateInput + "T18:30:00")
 
 let time = Astronomy.MakeTime(sunriseTime)
 
-// ✅ Sun longitude (fixed)
+// Sun longitude
 let earth = Astronomy.HelioVector("Earth", time)
 let sunLon = (earth.elon + 180) % 360
 
-// ✅ Moon longitude
+// Moon longitude
 let moonLon = Astronomy.EclipticLongitude("Moon", time)
+
+// ✅ FALLBACK FIX
+if(isNaN(sunLon) || isNaN(moonLon)){
+let safeTime = Astronomy.MakeTime(new Date())
+
+let safeEarth = Astronomy.HelioVector("Earth", safeTime)
+sunLon = (safeEarth.elon + 180) % 360
+moonLon = Astronomy.EclipticLongitude("Moon", safeTime)
+}
 
 // Tithi
 let diff = (moonLon - sunLon + 360) % 360
 let tithiNum = Math.floor(diff / 12) + 1
 if(tithiNum > 30) tithiNum = 30
+
 let paksha = tithiNum <= 15 ? "Shukla Paksha" : "Krishna Paksha"
 
 // Nakshatra
 let nakNum = Math.floor(moonLon / (360/27)) + 1
 if(nakNum > 27) nakNum = 27
-// Yoga
-let yogaNum = Math.floor((sunLon + moonLon) % 360 / (360/27)) + 1
-if(yogaNum > 27) yogaNum = 27
-// Karana
 
-let rahu = calculateRahuKaal(sunriseTime, sunsetTime)
-let muhurat = getMuhurat(tithiNum)
+// Yoga
+let yogaNum = Math.floor(((sunLon + moonLon) % 360) / (360/27)) + 1
+if(yogaNum > 27) yogaNum = 27
 
 // Names
 const tithiNames = [
@@ -187,8 +181,20 @@ const karanaNames = [
 "Bava","Balava","Kaulava","Taitila","Garaja","Vanija","Vishti",
 "Shakuni","Chatushpada","Naga","Kimstughna"
 ]
-let karanaNum = Math.floor(diff / 6) + 1
+
+// Karana (after array defined)
+let karanaNum = Math.floor(diff / 6)
 karanaNum = karanaNum % karanaNames.length
+
+// Safety
+if(isNaN(tithiNum)) tithiNum = 1
+if(isNaN(nakNum)) nakNum = 1
+if(isNaN(yogaNum)) yogaNum = 1
+if(isNaN(karanaNum)) karanaNum = 0
+
+let rahu = calculateRahuKaal(sunriseTime, sunsetTime)
+let muhurat = getMuhurat(tithiNum)
+
 // Display
 document.getElementById("result").innerHTML = `
 <div class="card">
@@ -201,10 +207,10 @@ document.getElementById("result").innerHTML = `
 
 <hr>
 
-<p>🌙 <b>Tithi:</b> ${tithiNames[tithiNum-1] || "N/A"} (${paksha})</p>
-<p>⭐ <b>Nakshatra:</b> ${nakNames[nakNum-1] || "N/A"}</p>
-<p>🧘 <b>Yoga:</b> ${yogaNames[yogaNum-1] || "N/A" }</p>
-<p>🔗 <b>Karana:</b> ${karanaNames[karanaNum-1] || "N/A"}</p>
+<p>🌙 <b>Tithi:</b> ${tithiNames[tithiNum-1] || "Calculating..."} (${paksha})</p>
+<p>⭐ <b>Nakshatra:</b> ${nakNames[nakNum-1] || "Calculating..."}</p>
+<p>🧘 <b>Yoga:</b> ${yogaNames[yogaNum-1] || "Calculating..."}</p>
+<p>🔗 <b>Karana:</b> ${karanaNames[karanaNum] || "Calculating..."}</p>
 
 <hr>
 
@@ -213,7 +219,7 @@ document.getElementById("result").innerHTML = `
 
 <br>
 
-<button onclick="window.open('https://wa.me/918708833177','_blank')">
+<button onclick="window.open('https://wa.me/91XXXXXXXXXX','_blank')">
 Talk to Astrologer
 </button>
 
@@ -226,4 +232,3 @@ Talk to Astrologer
 
 </body>
 </html>
-
