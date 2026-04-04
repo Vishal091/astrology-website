@@ -6,7 +6,10 @@
 
 <link rel="stylesheet" href="style.css">
 
-<script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.18/astronomy.browser.min.js"></script>
+
+
 
 <style>
 .container{
@@ -63,6 +66,11 @@ box-shadow:0 0 15px rgba(108,92,231,0.4);
 </div>
 
 <script>
+
+if(typeof Astronomy === "undefined"){
+alert("Astronomy library failed to load ❌")
+}
+
 
 let userLat = 28.6139
 let userLon = 77.2090
