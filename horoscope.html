@@ -1,49 +1,79 @@
-```html
+
 <!DOCTYPE html>
 <html>
-
 <head>
-<title>Daily Horoscope</title>
+<title>Today's Horoscope 🔮</title>
+<meta name="description" content="Daily horoscope for all zodiac signs. Accurate predictions for love, career and money.">
+
 <link rel="stylesheet" href="style.css">
+
+<style>
+.horo-card{
+background:#141A40;
+padding:20px;
+border-radius:12px;
+margin-bottom:20px;
+}
+</style>
 </head>
 
 <body>
 
 <header>
-
 <div class="logo">🔮 Astrodhani</div>
-
 <nav>
 <a href="index.html">Home</a>
-<a href="astrologers.html">Astrologers</a>
-<a href="horoscope.html">Horoscope</a>
+<a href="services.html">Services</a>
 </nav>
-
 </header>
 
-<section class="container">
+<div class="container">
 
-<h1>Daily Horoscope</h1>
+<h1>🔮 Today's Horoscope</h1>
 
-<div class="grid">
-
-<div class="card">Aries ♈</div>
-<div class="card">Taurus ♉</div>
-<div class="card">Gemini ♊</div>
-<div class="card">Cancer ♋</div>
-<div class="card">Leo ♌</div>
-<div class="card">Virgo ♍</div>
-<div class="card">Libra ♎</div>
-<div class="card">Scorpio ♏</div>
-<div class="card">Sagittarius ♐</div>
-<div class="card">Capricorn ♑</div>
-<div class="card">Aquarius ♒</div>
-<div class="card">Pisces ♓</div>
+<div id="horoscope"></div>
 
 </div>
 
-</section>
+<script>
+
+const signs = [
+"Aries","Taurus","Gemini","Cancer",
+"Leo","Virgo","Libra","Scorpio",
+"Sagittarius","Capricorn","Aquarius","Pisces"
+]
+
+function generateHoro(sign){
+
+let love = ["romantic energy","emotional clarity","unexpected connection"]
+let career = ["new opportunity","growth phase","important decision"]
+let money = ["financial gain","careful spending","profit chance"]
+
+return `
+<div class="horo-card">
+<h2>${sign}</h2>
+
+<p>❤️ Love: ${love[Math.floor(Math.random()*love.length)]}</p>
+<p>💼 Career: ${career[Math.floor(Math.random()*career.length)]}</p>
+<p>💰 Money: ${money[Math.floor(Math.random()*money.length)]}</p>
+
+<button onclick="window.open('https://wa.me/8708833177','_blank')">
+Talk to Astrologer
+</button>
+
+</div>
+`
+}
+
+let html = ""
+signs.forEach(sign=>{
+html += generateHoro(sign)
+})
+
+document.getElementById("horoscope").innerHTML = html
+
+</script>
 
 </body>
 </html>
-```
+
