@@ -114,7 +114,9 @@ let sunrise = Astronomy.SearchRiseSet("Sun", observer, +1, date, 1)
 let sunset = Astronomy.SearchRiseSet("Sun", observer, -1, date, 1)
 
 // Use sunrise time (IMPORTANT)
-let calcTime = sunrise.toDate()
+let calcTime = new Date(sunrise.date)
+
+
 
 // ✅ CORRECT ASTRO CALCULATION
 let sunEq = Astronomy.Equator("Sun", calcTime, observer, true, true)
@@ -176,9 +178,12 @@ const karanaNames = [
 
 // Format time
 
+
 function formatTime(t){
-return t.date.toDate().toLocaleTimeString()
+return new Date(t.date).toLocaleTimeString()
 }
+
+
 
 
 
