@@ -161,6 +161,10 @@ let isOffer = offers.includes(item)
 container.innerHTML += `
 <div class="service-card">
 
+<div class="urgency">
+⚡ Only ${Math.floor(Math.random()*3)+1} slots left today
+</div>
+
 <div class="service-icon">${icons[category]}</div>
 
 <div class="reviews">
