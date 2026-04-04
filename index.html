@@ -7,84 +7,125 @@
 
 <style>
 
-/* HERO */
+/* ===== HERO ===== */
 .hero{
-padding:120px 20px;
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
 text-align:center;
-background:linear-gradient(135deg,#141A40,#0B0F2A);
+padding:20px;
+
+background:
+linear-gradient(rgba(11,15,42,0.8), rgba(11,15,42,0.9)),
+url('https://images.unsplash.com/photo-1534447677768-be436bb09401');
+
+background-size:cover;
+background-position:center;
 }
 
 .hero h1{
-font-size:42px;
+font-size:48px;
 margin-bottom:10px;
 }
 
 .hero p{
-color:#bbb;
+color:#ddd;
 font-size:18px;
-margin-bottom:20px;
+margin-bottom:25px;
+max-width:600px;
 }
 
 .hero button{
-padding:12px 25px;
+padding:14px 30px;
 font-size:16px;
+background:linear-gradient(90deg,#6C5CE7,#00CEC9);
+border:none;
+border-radius:10px;
 }
 
-/* TRUST */
+/* ===== TRUST ===== */
 .trust{
 display:flex;
-justify-content:center;
 gap:40px;
-margin-top:40px;
+margin-top:30px;
 flex-wrap:wrap;
+justify-content:center;
 }
 
 .trust div{
-text-align:center;
+background:rgba(255,255,255,0.05);
+padding:15px 25px;
+border-radius:12px;
+backdrop-filter:blur(10px);
 }
 
-.trust h2{
-color:#F9CA24;
-}
-
-/* SECTION */
+/* ===== SECTION ===== */
 .section{
-padding:60px 20px;
+padding:80px 20px;
 }
 
 .section h2{
 text-align:center;
-margin-bottom:30px;
+margin-bottom:40px;
 color:#F9CA24;
 }
 
-/* CARD */
-.home-card{
-background:#141A40;
-padding:20px;
-border-radius:14px;
+/* ===== PREMIUM CARD ===== */
+.premium-card{
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(12px);
+border:1px solid rgba(255,255,255,0.1);
+padding:25px;
+border-radius:16px;
 text-align:center;
-transition:0.3s;
+transition:all 0.4s ease;
 }
 
-.home-card:hover{
-transform:translateY(-8px);
-box-shadow:0 0 20px rgba(108,92,231,0.4);
+.premium-card:hover{
+transform:translateY(-10px) scale(1.02);
+box-shadow:
+0 0 20px rgba(108,92,231,0.5),
+0 0 40px rgba(0,206,201,0.3);
 }
 
-/* TESTIMONIAL */
+/* ===== TESTIMONIAL ===== */
 .testimonial{
-background:#141A40;
-padding:20px;
-border-radius:14px;
 font-size:14px;
+line-height:1.6;
 }
 
-/* CTA */
+/* ===== CTA ===== */
 .cta{
 text-align:center;
-padding:80px 20px;
-background:linear-gradient(135deg,#1a1f4d,#0B0F2A);
+padding:100px 20px;
+background:
+linear-gradient(rgba(11,15,42,0.9), rgba(11,15,42,0.95)),
+url('https://images.unsplash.com/photo-1506744038136-46273834b3fb');
+background-size:cover;
+}
+
+.cta button{
+margin-top:20px;
+padding:14px 30px;
+border-radius:10px;
+background:linear-gradient(90deg,#F9CA24,#6C5CE7);
+border:none;
+}
+
+/* ===== ANIMATION ===== */
+.fade-in{
+opacity:0;
+transform:translateY(20px);
+animation:fadeUp 1s forwards;
+}
+
+@keyframes fadeUp{
+to{
+opacity:1;
+transform:translateY(0);
+}
 }
 
 </style>
@@ -102,9 +143,9 @@ background:linear-gradient(135deg,#1a1f4d,#0B0F2A);
 </header>
 
 <!-- HERO -->
-<div class="hero">
+<div class="hero fade-in">
 <h1>Unlock Your Destiny 🔮</h1>
-<p>Get accurate astrology guidance, remedies & healing from experts</p>
+<p>Accurate astrology, powerful remedies & spiritual healing for your life</p>
 
 <button onclick="window.location.href='services.html'">
 Explore Services
@@ -113,7 +154,7 @@ Explore Services
 <div class="trust">
 <div>
 <h2>50K+</h2>
-<p>Users</p>
+<p>Happy Clients</p>
 </div>
 <div>
 <h2>4.8⭐</h2>
@@ -132,10 +173,10 @@ Explore Services
 
 <div class="grid">
 
-<div class="home-card">❤️ Love Problem Solution</div>
-<div class="home-card">💰 Money & Career Growth</div>
-<div class="home-card">🧿 Evil Eye Removal</div>
-<div class="home-card">🔮 Reiki Healing</div>
+<div class="premium-card">❤️ Love Problem Solution</div>
+<div class="premium-card">💰 Money & Career Growth</div>
+<div class="premium-card">🧿 Evil Eye Removal</div>
+<div class="premium-card">🔮 Reiki Healing</div>
 
 </div>
 </div>
@@ -146,10 +187,10 @@ Explore Services
 
 <div class="grid">
 
-<div class="home-card">🔮 Rudraksha Bracelet</div>
-<div class="home-card">💎 Gemstone Ring</div>
-<div class="home-card">🧿 Nazar Protection Kit</div>
-<div class="home-card">📿 Spiritual Mala</div>
+<div class="premium-card">🔮 Rudraksha Bracelet</div>
+<div class="premium-card">💎 Gemstone Ring</div>
+<div class="premium-card">🧿 Nazar Protection Kit</div>
+<div class="premium-card">📿 Spiritual Mala</div>
 
 </div>
 </div>
@@ -160,15 +201,15 @@ Explore Services
 
 <div class="grid">
 
-<div class="testimonial">
+<div class="premium-card testimonial">
 Got my ex back within weeks 🙏 Highly recommended!
 </div>
 
-<div class="testimonial">
+<div class="premium-card testimonial">
 My business improved after remedies 💰
 </div>
 
-<div class="testimonial">
+<div class="premium-card testimonial">
 Very accurate predictions 🔮
 </div>
 
@@ -178,7 +219,7 @@ Very accurate predictions 🔮
 <!-- CTA -->
 <div class="cta">
 <h2>Talk to Astrologer Now</h2>
-<p>Get instant guidance on WhatsApp</p>
+<p>Instant guidance on WhatsApp</p>
 
 <button onclick="window.open('https://wa.me/918708833177','_blank')">
 Chat Now
@@ -191,4 +232,3 @@ Chat Now
 
 </body>
 </html>
-
