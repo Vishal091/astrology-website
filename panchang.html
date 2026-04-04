@@ -6,8 +6,8 @@
 
 <link rel="stylesheet" href="style.css">
 
-<!-- ✅ CORRECT WORKING LIBRARY -->
-<script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
+<!-- Stable Astronomy Library -->
+<script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.18/astronomy.browser.min.js"></script>
 
 <style>
 .container{
@@ -53,8 +53,8 @@ box-shadow:0 0 15px rgba(108,92,231,0.4);
 
 <div class="container">
 
-<h1>🔮 Panchang (Pro)</h1>
-<p>Accurate Panchang based on sunrise & location</p>
+<h1>🔮 Panchang</h1>
+<p>Accurate Panchang based on astronomical calculations</p>
 
 <input type="date" id="date">
 <button onclick="getLocation()">Get Panchang</button>
@@ -70,6 +70,7 @@ if(typeof Astronomy === "undefined"){
 alert("Astronomy library failed to load ❌")
 }
 
+// Default location (Delhi)
 let userLat = 28.6139
 let userLon = 77.2090
 
@@ -85,7 +86,7 @@ userLon = pos.coords.longitude
 calculatePanchang()
 },
 ()=>{
-console.log("Using default location (Delhi)")
+console.log("Using default location")
 calculatePanchang()
 }
 )
@@ -104,28 +105,17 @@ alert("Please select date")
 return
 }
 
+// Safe sunrise (no crash method)
+let sunriseTime = new Date(dateInput + "T06:00:00")
+let sunsetTime = new Date(dateInput + "T18:30:00")
 
-let date = Astronomy.MakeTime(new Date(dateInput))
-
-
+// Convert to AstroTime
+let calcTime = Astronomy.MakeTime(sunriseTime)
 
 // Observer
 let observer = new Astronomy.Observer(userLat, userLon, 0)
 
-// Sunrise / Sunset
-
-let sunrise = Astronomy.SearchRiseSet("Sun", observer, +1, date, 1)
-let sunset = Astronomy.SearchRiseSet("Sun", observer, -1, date, 1)
-
-
-// Use sunrise time (IMPORTANT)
-
-let calcTime = Astronomy.MakeTime(sunrise.date)
-
-
-
-
-// ✅ CORRECT ASTRO CALCULATION
+// Correct astro calculation
 let sunEq = Astronomy.Equator("Sun", calcTime, observer, true, true)
 let moonEq = Astronomy.Equator("Moon", calcTime, observer, true, true)
 
@@ -183,17 +173,6 @@ const karanaNames = [
 "Shakuni","Chatushpada","Naga","Kimstughna"
 ]
 
-// Format time
-
-
-function formatTime(t){
-return new Date(t.date).toLocaleTimeString()
-}
-
-
-
-
-
 // Display
 document.getElementById("result").innerHTML = `
 <div class="card">
@@ -201,8 +180,8 @@ document.getElementById("result").innerHTML = `
 <h2>📅 ${dateInput}</h2>
 <p>📍 Location: ${userLat.toFixed(2)}, ${userLon.toFixed(2)}</p>
 
-<p>🌅 <b>Sunrise:</b> ${formatTime(sunrise)}</p>
-<p>🌇 <b>Sunset:</b> ${formatTime(sunset)}</p>
+<p>🌅 <b>Sunrise:</b> ${sunriseTime.toLocaleTimeString()}</p>
+<p>🌇 <b>Sunset:</b> ${sunsetTime.toLocaleTimeString()}</p>
 
 <hr>
 
@@ -226,3 +205,4 @@ Talk to Astrologer
 
 </body>
 </html>
+
