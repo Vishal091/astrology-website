@@ -1,150 +1,194 @@
+
 <!DOCTYPE html>
 <html>
-
 <head>
 <title>Astrodhani</title>
-<link rel="stylesheet" href="./style.css">
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 
-<script>
-AOS.init();
-</script>
+<style>
+
+/* HERO */
+.hero{
+padding:120px 20px;
+text-align:center;
+background:linear-gradient(135deg,#141A40,#0B0F2A);
+}
+
+.hero h1{
+font-size:42px;
+margin-bottom:10px;
+}
+
+.hero p{
+color:#bbb;
+font-size:18px;
+margin-bottom:20px;
+}
+
+.hero button{
+padding:12px 25px;
+font-size:16px;
+}
+
+/* TRUST */
+.trust{
+display:flex;
+justify-content:center;
+gap:40px;
+margin-top:40px;
+flex-wrap:wrap;
+}
+
+.trust div{
+text-align:center;
+}
+
+.trust h2{
+color:#F9CA24;
+}
+
+/* SECTION */
+.section{
+padding:60px 20px;
+}
+
+.section h2{
+text-align:center;
+margin-bottom:30px;
+color:#F9CA24;
+}
+
+/* CARD */
+.home-card{
+background:#141A40;
+padding:20px;
+border-radius:14px;
+text-align:center;
+transition:0.3s;
+}
+
+.home-card:hover{
+transform:translateY(-8px);
+box-shadow:0 0 20px rgba(108,92,231,0.4);
+}
+
+/* TESTIMONIAL */
+.testimonial{
+background:#141A40;
+padding:20px;
+border-radius:14px;
+font-size:14px;
+}
+
+/* CTA */
+.cta{
+text-align:center;
+padding:80px 20px;
+background:linear-gradient(135deg,#1a1f4d,#0B0F2A);
+}
+
+</style>
 </head>
 
 <body>
 
 <header>
-
 <div class="logo">🔮 Astrodhani</div>
-
 <nav>
-<a href="index.html">Home</a>
-<a href="astrologers.html">Astrologers</a>
-<a href="horoscope.html">Horoscope</a>
-<a href="kundli.html">Free Kundli</a>
-<a href="ai-chat.html">Shubham Pandit Ji</a>
- 
-<button onclick="window.location.href='shop.html'">
-Explore Shop
-</button>
-
-<button onclick="window.location.href='services.html'">
-View Services
-</button>
-<a href="cart.html">🛒 Cart</a>
-
+<a href="services.html">Services</a>
+<a href="shop.html">Shop</a>
+<a href="cart.html">Cart</a>
 </nav>
-
-
-<div class="wallet">
-Wallet ₹<span id="wallet">500</span>
-<button onclick="recharge(100)">Add ₹100</button>
-<button onclick="recharge(500)">Add ₹500</button>
-<button onclick="recharge(1000)">Add ₹1000</button>
-</div>
 </header>
 
+<!-- HERO -->
+<div class="hero">
+<h1>Unlock Your Destiny 🔮</h1>
+<p>Get accurate astrology guidance, remedies & healing from experts</p>
 
-<section class="home-links">
-
-<div class="link-card">
-<h2>🛍️ Spiritual Store</h2>
-<p>Buy Rudraksha, Crystals & Yantras</p>
-<button onclick="window.location.href='shop.html'">
-Explore Shop
-</button>
-</div>
-
-<div class="link-card">
-<h2>🔮 Astrology Services</h2>
-<p>Chat, Kundli, Tarot & More</p>
 <button onclick="window.location.href='services.html'">
-View Services
+Explore Services
 </button>
 
+<div class="trust">
+<div>
+<h2>50K+</h2>
+<p>Users</p>
+</div>
+<div>
+<h2>4.8⭐</h2>
+<p>Rating</p>
+</div>
+<div>
+<h2>24/7</h2>
+<p>Support</p>
+</div>
+</div>
 </div>
 
-</section>
+<!-- SERVICES -->
+<div class="section">
+<h2>✨ Popular Services</h2>
 
-<section class="hero">
+<div class="grid">
 
-<h1 data-aos="fade-up">
-Discover Your Destiny
-</h1>
+<div class="home-card">❤️ Love Problem Solution</div>
+<div class="home-card">💰 Money & Career Growth</div>
+<div class="home-card">🧿 Evil Eye Removal</div>
+<div class="home-card">🔮 Reiki Healing</div>
 
-<p data-aos="fade-up" data-aos-delay="200">
-Talk to trusted astrologers across India and unlock your future
-</p>
+</div>
+</div>
 
-<button onclick="location.href='astrologers.html'" data-aos="zoom-in" data-aos-delay="400">
-Talk to an Astrologer
+<!-- PRODUCTS -->
+<div class="section">
+<h2>🛍️ Featured Products</h2>
+
+<div class="grid">
+
+<div class="home-card">🔮 Rudraksha Bracelet</div>
+<div class="home-card">💎 Gemstone Ring</div>
+<div class="home-card">🧿 Nazar Protection Kit</div>
+<div class="home-card">📿 Spiritual Mala</div>
+
+</div>
+</div>
+
+<!-- TESTIMONIALS -->
+<div class="section">
+<h2>💬 What People Say</h2>
+
+<div class="grid">
+
+<div class="testimonial">
+Got my ex back within weeks 🙏 Highly recommended!
+</div>
+
+<div class="testimonial">
+My business improved after remedies 💰
+</div>
+
+<div class="testimonial">
+Very accurate predictions 🔮
+</div>
+
+</div>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+<h2>Talk to Astrologer Now</h2>
+<p>Get instant guidance on WhatsApp</p>
+
+<button onclick="window.open('https://wa.me/91XXXXXXXXXX','_blank')">
+Chat Now
 </button>
-
-</section>
-
-
-<section class="container">
-
-<h2 style="text-align:center;margin-bottom:30px">
-Top Astrologers
-</h2>
-
-<div class="slider">
-
-<div class="slide-track">
-
-<div class="slide">
-<img src="https://randomuser.me/api/portraits/men/11.jpg">
-<p>Shubham Shastri</p>
 </div>
-
-<div class="slide">
-<img src="https://randomuser.me/api/portraits/men/55.jpg">
-<p>Shrinath Gautam</p>
-</div>
-
-<div class="slide">
-<img src="https://randomuser.me/api/portraits/men/32.jpg">
-<p>Vishal Vats</p>
-</div>
-
-<div class="slide">
-<img src="https://randomuser.me/api/portraits/men/25.jpg">
-<p>Rahul Gautam</p>
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<button onclick="location.href='astrologers.html'">
-Talk to Astrologer
-</button>
-
-</section>
-
-<section class="container">
-
-<h2>Top Astrologers</h2>
-
-<div class="grid" id="astrologers"></div>
-
-</section>
 
 <footer>
-
 © 2026 Astrodhani
-
 </footer>
-<script src="./script.js"></script>
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-<script>
-AOS.init();
-</script>
 </body>
 </html>
 
