@@ -87,8 +87,15 @@ let sunsetTime = new Date(dateInput + "T18:30:00")
 let time = Astronomy.MakeTime(sunriseTime)
 
 // ✅ STABLE METHOD (NO CRASH)
-let sunLon = Astronomy.EclipticLongitude("Sun", time)
+
+// ✅ Correct Sun longitude (from Earth heliocentric position)
+let earth = Astronomy.HelioVector("Earth", time)
+let sunLon = (earth.elon + 180) % 360
+
+// ✅ Moon longitude (works normally)
 let moonLon = Astronomy.EclipticLongitude("Moon", time)
+
+
 
 // Tithi
 let diff = (moonLon - sunLon + 360) % 360
