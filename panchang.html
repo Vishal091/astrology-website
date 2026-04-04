@@ -56,16 +56,40 @@ box-shadow:0 0 15px rgba(108,92,231,0.4);
 <div class="container">
 
 <h1>🔮 Panchang</h1>
-<p>Get accurate Panchang based on real planetary positions</p>
+<p>Accurate Panchang based on your location</p>
 
 <input type="date" id="date">
-<button onclick="calculatePanchang()">Get Panchang</button>
+<button onclick="getLocation()">Get Panchang</button>
 
 <div id="result"></div>
 
 </div>
 
 <script>
+
+let userLat = null
+let userLon = null
+
+function getLocation(){
+
+if(!navigator.geolocation){
+alert("Geolocation not supported")
+return
+}
+
+navigator.geolocation.getCurrentPosition(
+(position)=>{
+userLat = position.coords.latitude
+userLon = position.coords.longitude
+
+calculatePanchang()
+},
+()=>{
+alert("Location permission denied")
+}
+)
+
+}
 
 function calculatePanchang(){
 
@@ -77,11 +101,10 @@ return
 
 let date = new Date(dateInput)
 
-// Get Sun & Moon positions
+// Sun & Moon
 let sun = Astronomy.SunPosition(date)
 let moon = Astronomy.MoonPosition(date)
 
-// Longitude
 let sunLon = sun.elon
 let moonLon = moon.elon
 
@@ -97,6 +120,17 @@ let yogaNum = Math.floor((sunLon + moonLon) % 360 / (360/27)) + 1
 
 // Karana
 let karanaNum = Math.floor(diff / 6) + 1
+
+// Sunrise / Sunset
+let observer = new Astronomy.Observer(userLat, userLon, 0)
+
+let sunrise = Astronomy.SearchRiseSet("Sun", observer, +1, date, 1)
+let sunset = Astronomy.SearchRiseSet("Sun", observer, -1, date, 1)
+
+// Format time
+function formatTime(time){
+return new Date(time.date).toLocaleTimeString()
+}
 
 // Names
 const tithiNames = [
@@ -132,22 +166,21 @@ const karanaNames = [
 "Shakuni","Chatushpada","Naga","Kimstughna"
 ]
 
-// Get names
-let tithi = tithiNames[tithiNum-1]
-let nak = nakNames[nakNum-1]
-let yoga = yogaNames[yogaNum-1]
-let karana = karanaNames[karanaNum-1]
-
 // Display
 document.getElementById("result").innerHTML = `
 <div class="card">
 
 <h2>📅 ${dateInput}</h2>
 
-<p>🌙 <b>Tithi:</b> ${tithi}</p>
-<p>⭐ <b>Nakshatra:</b> ${nak}</p>
-<p>🧘 <b>Yoga:</b> ${yoga}</p>
-<p>🔗 <b>Karana:</b> ${karana}</p>
+<p>📍 Location: ${userLat.toFixed(2)}, ${userLon.toFixed(2)}</p>
+
+<p>🌅 <b>Sunrise:</b> ${formatTime(sunrise)}</p>
+<p>🌇 <b>Sunset:</b> ${formatTime(sunset)}</p>
+
+<p>🌙 <b>Tithi:</b> ${tithiNames[tithiNum-1]}</p>
+<p>⭐ <b>Nakshatra:</b> ${nakNames[nakNum-1]}</p>
+<p>🧘 <b>Yoga:</b> ${yogaNames[yogaNum-1]}</p>
+<p>🔗 <b>Karana:</b> ${karanaNames[karanaNum-1]}</p>
 
 <br>
 
