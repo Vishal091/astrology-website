@@ -6,10 +6,8 @@
 
 <link rel="stylesheet" href="style.css">
 
-
+<!-- ✅ CORRECT WORKING LIBRARY -->
 <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.18/astronomy.browser.min.js"></script>
-
-
 
 <style>
 .container{
@@ -67,10 +65,10 @@ box-shadow:0 0 15px rgba(108,92,231,0.4);
 
 <script>
 
+// Safety check
 if(typeof Astronomy === "undefined"){
 alert("Astronomy library failed to load ❌")
 }
-
 
 let userLat = 28.6139
 let userLon = 77.2090
@@ -82,11 +80,8 @@ console.log("Button clicked")
 if(navigator.geolocation){
 navigator.geolocation.getCurrentPosition(
 (pos)=>{
-console.log("Using real location")
-
 userLat = pos.coords.latitude
 userLon = pos.coords.longitude
-
 calculatePanchang()
 },
 ()=>{
@@ -118,20 +113,22 @@ let observer = new Astronomy.Observer(userLat, userLon, 0)
 let sunrise = Astronomy.SearchRiseSet("Sun", observer, +1, date, 1)
 let sunset = Astronomy.SearchRiseSet("Sun", observer, -1, date, 1)
 
-// Use sunrise time
+// Use sunrise time (IMPORTANT)
 let calcTime = sunrise.date
 
-// Sun & Moon positions
-let sun = Astronomy.SunPosition(calcTime)
-let moon = Astronomy.MoonPosition(calcTime)
+// ✅ CORRECT ASTRO CALCULATION
+let sunEq = Astronomy.Equator("Sun", calcTime, observer, true, true)
+let moonEq = Astronomy.Equator("Moon", calcTime, observer, true, true)
 
-let sunLon = sun.elon
-let moonLon = moon.elon
+let sunEcl = Astronomy.Ecliptic(sunEq)
+let moonEcl = Astronomy.Ecliptic(moonEq)
+
+let sunLon = sunEcl.elon
+let moonLon = moonEcl.elon
 
 // Tithi
 let diff = (moonLon - sunLon + 360) % 360
 let tithiNum = Math.floor(diff / 12) + 1
-
 let paksha = tithiNum <= 15 ? "Shukla Paksha" : "Krishna Paksha"
 
 // Nakshatra
