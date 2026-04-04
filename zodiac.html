@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Zodiac Horoscope</title>
+
+<meta name="description" content="Daily horoscope for your zodiac sign. Accurate astrology predictions for love, career and money.">
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+.zodiac-box{
+background:#141A40;
+padding:25px;
+border-radius:12px;
+margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">🔮 Astrodhani</div>
+<nav>
+<a href="index.html">Home</a>
+<a href="services.html">Services</a>
+</nav>
+</header>
+
+<div class="container">
+
+<h1 id="title"></h1>
+
+<div class="zodiac-box" id="content"></div>
+
+<button onclick="window.open('https://wa.me/91XXXXXXXXXX','_blank')">
+Talk to Astrologer
+</button>
+
+</div>
+
+<script>
+
+// GET SIGN FROM URL
+let params = new URLSearchParams(window.location.search)
+let sign = params.get("sign") || "Aries"
+
+// SET TITLE
+document.getElementById("title").innerText = sign + " Horoscope Today 🔮"
+
+// RANDOM CONTENT
+const love = ["romantic energy","new connection","emotional clarity"]
+const career = ["growth opportunity","important decision","success ahead"]
+const money = ["financial gain","careful spending","profit chance"]
+
+document.getElementById("content").innerHTML = `
+<p>❤️ Love: ${love[Math.floor(Math.random()*love.length)]}</p>
+<p>💼 Career: ${career[Math.floor(Math.random()*career.length)]}</p>
+<p>💰 Money: ${money[Math.floor(Math.random()*money.length)]}</p>
+`
+</script>
+
+</body>
+</html>
