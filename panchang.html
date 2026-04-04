@@ -195,6 +195,40 @@ if(isNaN(karanaNum)) karanaNum = 0
 let rahu = calculateRahuKaal(sunriseTime, sunsetTime)
 let muhurat = getMuhurat(tithiNum)
 
+function getChoghadiya(sunrise, sunset){
+
+const dayNames = ["Udveg","Chal","Labh","Amrit","Kaal","Shubh","Rog","Udveg"]
+const nightNames = ["Shubh","Amrit","Chal","Rog","Kaal","Labh","Udveg","Shubh"]
+
+let dayDuration = (sunset - sunrise) / 8
+let nightDuration = (24*60*60*1000 - (sunset - sunrise)) / 8
+
+let daySlots = []
+let nightSlots = []
+
+for(let i=0;i<8;i++){
+let start = new Date(sunrise.getTime() + i*dayDuration)
+let end = new Date(start.getTime() + dayDuration)
+
+daySlots.push({
+name: dayNames[i],
+time: start.toLocaleTimeString() + " - " + end.toLocaleTimeString()
+})
+}
+
+for(let i=0;i<8;i++){
+let start = new Date(sunset.getTime() + i*nightDuration)
+let end = new Date(start.getTime() + nightDuration)
+
+nightSlots.push({
+name: nightNames[i],
+time: start.toLocaleTimeString() + " - " + end.toLocaleTimeString()
+})
+}
+
+return {daySlots, nightSlots}
+}
+
 // Display
 document.getElementById("result").innerHTML = `
 <div class="card">
