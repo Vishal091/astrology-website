@@ -6,8 +6,8 @@
 
 <link rel="stylesheet" href="style.css">
 
-<!-- Stable Astronomy Library -->
-<script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.18/astronomy.browser.min.js"></script>
+<!-- Latest stable browser build -->
+<script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
 
 <style>
 .container{
@@ -57,7 +57,7 @@ box-shadow:0 0 15px rgba(108,92,231,0.4);
 <p>Accurate Panchang based on astronomical calculations</p>
 
 <input type="date" id="date">
-<button onclick="getLocation()">Get Panchang</button>
+<button onclick="calculatePanchang()">Get Panchang</button>
 
 <div id="result"></div>
 
@@ -70,32 +70,6 @@ if(typeof Astronomy === "undefined"){
 alert("Astronomy library failed to load ❌")
 }
 
-// Default location (Delhi)
-let userLat = 28.6139
-let userLon = 77.2090
-
-function getLocation(){
-
-console.log("Button clicked")
-
-if(navigator.geolocation){
-navigator.geolocation.getCurrentPosition(
-(pos)=>{
-userLat = pos.coords.latitude
-userLon = pos.coords.longitude
-calculatePanchang()
-},
-()=>{
-console.log("Using default location")
-calculatePanchang()
-}
-)
-}else{
-calculatePanchang()
-}
-
-}
-
 function calculatePanchang(){
 
 let dateInput = document.getElementById("date").value
@@ -105,25 +79,16 @@ alert("Please select date")
 return
 }
 
-// Safe sunrise (no crash method)
+// Safe sunrise approximation
 let sunriseTime = new Date(dateInput + "T06:00:00")
 let sunsetTime = new Date(dateInput + "T18:30:00")
 
 // Convert to AstroTime
-let calcTime = Astronomy.MakeTime(sunriseTime)
+let time = Astronomy.MakeTime(sunriseTime)
 
-// Observer
-let observer = new Astronomy.Observer(userLat, userLon, 0)
-
-// Correct astro calculation
-let sunEq = Astronomy.Equator("Sun", calcTime, observer, true, true)
-let moonEq = Astronomy.Equator("Moon", calcTime, observer, true, true)
-
-let sunEcl = Astronomy.Ecliptic(sunEq)
-let moonEcl = Astronomy.Ecliptic(moonEq)
-
-let sunLon = sunEcl.elon
-let moonLon = moonEcl.elon
+// ✅ STABLE METHOD (NO CRASH)
+let sunLon = Astronomy.EclipticLongitude("Sun", time)
+let moonLon = Astronomy.EclipticLongitude("Moon", time)
 
 // Tithi
 let diff = (moonLon - sunLon + 360) % 360
@@ -178,7 +143,6 @@ document.getElementById("result").innerHTML = `
 <div class="card">
 
 <h2>📅 ${dateInput}</h2>
-<p>📍 Location: ${userLat.toFixed(2)}, ${userLon.toFixed(2)}</p>
 
 <p>🌅 <b>Sunrise:</b> ${sunriseTime.toLocaleTimeString()}</p>
 <p>🌇 <b>Sunset:</b> ${sunsetTime.toLocaleTimeString()}</p>
@@ -205,4 +169,3 @@ Talk to Astrologer
 
 </body>
 </html>
-
