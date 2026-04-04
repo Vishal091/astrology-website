@@ -150,8 +150,7 @@ if(nakNum > 27) nakNum = 27
 let yogaNum = Math.floor((sunLon + moonLon) % 360 / (360/27)) + 1
 if(yogaNum > 27) yogaNum = 27
 // Karana
-let karanaNum = Math.floor(diff / 6) + 1
-karanaNum = karanaNum % karanaNames.length
+
 let rahu = calculateRahuKaal(sunriseTime, sunsetTime)
 let muhurat = getMuhurat(tithiNum)
 
@@ -188,7 +187,8 @@ const karanaNames = [
 "Bava","Balava","Kaulava","Taitila","Garaja","Vanija","Vishti",
 "Shakuni","Chatushpada","Naga","Kimstughna"
 ]
-
+let karanaNum = Math.floor(diff / 6) + 1
+karanaNum = karanaNum % karanaNames.length
 // Display
 document.getElementById("result").innerHTML = `
 <div class="card">
