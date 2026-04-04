@@ -9,7 +9,7 @@
 
 <style>
 .container{
-max-width:800px;
+max-width:900px;
 margin:auto;
 padding:40px 20px;
 text-align:center;
@@ -34,6 +34,11 @@ padding:25px;
 border-radius:16px;
 margin-top:20px;
 box-shadow:0 0 15px rgba(108,92,231,0.4);
+text-align:left;
+}
+h3{
+margin-top:20px;
+color:#F9CA24;
 }
 </style>
 </head>
@@ -52,7 +57,7 @@ box-shadow:0 0 15px rgba(108,92,231,0.4);
 <div class="container">
 
 <h1>🔮 Panchang (Pro)</h1>
-<p>Accurate Panchang with Rahu Kaal & Muhurat</p>
+<p>Accurate Panchang with Rahu Kaal, Muhurat & Choghadiya</p>
 
 <input type="date" id="date">
 <button onclick="getLocation()">Get Panchang</button>
@@ -103,16 +108,48 @@ if([1,5,10].includes(tithiNum)) return "✅ Shubh"
 return "⚖️ Neutral"
 }
 
+function getChoghadiya(sunrise, sunset){
+
+const dayNames = ["Udveg","Chal","Labh","Amrit","Kaal","Shubh","Rog","Udveg"]
+const nightNames = ["Shubh","Amrit","Chal","Rog","Kaal","Labh","Udveg","Shubh"]
+
+let dayDuration = (sunset - sunrise) / 8
+let nightDuration = (24*60*60*1000 - (sunset - sunrise)) / 8
+
+let daySlots = []
+let nightSlots = []
+
+for(let i=0;i<8;i++){
+let start = new Date(sunrise.getTime() + i*dayDuration)
+let end = new Date(start.getTime() + dayDuration)
+
+daySlots.push({
+name: dayNames[i],
+time: start.toLocaleTimeString() + " - " + end.toLocaleTimeString()
+})
+}
+
+for(let i=0;i<8;i++){
+let start = new Date(sunset.getTime() + i*nightDuration)
+let end = new Date(start.getTime() + nightDuration)
+
+nightSlots.push({
+name: nightNames[i],
+time: start.toLocaleTimeString() + " - " + end.toLocaleTimeString()
+})
+}
+
+return {daySlots, nightSlots}
+}
+
 function calculatePanchang(){
 
-let choghadiya = getChoghadiya(sunriseTime, sunsetTime)
 let dateInput = document.getElementById("date").value
 if(!dateInput){
 alert("Please select date")
 return
 }
 
-// Safe sunrise/sunset
 let sunriseTime = new Date(dateInput + "T06:00:00")
 let sunsetTime = new Date(dateInput + "T18:30:00")
 
@@ -125,10 +162,9 @@ let sunLon = (earth.elon + 180) % 360
 // Moon longitude
 let moonLon = Astronomy.EclipticLongitude("Moon", time)
 
-// ✅ FALLBACK FIX
+// fallback
 if(isNaN(sunLon) || isNaN(moonLon)){
 let safeTime = Astronomy.MakeTime(new Date())
-
 let safeEarth = Astronomy.HelioVector("Earth", safeTime)
 sunLon = (safeEarth.elon + 180) % 360
 moonLon = Astronomy.EclipticLongitude("Moon", safeTime)
@@ -138,7 +174,6 @@ moonLon = Astronomy.EclipticLongitude("Moon", safeTime)
 let diff = (moonLon - sunLon + 360) % 360
 let tithiNum = Math.floor(diff / 12) + 1
 if(tithiNum > 30) tithiNum = 30
-
 let paksha = tithiNum <= 15 ? "Shukla Paksha" : "Krishna Paksha"
 
 // Nakshatra
@@ -183,7 +218,7 @@ const karanaNames = [
 "Shakuni","Chatushpada","Naga","Kimstughna"
 ]
 
-// Karana (after array defined)
+// Karana
 let karanaNum = Math.floor(diff / 6)
 karanaNum = karanaNum % karanaNames.length
 
@@ -195,40 +230,7 @@ if(isNaN(karanaNum)) karanaNum = 0
 
 let rahu = calculateRahuKaal(sunriseTime, sunsetTime)
 let muhurat = getMuhurat(tithiNum)
-
-function getChoghadiya(sunrise, sunset){
-
-const dayNames = ["Udveg","Chal","Labh","Amrit","Kaal","Shubh","Rog","Udveg"]
-const nightNames = ["Shubh","Amrit","Chal","Rog","Kaal","Labh","Udveg","Shubh"]
-
-let dayDuration = (sunset - sunrise) / 8
-let nightDuration = (24*60*60*1000 - (sunset - sunrise)) / 8
-
-let daySlots = []
-let nightSlots = []
-
-for(let i=0;i<8;i++){
-let start = new Date(sunrise.getTime() + i*dayDuration)
-let end = new Date(start.getTime() + dayDuration)
-
-daySlots.push({
-name: dayNames[i],
-time: start.toLocaleTimeString() + " - " + end.toLocaleTimeString()
-})
-}
-
-for(let i=0;i<8;i++){
-let start = new Date(sunset.getTime() + i*nightDuration)
-let end = new Date(start.getTime() + nightDuration)
-
-nightSlots.push({
-name: nightNames[i],
-time: start.toLocaleTimeString() + " - " + end.toLocaleTimeString()
-})
-}
-
-return {daySlots, nightSlots}
-}
+let choghadiya = getChoghadiya(sunriseTime, sunsetTime)
 
 // Display
 document.getElementById("result").innerHTML = `
@@ -243,9 +245,9 @@ document.getElementById("result").innerHTML = `
 <hr>
 
 <p>🌙 <b>Tithi:</b> ${tithiNames[tithiNum-1] || "Calculating..."} (${paksha})</p>
-<p>⭐ <b>Nakshatra:</b> ${nakNames[nakNum-1] || "Calculating..."}</p>
-<p>🧘 <b>Yoga:</b> ${yogaNames[yogaNum-1] || "Calculating..."}</p>
-<p>🔗 <b>Karana:</b> ${karanaNames[karanaNum] || "Calculating..."}</p>
+<p>⭐ <b>Nakshatra:</b> ${nakNames[nakNum-1]}</p>
+<p>🧘 <b>Yoga:</b> ${yogaNames[yogaNum-1]}</p>
+<p>🔗 <b>Karana:</b> ${karanaNames[karanaNum]}</p>
 
 <hr>
 
@@ -259,8 +261,6 @@ ${choghadiya.daySlots.map(c => `<p>${c.name}: ${c.time}</p>`).join("")}
 
 <h3>🌙 Night Choghadiya</h3>
 ${choghadiya.nightSlots.map(c => `<p>${c.name}: ${c.time}</p>`).join("")}
-
-
 
 <br>
 
@@ -277,3 +277,4 @@ Talk to Astrologer
 
 </body>
 </html>
+
