@@ -9,7 +9,6 @@
 <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.min.js"></script>
 
 <style>
-
 .container{
 max-width:800px;
 margin:auto;
@@ -37,7 +36,6 @@ border-radius:16px;
 margin-top:20px;
 box-shadow:0 0 15px rgba(108,92,231,0.4);
 }
-
 </style>
 </head>
 
@@ -66,28 +64,40 @@ box-shadow:0 0 15px rgba(108,92,231,0.4);
 
 <script>
 
-let userLat = null
-let userLon = null
+let userLat = 28.6139
+let userLon = 77.2090
 
 function getLocation(){
 
+console.log("Button clicked")
+
+if(navigator.geolocation){
 navigator.geolocation.getCurrentPosition(
 (pos)=>{
+console.log("Using real location")
+
 userLat = pos.coords.latitude
 userLon = pos.coords.longitude
 
 calculatePanchang()
 },
-()=> alert("Location permission denied")
+()=>{
+console.log("Using default location (Delhi)")
+calculatePanchang()
+}
 )
+}else{
+calculatePanchang()
+}
 
 }
 
 function calculatePanchang(){
 
 let dateInput = document.getElementById("date").value
+
 if(!dateInput){
-alert("Select date")
+alert("Please select date")
 return
 }
 
@@ -96,14 +106,14 @@ let date = new Date(dateInput)
 // Observer
 let observer = new Astronomy.Observer(userLat, userLon, 0)
 
-// Sunrise & Sunset
+// Sunrise / Sunset
 let sunrise = Astronomy.SearchRiseSet("Sun", observer, +1, date, 1)
 let sunset = Astronomy.SearchRiseSet("Sun", observer, -1, date, 1)
 
-// ⭐ IMPORTANT: Use sunrise time for Panchang
+// Use sunrise time
 let calcTime = sunrise.date
 
-// Sun & Moon at sunrise
+// Sun & Moon positions
 let sun = Astronomy.SunPosition(calcTime)
 let moon = Astronomy.MoonPosition(calcTime)
 
@@ -114,7 +124,6 @@ let moonLon = moon.elon
 let diff = (moonLon - sunLon + 360) % 360
 let tithiNum = Math.floor(diff / 12) + 1
 
-// Paksha
 let paksha = tithiNum <= 15 ? "Shukla Paksha" : "Krishna Paksha"
 
 // Nakshatra
@@ -170,7 +179,7 @@ document.getElementById("result").innerHTML = `
 <div class="card">
 
 <h2>📅 ${dateInput}</h2>
-<p>📍 ${userLat.toFixed(2)}, ${userLon.toFixed(2)}</p>
+<p>📍 Location: ${userLat.toFixed(2)}, ${userLon.toFixed(2)}</p>
 
 <p>🌅 <b>Sunrise:</b> ${formatTime(sunrise)}</p>
 <p>🌇 <b>Sunset:</b> ${formatTime(sunset)}</p>
@@ -197,4 +206,3 @@ Talk to Astrologer
 
 </body>
 </html>
-
