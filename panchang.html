@@ -104,17 +104,24 @@ alert("Please select date")
 return
 }
 
-let date = new Date(dateInput)
+
+let date = Astronomy.MakeTime(new Date(dateInput))
+
+
 
 // Observer
 let observer = new Astronomy.Observer(userLat, userLon, 0)
 
 // Sunrise / Sunset
+
 let sunrise = Astronomy.SearchRiseSet("Sun", observer, +1, date, 1)
 let sunset = Astronomy.SearchRiseSet("Sun", observer, -1, date, 1)
 
+
 // Use sunrise time (IMPORTANT)
-let calcTime = new Date(sunrise.date)
+
+let calcTime = Astronomy.MakeTime(sunrise.date)
+
 
 
 
