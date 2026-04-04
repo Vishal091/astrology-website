@@ -269,10 +269,13 @@ Chat Now
 </button>
 </div>
 
+
 <div class="whatsapp-float"
 onclick="window.open('https://wa.me/918708833177','_blank')">
-💬
+💬 Talk to Astrologer
 </div>
+
+
 
 <footer>
 © 2026 Astrodhani
@@ -326,7 +329,36 @@ el.style.transform = `translate(${x*20}px, ${y*20}px)`
 })
 })
 
+document.addEventListener("mouseleave", function(e){
+if(e.clientY < 0){
+document.getElementById("exit-popup").style.display = "block"
+}
+})
+
+
 </script>
+
+<div id="exit-popup" style="
+display:none;
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:#141A40;
+padding:30px;
+border-radius:12px;
+z-index:9999;
+text-align:center;
+">
+
+<h2>Wait! 🔮</h2>
+<p>Get instant guidance on WhatsApp before leaving</p>
+
+<button onclick="window.open('https://wa.me/918708833177','_blank')">
+Chat Now
+</button>
+
+</div>
 
 </body>
 </html>
