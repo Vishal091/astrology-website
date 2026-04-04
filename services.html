@@ -174,12 +174,23 @@ container.innerHTML += `
 
 <h3>${item}</h3>
 
-${isOffer ? `
-<div class="old-price">₹${price+800}</div>
+
+<div class="old-price">₹${price + 1500}</div>
 <div class="new-price">₹${price}</div>
-<div class="urgency">⚡ Only ${Math.floor(Math.random()*5)+1} slots left</div>
-<div class="social-proof">🔥 ${Math.floor(Math.random()*150)+50} booked today</div>
-` : `<p>₹${price}</p>`}
+
+<p style="font-size:12px;color:#00ffae">
+⚡ Results start within 24–72 hours
+</p>
+
+<div class="urgency">
+⚡ Only ${Math.floor(Math.random()*3)+1} slots left today
+</div>
+
+<div class="social-proof">
+🔥 ${Math.floor(Math.random()*120)+80} people booked today
+</div>
+
+
 
 <button class="book-btn">Book Now</button>
 
