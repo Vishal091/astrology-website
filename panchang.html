@@ -6,7 +6,6 @@
 
 <link rel="stylesheet" href="style.css">
 
-<!-- Latest stable browser build -->
 <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
 
 <style>
@@ -53,11 +52,11 @@ box-shadow:0 0 15px rgba(108,92,231,0.4);
 
 <div class="container">
 
-<h1>🔮 Panchang</h1>
-<p>Accurate Panchang based on astronomical calculations</p>
+<h1>🔮 Panchang (Pro)</h1>
+<p>Accurate Panchang with Rahu Kaal & Muhurat</p>
 
 <input type="date" id="date">
-<button onclick="calculatePanchang()">Get Panchang</button>
+<button onclick="getLocation()">Get Panchang</button>
 
 <div id="result"></div>
 
@@ -65,9 +64,55 @@ box-shadow:0 0 15px rgba(108,92,231,0.4);
 
 <script>
 
-// Safety check
-if(typeof Astronomy === "undefined"){
-alert("Astronomy library failed to load ❌")
+let userLat = 28.6139
+let userLon = 77.2090
+
+function getLocation(){
+
+console.log("Button clicked")
+
+if(navigator.geolocation){
+navigator.geolocation.getCurrentPosition(
+(pos)=>{
+userLat = pos.coords.latitude
+userLon = pos.coords.longitude
+calculatePanchang()
+},
+()=>{
+console.log("Using default location (Delhi)")
+calculatePanchang()
+}
+)
+}else{
+calculatePanchang()
+}
+
+}
+
+function calculateRahuKaal(sunrise, sunset){
+
+let day = sunrise.getDay()
+let rahuMap = [8,2,7,5,6,4,3]
+
+let total = (sunset - sunrise)/8
+let index = rahuMap[day] - 1
+
+let start = new Date(sunrise.getTime() + total*index)
+let end = new Date(start.getTime() + total)
+
+return {
+start: start.toLocaleTimeString(),
+end: end.toLocaleTimeString()
+}
+
+}
+
+function getMuhurat(tithiNum){
+
+if([4,9,14].includes(tithiNum)) return "❌ Ashubh"
+if([1,5,10].includes(tithiNum)) return "✅ Shubh"
+
+return "⚖️ Neutral"
 }
 
 function calculatePanchang(){
@@ -79,23 +124,18 @@ alert("Please select date")
 return
 }
 
-// Safe sunrise approximation
+// Approx sunrise/sunset
 let sunriseTime = new Date(dateInput + "T06:00:00")
 let sunsetTime = new Date(dateInput + "T18:30:00")
 
-// Convert to AstroTime
 let time = Astronomy.MakeTime(sunriseTime)
 
-// ✅ STABLE METHOD (NO CRASH)
-
-// ✅ Correct Sun longitude (from Earth heliocentric position)
+// ✅ Sun longitude (fixed)
 let earth = Astronomy.HelioVector("Earth", time)
 let sunLon = (earth.elon + 180) % 360
 
-// ✅ Moon longitude (works normally)
+// ✅ Moon longitude
 let moonLon = Astronomy.EclipticLongitude("Moon", time)
-
-
 
 // Tithi
 let diff = (moonLon - sunLon + 360) % 360
@@ -110,6 +150,9 @@ let yogaNum = Math.floor((sunLon + moonLon) % 360 / (360/27)) + 1
 
 // Karana
 let karanaNum = Math.floor(diff / 6) + 1
+
+let rahu = calculateRahuKaal(sunriseTime, sunsetTime)
+let muhurat = getMuhurat(tithiNum)
 
 // Names
 const tithiNames = [
@@ -150,6 +193,7 @@ document.getElementById("result").innerHTML = `
 <div class="card">
 
 <h2>📅 ${dateInput}</h2>
+<p>📍 Location: ${userLat.toFixed(2)}, ${userLon.toFixed(2)}</p>
 
 <p>🌅 <b>Sunrise:</b> ${sunriseTime.toLocaleTimeString()}</p>
 <p>🌇 <b>Sunset:</b> ${sunsetTime.toLocaleTimeString()}</p>
@@ -161,9 +205,14 @@ document.getElementById("result").innerHTML = `
 <p>🧘 <b>Yoga:</b> ${yogaNames[yogaNum-1]}</p>
 <p>🔗 <b>Karana:</b> ${karanaNames[karanaNum-1]}</p>
 
+<hr>
+
+<p>☠️ <b>Rahu Kaal:</b> ${rahu.start} - ${rahu.end}</p>
+<p>🪔 <b>Muhurat:</b> ${muhurat}</p>
+
 <br>
 
-<button onclick="window.open('https://wa.me/91XXXXXXXXXX','_blank')">
+<button onclick="window.open('https://wa.me/918708833177','_blank')">
 Talk to Astrologer
 </button>
 
@@ -176,3 +225,4 @@ Talk to Astrologer
 
 </body>
 </html>
+
