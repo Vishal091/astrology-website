@@ -105,6 +105,7 @@ return "⚖️ Neutral"
 
 function calculatePanchang(){
 
+let choghadiya = getChoghadiya(sunriseTime, sunsetTime)
 let dateInput = document.getElementById("date").value
 if(!dateInput){
 alert("Please select date")
@@ -250,6 +251,16 @@ document.getElementById("result").innerHTML = `
 
 <p>☠️ <b>Rahu Kaal:</b> ${rahu.start} - ${rahu.end}</p>
 <p>🪔 <b>Muhurat:</b> ${muhurat}</p>
+
+<hr>
+
+<h3>🕒 Day Choghadiya</h3>
+${choghadiya.daySlots.map(c => `<p>${c.name}: ${c.time}</p>`).join("")}
+
+<h3>🌙 Night Choghadiya</h3>
+${choghadiya.nightSlots.map(c => `<p>${c.name}: ${c.time}</p>`).join("")}
+
+
 
 <br>
 
