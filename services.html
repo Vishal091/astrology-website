@@ -161,7 +161,7 @@ let isOffer = offers.includes(item)
 container.innerHTML += `
 <div class="service-card">
 
-
+${Math.random()>0.7 ? `<div class="badge trending">🔥 Bestseller</div>` : ""}
 <div class="service-icon">${icons[category]}</div>
 
 <div class="reviews">
