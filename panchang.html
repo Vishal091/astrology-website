@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,6 +37,7 @@ margin-top:20px;
 box-shadow:0 0 15px rgba(108,92,231,0.4);
 text-align:left;
 }
+
 h3{
 margin-top:20px;
 color:#F9CA24;
@@ -57,7 +59,7 @@ color:#F9CA24;
 <div class="container">
 
 <h1>🔮 Panchang (Pro)</h1>
-<p>Accurate Panchang with Rahu Kaal, Muhurat & Choghadiya</p>
+<p>Accurate Panchang with Rahu Kaal, Muhurat, Choghadiya & Festivals</p>
 
 <input type="date" id="date">
 <button onclick="getLocation()">Get Panchang</button>
@@ -142,6 +144,58 @@ time: start.toLocaleTimeString() + " - " + end.toLocaleTimeString()
 return {daySlots, nightSlots}
 }
 
+// 🔥 ADVANCED FESTIVAL ENGINE
+function detectFestival(tithi, paksha, nak, month){
+
+let f = []
+
+if(tithi === "Amavasya" && paksha === "Krishna Paksha" && month === "Kartik"){
+f.push("🪔 Diwali")
+}
+
+if(tithi === "Ashtami" && paksha === "Krishna Paksha" && month === "Bhadrapada" && nak === "Rohini"){
+f.push("🎂 Krishna Janmashtami")
+}
+
+if(tithi === "Chaturdashi" && paksha === "Krishna Paksha" && month === "Phalguna"){
+f.push("🕉️ Maha Shivratri")
+}
+
+if(tithi === "Navami" && paksha === "Shukla Paksha" && month === "Chaitra"){
+f.push("🏹 Ram Navami")
+}
+
+if(tithi === "Chaturthi" && paksha === "Shukla Paksha" && month === "Bhadrapada"){
+f.push("🐘 Ganesh Chaturthi")
+}
+
+if(tithi === "Ashtami" && paksha === "Shukla Paksha" && month === "Ashwin"){
+f.push("🌺 Durga Ashtami")
+}
+
+if(tithi === "Dashami" && paksha === "Shukla Paksha" && month === "Ashwin"){
+f.push("🔥 Dussehra")
+}
+
+if(tithi === "Purnima" && month === "Ashadha"){
+f.push("🧘 Guru Purnima")
+}
+
+if(tithi === "Tritiya" && paksha === "Shukla Paksha" && month === "Vaishakha"){
+f.push("🌿 Akshaya Tritiya")
+}
+
+if(tithi === "Panchami" && month === "Shravana"){
+f.push("🐍 Nag Panchami")
+}
+
+if(tithi === "Ekadashi"){
+f.push("🧿 Ekadashi")
+}
+
+return f
+}
+
 function calculatePanchang(){
 
 let dateInput = document.getElementById("date").value
@@ -170,6 +224,16 @@ sunLon = (safeEarth.elon + 180) % 360
 moonLon = Astronomy.EclipticLongitude("Moon", safeTime)
 }
 
+// Lunar month
+const months = [
+"Chaitra","Vaishakha","Jyeshtha","Ashadha",
+"Shravana","Bhadrapada","Ashwin","Kartik",
+"Margashirsha","Pausha","Magha","Phalguna"
+]
+
+let monthIndex = Math.floor(sunLon / 30) % 12
+let lunarMonth = months[monthIndex]
+
 // Tithi
 let diff = (moonLon - sunLon + 360) % 360
 let tithiNum = Math.floor(diff / 12) + 1
@@ -185,42 +249,22 @@ let yogaNum = Math.floor(((sunLon + moonLon) % 360) / (360/27)) + 1
 if(yogaNum > 27) yogaNum = 27
 
 // Names
-const tithiNames = [
+const tithiNames = [...Array(30)].map((_,i)=>[
 "Pratipada","Dwitiya","Tritiya","Chaturthi","Panchami","Shashthi",
 "Saptami","Ashtami","Navami","Dashami","Ekadashi","Dwadashi",
 "Trayodashi","Chaturdashi","Purnima",
 "Pratipada","Dwitiya","Tritiya","Chaturthi","Panchami","Shashthi",
 "Saptami","Ashtami","Navami","Dashami","Ekadashi","Dwadashi",
 "Trayodashi","Chaturdashi","Amavasya"
-]
+][i])
 
-const nakNames = [
-"Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra",
-"Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni",
-"Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha",
-"Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishta",
-"Shatabhisha","Purva Bhadrapada","Uttara Bhadrapada","Revati"
-]
+const nakNames = ["Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra","Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni","Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha","Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishta","Shatabhisha","Purva Bhadrapada","Uttara Bhadrapada","Revati"]
 
-const yogaNames = [
-"Vishkumbha","Priti","Ayushman","Saubhagya","Shobhana","Atiganda",
-"Sukarman","Dhriti","Shoola","Ganda","Vriddhi","Dhruva",
-"Vyaghata","Harshana","Vajra","Siddhi","Vyatipata","Variyana",
-"Parigha","Shiva","Siddha","Sadhya","Shubha","Shukla",
-"Brahma","Indra","Vaidhriti"
-]
+const yogaNames = ["Vishkumbha","Priti","Ayushman","Saubhagya","Shobhana","Atiganda","Sukarman","Dhriti","Shoola","Ganda","Vriddhi","Dhruva","Vyaghata","Harshana","Vajra","Siddhi","Vyatipata","Variyana","Parigha","Shiva","Siddha","Sadhya","Shubha","Shukla","Brahma","Indra","Vaidhriti"]
 
-const karanaNames = [
-"Bava","Balava","Kaulava","Taitila","Garaja","Vanija","Vishti",
-"Bava","Balava","Kaulava","Taitila","Garaja","Vanija","Vishti",
-"Bava","Balava","Kaulava","Taitila","Garaja","Vanija","Vishti",
-"Bava","Balava","Kaulava","Taitila","Garaja","Vanija","Vishti",
-"Shakuni","Chatushpada","Naga","Kimstughna"
-]
+const karanaNames = ["Bava","Balava","Kaulava","Taitila","Garaja","Vanija","Vishti","Shakuni","Chatushpada","Naga","Kimstughna"]
 
-// Karana
-let karanaNum = Math.floor(diff / 6)
-karanaNum = karanaNum % karanaNames.length
+let karanaNum = Math.floor(diff / 6) % karanaNames.length
 
 // Safety
 if(isNaN(tithiNum)) tithiNum = 1
@@ -232,19 +276,35 @@ let rahu = calculateRahuKaal(sunriseTime, sunsetTime)
 let muhurat = getMuhurat(tithiNum)
 let choghadiya = getChoghadiya(sunriseTime, sunsetTime)
 
+let festivals = detectFestival(
+tithiNames[tithiNum-1],
+paksha,
+nakNames[nakNum-1],
+lunarMonth
+)
+
 // Display
 document.getElementById("result").innerHTML = `
 <div class="card">
 
 <h2>📅 ${dateInput}</h2>
 <p>📍 Location: ${userLat.toFixed(2)}, ${userLon.toFixed(2)}</p>
+<p>📅 <b>Lunar Month:</b> ${lunarMonth}</p>
+
+${festivals.length ? `
+<hr>
+<h3>🎉 Festivals Today</h3>
+${festivals.map(f => `<p>${f}</p>`).join("")}
+` : ""}
+
+<hr>
 
 <p>🌅 <b>Sunrise:</b> ${sunriseTime.toLocaleTimeString()}</p>
 <p>🌇 <b>Sunset:</b> ${sunsetTime.toLocaleTimeString()}</p>
 
 <hr>
 
-<p>🌙 <b>Tithi:</b> ${tithiNames[tithiNum-1] || "Calculating..."} (${paksha})</p>
+<p>🌙 <b>Tithi:</b> ${tithiNames[tithiNum-1]} (${paksha})</p>
 <p>⭐ <b>Nakshatra:</b> ${nakNames[nakNum-1]}</p>
 <p>🧘 <b>Yoga:</b> ${yogaNames[yogaNum-1]}</p>
 <p>🔗 <b>Karana:</b> ${karanaNames[karanaNum]}</p>
@@ -270,7 +330,6 @@ Talk to Astrologer
 
 </div>
 `
-
 }
 
 </script>
