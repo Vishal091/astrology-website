@@ -76,37 +76,43 @@ calculatePanchang()
 }else calculatePanchang()
 }
 
-// 🔥 TITHI END TIME
-function getTithiEndTime(sunLon, moonLon, time){
+// ✅ FIXED TITHI END TIME
+function getTithiEndTime(sunLon, moonLon){
 let diff = (moonLon - sunLon + 360) % 360
 let currentTithi = Math.floor(diff / 12)
 
 let target = (currentTithi + 1) * 12
-
 let relativeSpeed = 12.2
+
 let remaining = target - diff
 if(remaining < 0) remaining += 360
 
 let hours = (remaining / relativeSpeed) * 24
 
-let endTime = new Date(time.ut)
+let endTime = new Date()
 endTime.setHours(endTime.getHours() + hours)
 
 return endTime.toLocaleTimeString()
 }
 
-// 🔥 KARANA
+// ✅ FIXED KARANA
 function getKarana(diff){
 const karanas = ["बव","बालव","कौलव","तैतिल","गर","वणिज","विष्टि"]
-let index = Math.floor(diff / 6) % 7
+let index = Math.floor(diff / 6) % karanas.length
+if(index < 0) index = 0
 return karanas[index]
 }
 
-// 🔥 YOGA
+// ✅ FIXED YOGA
 function getYoga(sunLon, moonLon){
 const yogas = ["विष्कुम्भ","प्रीति","आयुष्मान","सौभाग्य","शोभन","अतिगंड","सुकर्मा","धृति","शूल","गंड","वृद्धि","ध्रुव","व्याघात","हर्षण","वज्र","सिद्धि","व्यतिपात","वरीयान","परिघ","शिव","सिद्ध","साध्य","शुभ","शुक्ल","ब्रह्म","इंद्र","वैधृति"]
+
 let total = (sunLon + moonLon) % 360
 let index = Math.floor(total / (360/27))
+
+if(index < 0) index = 0
+if(index > 26) index = 26
+
 return yogas[index]
 }
 
@@ -155,11 +161,12 @@ let nakName = nakNames[nakNum]
 
 let weekday = new Date(dateInput).toLocaleDateString('hi-IN',{weekday:'long'})
 
-// 🔥 REAL VALUES
-let tithiEnd = getTithiEndTime(sunLon, moonLon, time)
+// ✅ FINAL VALUES
+let tithiEnd = getTithiEndTime(sunLon, moonLon)
 let karana = getKarana(diff)
 let yoga = getYoga(sunLon, moonLon)
 
+// OUTPUT (UNCHANGED FORMAT)
 let output = `
 🕉️✨ आधिकारिक वैदिक पंचांग ✨🕉️
 
