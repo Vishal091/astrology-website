@@ -131,9 +131,18 @@ if(!dateInput){ alert("तिथि चुनें"); return }
 let sunrise = new Date(dateInput+"T06:00:00")
 let time = Astronomy.MakeTime(sunrise)
 
-let earth = Astronomy.HelioVector("Earth", time)
-let sunLon = (earth.elon + 180) % 360
-let moonLon = Astronomy.EclipticLongitude("Moon", time)
+
+let sunPos = Astronomy.GeoVector("Sun", time, true)
+let sunLon = Astronomy.Ecliptic(sunPos).elon
+
+if(isNaN(sunLon) || isNaN(moonLon)){
+return alert("Calculation error — try again")
+}
+
+
+let moonPos = Astronomy.GeoVector("Moon", time, true)
+let moonLon = Astronomy.Ecliptic(moonPos).elon
+
 
 // fallback
 if(isNaN(sunLon) || isNaN(moonLon)){
