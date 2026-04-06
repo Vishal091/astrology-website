@@ -6,6 +6,7 @@
 
 <link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
 <style>
 body{
@@ -37,6 +38,7 @@ border:none;
 border-radius:8px;
 cursor:pointer;
 font-weight:bold;
+margin:5px;
 }
 </style>
 </head>
@@ -76,7 +78,7 @@ calculatePanchang()
 }else calculatePanchang()
 }
 
-// 🔥 LAHIRI AYANAMSA
+// AYANAMSA
 function getAyanamsa(date){
 let year = date.getUTCFullYear()
 return 23.85675 + (1.396042 * (year - 2000)) / 100
@@ -89,21 +91,18 @@ if(corrected < 0) corrected += 360
 return corrected
 }
 
-// 🌅 SUNRISE (REAL)
+// SUNRISE
 function getSunrise(lat, lon, date){
 let observer = new Astronomy.Observer(lat, lon, 0)
 let time = Astronomy.MakeTime(date)
-
 let sunrise = Astronomy.SearchRiseSet('Sun', observer, +1, time, 1)
-
 return sunrise ? sunrise.date : date
 }
 
-// 🔥 ITERATIVE TITHI END
+// TITHI END
 function getTithiEndTime(sunLon, moonLon, startTime){
 
 let target = (Math.floor((moonLon - sunLon + 360)%360 / 12) + 1) * 12
-
 let current = new Date(startTime)
 
 for(let i=0;i<600;i++){
@@ -130,17 +129,14 @@ return "—"
 
 // KARANA
 function getKarana(diff){
-const k = [
-"बव","बालव","कौलव","तैतिल","गर","वणिज","विष्टि",
-"बव","बालव","कौलव","तैतिल","गर","वणिज","विष्टि"
-]
+const k = ["बव","बालव","कौलव","तैतिल","गर","वणिज","विष्टि",
+"बव","बालव","कौलव","तैतिल","गर","वणिज","विष्टि"]
 return k[Math.floor(diff / 6) % k.length]
 }
 
 // YOGA
 function getYoga(sunLon, moonLon){
 const y = ["विष्कुम्भ","प्रीति","आयुष्मान","सौभाग्य","शोभन","अतिगंड","सुकर्मा","धृति","शूल","गंड","वृद्धि","ध्रुव","व्याघात","हर्षण","वज्र","सिद्धि","व्यतिपात","वरीयान","परिघ","शिव","सिद्ध","साध्य","शुभ","शुक्ल","ब्रह्म","इंद्र","वैधृति"]
-
 let total = (sunLon + moonLon) % 360
 return y[Math.floor(total / (360/27))]
 }
@@ -158,13 +154,9 @@ let baseDate = new Date(dateInput)
 let sunrise = getSunrise(userLat, userLon, baseDate)
 let time = Astronomy.MakeTime(sunrise)
 
-// SUN
-let sunPos = Astronomy.GeoVector("Sun", time, true)
-let sunLon = applyAyanamsa(Astronomy.Ecliptic(sunPos).elon, sunrise)
-
-// MOON
-let moonPos = Astronomy.GeoVector("Moon", time, true)
-let moonLon = applyAyanamsa(Astronomy.Ecliptic(moonPos).elon, sunrise)
+// SUN & MOON
+let sunLon = applyAyanamsa(Astronomy.Ecliptic(Astronomy.GeoVector("Sun", time, true)).elon, sunrise)
+let moonLon = applyAyanamsa(Astronomy.Ecliptic(Astronomy.GeoVector("Moon", time, true)).elon, sunrise)
 
 if(isNaN(sunLon) || isNaN(moonLon)){
 alert("Calculation error")
@@ -174,7 +166,6 @@ return
 // TITHI
 let diff = (moonLon - sunLon + 360) % 360
 let tithiNum = Math.floor(diff / 12) + 1
-
 let paksha = tithiNum <= 15 ? "शुक्ल पक्ष" : "कृष्ण पक्ष"
 
 const tithiNames = [
@@ -189,13 +180,10 @@ const nakNames = [
 ]
 
 let tithiName = tithiNames[tithiNum-1]
-
-let nakIndex = Math.floor((moonLon % 360) / (360/27))
-let nakName = nakNames[nakIndex]
-
+let nakName = nakNames[Math.floor((moonLon % 360) / (360/27))]
 let weekday = new Date(dateInput).toLocaleDateString('hi-IN',{weekday:'long'})
 
-// FINAL VALUES
+// FINAL
 let tithiEnd = getTithiEndTime(sunLon, moonLon, sunrise)
 let karana = getKarana(diff)
 let yoga = getYoga(sunLon, moonLon)
@@ -284,11 +272,51 @@ let output = `
 🚩 हर हर महादेव 🚩
 `
 
-document.getElementById("result").innerHTML = `<div class="card">${output}</div>`
+document.getElementById("result").innerHTML = `
+<div class="card" id="panchangCard">
+${output}
 
+<br><br>
+<button onclick="downloadImage()">📥 Download Image</button>
+<button onclick="shareWhatsApp()">📲 Share on WhatsApp</button>
+</div>
+`
+}
+
+// 📥 DOWNLOAD
+function downloadImage(){
+html2canvas(document.getElementById("panchangCard")).then(canvas=>{
+let link = document.createElement("a")
+link.download = "panchang.png"
+link.href = canvas.toDataURL()
+link.click()
+})
+}
+
+// 📲 SHARE
+function shareWhatsApp(){
+
+html2canvas(document.getElementById("panchangCard")).then(canvas=>{
+
+canvas.toBlob(blob=>{
+let file = new File([blob],"panchang.png",{type:"image/png"})
+
+if(navigator.share){
+navigator.share({
+files:[file],
+title:"आज का पंचांग",
+text:"🔮 आज का वैदिक पंचांग"
+})
+}else{
+alert("Use mobile to share directly. Download instead.")
+}
+
+})
+})
 }
 
 </script>
 
 </body>
 </html>
+
