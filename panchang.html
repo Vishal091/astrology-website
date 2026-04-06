@@ -77,8 +77,13 @@ calculatePanchang()
 }
 
 // ✅ SAFE TITHI TIME
+
 function getTithiEndTime(sunLon, moonLon){
+
 let diff = (moonLon - sunLon + 360) % 360
+
+if(isNaN(diff)) return "गणना जारी..."
+
 let nextBoundary = (Math.floor(diff / 12) + 1) * 12
 
 let remaining = nextBoundary - diff
@@ -86,11 +91,22 @@ if(remaining < 0) remaining += 360
 
 let hours = (remaining / 12.2) * 24
 
-let endTime = new Date()
-endTime.setTime(endTime.getTime() + hours * 3600000)
+// ✅ SAFETY FIX
+if(isNaN(hours) || hours < 0 || hours > 48){
+return "गणना जारी..."
+}
+
+let now = new Date()
+let endTime = new Date(now.getTime() + hours * 3600000)
+
+// ✅ FINAL SAFE RETURN
+if(isNaN(endTime.getTime())){
+return "गणना जारी..."
+}
 
 return endTime.toLocaleTimeString()
 }
+
 
 // ✅ SAFE KARANA
 function getKarana(diff){
