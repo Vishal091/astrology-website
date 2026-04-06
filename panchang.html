@@ -77,7 +77,16 @@ calculatePanchang()
 }
 
 // ✅ SAFE TITHI TIME
+let sunPos = Astronomy.GeoVector("Sun", time, true)
+let sunLon = Astronomy.Ecliptic(sunPos).elon
 
+if(isNaN(sunLon) || isNaN(moonLon)){
+return alert("Calculation error — try again")
+}
+
+
+let moonPos = Astronomy.GeoVector("Moon", time, true)
+let moonLon = Astronomy.Ecliptic(moonPos).elon
 function getTithiEndTime(sunLon, moonLon){
 
 let diff = (moonLon - sunLon + 360) % 360
@@ -131,17 +140,6 @@ if(!dateInput){ alert("तिथि चुनें"); return }
 let sunrise = new Date(dateInput+"T06:00:00")
 let time = Astronomy.MakeTime(sunrise)
 
-
-let sunPos = Astronomy.GeoVector("Sun", time, true)
-let sunLon = Astronomy.Ecliptic(sunPos).elon
-
-if(isNaN(sunLon) || isNaN(moonLon)){
-return alert("Calculation error — try again")
-}
-
-
-let moonPos = Astronomy.GeoVector("Moon", time, true)
-let moonLon = Astronomy.Ecliptic(moonPos).elon
 
 
 // fallback
