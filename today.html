@@ -1,0 +1,20 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>आज का पंचांग | Today Panchang</title>
+<meta name="description" content="आज का वैदिक पंचांग, तिथि, नक्षत्र, योग, करण, राहु काल और राशिफल देखें।">
+
+<link rel="canonical" href="https://astrology-website-rust.vercel.app//today.html">
+</head>
+
+<body>
+
+<script>
+// redirect to main page with today date
+let today = new Date().toISOString().split('T')[0]
+window.location.href = "panchang.html?date=" + today
+</script>
+
+</body>
+</html>
