@@ -76,6 +76,40 @@ calculatePanchang()
 }else calculatePanchang()
 }
 
+// 🔥 TITHI END TIME
+function getTithiEndTime(sunLon, moonLon, time){
+let diff = (moonLon - sunLon + 360) % 360
+let currentTithi = Math.floor(diff / 12)
+
+let target = (currentTithi + 1) * 12
+
+let relativeSpeed = 12.2
+let remaining = target - diff
+if(remaining < 0) remaining += 360
+
+let hours = (remaining / relativeSpeed) * 24
+
+let endTime = new Date(time.ut)
+endTime.setHours(endTime.getHours() + hours)
+
+return endTime.toLocaleTimeString()
+}
+
+// 🔥 KARANA
+function getKarana(diff){
+const karanas = ["बव","बालव","कौलव","तैतिल","गर","वणिज","विष्टि"]
+let index = Math.floor(diff / 6) % 7
+return karanas[index]
+}
+
+// 🔥 YOGA
+function getYoga(sunLon, moonLon){
+const yogas = ["विष्कुम्भ","प्रीति","आयुष्मान","सौभाग्य","शोभन","अतिगंड","सुकर्मा","धृति","शूल","गंड","वृद्धि","ध्रुव","व्याघात","हर्षण","वज्र","सिद्धि","व्यतिपात","वरीयान","परिघ","शिव","सिद्ध","साध्य","शुभ","शुक्ल","ब्रह्म","इंद्र","वैधृति"]
+let total = (sunLon + moonLon) % 360
+let index = Math.floor(total / (360/27))
+return yogas[index]
+}
+
 function calculatePanchang(){
 
 let dateInput = document.getElementById("date").value
@@ -89,7 +123,7 @@ let earth = Astronomy.HelioVector("Earth", time)
 let sunLon = (earth.elon + 180) % 360
 let moonLon = Astronomy.EclipticLongitude("Moon", time)
 
-// ✅ FALLBACK FIX
+// fallback
 if(isNaN(sunLon) || isNaN(moonLon)){
 let safeTime = Astronomy.MakeTime(new Date())
 let safeEarth = Astronomy.HelioVector("Earth", safeTime)
@@ -101,7 +135,6 @@ moonLon = Astronomy.EclipticLongitude("Moon", safeTime)
 let diff = (moonLon - sunLon + 360) % 360
 let tithiNum = Math.floor(diff / 12) + 1
 
-// ✅ FIX
 if(isNaN(tithiNum) || tithiNum < 1) tithiNum = 1
 if(tithiNum > 30) tithiNum = 30
 
@@ -122,9 +155,10 @@ let nakName = nakNames[nakNum]
 
 let weekday = new Date(dateInput).toLocaleDateString('hi-IN',{weekday:'long'})
 
-// placeholders (unchanged)
-let karana = "विष्टि — 12:02 PM तक\nबव — आगे"
-let yoga = "वज्र योग — 02:42 PM तक"
+// 🔥 REAL VALUES
+let tithiEnd = getTithiEndTime(sunLon, moonLon, time)
+let karana = getKarana(diff)
+let yoga = getYoga(sunLon, moonLon)
 
 let output = `
 🕉️✨ आधिकारिक वैदिक पंचांग ✨🕉️
@@ -137,7 +171,7 @@ let output = `
 
 🔹 🗓️ तिथि
 
-▪ ${tithiName}
+▪ ${tithiName} — ${tithiEnd} तक
 
 ━━━━━━━━━━━━━━━━━━━
 
