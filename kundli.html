@@ -56,6 +56,26 @@
       color: gold;
       font-weight: bold;
     }
+
+    #suggestions {
+      position: absolute;
+      width: calc(100% - 40px);
+      background: #111827;
+      border-radius: 8px;
+      max-height: 150px;
+      overflow-y: auto;
+      text-align: left;
+      z-index: 10;
+    }
+
+    .suggestion-item {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .suggestion-item:hover {
+      background: #1f2937;
+    }
   </style>
 </head>
 
@@ -65,9 +85,13 @@
 
 <div class="container">
 
-  <!-- ✅ NOT REMOVED -->
   <input type="text" id="name" placeholder="Enter Name">
-  <input type="text" id="place" placeholder="Place of Birth (e.g. Delhi, India)">
+
+  <!-- ✅ AUTOCOMPLETE WRAPPER -->
+  <div style="position:relative;">
+    <input type="text" id="place" placeholder="Place of Birth (e.g. Delhi, India)">
+    <div id="suggestions"></div>
+  </div>
 
   <input type="date" id="dob">
   <input type="time" id="tob">
@@ -89,7 +113,7 @@ let sweReady = false;
 ModuleFactory({
   locateFile: (file) => {
     if (file.endsWith(".wasm")) {
-      return "/swisseph.wasm"; // ✅ Vercel fix
+      return "/swisseph.wasm";
     }
     return file;
   }
@@ -105,20 +129,64 @@ ModuleFactory({
   sweReady = true;
 });
 
-// ---------------- 🌍 LOCATION ----------------
+// ---------------- AUTOCOMPLETE ----------------
+
+const placeInput = document.getElementById("place");
+const suggestionsBox = document.getElementById("suggestions");
+
+placeInput.addEventListener("input", async function () {
+  const query = this.value;
+
+  if (query.length < 3) {
+    suggestionsBox.innerHTML = "";
+    return;
+  }
+
+  const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=5`;
+
+  const res = await fetch(url);
+  const data = await res.json();
+
+  suggestionsBox.innerHTML = "";
+
+  data.features.forEach(place => {
+    const name = place.properties.name || "";
+    const city = place.properties.city || "";
+    const country = place.properties.country || "";
+
+    const fullName = `${name}${city ? ", " + city : ""}${country ? ", " + country : ""}`;
+
+    const div = document.createElement("div");
+    div.className = "suggestion-item";
+    div.innerHTML = fullName;
+
+    div.onclick = () => {
+      placeInput.value = fullName;
+      suggestionsBox.innerHTML = "";
+
+      window.selectedLat = place.geometry.coordinates[1];
+      window.selectedLon = place.geometry.coordinates[0];
+    };
+
+    suggestionsBox.appendChild(div);
+  });
+});
+
+// ---------------- FALLBACK GEOCODING ----------------
 
 async function getLatLon(place) {
-  const API_KEY = "YOUR_API_KEY"; // 🔥 replace
+  const API_KEY = "YOUR_API_KEY";
 
   const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(place)}&key=${API_KEY}`;
 
   const res = await fetch(url);
   const data = await res.json();
 
-  if (!data.results.length) throw new Error("Location not found");
+  if (!data.results.length) {
+    throw new Error("Location not found");
+  }
 
   const { lat, lng } = data.results[0].geometry;
-
   return { lat, lon: lng };
 }
 
@@ -169,16 +237,21 @@ window.generateKundli = async function () {
 
   try {
 
-    document.getElementById("output").innerHTML = "🔄 Fetching location...";
+    document.getElementById("output").innerHTML = "🔄 Getting location...";
 
-    const { lat, lon } = await getLatLon(place);
+    let lat = window.selectedLat;
+    let lon = window.selectedLon;
+
+    if (!lat || !lon) {
+      const res = await getLatLon(place);
+      lat = res.lat;
+      lon = res.lon;
+    }
 
     const date = new Date(dob + "T" + tob);
     const jd = getJulianDay(date);
 
     document.getElementById("output").innerHTML = "🔄 Calculating kundli...";
-
-    // ---------------- PLANETS ----------------
 
     const sun = Module.ccall("swe_calc_ut", "number", ["number","number","number"], [jd, 0, 1]);
     const moon = Module.ccall("swe_calc_ut", "number", ["number","number","number"], [jd, 1, 1]);
@@ -190,8 +263,7 @@ window.generateKundli = async function () {
     const rahu = Module.ccall("swe_calc_ut", "number", ["number","number","number"], [jd, 10, 1]);
     const ketu = (rahu + 180) % 360;
 
-    // ⚠️ Lagna via houses (simplified binding)
-    const lagna = moon; // temp fallback (we fix later properly)
+    const lagna = moon; // temporary
 
     document.getElementById("output").innerHTML = `
       <h2 class="highlight">${name}'s Kundli</h2>
