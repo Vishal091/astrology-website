@@ -2,27 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Astrodhani Kundli Generator 🔮</title>
+  <title>Astrodhani Kundli 🔮</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: radial-gradient(circle at top, #0b0f1a, #05070d);
-      color: #fff;
+      font-family: Arial;
+      background: #0b0f1a;
+      color: white;
       text-align: center;
     }
 
     h1 {
-      margin-top: 20px;
       color: gold;
+      margin-top: 20px;
     }
 
     .container {
-      padding: 20px;
       max-width: 500px;
       margin: auto;
+      padding: 20px;
     }
 
     input, button {
@@ -31,7 +31,6 @@
       margin: 8px 0;
       border-radius: 10px;
       border: none;
-      font-size: 14px;
     }
 
     input {
@@ -44,37 +43,13 @@
       color: black;
       font-weight: bold;
       cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      transform: scale(1.03);
     }
 
     .result {
       margin-top: 20px;
-      padding: 15px;
       background: #111827;
+      padding: 15px;
       border-radius: 10px;
-    }
-
-    .chart {
-      margin-top: 25px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2px;
-    }
-
-    .box {
-      border: 1px solid #444;
-      padding: 10px;
-      min-height: 60px;
-      font-size: 12px;
-    }
-
-    .highlight {
-      color: gold;
-      font-weight: bold;
     }
   </style>
 </head>
@@ -85,10 +60,8 @@
 
 <div class="container">
 
-  <input type="text" id="name" placeholder="Enter Name">
   <input type="date" id="dob">
   <input type="time" id="tob">
-  <input type="text" id="place" placeholder="Place of Birth">
   <input type="number" id="lat" placeholder="Latitude">
   <input type="number" id="lon" placeholder="Longitude">
 
@@ -96,24 +69,25 @@
 
   <div id="output" class="result"></div>
 
-  <div id="chart" class="chart"></div>
-
 </div>
 
-<script src="swisseph.js"></script>
+<!-- ✅ SWISS EPHEMERIS MODULE -->
+<script type="module">
+import Module from "./swisseph.js";
 
-<script>
+window.Module = Module;
+
 let sweReady = false;
 
+// ---------------- LOAD ENGINE ----------------
+
 Module.onRuntimeInitialized = function () {
-  console.log("Swiss Ephemeris Loaded");
-  sweReady = true;
+  console.log("✅ Swiss Ephemeris Loaded");
 
-  // Set ephemeris path
   swe_set_ephe_path("./ephe");
+  swe_set_sid_mode(1, 0, 0); // Lahiri
 
-  // Set Lahiri Ayanamsa (IMPORTANT)
-  swe_set_sid_mode(1, 0, 0);
+  sweReady = true;
 };
 
 // ---------------- UTILS ----------------
@@ -141,19 +115,12 @@ function getNakshatra(deg) {
   return nakshatras[Math.floor(deg / (360/27))];
 }
 
-// ---------------- CORE CALC ----------------
+// ---------------- MAIN FUNCTION ----------------
 
-function calcPlanet(jd, planet) {
-  const result = swe_calc_ut(jd, planet, 1); // sidereal
-  return result[0]; // longitude
-}
-
-// ---------------- MAIN ----------------
-
-function generateKundli() {
+window.generateKundli = function () {
 
   if (!sweReady) {
-    alert("Engine loading... please wait");
+    alert("⚠️ Engine loading... please wait");
     return;
   }
 
@@ -162,51 +129,59 @@ function generateKundli() {
   const lat = parseFloat(document.getElementById("lat").value);
   const lon = parseFloat(document.getElementById("lon").value);
 
-  if (!dob || !tob) {
-    alert("Enter full details");
+  if (!dob || !tob || isNaN(lat) || isNaN(lon)) {
+    alert("Please fill all details");
     return;
   }
 
   const date = new Date(dob + "T" + tob);
   const jd = getJulianDay(date);
 
-  // ---------------- PLANETS ----------------
+  try {
 
-  const sun = calcPlanet(jd, 0);
-  const moon = calcPlanet(jd, 1);
-  const mars = calcPlanet(jd, 4);
-  const mercury = calcPlanet(jd, 2);
-  const jupiter = calcPlanet(jd, 5);
-  const venus = calcPlanet(jd, 3);
-  const saturn = calcPlanet(jd, 6);
-  const rahu = calcPlanet(jd, 10);
-  const ketu = (rahu + 180) % 360;
+    // ---------------- PLANETS ----------------
 
-  // ---------------- LAGNA ----------------
+    const sun = swe_calc_ut(jd, 0, 1)[0];
+    const moon = swe_calc_ut(jd, 1, 1)[0];
+    const mars = swe_calc_ut(jd, 4, 1)[0];
+    const mercury = swe_calc_ut(jd, 2, 1)[0];
+    const jupiter = swe_calc_ut(jd, 5, 1)[0];
+    const venus = swe_calc_ut(jd, 3, 1)[0];
+    const saturn = swe_calc_ut(jd, 6, 1)[0];
+    const rahu = swe_calc_ut(jd, 10, 1)[0];
+    const ketu = (rahu + 180) % 360;
 
-  const houses = swe_houses(jd, lat, lon, 'P');
-  const lagna = houses[0]; // Ascendant
+    // ---------------- LAGNA ----------------
 
-  // ---------------- OUTPUT ----------------
+    const houses = swe_houses(jd, lat, lon, 'P');
+    const lagna = houses[0];
 
-  document.getElementById("output").innerHTML = `
-    <h2>🪐 Accurate Kundli</h2>
-    <p><b>Lagna:</b> ${getRashi(lagna)}</p>
-    <p><b>Moon Sign:</b> ${getRashi(moon)}</p>
-    <p><b>Nakshatra:</b> ${getNakshatra(moon)}</p>
+    // ---------------- OUTPUT ----------------
 
-    <h3>Planets</h3>
-    <p>☀ Sun: ${getRashi(sun)}</p>
-    <p>🌙 Moon: ${getRashi(moon)}</p>
-    <p>♂ Mars: ${getRashi(mars)}</p>
-    <p>☿ Mercury: ${getRashi(mercury)}</p>
-    <p>♃ Jupiter: ${getRashi(jupiter)}</p>
-    <p>♀ Venus: ${getRashi(venus)}</p>
-    <p>♄ Saturn: ${getRashi(saturn)}</p>
-    <p>☊ Rahu: ${getRashi(rahu)}</p>
-    <p>☋ Ketu: ${getRashi(ketu)}</p>
-  `;
-}
+    document.getElementById("output").innerHTML = `
+      <h2>🪐 Accurate Kundli</h2>
+
+      <p><b>Lagna:</b> ${getRashi(lagna)}</p>
+      <p><b>Moon Sign:</b> ${getRashi(moon)}</p>
+      <p><b>Nakshatra:</b> ${getNakshatra(moon)}</p>
+
+      <h3>Planets</h3>
+      <p>☀ Sun: ${getRashi(sun)}</p>
+      <p>🌙 Moon: ${getRashi(moon)}</p>
+      <p>♂ Mars: ${getRashi(mars)}</p>
+      <p>☿ Mercury: ${getRashi(mercury)}</p>
+      <p>♃ Jupiter: ${getRashi(jupiter)}</p>
+      <p>♀ Venus: ${getRashi(venus)}</p>
+      <p>♄ Saturn: ${getRashi(saturn)}</p>
+      <p>☊ Rahu: ${getRashi(rahu)}</p>
+      <p>☋ Ketu: ${getRashi(ketu)}</p>
+    `;
+
+  } catch (err) {
+    console.error(err);
+    alert("❌ Error in calculation. Check console.");
+  }
+};
 </script>
 
 </body>
