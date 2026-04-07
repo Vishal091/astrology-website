@@ -8,7 +8,8 @@
   <style>
     body { margin:0; font-family:Arial; background:#0b0f1a; color:white; text-align:center; }
     h1 { color:gold; margin-top:20px; }
-    .container { max-width:500px; margin:auto; padding:20px; }
+
+    .container { max-width:600px; margin:auto; padding:20px; }
 
     input,button {
       width:100%; padding:12px; margin:8px 0;
@@ -16,7 +17,13 @@
     }
 
     input { background:#111827; color:white; }
-    button { background:gold; color:black; font-weight:bold; cursor:pointer; }
+
+    button {
+      background:gold;
+      color:black;
+      font-weight:bold;
+      cursor:pointer;
+    }
 
     .result {
       margin-top:20px;
@@ -24,9 +31,23 @@
       padding:15px;
       border-radius:10px;
       text-align:left;
+      overflow-x:auto;
     }
 
-    .highlight { color:gold; font-weight:bold; }
+    table {
+      width:100%;
+      border-collapse:collapse;
+      margin-top:10px;
+      font-size:12px;
+    }
+
+    th, td {
+      border:1px solid #333;
+      padding:6px;
+      text-align:center;
+    }
+
+    th { background:#1f2937; }
 
     #suggestions {
       position:absolute;
@@ -39,8 +60,14 @@
       z-index:10;
     }
 
-    .suggestion-item { padding:10px; cursor:pointer; }
-    .suggestion-item:hover { background:#1f2937; }
+    .suggestion-item {
+      padding:10px;
+      cursor:pointer;
+    }
+
+    .suggestion-item:hover {
+      background:#1f2937;
+    }
   </style>
 </head>
 
@@ -72,15 +99,12 @@ import ModuleFactory from "/swisseph.js";
 let Module = null;
 let sweReady = false;
 
-// ---------------- LOAD SWISS ----------------
 ModuleFactory({
   locateFile: (file) => file.endsWith(".wasm") ? "/swisseph.wasm" : file
 }).then((mod) => {
   Module = mod;
-
   Module.ccall("swe_set_ephe_path", null, ["string"], ["/ephe"]);
   Module.ccall("swe_set_sid_mode", null, ["number","number","number"], [1,0,0]);
-
   sweReady = true;
 });
 
@@ -89,17 +113,16 @@ const placeInput = document.getElementById("place");
 const suggestionsBox = document.getElementById("suggestions");
 
 placeInput.addEventListener("input", async function () {
-  const query = this.value;
-  if (query.length < 3) return suggestionsBox.innerHTML = "";
+  const q = this.value;
+  if (q.length < 3) return suggestionsBox.innerHTML = "";
 
-  const res = await fetch(`https://photon.komoot.io/api/?q=${query}&limit=5`);
+  const res = await fetch(`https://photon.komoot.io/api/?q=${q}&limit=5`);
   const data = await res.json();
 
   suggestionsBox.innerHTML = "";
 
   data.features.forEach(p => {
     const full = `${p.properties.name || ""}, ${p.properties.city || ""}, ${p.properties.country || ""}`;
-
     const div = document.createElement("div");
     div.className = "suggestion-item";
     div.innerText = full;
@@ -118,10 +141,8 @@ placeInput.addEventListener("input", async function () {
 // ---------------- FALLBACK ----------------
 async function getLatLon(place) {
   const API_KEY = "4110c45bd1ac444fa32a18f0799d0cb3";
-
   const res = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${place}&key=${API_KEY}`);
   const data = await res.json();
-
   if (!data.results.length) throw new Error("Location not found");
 
   return {
@@ -135,13 +156,10 @@ function getJulianDay(date) {
   return (date / 86400000) + 2440587.5;
 }
 
-// ---------------- PLANETS ----------------
 function getPlanetLongitude(jd, planet) {
   const ptr = Module._malloc(8 * 6);
 
-  Module.ccall(
-    "swe_calc_ut",
-    null,
+  Module.ccall("swe_calc_ut", null,
     ["number","number","number","number"],
     [jd, planet, 65536, ptr]
   );
@@ -152,187 +170,151 @@ function getPlanetLongitude(jd, planet) {
   return (lon + 360) % 360;
 }
 
-// ---------------- ASCENDANT ----------------
-function getAscendant(jd, lat, lon) {
-  const cuspsPtr = Module._malloc(8 * 13);
-  const ascmcPtr = Module._malloc(8 * 10);
+// ---------------- BASIC MAPS ----------------
+const rashis = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
+const signLords = {
+  Aries:"Mars", Taurus:"Venus", Gemini:"Mercury", Cancer:"Moon",
+  Leo:"Sun", Virgo:"Mercury", Libra:"Venus", Scorpio:"Mars",
+  Sagittarius:"Jupiter", Capricorn:"Saturn", Aquarius:"Saturn", Pisces:"Jupiter"
+};
 
-  Module.ccall(
-    "swe_houses_ex",
-    null,
+const nakshatras = [
+"Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra","Punarvasu","Pushya","Ashlesha",
+"Magha","Purva Phalguni","Uttara Phalguni","Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha",
+"Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishta","Shatabhisha",
+"Purva Bhadrapada","Uttara Bhadrapada","Revati"
+];
+
+const nakshatraLords = [
+"Ketu","Venus","Sun","Moon","Mars","Rahu","Jupiter","Saturn","Mercury",
+"Ketu","Venus","Sun","Moon","Mars","Rahu","Jupiter","Saturn","Mercury",
+"Ketu","Venus","Sun","Moon","Mars","Rahu","Jupiter","Saturn","Mercury"
+];
+
+function getRashi(d){ return rashis[Math.floor(d/30)]; }
+
+function getNakshatraDetails(m){
+  const seg=360/27;
+  let i=Math.floor(m/seg);
+  i=Math.max(0,Math.min(26,i));
+  const pada=Math.floor((m%seg)/(seg/4))+1;
+  return {name:nakshatras[i],pada,index:i};
+}
+
+function formatDegree(d){
+  const deg=Math.floor(d);
+  const min=Math.floor((d-deg)*60);
+  const sec=Math.floor(((d-deg)*60-min)*60);
+  return `${deg}°${min}′${sec}″`;
+}
+
+// ---------------- PANCHANG ----------------
+function calculatePanchang(sun,moon){
+  let diff=moon-sun; if(diff<0) diff+=360;
+
+  const tithiIndex=Math.floor(diff/12);
+  const paksha=tithiIndex<15?"Shukla":"Krishna";
+
+  const tithiNames=["Pratipada","Dwitiya","Tritiya","Chaturthi","Panchami","Shashthi","Saptami","Ashtami","Navami","Dashami","Ekadashi","Dwadashi","Trayodashi","Chaturdashi","Purnima","Pratipada","Dwitiya","Tritiya","Chaturthi","Panchami","Shashthi","Saptami","Ashtami","Navami","Dashami","Ekadashi","Dwadashi","Trayodashi","Chaturdashi","Amavasya"];
+
+  return { tithi:`${paksha} ${tithiNames[tithiIndex]}` };
+}
+
+// ---------------- LAGNA + HOUSES ----------------
+function getAscendant(jd,lat,lon){
+  const p1=Module._malloc(8*13);
+  const p2=Module._malloc(8*10);
+
+  Module.ccall("swe_houses_ex",null,
     ["number","number","number","number","number","number","number"],
-    [jd, 65536, lat, lon, 80, cuspsPtr, ascmcPtr]
+    [jd,65536,lat,lon,80,p1,p2]
   );
 
-  const asc = Module.HEAPF64[ascmcPtr / 8];
+  const asc=Module.HEAPF64[p2/8];
+  Module._free(p1); Module._free(p2);
 
-  Module._free(cuspsPtr);
-  Module._free(ascmcPtr);
-
-  return (asc + 360) % 360;
+  return (asc+360)%360;
 }
 
-// ---------------- VEDIC HOUSES ----------------
-function getHousesFromLagna(lagna) {
-  let houses = [];
-  for (let i = 0; i < 12; i++) {
-    houses.push((lagna + i * 30) % 360);
-  }
-  return houses;
+function getHouses(lagna){
+  let h=[];
+  for(let i=0;i<12;i++) h.push((lagna+i*30)%360);
+  return h;
 }
 
-// ---------------- HOUSE MAPPING ----------------
-function getHouseOfPlanet(p, cusps) {
-  for (let i = 0; i < 12; i++) {
-    let start = cusps[i];
-    let end = cusps[(i + 1) % 12];
-
-    if (end < start) end += 360;
-    if (p < start) p += 360;
-
-    if (p >= start && p < end) return i + 1;
+function getHouseOfPlanet(p,c){
+  for(let i=0;i<12;i++){
+    let s=c[i],e=c[(i+1)%12];
+    if(e<s) e+=360;
+    if(p<s) p+=360;
+    if(p>=s&&p<e) return i+1;
   }
   return 1;
 }
 
-// ---------------- NAKSHATRA ----------------
-const nakshatras = [
-  "Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra",
-  "Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni",
-  "Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha",
-  "Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishta","Shatabhisha",
-  "Purva Bhadrapada","Uttara Bhadrapada","Revati"
-];
-
-function getNakshatraDetails(moon) {
-  const seg = 360/27;
-  let i = Math.floor(moon / seg);
-  i = Math.max(0, Math.min(26, i));
-
-  const pada = Math.floor((moon % seg) / (seg/4)) + 1;
-
-  return { name: nakshatras[i], pada };
-}
-
-// ---------------- RASHI ----------------
-function getRashi(d) {
-  return [
-    "Aries","Taurus","Gemini","Cancer","Leo","Virgo",
-    "Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"
-  ][Math.floor(d/30)];
-}
-
-// ---------------- PANCHANG ----------------
-function calculatePanchang(sun, moon) {
-  let diff = moon - sun;
-  if (diff < 0) diff += 360;
-
-  const tithiIndex = Math.floor(diff / 12);
-  const paksha = tithiIndex < 15 ? "Shukla" : "Krishna";
-
-  const tithiNames = [
-    "Pratipada","Dwitiya","Tritiya","Chaturthi","Panchami","Shashthi","Saptami",
-    "Ashtami","Navami","Dashami","Ekadashi","Dwadashi","Trayodashi","Chaturdashi","Purnima",
-    "Pratipada","Dwitiya","Tritiya","Chaturthi","Panchami","Shashthi","Saptami",
-    "Ashtami","Navami","Dashami","Ekadashi","Dwadashi","Trayodashi","Chaturdashi","Amavasya"
-  ];
-
-  const yogaNames = [
-    "Vishkumbha","Priti","Ayushman","Saubhagya","Shobhana","Atiganda","Sukarma",
-    "Dhriti","Shoola","Ganda","Vriddhi","Dhruva","Vyaghata","Harshana","Vajra",
-    "Siddhi","Vyatipata","Variyana","Parigha","Shiva","Siddha","Sadhya",
-    "Shubha","Shukla","Brahma","Indra","Vaidhriti"
-  ];
-
-  const karanaNames = [
-    "Bava","Balava","Kaulava","Taitila","Garaja","Vanija","Vishti",
-    "Bava","Balava","Kaulava","Taitila","Garaja","Vanija","Vishti",
-    "Shakuni","Chatushpada","Nagava","Kimstughna"
-  ];
-
-  const yogIndex = Math.floor(((sun + moon) % 360) / (360/27));
-  const karanaIndex = Math.floor(diff / 6);
-
-  return {
-    tithi: `${paksha} ${tithiNames[tithiIndex]}`,
-    yog: yogaNames[yogIndex],
-    karana: karanaNames[karanaIndex]
-  };
-}
-
 // ---------------- MAIN ----------------
-window.generateKundli = async function () {
+window.generateKundli = async function(){
 
-  if (!sweReady) return alert("Engine loading...");
+if(!sweReady) return alert("Engine loading...");
 
-  const name = document.getElementById("name").value || "User";
-  const place = document.getElementById("place").value;
-  const dob = document.getElementById("dob").value;
-  const tob = document.getElementById("tob").value;
+const name=document.getElementById("name").value||"User";
+const place=document.getElementById("place").value;
+const dob=document.getElementById("dob").value;
+const tob=document.getElementById("tob").value;
 
-  let lat = window.selectedLat;
-  let lon = window.selectedLon;
+let lat=window.selectedLat, lon=window.selectedLon;
+if(!lat||!lon){ const r=await getLatLon(place); lat=r.lat; lon=r.lon; }
 
-  if (!lat || !lon) {
-    const res = await getLatLon(place);
-    lat = res.lat;
-    lon = res.lon;
-  }
+// IST → UTC
+const local=new Date(dob+"T"+tob);
+const utc=new Date(local.getTime()-19800000);
+const jd=getJulianDay(utc);
 
-  // ✅ FIXED TIMEZONE
-  const localDate = new Date(dob + "T" + tob);
-  const utcDate = new Date(localDate.getTime() - (5.5 * 60 * 60 * 1000));
-  const jd = getJulianDay(utcDate);
+// Planets
+const planetMap={Sun:0,Moon:1,Mars:4,Mercury:2,Jupiter:5,Venus:3,Saturn:6};
 
-  const sun = getPlanetLongitude(jd, 0);
-  const moon = getPlanetLongitude(jd, 1);
+const lagna=getAscendant(jd,lat,lon);
+const houses=getHouses(lagna);
 
-  const lagna = getAscendant(jd, lat, lon);
-  const houses = getHousesFromLagna(lagna);
+let rows="";
 
-  const nak = getNakshatraDetails(moon);
-  const panchang = calculatePanchang(sun, moon);
-  const rashi = getRashi(moon);
+for(let p in planetMap){
 
-  const planets = {
-    Sun: sun,
-    Moon: moon,
-    Mars: getPlanetLongitude(jd, 4),
-    Mercury: getPlanetLongitude(jd, 2),
-    Jupiter: getPlanetLongitude(jd, 5),
-    Venus: getPlanetLongitude(jd, 3),
-    Saturn: getPlanetLongitude(jd, 6)
-  };
+  const deg=getPlanetLongitude(jd,planetMap[p]);
+  const rashi=getRashi(deg);
+  const nak=getNakshatraDetails(deg);
+  const house=getHouseOfPlanet(deg,houses);
 
-  let houseOutput = "";
-  for (let p in planets) {
-    houseOutput += `${p} → House ${getHouseOfPlanet(planets[p], houses)}<br>`;
-  }
+  rows+=`
+  <tr>
+    <td>${p}</td>
+    <td>${rashi}</td>
+    <td>${signLords[rashi]}</td>
+    <td>${nak.name}</td>
+    <td>${nakshatraLords[nak.index]}</td>
+    <td>${formatDegree(deg)}</td>
+    <td>Direct</td>
+    <td>No</td>
+    <td>--</td>
+    <td>${house}</td>
+    <td>Normal</td>
+  </tr>`;
+}
 
-  document.getElementById("output").innerHTML = `
-    <h2 class="highlight">${name}'s Kundli</h2>
+document.getElementById("output").innerHTML=`
+<h3>${name}'s Kundli</h3>
 
-    <h3>📌 Basic Details</h3>
-    Name: ${name}<br>
-    Date: ${dob}<br>
-    Time: ${tob}<br>
-    Place: ${place}<br>
-    Lat: ${lat.toFixed(2)} | Lon: ${lon.toFixed(2)}<br>
-
-    <h3>📅 Panchang</h3>
-    Tithi: ${panchang.tithi}<br>
-    Yog: ${panchang.yog}<br>
-    Karan: ${panchang.karana}<br>
-    Nakshatra: ${nak.name} (Pada ${nak.pada})<br>
-
-    <h3>🏠 Lagna & Houses</h3>
-    Lagna: ${getRashi(lagna)}<br><br>
-    ${houseOutput}
-
-    <h3>🧬 Avakhada</h3>
-    Sign: ${rashi}<br>
-  `;
-};
+<table>
+<tr>
+<th>Planet</th><th>Sign</th><th>Sign Lord</th>
+<th>Nakshatra</th><th>Naksh Lord</th>
+<th>Degree</th><th>Retro</th><th>Combust</th>
+<th>Avastha</th><th>House</th><th>Status</th>
+</tr>
+${rows}
+</table>
+`;
+}
 </script>
 
 </body>
