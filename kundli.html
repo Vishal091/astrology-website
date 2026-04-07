@@ -104,8 +104,6 @@ ModuleFactory({
 }).then((mod) => {
   Module = mod;
 
-  console.log("✅ Swiss Ephemeris Loaded");
-
   Module.ccall("swe_set_ephe_path", null, ["string"], ["/ephe"]);
   Module.ccall("swe_set_sid_mode", null, ["number","number","number"], [1,0,0]);
 
@@ -119,11 +117,7 @@ const suggestionsBox = document.getElementById("suggestions");
 
 placeInput.addEventListener("input", async function () {
   const query = this.value;
-
-  if (query.length < 3) {
-    suggestionsBox.innerHTML = "";
-    return;
-  }
+  if (query.length < 3) return suggestionsBox.innerHTML = "";
 
   const res = await fetch(`https://photon.komoot.io/api/?q=${query}&limit=5`);
   const data = await res.json();
@@ -132,7 +126,6 @@ placeInput.addEventListener("input", async function () {
 
   data.features.forEach(p => {
     const full = `${p.properties.name || ""}, ${p.properties.city || ""}, ${p.properties.country || ""}`;
-
     const div = document.createElement("div");
     div.className = "suggestion-item";
     div.innerText = full;
@@ -152,7 +145,6 @@ placeInput.addEventListener("input", async function () {
 
 async function getLatLon(place) {
   const API_KEY = "4110c45bd1ac444fa32a18f0799d0cb3";
-
   const res = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${place}&key=${API_KEY}`);
   const data = await res.json();
 
@@ -170,64 +162,60 @@ function getJulianDay(date) {
   return (date / 86400000) + 2440587.5;
 }
 
-function getRashi(d) {
-  const r = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
-  return r[Math.floor(d/30)];
+const nakshatras = [
+  "Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra",
+  "Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni",
+  "Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha",
+  "Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishta","Shatabhisha",
+  "Purva Bhadrapada","Uttara Bhadrapada","Revati"
+];
+
+function getNakshatraDetails(moon) {
+  const index = Math.floor(moon / (360/27));
+  const pada = Math.floor((moon % (360/27)) / (360/108)) + 1;
+  return {
+    name: nakshatras[index],
+    pada: pada
+  };
 }
 
-function getNakshatra(d) {
-  const n = ["Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra","Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni","Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha","Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishta","Shatabhisha","Purva Bhadrapada","Uttara Bhadrapada","Revati"];
-  return n[Math.floor(d/(360/27))];
+// ---------------- PANCHANG ----------------
+
+const tithiNames = [...Array(30)].map((_,i)=>i+1);
+
+function calculatePanchang(sun, moon) {
+  let diff = moon - sun;
+  if (diff < 0) diff += 360;
+
+  const tithiIndex = Math.floor(diff / 12);
+  const paksha = tithiIndex < 15 ? "Shukla" : "Krishna";
+
+  const yogIndex = Math.floor(((sun + moon) % 360) / (360/27));
+
+  const karanaIndex = Math.floor(diff / 6);
+
+  return {
+    tithi: paksha + " " + (tithiIndex+1),
+    yog: yogIndex+1,
+    karana: karanaIndex+1
+  };
 }
 
 // ---------------- AVAKHADA ----------------
 
+function getRashi(d) {
+  return ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"][Math.floor(d/30)];
+}
+
 function getSignLord(r) {
-  return {
-    Aries:"Mars", Taurus:"Venus", Gemini:"Mercury", Cancer:"Moon",
-    Leo:"Sun", Virgo:"Mercury", Libra:"Venus", Scorpio:"Mars",
-    Sagittarius:"Jupiter", Capricorn:"Saturn", Aquarius:"Saturn", Pisces:"Jupiter"
-  }[r];
-}
-
-function getVarna(r) {
-  return {
-    Aries:"Kshatriya", Leo:"Kshatriya", Sagittarius:"Kshatriya",
-    Taurus:"Vaishya", Virgo:"Vaishya", Capricorn:"Vaishya",
-    Gemini:"Shudra", Libra:"Shudra", Aquarius:"Shudra",
-    Cancer:"Brahmin", Scorpio:"Brahmin", Pisces:"Brahmin"
-  }[r];
-}
-
-function getVashya(r) {
-  return {
-    Aries:"Chatushpada", Taurus:"Chatushpada", Gemini:"Manav",
-    Cancer:"Jalachara", Leo:"Vanachara", Virgo:"Manav",
-    Libra:"Manav", Scorpio:"Keeta", Sagittarius:"Chatushpada",
-    Capricorn:"Chatushpada", Aquarius:"Manav", Pisces:"Jalachara"
-  }[r];
-}
-
-function getGan(n) {
-  return {Magha:"Rakshasa", Ashwini:"Deva", Bharani:"Manushya"}[n] || "Unknown";
-}
-
-function getYoni(n) {
-  return {Magha:"Mushaka"}[n] || "Unknown";
-}
-
-function getNadi(n) {
-  return {Magha:"Antya"}[n] || "Unknown";
+  return {Aries:"Mars",Taurus:"Venus",Gemini:"Mercury",Cancer:"Moon",Leo:"Sun",Virgo:"Mercury",Libra:"Venus",Scorpio:"Mars",Sagittarius:"Jupiter",Capricorn:"Saturn",Aquarius:"Saturn",Pisces:"Jupiter"}[r];
 }
 
 // ---------------- MAIN ----------------
 
 window.generateKundli = async function () {
 
-  if (!sweReady) {
-    alert("Engine loading...");
-    return;
-  }
+  if (!sweReady) return alert("Engine loading...");
 
   const name = document.getElementById("name").value || "User";
   const place = document.getElementById("place").value;
@@ -246,10 +234,12 @@ window.generateKundli = async function () {
   const date = new Date(dob + "T" + tob);
   const jd = getJulianDay(date);
 
+  const sun = Module.ccall("swe_calc_ut","number",["number","number","number"],[jd,0,1]);
   const moon = Module.ccall("swe_calc_ut","number",["number","number","number"],[jd,1,1]);
 
+  const nak = getNakshatraDetails(moon);
+  const panchang = calculatePanchang(sun, moon);
   const rashi = getRashi(moon);
-  const nak = getNakshatra(moon);
 
   document.getElementById("output").innerHTML = `
     <h2 class="highlight">${name}'s Kundli</h2>
@@ -262,17 +252,12 @@ window.generateKundli = async function () {
     Lat: ${lat.toFixed(2)} | Lon: ${lon.toFixed(2)}<br>
 
     <h3>📅 Panchang</h3>
-    Nakshatra: ${nak}<br>
-    Tithi: Krishna Chaturthi<br>
-    Yog: Ayushman<br>
-    Karan: Baalav<br>
+    Tithi: ${panchang.tithi}<br>
+    Yog: ${panchang.yog}<br>
+    Karan: ${panchang.karana}<br>
+    Nakshatra: ${nak.name} (Pada ${nak.pada})<br>
 
     <h3>🧬 Avakhada</h3>
-    Varna: ${getVarna(rashi)}<br>
-    Vashya: ${getVashya(rashi)}<br>
-    Gan: ${getGan(nak)}<br>
-    Yoni: ${getYoni(nak)}<br>
-    Nadi: ${getNadi(nak)}<br>
     Sign: ${rashi}<br>
     Sign Lord: ${getSignLord(rashi)}
   `;
