@@ -100,112 +100,112 @@
 
 </div>
 
+<script src="swisseph.js"></script>
+
 <script>
-const rashis = [
-  "Aries","Taurus","Gemini","Cancer","Leo","Virgo",
-  "Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"
-];
+let sweReady = false;
 
-const nakshatras = [
-  "Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra",
-  "Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni",
-  "Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha",
-  "Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishta","Shatabhisha",
-  "Purva Bhadrapada","Uttara Bhadrapada","Revati"
-];
+Module.onRuntimeInitialized = function () {
+  console.log("Swiss Ephemeris Loaded");
+  sweReady = true;
 
-// ---------------- BASIC UTILS ----------------
+  // Set ephemeris path
+  swe_set_ephe_path("./ephe");
+
+  // Set Lahiri Ayanamsa (IMPORTANT)
+  swe_set_sid_mode(1, 0, 0);
+};
+
+// ---------------- UTILS ----------------
 
 function getJulianDay(date) {
   return (date / 86400000) + 2440587.5;
 }
 
 function getRashi(deg) {
+  const rashis = [
+    "Aries","Taurus","Gemini","Cancer","Leo","Virgo",
+    "Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"
+  ];
   return rashis[Math.floor(deg / 30)];
 }
 
 function getNakshatra(deg) {
+  const nakshatras = [
+    "Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra",
+    "Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni",
+    "Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha",
+    "Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishta","Shatabhisha",
+    "Purva Bhadrapada","Uttara Bhadrapada","Revati"
+  ];
   return nakshatras[Math.floor(deg / (360/27))];
 }
 
-// ---------------- PLACEHOLDER CALCULATIONS ----------------
-// ⚠️ Replace this with Swiss Ephemeris later
+// ---------------- CORE CALC ----------------
 
-function fakePlanet(degFactor, jd) {
-  return (jd * degFactor) % 360;
+function calcPlanet(jd, planet) {
+  const result = swe_calc_ut(jd, planet, 1); // sidereal
+  return result[0]; // longitude
 }
 
-// ---------------- MAIN FUNCTION ----------------
+// ---------------- MAIN ----------------
 
 function generateKundli() {
-  const name = document.getElementById("name").value;
+
+  if (!sweReady) {
+    alert("Engine loading... please wait");
+    return;
+  }
+
   const dob = document.getElementById("dob").value;
   const tob = document.getElementById("tob").value;
   const lat = parseFloat(document.getElementById("lat").value);
   const lon = parseFloat(document.getElementById("lon").value);
 
-  if (!dob || !tob || isNaN(lat) || isNaN(lon)) {
-    alert("Please fill all details properly");
+  if (!dob || !tob) {
+    alert("Enter full details");
     return;
   }
 
   const date = new Date(dob + "T" + tob);
   const jd = getJulianDay(date);
 
-  // ---------------- FAKE DATA (TO BE REPLACED) ----------------
-  const sun = fakePlanet(0.985, jd);
-  const moon = fakePlanet(13.176, jd);
-  const mars = fakePlanet(0.524, jd);
-  const mercury = fakePlanet(1.38, jd);
-  const jupiter = fakePlanet(0.083, jd);
-  const venus = fakePlanet(1.2, jd);
-  const saturn = fakePlanet(0.033, jd);
+  // ---------------- PLANETS ----------------
 
-  const lagna = (jd * 0.985 + lon) % 360;
+  const sun = calcPlanet(jd, 0);
+  const moon = calcPlanet(jd, 1);
+  const mars = calcPlanet(jd, 4);
+  const mercury = calcPlanet(jd, 2);
+  const jupiter = calcPlanet(jd, 5);
+  const venus = calcPlanet(jd, 3);
+  const saturn = calcPlanet(jd, 6);
+  const rahu = calcPlanet(jd, 10);
+  const ketu = (rahu + 180) % 360;
 
-  // ---------------- DERIVED ----------------
-  const moonRashi = getRashi(moon);
-  const lagnaRashi = getRashi(lagna);
-  const nakshatra = getNakshatra(moon);
+  // ---------------- LAGNA ----------------
+
+  const houses = swe_houses(jd, lat, lon, 'P');
+  const lagna = houses[0]; // Ascendant
 
   // ---------------- OUTPUT ----------------
-  document.getElementById("output").innerHTML = `
-    <h2 class="highlight">${name || "User"}'s Kundli</h2>
-    <p><b>Lagna:</b> ${lagnaRashi}</p>
-    <p><b>Moon Sign:</b> ${moonRashi}</p>
-    <p><b>Nakshatra:</b> ${nakshatra}</p>
 
-    <h3 class="highlight">Planets</h3>
+  document.getElementById("output").innerHTML = `
+    <h2>🪐 Accurate Kundli</h2>
+    <p><b>Lagna:</b> ${getRashi(lagna)}</p>
+    <p><b>Moon Sign:</b> ${getRashi(moon)}</p>
+    <p><b>Nakshatra:</b> ${getNakshatra(moon)}</p>
+
+    <h3>Planets</h3>
     <p>☀ Sun: ${getRashi(sun)}</p>
-    <p>🌙 Moon: ${moonRashi}</p>
+    <p>🌙 Moon: ${getRashi(moon)}</p>
     <p>♂ Mars: ${getRashi(mars)}</p>
     <p>☿ Mercury: ${getRashi(mercury)}</p>
     <p>♃ Jupiter: ${getRashi(jupiter)}</p>
     <p>♀ Venus: ${getRashi(venus)}</p>
     <p>♄ Saturn: ${getRashi(saturn)}</p>
+    <p>☊ Rahu: ${getRashi(rahu)}</p>
+    <p>☋ Ketu: ${getRashi(ketu)}</p>
   `;
-
-  generateChart(lagnaRashi);
-}
-
-// ---------------- CHART ----------------
-
-function generateChart(lagna) {
-  const chart = document.getElementById("chart");
-  chart.innerHTML = "";
-
-  for (let i = 1; i <= 12; i++) {
-    const div = document.createElement("div");
-    div.className = "box";
-
-    if (i === 1) {
-      div.innerHTML = `<b>Lagna</b><br>${lagna}`;
-    } else {
-      div.innerHTML = `House ${i}`;
-    }
-
-    chart.appendChild(div);
-  }
 }
 </script>
 
