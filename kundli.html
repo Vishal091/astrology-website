@@ -195,15 +195,17 @@ function getPlanetLongitude(jd, planet) {
 
   Module.ccall(
     "swe_calc_ut",
-    "number",
+    null,
     ["number","number","number","number"],
     [jd, planet, 65536, ptr]
   );
 
-  const lon = Module.getValue(ptr, "double");
+  // ✅ FIX: use HEAP instead of getValue
+  const longitude = Module.HEAPF64[ptr / 8];
+
   Module._free(ptr);
 
-  return (lon + 360) % 360;
+  return (longitude + 360) % 360;
 }
 
 // ---------------- PANCHANG ----------------
