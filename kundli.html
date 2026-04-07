@@ -1,210 +1,212 @@
-
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-<title>Astrodhani Kundli</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <meta charset="UTF-8">
+  <title>Astrodhani Kundli Generator 🔮</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at top, #0b0f1a, #05070d);
+      color: #fff;
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 20px;
+      color: gold;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 10px;
+      border: none;
+      font-size: 14px;
+    }
+
+    input {
+      background: #111827;
+      color: white;
+    }
+
+    button {
+      background: gold;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.03);
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #111827;
+      border-radius: 10px;
+    }
+
+    .chart {
+      margin-top: 25px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+    }
+
+    .box {
+      border: 1px solid #444;
+      padding: 10px;
+      min-height: 60px;
+      font-size: 12px;
+    }
+
+    .highlight {
+      color: gold;
+      font-weight: bold;
+    }
+  </style>
 </head>
 
-<body style="background:#0B0F2A;color:white;font-family:Arial;">
+<body>
 
-<h2 style="text-align:center">🔮 Astrodhani Kundli</h2>
+<h1>🔮 Astrodhani Kundli</h1>
 
-<div style="max-width:500px;margin:auto">
+<div class="container">
 
-<input id="name" placeholder="Name" style="width:100%;padding:10px;margin:10px 0">
-<input id="dob" type="date" style="width:100%;padding:10px;margin:10px 0">
-<input id="time" type="time" style="width:100%;padding:10px;margin:10px 0">
-<input id="place" placeholder="Place" style="width:100%;padding:10px;margin:10px 0">
+  <input type="text" id="name" placeholder="Enter Name">
+  <input type="date" id="dob">
+  <input type="time" id="tob">
+  <input type="text" id="place" placeholder="Place of Birth">
+  <input type="number" id="lat" placeholder="Latitude">
+  <input type="number" id="lon" placeholder="Longitude">
 
-<button onclick="generateKundli()" style="width:100%;padding:12px;background:#6C5CE7;color:white;border:none">
-Generate Kundli
-</button>
+  <button onclick="generateKundli()">Generate Kundli</button>
 
-<div id="result"></div>
+  <div id="output" class="result"></div>
 
-<button onclick="downloadPDF()" style="width:100%;padding:12px;margin-top:10px">
-Download PDF
-</button>
+  <div id="chart" class="chart"></div>
 
 </div>
 
 <script>
+const rashis = [
+  "Aries","Taurus","Gemini","Cancer","Leo","Virgo",
+  "Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"
+];
 
-// ===== Zodiac =====
-function getZodiac(date){
-let d=new Date(date)
-let day=d.getDate()
-let month=d.getMonth()+1
+const nakshatras = [
+  "Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra",
+  "Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni",
+  "Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha",
+  "Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishta","Shatabhisha",
+  "Purva Bhadrapada","Uttara Bhadrapada","Revati"
+];
 
-if((month==3&&day>=21)||(month==4&&day<=19))return"Aries"
-if((month==4&&day>=20)||(month==5&&day<=20))return"Taurus"
-if((month==5&&day>=21)||(month==6&&day<=20))return"Gemini"
-if((month==6&&day>=21)||(month==7&&day<=22))return"Cancer"
-if((month==7&&day>=23)||(month==8&&day<=22))return"Leo"
-if((month==8&&day>=23)||(month==9&&day<=22))return"Virgo"
-if((month==9&&day>=23)||(month==10&&day<=22))return"Libra"
-if((month==10&&day>=23)||(month==11&&day<=21))return"Scorpio"
-if((month==11&&day>=22)||(month==12&&day<=21))return"Sagittarius"
-if((month==12&&day>=22)||(month==1&&day<=19))return"Capricorn"
-if((month==1&&day>=20)||(month==2&&day<=18))return"Aquarius"
-if((month==2&&day>=19)||(month==3&&day<=20))return"Pisces"
+// ---------------- BASIC UTILS ----------------
 
-return"Unknown"
+function getJulianDay(date) {
+  return (date / 86400000) + 2440587.5;
 }
 
-// ===== Planets =====
-function getPlanets(zodiac){
-const signs=["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"]
-let i=signs.indexOf(zodiac)
-
-return[
-{name:"Sun",sign:zodiac},
-{name:"Moon",sign:signs[(i+1)%12]},
-{name:"Mars",sign:signs[(i+2)%12]},
-{name:"Mercury",sign:signs[(i+3)%12]},
-{name:"Jupiter",sign:signs[(i+4)%12]},
-{name:"Venus",sign:signs[(i+5)%12]},
-{name:"Saturn",sign:signs[(i+6)%12]}
-]
+function getRashi(deg) {
+  return rashis[Math.floor(deg / 30)];
 }
 
-// ===== Houses =====
-function getHouses(zodiac){
-const signs=["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"]
-let i=signs.indexOf(zodiac)
-
-let houses=[]
-for(let x=0;x<12;x++){
-houses.push({house:x+1,sign:signs[(i+x)%12]})
-}
-return houses
+function getNakshatra(deg) {
+  return nakshatras[Math.floor(deg / (360/27))];
 }
 
-// ===== Map =====
-function mapPlanets(planets,houses){
-return planets.map(p=>{
-let h=houses.findIndex(x=>x.sign===p.sign)
-return {...p,house:h+1}
-})
+// ---------------- PLACEHOLDER CALCULATIONS ----------------
+// ⚠️ Replace this with Swiss Ephemeris later
+
+function fakePlanet(degFactor, jd) {
+  return (jd * degFactor) % 360;
 }
 
-// ===== Diamond Chart =====
-function renderChart(houses){
+// ---------------- MAIN FUNCTION ----------------
 
-function g(n){
-let h = houses.find(x=>x.house===n)
-return h ? h.sign : ""
+function generateKundli() {
+  const name = document.getElementById("name").value;
+  const dob = document.getElementById("dob").value;
+  const tob = document.getElementById("tob").value;
+  const lat = parseFloat(document.getElementById("lat").value);
+  const lon = parseFloat(document.getElementById("lon").value);
+
+  if (!dob || !tob || isNaN(lat) || isNaN(lon)) {
+    alert("Please fill all details properly");
+    return;
+  }
+
+  const date = new Date(dob + "T" + tob);
+  const jd = getJulianDay(date);
+
+  // ---------------- FAKE DATA (TO BE REPLACED) ----------------
+  const sun = fakePlanet(0.985, jd);
+  const moon = fakePlanet(13.176, jd);
+  const mars = fakePlanet(0.524, jd);
+  const mercury = fakePlanet(1.38, jd);
+  const jupiter = fakePlanet(0.083, jd);
+  const venus = fakePlanet(1.2, jd);
+  const saturn = fakePlanet(0.033, jd);
+
+  const lagna = (jd * 0.985 + lon) % 360;
+
+  // ---------------- DERIVED ----------------
+  const moonRashi = getRashi(moon);
+  const lagnaRashi = getRashi(lagna);
+  const nakshatra = getNakshatra(moon);
+
+  // ---------------- OUTPUT ----------------
+  document.getElementById("output").innerHTML = `
+    <h2 class="highlight">${name || "User"}'s Kundli</h2>
+    <p><b>Lagna:</b> ${lagnaRashi}</p>
+    <p><b>Moon Sign:</b> ${moonRashi}</p>
+    <p><b>Nakshatra:</b> ${nakshatra}</p>
+
+    <h3 class="highlight">Planets</h3>
+    <p>☀ Sun: ${getRashi(sun)}</p>
+    <p>🌙 Moon: ${moonRashi}</p>
+    <p>♂ Mars: ${getRashi(mars)}</p>
+    <p>☿ Mercury: ${getRashi(mercury)}</p>
+    <p>♃ Jupiter: ${getRashi(jupiter)}</p>
+    <p>♀ Venus: ${getRashi(venus)}</p>
+    <p>♄ Saturn: ${getRashi(saturn)}</p>
+  `;
+
+  generateChart(lagnaRashi);
 }
 
-return `
-<div class="kundli-wrapper">
+// ---------------- CHART ----------------
 
-<div class="diamond">
+function generateChart(lagna) {
+  const chart = document.getElementById("chart");
+  chart.innerHTML = "";
 
-<div class="box h1">${g(1)}</div>
-<div class="box h2">${g(2)}</div>
-<div class="box h3">${g(3)}</div>
-<div class="box h4">${g(4)}</div>
-<div class="box h5">${g(5)}</div>
-<div class="box h6">${g(6)}</div>
-<div class="box h7">${g(7)}</div>
-<div class="box h8">${g(8)}</div>
-<div class="box h9">${g(9)}</div>
-<div class="box h10">${g(10)}</div>
-<div class="box h11">${g(11)}</div>
-<div class="box h12">${g(12)}</div>
+  for (let i = 1; i <= 12; i++) {
+    const div = document.createElement("div");
+    div.className = "box";
 
-</div>
+    if (i === 1) {
+      div.innerHTML = `<b>Lagna</b><br>${lagna}`;
+    } else {
+      div.innerHTML = `House ${i}`;
+    }
 
-</div>
-`
+    chart.appendChild(div);
+  }
 }
-
-
-
-let lastKundli={}
-
-// ===== MAIN =====
-async function generateKundli(){
-
-let name=document.getElementById("name").value
-let dob=document.getElementById("dob").value
-
-if(!name||!dob){
-alert("Fill details")
-return
-}
-
-let zodiac=getZodiac(dob)
-
-let planets=getPlanets(zodiac)
-let houses=getHouses(zodiac)
-let mapped=mapPlanets(planets,houses)
-
-document.getElementById("result").innerHTML="Generating..."
-
-let res=await fetch("/api/ai",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({
-question:"Act as astrologer. Zodiac:"+zodiac+"\nGive:\nPERSONALITY:...\nCAREER:...\nLOVE:..."
-})
-})
-
-let data=await res.json()
-let text=data.answer||""
-
-function ex(l){
-let r=new RegExp(l+":(.*?)(?=\\n[A-Z]+:|$)","is")
-let m=text.match(r)
-return m?m[1].trim():"Not available"
-}
-
-let personality=ex("PERSONALITY")
-let career=ex("CAREER")
-let love=ex("LOVE")
-
-document.getElementById("result").innerHTML=
-
-"<h3>🔥 Basic</h3>"+
-"<p>"+name+" ("+zodiac+")</p>"+
-
-"<h3>🪐 Planets</h3>"+
-mapped.map(p=>"<p>"+p.name+" → "+p.sign+" (H"+p.house+")</p>").join("")+
-
-"<h3>🔷 Kundli</h3>"+
-renderChart(houses)+
-
-"<h3>🧠 Personality</h3><p>"+personality+"</p>"+
-"<h3>💼 Career</h3><p>"+career+"</p>"+
-"<h3>❤️ Love</h3><p>"+love+"</p>"
-
-lastKundli={name,zodiac,personality,career,love}
-}
-
-// ===== PDF =====
-function downloadPDF(){
-
-if(!lastKundli.name){
-alert("Generate first")
-return
-}
-
-const{jsPDF}=window.jspdf
-let doc=new jsPDF()
-
-doc.text("Astrodhani Kundli",20,20)
-doc.text("Name: "+lastKundli.name,20,40)
-doc.text("Zodiac: "+lastKundli.zodiac,20,50)
-
-doc.text("Personality:",20,70)
-doc.text(lastKundli.personality,20,80,{maxWidth:170})
-
-doc.save("kundli.pdf")
-}
-
 </script>
 
 </body>
