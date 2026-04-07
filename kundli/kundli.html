@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Astrodhani Kundli 🔮</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #0b0f1a;
+      color: white;
+      text-align: center;
+    }
+
+    h1 {
+      color: gold;
+      margin-top: 20px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 10px;
+      border: none;
+    }
+
+    input {
+      background: #111827;
+      color: white;
+    }
+
+    button {
+      background: gold;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .result {
+      margin-top: 20px;
+      background: #111827;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    .highlight {
+      color: gold;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🔮 Astrodhani Kundli</h1>
+
+<div class="container">
+
+  <input type="text" id="name" placeholder="Enter Name">
+  <input type="text" id="place" placeholder="Place of Birth (e.g. Delhi, India)">
+
+  <input type="date" id="dob">
+  <input type="time" id="tob">
+
+  <!-- Hidden now (auto filled) -->
+  <input type="hidden" id="lat">
+  <input type="hidden" id="lon">
+
+  <button onclick="generateKundli()">Generate Kundli</button>
+
+  <div id="output" class="result"></div>
+
+</div>
+
+<script type="module">
+import Module from "./swisseph.js";
+
+window.Module = Module;
+
+let sweReady = false;
+
+Module.onRuntimeInitialized = function () {
+  console.log("✅ Swiss Ephemeris Loaded");
+
+  swe_set_ephe_path("./ephe");
+  swe_set_sid_mode(1, 0, 0);
+
+  sweReady = true;
+};
+
+// ---------------- 🌍 LOCATION API ----------------
+
+async function getLatLon(place) {
+  const API_KEY = "4110c45bd1ac444fa32a18f0799d0cb3"; // 🔥 replace this
+
+  const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(place)}&key=${API_KEY}`;
+
+  const res = await fetch(url);
+  const data = await res.json();
+
+  if (data.results.length === 0) {
+    throw new Error("Location not found");
+  }
+
+  const { lat, lng } = data.results[0].geometry;
+
+  return { lat, lon: lng };
+}
+
+// ---------------- UTILS ----------------
+
+function getJulianDay(date) {
+  return (date / 86400000) + 2440587.5;
+}
+
+function getRashi(deg) {
+  const rashis = [
+    "Aries","Taurus","Gemini","Cancer","Leo","Virgo",
+    "Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"
+  ];
+  return rashis[Math.floor(deg / 30)];
+}
+
+function getNakshatra(deg) {
+  const nakshatras = [
+    "Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra",
+    "Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni",
+    "Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha",
+    "Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishta","Shatabhisha",
+    "Purva Bhadrapada","Uttara Bhadrapada","Revati"
+  ];
+  return nakshatras[Math.floor(deg / (360/27))];
+}
+
+// ---------------- MAIN ----------------
+
+window.generateKundli = async function () {
+
+  if (!sweReady) {
+    alert("⚠️ Engine loading... please wait");
+    return;
+  }
+
+  const name = document.getElementById("name").value || "User";
+  const place = document.getElementById("place").value || "";
+
+  const dob = document.getElementById("dob").value;
+  const tob = document.getElementById("tob").value;
+
+  if (!dob || !tob || !place) {
+    alert("Please fill all details");
+    return;
+  }
+
+  try {
+    document.getElementById("output").innerHTML = "🔄 Fetching location...";
+
+    // 🌍 GET LAT LON
+    const { lat, lon } = await getLatLon(place);
+
+    const date = new Date(dob + "T" + tob);
+    const jd = getJulianDay(date);
+
+    document.getElementById("output").innerHTML = "🔄 Calculating kundli...";
+
+    // ---------------- PLANETS ----------------
+
+    const sun = swe_calc_ut(jd, 0, 1)[0];
+    const moon = swe_calc_ut(jd, 1, 1)[0];
+    const mars = swe_calc_ut(jd, 4, 1)[0];
+    const mercury = swe_calc_ut(jd, 2, 1)[0];
+    const jupiter = swe_calc_ut(jd, 5, 1)[0];
+    const venus = swe_calc_ut(jd, 3, 1)[0];
+    const saturn = swe_calc_ut(jd, 6, 1)[0];
+    const rahu = swe_calc_ut(jd, 10, 1)[0];
+    const ketu = (rahu + 180) % 360;
+
+    const houses = swe_houses(jd, lat, lon, 'P');
+    const lagna = houses[0];
+
+    // ---------------- OUTPUT ----------------
+
+    document.getElementById("output").innerHTML = `
+      <h2 class="highlight">${name}'s Kundli</h2>
+      <p><b>Place:</b> ${place}</p>
+
+      <p><b>Lagna:</b> ${getRashi(lagna)}</p>
+      <p><b>Moon Sign:</b> ${getRashi(moon)}</p>
+      <p><b>Nakshatra:</b> ${getNakshatra(moon)}</p>
+
+      <h3 class="highlight">Planets</h3>
+      <p>☀ Sun: ${getRashi(sun)}</p>
+      <p>🌙 Moon: ${getRashi(moon)}</p>
+      <p>♂ Mars: ${getRashi(mars)}</p>
+      <p>☿ Mercury: ${getRashi(mercury)}</p>
+      <p>♃ Jupiter: ${getRashi(jupiter)}</p>
+      <p>♀ Venus: ${getRashi(venus)}</p>
+      <p>♄ Saturn: ${getRashi(saturn)}</p>
+      <p>☊ Rahu: ${getRashi(rahu)}</p>
+      <p>☋ Ketu: ${getRashi(ketu)}</p>
+    `;
+
+  } catch (err) {
+    console.error(err);
+    alert("❌ Error: " + err.message);
+  }
+};
+</script>
+
+</body>
+</html>
