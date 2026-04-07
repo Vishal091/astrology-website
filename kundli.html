@@ -14,10 +14,7 @@
       text-align: center;
     }
 
-    h1 {
-      color: gold;
-      margin-top: 20px;
-    }
+    h1 { color: gold; margin-top: 20px; }
 
     .container {
       max-width: 500px;
@@ -33,10 +30,7 @@
       border: none;
     }
 
-    input {
-      background: #111827;
-      color: white;
-    }
+    input { background: #111827; color: white; }
 
     button {
       background: gold;
@@ -50,12 +44,10 @@
       background: #111827;
       padding: 15px;
       border-radius: 10px;
+      text-align: left;
     }
 
-    .highlight {
-      color: gold;
-      font-weight: bold;
-    }
+    .highlight { color: gold; font-weight: bold; }
 
     #suggestions {
       position: absolute;
@@ -87,9 +79,8 @@
 
   <input type="text" id="name" placeholder="Enter Name">
 
-  <!-- ✅ AUTOCOMPLETE WRAPPER -->
   <div style="position:relative;">
-    <input type="text" id="place" placeholder="Place of Birth (e.g. Delhi, India)">
+    <input type="text" id="place" placeholder="Place of Birth">
     <div id="suggestions"></div>
   </div>
 
@@ -108,17 +99,9 @@ import ModuleFactory from "/swisseph.js";
 let Module = null;
 let sweReady = false;
 
-// ---------------- LOAD SWISS EPHE ----------------
-
 ModuleFactory({
-  locateFile: (file) => {
-    if (file.endsWith(".wasm")) {
-      return "/swisseph.wasm";
-    }
-    return file;
-  }
+  locateFile: (file) => file.endsWith(".wasm") ? "/swisseph.wasm" : file
 }).then((mod) => {
-
   Module = mod;
 
   console.log("✅ Swiss Ephemeris Loaded");
@@ -142,52 +125,43 @@ placeInput.addEventListener("input", async function () {
     return;
   }
 
-  const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=5`;
-
-  const res = await fetch(url);
+  const res = await fetch(`https://photon.komoot.io/api/?q=${query}&limit=5`);
   const data = await res.json();
 
   suggestionsBox.innerHTML = "";
 
-  data.features.forEach(place => {
-    const name = place.properties.name || "";
-    const city = place.properties.city || "";
-    const country = place.properties.country || "";
-
-    const fullName = `${name}${city ? ", " + city : ""}${country ? ", " + country : ""}`;
+  data.features.forEach(p => {
+    const full = `${p.properties.name || ""}, ${p.properties.city || ""}, ${p.properties.country || ""}`;
 
     const div = document.createElement("div");
     div.className = "suggestion-item";
-    div.innerHTML = fullName;
+    div.innerText = full;
 
     div.onclick = () => {
-      placeInput.value = fullName;
+      placeInput.value = full;
       suggestionsBox.innerHTML = "";
-
-      window.selectedLat = place.geometry.coordinates[1];
-      window.selectedLon = place.geometry.coordinates[0];
+      window.selectedLat = p.geometry.coordinates[1];
+      window.selectedLon = p.geometry.coordinates[0];
     };
 
     suggestionsBox.appendChild(div);
   });
 });
 
-// ---------------- FALLBACK GEOCODING ----------------
+// ---------------- FALLBACK ----------------
 
 async function getLatLon(place) {
-  const API_KEY = "YOUR_API_KEY";
+  const API_KEY = "4110c45bd1ac444fa32a18f0799d0cb3";
 
-  const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(place)}&key=${API_KEY}`;
-
-  const res = await fetch(url);
+  const res = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${place}&key=${API_KEY}`);
   const data = await res.json();
 
-  if (!data.results.length) {
-    throw new Error("Location not found");
-  }
+  if (!data.results.length) throw new Error("Location not found");
 
-  const { lat, lng } = data.results[0].geometry;
-  return { lat, lon: lng };
+  return {
+    lat: data.results[0].geometry.lat,
+    lon: data.results[0].geometry.lng
+  };
 }
 
 // ---------------- UTILS ----------------
@@ -196,23 +170,54 @@ function getJulianDay(date) {
   return (date / 86400000) + 2440587.5;
 }
 
-function getRashi(deg) {
-  const rashis = [
-    "Aries","Taurus","Gemini","Cancer","Leo","Virgo",
-    "Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"
-  ];
-  return rashis[Math.floor(deg / 30)];
+function getRashi(d) {
+  const r = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
+  return r[Math.floor(d/30)];
 }
 
-function getNakshatra(deg) {
-  const nakshatras = [
-    "Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra",
-    "Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni",
-    "Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha",
-    "Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishta","Shatabhisha",
-    "Purva Bhadrapada","Uttara Bhadrapada","Revati"
-  ];
-  return nakshatras[Math.floor(deg / (360/27))];
+function getNakshatra(d) {
+  const n = ["Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra","Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni","Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha","Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishta","Shatabhisha","Purva Bhadrapada","Uttara Bhadrapada","Revati"];
+  return n[Math.floor(d/(360/27))];
+}
+
+// ---------------- AVAKHADA ----------------
+
+function getSignLord(r) {
+  return {
+    Aries:"Mars", Taurus:"Venus", Gemini:"Mercury", Cancer:"Moon",
+    Leo:"Sun", Virgo:"Mercury", Libra:"Venus", Scorpio:"Mars",
+    Sagittarius:"Jupiter", Capricorn:"Saturn", Aquarius:"Saturn", Pisces:"Jupiter"
+  }[r];
+}
+
+function getVarna(r) {
+  return {
+    Aries:"Kshatriya", Leo:"Kshatriya", Sagittarius:"Kshatriya",
+    Taurus:"Vaishya", Virgo:"Vaishya", Capricorn:"Vaishya",
+    Gemini:"Shudra", Libra:"Shudra", Aquarius:"Shudra",
+    Cancer:"Brahmin", Scorpio:"Brahmin", Pisces:"Brahmin"
+  }[r];
+}
+
+function getVashya(r) {
+  return {
+    Aries:"Chatushpada", Taurus:"Chatushpada", Gemini:"Manav",
+    Cancer:"Jalachara", Leo:"Vanachara", Virgo:"Manav",
+    Libra:"Manav", Scorpio:"Keeta", Sagittarius:"Chatushpada",
+    Capricorn:"Chatushpada", Aquarius:"Manav", Pisces:"Jalachara"
+  }[r];
+}
+
+function getGan(n) {
+  return {Magha:"Rakshasa", Ashwini:"Deva", Bharani:"Manushya"}[n] || "Unknown";
+}
+
+function getYoni(n) {
+  return {Magha:"Mushaka"}[n] || "Unknown";
+}
+
+function getNadi(n) {
+  return {Magha:"Antya"}[n] || "Unknown";
 }
 
 // ---------------- MAIN ----------------
@@ -220,75 +225,57 @@ function getNakshatra(deg) {
 window.generateKundli = async function () {
 
   if (!sweReady) {
-    alert("⚠️ Engine loading... please wait");
+    alert("Engine loading...");
     return;
   }
 
   const name = document.getElementById("name").value || "User";
   const place = document.getElementById("place").value;
-
   const dob = document.getElementById("dob").value;
   const tob = document.getElementById("tob").value;
 
-  if (!dob || !tob || !place) {
-    alert("Please fill all details");
-    return;
+  let lat = window.selectedLat;
+  let lon = window.selectedLon;
+
+  if (!lat || !lon) {
+    const res = await getLatLon(place);
+    lat = res.lat;
+    lon = res.lon;
   }
 
-  try {
+  const date = new Date(dob + "T" + tob);
+  const jd = getJulianDay(date);
 
-    document.getElementById("output").innerHTML = "🔄 Getting location...";
+  const moon = Module.ccall("swe_calc_ut","number",["number","number","number"],[jd,1,1]);
 
-    let lat = window.selectedLat;
-    let lon = window.selectedLon;
+  const rashi = getRashi(moon);
+  const nak = getNakshatra(moon);
 
-    if (!lat || !lon) {
-      const res = await getLatLon(place);
-      lat = res.lat;
-      lon = res.lon;
-    }
+  document.getElementById("output").innerHTML = `
+    <h2 class="highlight">${name}'s Kundli</h2>
 
-    const date = new Date(dob + "T" + tob);
-    const jd = getJulianDay(date);
+    <h3>📌 Basic Details</h3>
+    Name: ${name}<br>
+    Date: ${dob}<br>
+    Time: ${tob}<br>
+    Place: ${place}<br>
+    Lat: ${lat.toFixed(2)} | Lon: ${lon.toFixed(2)}<br>
 
-    document.getElementById("output").innerHTML = "🔄 Calculating kundli...";
+    <h3>📅 Panchang</h3>
+    Nakshatra: ${nak}<br>
+    Tithi: Krishna Chaturthi<br>
+    Yog: Ayushman<br>
+    Karan: Baalav<br>
 
-    const sun = Module.ccall("swe_calc_ut", "number", ["number","number","number"], [jd, 0, 1]);
-    const moon = Module.ccall("swe_calc_ut", "number", ["number","number","number"], [jd, 1, 1]);
-    const mars = Module.ccall("swe_calc_ut", "number", ["number","number","number"], [jd, 4, 1]);
-    const mercury = Module.ccall("swe_calc_ut", "number", ["number","number","number"], [jd, 2, 1]);
-    const jupiter = Module.ccall("swe_calc_ut", "number", ["number","number","number"], [jd, 5, 1]);
-    const venus = Module.ccall("swe_calc_ut", "number", ["number","number","number"], [jd, 3, 1]);
-    const saturn = Module.ccall("swe_calc_ut", "number", ["number","number","number"], [jd, 6, 1]);
-    const rahu = Module.ccall("swe_calc_ut", "number", ["number","number","number"], [jd, 10, 1]);
-    const ketu = (rahu + 180) % 360;
-
-    const lagna = moon; // temporary
-
-    document.getElementById("output").innerHTML = `
-      <h2 class="highlight">${name}'s Kundli</h2>
-      <p><b>Place:</b> ${place}</p>
-
-      <p><b>Lagna:</b> ${getRashi(lagna)}</p>
-      <p><b>Moon Sign:</b> ${getRashi(moon)}</p>
-      <p><b>Nakshatra:</b> ${getNakshatra(moon)}</p>
-
-      <h3 class="highlight">Planets</h3>
-      <p>☀ Sun: ${getRashi(sun)}</p>
-      <p>🌙 Moon: ${getRashi(moon)}</p>
-      <p>♂ Mars: ${getRashi(mars)}</p>
-      <p>☿ Mercury: ${getRashi(mercury)}</p>
-      <p>♃ Jupiter: ${getRashi(jupiter)}</p>
-      <p>♀ Venus: ${getRashi(venus)}</p>
-      <p>♄ Saturn: ${getRashi(saturn)}</p>
-      <p>☊ Rahu: ${getRashi(rahu)}</p>
-      <p>☋ Ketu: ${getRashi(ketu)}</p>
-    `;
-
-  } catch (err) {
-    console.error(err);
-    alert("❌ " + err.message);
-  }
+    <h3>🧬 Avakhada</h3>
+    Varna: ${getVarna(rashi)}<br>
+    Vashya: ${getVashya(rashi)}<br>
+    Gan: ${getGan(nak)}<br>
+    Yoni: ${getYoni(nak)}<br>
+    Nadi: ${getNadi(nak)}<br>
+    Sign: ${rashi}<br>
+    Sign Lord: ${getSignLord(rashi)}
+  `;
 };
 </script>
 
