@@ -99,10 +99,6 @@ import ModuleFactory from "/swisseph.js";
 let Module = null;
 let sweReady = false;
 
-// ✅ SIDEREAL FLAG
-const SIDEREAL_FLAG = 65536;
-
-// ---------------- LOAD ENGINE ----------------
 ModuleFactory({
   locateFile: (file) => file.endsWith(".wasm") ? "/swisseph.wasm" : file
 }).then((mod) => {
@@ -111,8 +107,8 @@ ModuleFactory({
   Module.ccall("swe_set_ephe_path", null, ["string"], ["/ephe"]);
   Module.ccall("swe_set_sid_mode", null, ["number","number","number"], [1,0,0]);
 
-  console.log("✅ Swiss Ephemeris Loaded");
   sweReady = true;
+  console.log("✅ Swiss Ephemeris Loaded");
 });
 
 // ---------------- AUTOCOMPLETE ----------------
@@ -174,9 +170,40 @@ const nakshatras = [
 ];
 
 function getNakshatraDetails(moon) {
-  const index = Math.floor(moon / (360/27));
-  const pada = Math.floor((moon % (360/27)) / (360/108)) + 1;
+  const segment = 360 / 27;
+  let index = Math.floor(moon / segment);
+  index = Math.max(0, Math.min(26, index));
+
+  const pada = Math.floor((moon % segment) / (segment / 4)) + 1;
+
   return { name: nakshatras[index], pada };
+}
+
+function getRashi(d) {
+  let index = Math.floor(d / 30);
+  index = Math.max(0, Math.min(11, index));
+
+  return [
+    "Aries","Taurus","Gemini","Cancer","Leo","Virgo",
+    "Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"
+  ][index];
+}
+
+// ---------------- SWISS FIX ----------------
+function getPlanetLongitude(jd, planet) {
+  const ptr = Module._malloc(8 * 6);
+
+  Module.ccall(
+    "swe_calc_ut",
+    "number",
+    ["number","number","number","number"],
+    [jd, planet, 65536, ptr]
+  );
+
+  const lon = Module.getValue(ptr, "double");
+  Module._free(ptr);
+
+  return (lon + 360) % 360;
 }
 
 // ---------------- PANCHANG ----------------
@@ -217,11 +244,6 @@ function calculatePanchang(sun, moon) {
   };
 }
 
-// ---------------- RASHI ----------------
-function getRashi(d) {
-  return ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"][Math.floor(d/30)];
-}
-
 // ---------------- MAIN ----------------
 window.generateKundli = async function () {
 
@@ -244,8 +266,8 @@ window.generateKundli = async function () {
   const date = new Date(dob + "T" + tob);
   const jd = getJulianDay(date);
 
-  const sun = Module.ccall("swe_calc_ut","number",["number","number","number"],[jd,0,SIDEREAL_FLAG]);
-  const moon = Module.ccall("swe_calc_ut","number",["number","number","number"],[jd,1,SIDEREAL_FLAG]);
+  const sun = getPlanetLongitude(jd, 0);
+  const moon = getPlanetLongitude(jd, 1);
 
   const nak = getNakshatraDetails(moon);
   const panchang = calculatePanchang(sun, moon);
