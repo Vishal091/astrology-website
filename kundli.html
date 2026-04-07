@@ -99,6 +99,10 @@ import ModuleFactory from "/swisseph.js";
 let Module = null;
 let sweReady = false;
 
+// ✅ SIDEREAL FLAG
+const SIDEREAL_FLAG = 65536;
+
+// ---------------- LOAD ENGINE ----------------
 ModuleFactory({
   locateFile: (file) => file.endsWith(".wasm") ? "/swisseph.wasm" : file
 }).then((mod) => {
@@ -107,11 +111,11 @@ ModuleFactory({
   Module.ccall("swe_set_ephe_path", null, ["string"], ["/ephe"]);
   Module.ccall("swe_set_sid_mode", null, ["number","number","number"], [1,0,0]);
 
+  console.log("✅ Swiss Ephemeris Loaded");
   sweReady = true;
 });
 
 // ---------------- AUTOCOMPLETE ----------------
-
 const placeInput = document.getElementById("place");
 const suggestionsBox = document.getElementById("suggestions");
 
@@ -142,9 +146,9 @@ placeInput.addEventListener("input", async function () {
 });
 
 // ---------------- FALLBACK ----------------
-
 async function getLatLon(place) {
   const API_KEY = "4110c45bd1ac444fa32a18f0799d0cb3";
+
   const res = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${place}&key=${API_KEY}`);
   const data = await res.json();
 
@@ -157,7 +161,6 @@ async function getLatLon(place) {
 }
 
 // ---------------- UTILS ----------------
-
 function getJulianDay(date) {
   return (date / 86400000) + 2440587.5;
 }
@@ -173,16 +176,10 @@ const nakshatras = [
 function getNakshatraDetails(moon) {
   const index = Math.floor(moon / (360/27));
   const pada = Math.floor((moon % (360/27)) / (360/108)) + 1;
-  return {
-    name: nakshatras[index],
-    pada: pada
-  };
+  return { name: nakshatras[index], pada };
 }
 
 // ---------------- PANCHANG ----------------
-
-const tithiNames = [...Array(30)].map((_,i)=>i+1);
-
 function calculatePanchang(sun, moon) {
   let diff = moon - sun;
   if (diff < 0) diff += 360;
@@ -190,29 +187,42 @@ function calculatePanchang(sun, moon) {
   const tithiIndex = Math.floor(diff / 12);
   const paksha = tithiIndex < 15 ? "Shukla" : "Krishna";
 
-  const yogIndex = Math.floor(((sun + moon) % 360) / (360/27));
+  const tithiNames = [
+    "Pratipada","Dwitiya","Tritiya","Chaturthi","Panchami","Shashthi","Saptami",
+    "Ashtami","Navami","Dashami","Ekadashi","Dwadashi","Trayodashi","Chaturdashi","Purnima",
+    "Pratipada","Dwitiya","Tritiya","Chaturthi","Panchami","Shashthi","Saptami",
+    "Ashtami","Navami","Dashami","Ekadashi","Dwadashi","Trayodashi","Chaturdashi","Amavasya"
+  ];
 
+  const yogaNames = [
+    "Vishkumbha","Priti","Ayushman","Saubhagya","Shobhana","Atiganda","Sukarma",
+    "Dhriti","Shoola","Ganda","Vriddhi","Dhruva","Vyaghata","Harshana","Vajra",
+    "Siddhi","Vyatipata","Variyana","Parigha","Shiva","Siddha","Sadhya",
+    "Shubha","Shukla","Brahma","Indra","Vaidhriti"
+  ];
+
+  const karanaNames = [
+    "Bava","Balava","Kaulava","Taitila","Garaja","Vanija","Vishti",
+    "Bava","Balava","Kaulava","Taitila","Garaja","Vanija","Vishti",
+    "Shakuni","Chatushpada","Nagava","Kimstughna"
+  ];
+
+  const yogIndex = Math.floor(((sun + moon) % 360) / (360/27));
   const karanaIndex = Math.floor(diff / 6);
 
   return {
-    tithi: paksha + " " + (tithiIndex+1),
-    yog: yogIndex+1,
-    karana: karanaIndex+1
+    tithi: `${paksha} ${tithiNames[tithiIndex]}`,
+    yog: yogaNames[yogIndex],
+    karana: karanaNames[karanaIndex]
   };
 }
 
-// ---------------- AVAKHADA ----------------
-
+// ---------------- RASHI ----------------
 function getRashi(d) {
   return ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"][Math.floor(d/30)];
 }
 
-function getSignLord(r) {
-  return {Aries:"Mars",Taurus:"Venus",Gemini:"Mercury",Cancer:"Moon",Leo:"Sun",Virgo:"Mercury",Libra:"Venus",Scorpio:"Mars",Sagittarius:"Jupiter",Capricorn:"Saturn",Aquarius:"Saturn",Pisces:"Jupiter"}[r];
-}
-
 // ---------------- MAIN ----------------
-
 window.generateKundli = async function () {
 
   if (!sweReady) return alert("Engine loading...");
@@ -234,8 +244,8 @@ window.generateKundli = async function () {
   const date = new Date(dob + "T" + tob);
   const jd = getJulianDay(date);
 
-  const sun = Module.ccall("swe_calc_ut","number",["number","number","number"],[jd,0,1]);
-  const moon = Module.ccall("swe_calc_ut","number",["number","number","number"],[jd,1,1]);
+  const sun = Module.ccall("swe_calc_ut","number",["number","number","number"],[jd,0,SIDEREAL_FLAG]);
+  const moon = Module.ccall("swe_calc_ut","number",["number","number","number"],[jd,1,SIDEREAL_FLAG]);
 
   const nak = getNakshatraDetails(moon);
   const panchang = calculatePanchang(sun, moon);
@@ -259,7 +269,6 @@ window.generateKundli = async function () {
 
     <h3>🧬 Avakhada</h3>
     Sign: ${rashi}<br>
-    Sign Lord: ${getSignLord(rashi)}
   `;
 };
 </script>
