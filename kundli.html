@@ -108,7 +108,6 @@ ModuleFactory({
   Module.ccall("swe_set_sid_mode", null, ["number","number","number"], [1,0,0]);
 
   sweReady = true;
-  console.log("✅ Swiss Ephemeris Loaded");
 });
 
 // ---------------- AUTOCOMPLETE ----------------
@@ -161,34 +160,6 @@ function getJulianDay(date) {
   return (date / 86400000) + 2440587.5;
 }
 
-const nakshatras = [
-  "Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra",
-  "Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni",
-  "Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha",
-  "Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishta","Shatabhisha",
-  "Purva Bhadrapada","Uttara Bhadrapada","Revati"
-];
-
-function getNakshatraDetails(moon) {
-  const segment = 360 / 27;
-  let index = Math.floor(moon / segment);
-  index = Math.max(0, Math.min(26, index));
-
-  const pada = Math.floor((moon % segment) / (segment / 4)) + 1;
-
-  return { name: nakshatras[index], pada };
-}
-
-function getRashi(d) {
-  let index = Math.floor(d / 30);
-  index = Math.max(0, Math.min(11, index));
-
-  return [
-    "Aries","Taurus","Gemini","Cancer","Leo","Virgo",
-    "Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"
-  ][index];
-}
-
 // ---------------- SWISS FIX ----------------
 function getPlanetLongitude(jd, planet) {
   const ptr = Module._malloc(8 * 6);
@@ -200,12 +171,40 @@ function getPlanetLongitude(jd, planet) {
     [jd, planet, 65536, ptr]
   );
 
-  // ✅ FIX: use HEAP instead of getValue
-  const longitude = Module.HEAPF64[ptr / 8];
-
+  const lon = Module.HEAPF64[ptr / 8];
   Module._free(ptr);
 
-  return (longitude + 360) % 360;
+  return (lon + 360) % 360;
+}
+
+// ---------------- NAKSHATRA ----------------
+const nakshatras = [
+  "Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra",
+  "Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni",
+  "Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha",
+  "Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishta","Shatabhisha",
+  "Purva Bhadrapada","Uttara Bhadrapada","Revati"
+];
+
+function getNakshatraDetails(moon) {
+  const seg = 360/27;
+  let i = Math.floor(moon / seg);
+  i = Math.max(0, Math.min(26, i));
+
+  const pada = Math.floor((moon % seg) / (seg/4)) + 1;
+
+  return { name: nakshatras[i], pada };
+}
+
+// ---------------- RASHI ----------------
+function getRashi(d) {
+  let i = Math.floor(d / 30);
+  i = Math.max(0, Math.min(11, i));
+
+  return [
+    "Aries","Taurus","Gemini","Cancer","Leo","Virgo",
+    "Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"
+  ][i];
 }
 
 // ---------------- PANCHANG ----------------
@@ -246,6 +245,48 @@ function calculatePanchang(sun, moon) {
   };
 }
 
+// ---------------- HOUSES ----------------
+function getHouses(jd, lat, lon) {
+  const cuspsPtr = Module._malloc(8 * 13);
+  const ascmcPtr = Module._malloc(8 * 10);
+
+  Module.ccall(
+    "swe_houses_ex",
+    "number",
+    ["number","number","number","number","number","number","number"],
+    [jd, 65536, lat, lon, 80, cuspsPtr, ascmcPtr]
+  );
+
+  const lagna = Module.HEAPF64[ascmcPtr / 8];
+
+  let houses = [];
+  for (let i = 1; i <= 12; i++) {
+    houses.push(Module.HEAPF64[(cuspsPtr / 8) + i]);
+  }
+
+  Module._free(cuspsPtr);
+  Module._free(ascmcPtr);
+
+  return {
+    lagna: (lagna + 360) % 360,
+    houses: houses.map(h => (h + 360) % 360)
+  };
+}
+
+// ---------------- HOUSE MAPPING ----------------
+function getHouseOfPlanet(p, cusps) {
+  for (let i = 0; i < 12; i++) {
+    let start = cusps[i];
+    let end = cusps[(i + 1) % 12];
+
+    if (end < start) end += 360;
+    if (p < start) p += 360;
+
+    if (p >= start && p < end) return i + 1;
+  }
+  return 1;
+}
+
 // ---------------- MAIN ----------------
 window.generateKundli = async function () {
 
@@ -275,6 +316,24 @@ window.generateKundli = async function () {
   const panchang = calculatePanchang(sun, moon);
   const rashi = getRashi(moon);
 
+  const houseData = getHouses(jd, lat, lon);
+  const lagna = houseData.lagna;
+
+  const planets = {
+    Sun: sun,
+    Moon: moon,
+    Mars: getPlanetLongitude(jd, 4),
+    Mercury: getPlanetLongitude(jd, 2),
+    Jupiter: getPlanetLongitude(jd, 5),
+    Venus: getPlanetLongitude(jd, 3),
+    Saturn: getPlanetLongitude(jd, 6)
+  };
+
+  let houseOutput = "";
+  for (let p in planets) {
+    houseOutput += `${p} → House ${getHouseOfPlanet(planets[p], houseData.houses)}<br>`;
+  }
+
   document.getElementById("output").innerHTML = `
     <h2 class="highlight">${name}'s Kundli</h2>
 
@@ -290,6 +349,10 @@ window.generateKundli = async function () {
     Yog: ${panchang.yog}<br>
     Karan: ${panchang.karana}<br>
     Nakshatra: ${nak.name} (Pada ${nak.pada})<br>
+
+    <h3>🏠 Lagna & Houses</h3>
+    Lagna: ${getRashi(lagna)}<br><br>
+    ${houseOutput}
 
     <h3>🧬 Avakhada</h3>
     Sign: ${rashi}<br>
