@@ -51,6 +51,11 @@
       padding: 15px;
       border-radius: 10px;
     }
+
+    .highlight {
+      color: gold;
+      font-weight: bold;
+    }
   </style>
 </head>
 
@@ -60,10 +65,15 @@
 
 <div class="container">
 
+  <input type="text" id="name" placeholder="Enter Name">
+  <input type="text" id="place" placeholder="Place of Birth (e.g. Delhi, India)">
+
   <input type="date" id="dob">
   <input type="time" id="tob">
-  <input type="number" id="lat" placeholder="Latitude">
-  <input type="number" id="lon" placeholder="Longitude">
+
+  <!-- Hidden now (auto filled) -->
+  <input type="hidden" id="lat">
+  <input type="hidden" id="lon">
 
   <button onclick="generateKundli()">Generate Kundli</button>
 
@@ -71,7 +81,6 @@
 
 </div>
 
-<!-- ✅ SWISS EPHEMERIS MODULE -->
 <script type="module">
 import Module from "./swisseph.js";
 
@@ -79,16 +88,33 @@ window.Module = Module;
 
 let sweReady = false;
 
-// ---------------- LOAD ENGINE ----------------
-
 Module.onRuntimeInitialized = function () {
   console.log("✅ Swiss Ephemeris Loaded");
 
   swe_set_ephe_path("./ephe");
-  swe_set_sid_mode(1, 0, 0); // Lahiri
+  swe_set_sid_mode(1, 0, 0);
 
   sweReady = true;
 };
+
+// ---------------- 🌍 LOCATION API ----------------
+
+async function getLatLon(place) {
+  const API_KEY = "4110c45bd1ac444fa32a18f0799d0cb3"; // 🔥 replace this
+
+  const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(place)}&key=${API_KEY}`;
+
+  const res = await fetch(url);
+  const data = await res.json();
+
+  if (data.results.length === 0) {
+    throw new Error("Location not found");
+  }
+
+  const { lat, lng } = data.results[0].geometry;
+
+  return { lat, lon: lng };
+}
 
 // ---------------- UTILS ----------------
 
@@ -115,29 +141,36 @@ function getNakshatra(deg) {
   return nakshatras[Math.floor(deg / (360/27))];
 }
 
-// ---------------- MAIN FUNCTION ----------------
+// ---------------- MAIN ----------------
 
-window.generateKundli = function () {
+window.generateKundli = async function () {
 
   if (!sweReady) {
     alert("⚠️ Engine loading... please wait");
     return;
   }
 
+  const name = document.getElementById("name").value || "User";
+  const place = document.getElementById("place").value || "";
+
   const dob = document.getElementById("dob").value;
   const tob = document.getElementById("tob").value;
-  const lat = parseFloat(document.getElementById("lat").value);
-  const lon = parseFloat(document.getElementById("lon").value);
 
-  if (!dob || !tob || isNaN(lat) || isNaN(lon)) {
+  if (!dob || !tob || !place) {
     alert("Please fill all details");
     return;
   }
 
-  const date = new Date(dob + "T" + tob);
-  const jd = getJulianDay(date);
-
   try {
+    document.getElementById("output").innerHTML = "🔄 Fetching location...";
+
+    // 🌍 GET LAT LON
+    const { lat, lon } = await getLatLon(place);
+
+    const date = new Date(dob + "T" + tob);
+    const jd = getJulianDay(date);
+
+    document.getElementById("output").innerHTML = "🔄 Calculating kundli...";
 
     // ---------------- PLANETS ----------------
 
@@ -151,21 +184,20 @@ window.generateKundli = function () {
     const rahu = swe_calc_ut(jd, 10, 1)[0];
     const ketu = (rahu + 180) % 360;
 
-    // ---------------- LAGNA ----------------
-
     const houses = swe_houses(jd, lat, lon, 'P');
     const lagna = houses[0];
 
     // ---------------- OUTPUT ----------------
 
     document.getElementById("output").innerHTML = `
-      <h2>🪐 Accurate Kundli</h2>
+      <h2 class="highlight">${name}'s Kundli</h2>
+      <p><b>Place:</b> ${place}</p>
 
       <p><b>Lagna:</b> ${getRashi(lagna)}</p>
       <p><b>Moon Sign:</b> ${getRashi(moon)}</p>
       <p><b>Nakshatra:</b> ${getNakshatra(moon)}</p>
 
-      <h3>Planets</h3>
+      <h3 class="highlight">Planets</h3>
       <p>☀ Sun: ${getRashi(sun)}</p>
       <p>🌙 Moon: ${getRashi(moon)}</p>
       <p>♂ Mars: ${getRashi(mars)}</p>
@@ -179,7 +211,7 @@ window.generateKundli = function () {
 
   } catch (err) {
     console.error(err);
-    alert("❌ Error in calculation. Check console.");
+    alert("❌ Error: " + err.message);
   }
 };
 </script>
