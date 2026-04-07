@@ -6,68 +6,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-    body {
-      margin: 0;
-      font-family: Arial;
-      background: #0b0f1a;
-      color: white;
-      text-align: center;
+    body { margin:0; font-family:Arial; background:#0b0f1a; color:white; text-align:center; }
+    h1 { color:gold; margin-top:20px; }
+    .container { max-width:500px; margin:auto; padding:20px; }
+
+    input,button {
+      width:100%; padding:12px; margin:8px 0;
+      border-radius:10px; border:none;
     }
 
-    h1 { color: gold; margin-top: 20px; }
-
-    .container {
-      max-width: 500px;
-      margin: auto;
-      padding: 20px;
-    }
-
-    input, button {
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      border-radius: 10px;
-      border: none;
-    }
-
-    input { background: #111827; color: white; }
-
-    button {
-      background: gold;
-      color: black;
-      font-weight: bold;
-      cursor: pointer;
-    }
+    input { background:#111827; color:white; }
+    button { background:gold; color:black; font-weight:bold; cursor:pointer; }
 
     .result {
-      margin-top: 20px;
-      background: #111827;
-      padding: 15px;
-      border-radius: 10px;
-      text-align: left;
+      margin-top:20px;
+      background:#111827;
+      padding:15px;
+      border-radius:10px;
+      text-align:left;
     }
 
-    .highlight { color: gold; font-weight: bold; }
+    .highlight { color:gold; font-weight:bold; }
 
     #suggestions {
-      position: absolute;
-      width: calc(100% - 40px);
-      background: #111827;
-      border-radius: 8px;
-      max-height: 150px;
-      overflow-y: auto;
-      text-align: left;
-      z-index: 10;
+      position:absolute;
+      width:calc(100% - 40px);
+      background:#111827;
+      border-radius:8px;
+      max-height:150px;
+      overflow-y:auto;
+      text-align:left;
+      z-index:10;
     }
 
-    .suggestion-item {
-      padding: 10px;
-      cursor: pointer;
-    }
-
-    .suggestion-item:hover {
-      background: #1f2937;
-    }
+    .suggestion-item { padding:10px; cursor:pointer; }
+    .suggestion-item:hover { background:#1f2937; }
   </style>
 </head>
 
@@ -99,6 +72,7 @@ import ModuleFactory from "/swisseph.js";
 let Module = null;
 let sweReady = false;
 
+// ---------------- LOAD SWISS ----------------
 ModuleFactory({
   locateFile: (file) => file.endsWith(".wasm") ? "/swisseph.wasm" : file
 }).then((mod) => {
@@ -125,6 +99,7 @@ placeInput.addEventListener("input", async function () {
 
   data.features.forEach(p => {
     const full = `${p.properties.name || ""}, ${p.properties.city || ""}, ${p.properties.country || ""}`;
+
     const div = document.createElement("div");
     div.className = "suggestion-item";
     div.innerText = full;
@@ -160,7 +135,7 @@ function getJulianDay(date) {
   return (date / 86400000) + 2440587.5;
 }
 
-// ---------------- SWISS FIX ----------------
+// ---------------- PLANETS ----------------
 function getPlanetLongitude(jd, planet) {
   const ptr = Module._malloc(8 * 6);
 
@@ -175,6 +150,49 @@ function getPlanetLongitude(jd, planet) {
   Module._free(ptr);
 
   return (lon + 360) % 360;
+}
+
+// ---------------- ASCENDANT ----------------
+function getAscendant(jd, lat, lon) {
+  const cuspsPtr = Module._malloc(8 * 13);
+  const ascmcPtr = Module._malloc(8 * 10);
+
+  Module.ccall(
+    "swe_houses_ex",
+    null,
+    ["number","number","number","number","number","number","number"],
+    [jd, 65536, lat, lon, 80, cuspsPtr, ascmcPtr]
+  );
+
+  const asc = Module.HEAPF64[ascmcPtr / 8];
+
+  Module._free(cuspsPtr);
+  Module._free(ascmcPtr);
+
+  return (asc + 360) % 360;
+}
+
+// ---------------- VEDIC HOUSES ----------------
+function getHousesFromLagna(lagna) {
+  let houses = [];
+  for (let i = 0; i < 12; i++) {
+    houses.push((lagna + i * 30) % 360);
+  }
+  return houses;
+}
+
+// ---------------- HOUSE MAPPING ----------------
+function getHouseOfPlanet(p, cusps) {
+  for (let i = 0; i < 12; i++) {
+    let start = cusps[i];
+    let end = cusps[(i + 1) % 12];
+
+    if (end < start) end += 360;
+    if (p < start) p += 360;
+
+    if (p >= start && p < end) return i + 1;
+  }
+  return 1;
 }
 
 // ---------------- NAKSHATRA ----------------
@@ -198,13 +216,10 @@ function getNakshatraDetails(moon) {
 
 // ---------------- RASHI ----------------
 function getRashi(d) {
-  let i = Math.floor(d / 30);
-  i = Math.max(0, Math.min(11, i));
-
   return [
     "Aries","Taurus","Gemini","Cancer","Leo","Virgo",
     "Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"
-  ][i];
+  ][Math.floor(d/30)];
 }
 
 // ---------------- PANCHANG ----------------
@@ -245,48 +260,6 @@ function calculatePanchang(sun, moon) {
   };
 }
 
-// ---------------- HOUSES ----------------
-function getHouses(jd, lat, lon) {
-  const cuspsPtr = Module._malloc(8 * 13);
-  const ascmcPtr = Module._malloc(8 * 10);
-
-  Module.ccall(
-    "swe_houses_ex",
-    "number",
-    ["number","number","number","number","number","number","number"],
-    [jd, 65536, lat, lon, 80, cuspsPtr, ascmcPtr]
-  );
-
-  const lagna = Module.HEAPF64[ascmcPtr / 8];
-
-  let houses = [];
-  for (let i = 1; i <= 12; i++) {
-    houses.push(Module.HEAPF64[(cuspsPtr / 8) + i]);
-  }
-
-  Module._free(cuspsPtr);
-  Module._free(ascmcPtr);
-
-  return {
-    lagna: (lagna + 360) % 360,
-    houses: houses.map(h => (h + 360) % 360)
-  };
-}
-
-// ---------------- HOUSE MAPPING ----------------
-function getHouseOfPlanet(p, cusps) {
-  for (let i = 0; i < 12; i++) {
-    let start = cusps[i];
-    let end = cusps[(i + 1) % 12];
-
-    if (end < start) end += 360;
-    if (p < start) p += 360;
-
-    if (p >= start && p < end) return i + 1;
-  }
-  return 1;
-}
-
 // ---------------- MAIN ----------------
 window.generateKundli = async function () {
 
@@ -306,18 +279,20 @@ window.generateKundli = async function () {
     lon = res.lon;
   }
 
-  const date = new Date(dob + "T" + tob);
-  const jd = getJulianDay(date);
+  // ✅ FIXED TIMEZONE
+  const localDate = new Date(dob + "T" + tob);
+  const utcDate = new Date(localDate.getTime() - (5.5 * 60 * 60 * 1000));
+  const jd = getJulianDay(utcDate);
 
   const sun = getPlanetLongitude(jd, 0);
   const moon = getPlanetLongitude(jd, 1);
 
+  const lagna = getAscendant(jd, lat, lon);
+  const houses = getHousesFromLagna(lagna);
+
   const nak = getNakshatraDetails(moon);
   const panchang = calculatePanchang(sun, moon);
   const rashi = getRashi(moon);
-
-  const houseData = getHouses(jd, lat, lon);
-  const lagna = houseData.lagna;
 
   const planets = {
     Sun: sun,
@@ -331,7 +306,7 @@ window.generateKundli = async function () {
 
   let houseOutput = "";
   for (let p in planets) {
-    houseOutput += `${p} → House ${getHouseOfPlanet(planets[p], houseData.houses)}<br>`;
+    houseOutput += `${p} → House ${getHouseOfPlanet(planets[p], houses)}<br>`;
   }
 
   document.getElementById("output").innerHTML = `
