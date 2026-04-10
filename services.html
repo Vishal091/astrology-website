@@ -1,247 +1,208 @@
-
 <!DOCTYPE html>
 <html>
 <head>
 <title>Astrodhani Services</title>
-<link rel="stylesheet" href="style.css">
 
 <style>
-.category-title{
+body { background:#0b0f1a; color:white; font-family:Arial; }
+.container { max-width:1200px; margin:auto; padding:20px; }
+h1 { text-align:center; color:gold; }
+
+.category-title {
 margin-top:40px;
 font-size:24px;
 color:#F9CA24;
 }
 
-.grid{
+.grid {
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-gap:22px;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
 }
 
-.service-card{
+.service-card {
 background:#141A40;
 border-radius:16px;
 padding:20px;
-display:flex;
-flex-direction:column;
-align-items:center;
 text-align:center;
-min-height:300px;
-border:1px solid rgba(255,255,255,0.08);
-position:relative;
-z-index:1;
+transition:0.3s;
 }
 
-.service-icon{
-font-size:24px;
-margin-bottom:5px;
-}
+.service-card:hover { transform:translateY(-5px); }
 
-.service-card h3{
-margin:10px 0;
-font-size:15px;
-}
+.old-price { text-decoration:line-through; color:#888; font-size:12px; }
+.new-price { color:#00ffae; font-size:20px; font-weight:bold; }
 
-.reviews{
-font-size:12px;
-margin-bottom:6px;
-}
-
-.stars{color:#FFD700;}
-.rating-text{color:#bbb;}
-
-.old-price{
-text-decoration:line-through;
-color:#888;
-font-size:12px;
-}
-
-.new-price{
-color:#00ffae;
-font-size:18px;
-font-weight:bold;
-}
-
-.urgency,.social-proof{
-font-size:12px;
-}
-
-.service-card button{
-margin-top:auto;
+button {
+margin-top:10px;
 width:100%;
 padding:10px;
-border-radius:8px;
-background:#6C5CE7;
+border-radius:10px;
 border:none;
-color:white;
+background:gold;
 cursor:pointer;
-z-index:10;
-position:relative;
+font-weight:bold;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-<div class="logo">🔮 Astrodhani</div>
-<nav>
-<a href="index.html">Home</a>
-<a href="shop.html">Shop</a>
-<a href="cart.html">Cart</a>
-</nav>
-</header>
-
 <div class="container">
-
-<h1>✨ Premium Astrology Services</h1>
-
-<h2 class="category-title">❤️ Love & Relationship</h2>
-<div class="grid" id="love"></div>
-
-<h2 class="category-title">💰 Money / Career</h2>
-<div class="grid" id="money"></div>
-
-<h2 class="category-title">🧿 Evil Eye Protection</h2>
-<div class="grid" id="evil"></div>
-
-<h2 class="category-title">🛕 Pooja Services</h2>
-<div class="grid" id="pooja"></div>
-
-<h2 class="category-title">🔮 Healing</h2>
-<div class="grid" id="healing"></div>
-
-<h2 class="category-title">🧙 Spells</h2>
-<div class="grid" id="spell"></div>
-
-<h2 class="category-title">✨ Special Services</h2>
-<div class="grid" id="special"></div>
-
-<h2 class="category-title">🧠 Problem Solving</h2>
-<div class="grid" id="problem"></div>
-
+<h1>🔮 Astrodhani Services</h1>
+<div id="services"></div>
 </div>
 
 <script>
 
-// YOUR WHATSAPP NUMBER (CHANGE THIS)
-const phone = "918708833177"
-
-// ICONS
-const icons = {
-love:"❤️", money:"💰", evil:"🧿", pooja:"🛕",
-healing:"🔮", spell:"🧙", special:"✨", problem:"🧠"
-}
-
-// DATA
+// 🔥 COMPLETE DATA (ALL FROM YOUR IMAGES)
 const data = {
-love:["Love Attraction Healing","Bring Back Ex","Love Binding","Twin Flame Healing","Relationship Healing","Trust Rebuild","Soulmate Attraction"],
-money:["Money Magnet","Business Growth","Career Growth","Job Attraction","Interview Success","Profit Flow"],
-evil:["Evil Eye Removal","Nazar Nivaran","Aura Cleansing","Protection Shield","Negativity Removal"],
-pooja:["Maha Rudrabhishek","Navgraha Shanti","Shani Shanti","Rahu Ketu","Kaal Sarp Dosh","Lakshmi Pooja","Santaan Prapti"],
-healing:["Reiki Healing","Theta Healing","Heart Chakra","Business Healing","Money Healing","Career Healing"],
-spell:["Love Spell","Money Spell","Protection Spell","Bring Back Ex Spell","Interview Spell"],
-special:["Face Reading","Past Life","Kundli Matching","Vastu","Birth Time"],
-problem:["Love Problem","Career Problem","Money Problem","Business Problem","Loan Mukti"]
+
+"Love":[
+["Love Honey Spell",3000],
+["Attract Your Love Spell",3000],
+["Bring Back Ex",5000],
+["Relationship Healing",5000],
+["Twin Flame Healing",1100],
+["Soulmate Attraction Healing",1100],
+["Unbreakable Bond Healing",1100],
+["Trust Rebuild Healing",1100],
+["Marriage Blessing",1500],
+["Vivah Badha Nivaran Pooja",3000],
+["Special Pooja for Relationships",5000],
+["Divine Marriage Blessing Spell",3000],
+["Forever Love",3000]
+],
+
+"Money / Career":[
+["Money Magnet Healing",1100],
+["Money Magnet Spell",3000],
+["Get Rich Spell",3000],
+["Business Boom Healing",1500],
+["Profit Flow Healing",1100],
+["Customer Attraction Healing",1100],
+["Finance Healing",1100],
+["Career Healing",1100],
+["Promotion Growth Healing",1100],
+["Job Attraction Pooja",3000],
+["Get Your Dream Job Healing",1100],
+["Vyapar Vriddhi Pooja",5000],
+["Dhan Akarshan Lakshmi Pooja",3000]
+],
+
+"Evil Eye":[
+["Evil Eye Removal",1100],
+["Evil Eye for Relationship",1100],
+["Evil Eye for Career",500],
+["Evil Eye for Health",1100],
+["Evil Eye for Finance",1100],
+["Evil Eye for Family",1100],
+["Evil Eye for Business",1100],
+["Evil Eye for Kids",500],
+["Evil Eye for Pets",500],
+["Evil Eye Removal Spell",3000],
+["Aura Cleansing Spell",3000],
+["Buri Nazar Nivaran Maha Pooja",30000]
+],
+
+"Healing":[
+["Reiki Healing",1100],
+["Angel Healing (7 Chakra)",1100],
+["Medical Healing",1100],
+["Career Healing",1100],
+["Prosperity Healing",1100],
+["Legal Matters Healing",1100],
+["Property Healing",1100],
+["Full Moon Healing",1100],
+["Business Healing",1500]
+],
+
+"Pooja":[
+["Maha Rudrabhishek",5000],
+["Navgraha Shanti Pooja",7000],
+["Shani Shanti Pooja",5000],
+["Rahu Ketu Shanti Pooja",3000],
+["Kaal Sarp Dosh Nivaran",7000],
+["Maha Mrityunjaya Jaap",11000],
+["Pitra Dosh Shanti",3000],
+["Vish Dosh Shanti",5000],
+["Guru Chandal Dosh Nivaran",5000],
+["Mangal Dosh Nivaran",5000],
+["Surya Grahan Dosh Shanti",3000],
+["Santaan Prapti Pooja",3000],
+["Saraswati Pooja",5000],
+["Hanuman Rog Mukti Pooja",5000],
+["Baglamukhi Pooja (Job)",3000]
+],
+
+"Spells":[
+["Career Spell",3000],
+["Finance Spell",3000],
+["Protection Spell",3000],
+["Negativity Removal + Divine Blessings",3000],
+["Last Love Manifestation",3000],
+["Interview Success Spell",3000],
+["Jealousy Cleanse Ritual",3000],
+["Impression & Confidence",3000]
+],
+
+"Problem Solving":[
+["Vivah Badha + Mangal Dosh",7000],
+["Relationship + Evil Eye",7000],
+["Career Growth + Job",7000],
+["Loan Mukti + Dhan Akarshan",3000],
+["Money Magnet + Prosperity",3000],
+["Business Boom + Profit Flow",3000],
+["Santaan Prapti + Evil Eye",3000],
+["Rahu Ketu + Navgraha",7000],
+["Buri Nazar + Shani Grah",3000]
+]
+
+};
+
+// 🔥 FAKE PRICE
+function getFakePrice(real){
+  return Math.round(real * (1.6 + Math.random()*0.6));
 }
 
 // RENDER
-function render(category, list){
+const container = document.getElementById("services");
 
-let container = document.getElementById(category)
-let offers = [...list].sort(()=>0.5-Math.random()).slice(0,3)
+for(let category in data){
 
-list.forEach(item=>{
+  container.innerHTML += `<h2 class="category-title">${category}</h2><div class="grid">`;
 
-let price = Math.floor(Math.random()*2000)+499
-let rating = (4+Math.random()).toFixed(1)
-let reviews = Math.floor(Math.random()*2000)+100
-let isOffer = offers.includes(item)
+  data[category].forEach(item=>{
 
-container.innerHTML += `
-<div class="service-card">
+    const fake = getFakePrice(item[1]);
 
-${Math.random()>0.7 ? `<div class="badge trending">🔥 Bestseller</div>` : ""}
-<div class="service-icon">${icons[category]}</div>
+    container.innerHTML += `
+    <div class="service-card">
 
-<div class="reviews">
-<span class="stars">★★★★★</span>
-<span class="rating-text">${rating} (${reviews})</span>
-</div>
+      <h3>${item[0]}</h3>
 
-<h3>${item}</h3>
+      <div class="old-price">₹${fake}</div>
+      <div class="new-price">₹${item[1]}</div>
 
+      <p style="font-size:12px;color:#00ffae;">
+      ⚡ Personalized based on your Kundli
+      </p>
 
-<div class="old-price">₹${price + 1500}</div>
-<div class="new-price">₹${price}</div>
+      <button onclick="bookService('${item[0]}', ${item[1]})">
+      Book Now
+      </button>
 
-<p style="font-size:12px;color:#00ffae">
-⚡ Results start within 24–72 hours
-</p>
+    </div>`;
+  });
 
-<div class="urgency">
-⚡ Only ${Math.floor(Math.random()*3)+1} slots left today
-</div>
-
-<div class="social-proof">
-🔥 ${Math.floor(Math.random()*120)+80} people booked today
-</div>
-
-
-
-<button class="book-btn">Book Now</button>
-
-</div>
-`
-
-})
-
+  container.innerHTML += `</div>`;
 }
 
-// RENDER ALL
-for(let key in data){
-render(key,data[key])
+// FLOW
+function bookService(name,price){
+  localStorage.setItem("selectedService", JSON.stringify({name,price}));
+  window.location.href="kundli.html";
 }
-
-// ===== WHATSAPP AUTOMATION (PRO) =====
-setTimeout(() => {
-
-let buttons = document.querySelectorAll(".book-btn")
-
-buttons.forEach(btn => {
-
-btn.addEventListener("click", function(){
-
-let card = btn.closest(".service-card")
-
-let name = card.querySelector("h3").innerText
-let priceEl = card.querySelector(".new-price") || card.querySelector("p")
-let price = parseInt(priceEl.innerText.replace("₹",""))
-
-// SAVE CART
-let cart = JSON.parse(localStorage.getItem("cart")) || []
-cart.push({name, price})
-localStorage.setItem("cart", JSON.stringify(cart))
-
-// PRO MESSAGE
-let message = `Namaste 🙏
-
-I want to book this service urgently:
-
-🔮 Service: ${name}
-💰 Price: ₹${price}
-
-I saw limited slots available. Please confirm quickly.`
-
-let url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
-
-window.open(url, "_blank")
-
-})
-
-})
-
-}, 300)
 
 </script>
 
