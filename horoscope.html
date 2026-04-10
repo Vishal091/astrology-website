@@ -1,47 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Today's Horoscope 🔮</title>
-<meta name="description" content="Daily horoscope for all zodiac signs. Accurate predictions for love, career and money.">
-
-<link rel="stylesheet" href="style.css">
-
-<style>
-.horo-card{
-background:#141A40;
-padding:20px;
-border-radius:12px;
-margin-bottom:20px;
-}
-</style>
-</head>
-
-<body>
-
-<header>
-<div class="logo">🔮 Astrodhani</div>
-<nav>
-<a href="index.html">Home</a>
-<a href="services.html">Services</a>
-</nav>
-</header>
-
-<div class="container">
-
-<h1>🔮 Today's Horoscope</h1>
-
-<div id="horoscope"></div>
-
-</div>
-
 <script type="module">
 
 import ModuleFactory from "/swisseph.js";
 
-let Module=null;
-let ready=false;
+let Module=null, ready=false;
 
-// LOAD SWISS
 ModuleFactory({
   locateFile:(f)=>f.endsWith(".wasm")?"/swisseph.wasm":f
 }).then(mod=>{
@@ -54,117 +16,96 @@ ModuleFactory({
   generateAll();
 });
 
-// SIGNS + TRAITS
+// SIGNS
 const signs = [
-{name:"Aries", trait:"bold and energetic"},
-{name:"Taurus", trait:"stable and practical"},
-{name:"Gemini", trait:"curious and communicative"},
-{name:"Cancer", trait:"emotional and nurturing"},
-{name:"Leo", trait:"confident and expressive"},
-{name:"Virgo", trait:"analytical and detail-oriented"},
-{name:"Libra", trait:"balanced and diplomatic"},
-{name:"Scorpio", trait:"intense and passionate"},
-{name:"Sagittarius", trait:"adventurous and optimistic"},
-{name:"Capricorn", trait:"disciplined and focused"},
-{name:"Aquarius", trait:"innovative and independent"},
-{name:"Pisces", trait:"intuitive and dreamy"}
+{name:"Aries",trait:"bold and energetic"},
+{name:"Taurus",trait:"stable and practical"},
+{name:"Gemini",trait:"curious and communicative"},
+{name:"Cancer",trait:"emotional and nurturing"},
+{name:"Leo",trait:"confident and expressive"},
+{name:"Virgo",trait:"analytical and detail-oriented"},
+{name:"Libra",trait:"balanced and diplomatic"},
+{name:"Scorpio",trait:"intense and passionate"},
+{name:"Sagittarius",trait:"adventurous and optimistic"},
+{name:"Capricorn",trait:"disciplined and focused"},
+{name:"Aquarius",trait:"innovative and independent"},
+{name:"Pisces",trait:"intuitive and dreamy"}
 ];
 
-// PLANET FUNCTION
-function getPlanet(jd, planet){
-  const ptr = Module._malloc(8*6);
+// PLANET
+function getPlanet(jd,p){
+  const ptr=Module._malloc(8*6);
 
-  Module.ccall(
-    "swe_calc_ut",
-    null,
+  Module.ccall("swe_calc_ut",null,
     ["number","number","number","number"],
-    [jd, planet, 65536, ptr]
+    [jd,p,65536,ptr]
   );
 
-  const lon = Module.HEAPF64[ptr/8];
+  const lon=Module.HEAPF64[ptr/8];
   Module._free(ptr);
 
   return (lon+360)%360;
 }
 
-function getRashiIndex(d){
-  return Math.floor(d/30);
+function rashi(d){ return Math.floor(d/30); }
+
+// 🔥 LONG FORMAT GENERATOR
+function generateLong(signIndex, planets){
+
+  const s = signs[signIndex];
+
+  const moonH = (rashi(planets.moon)-signIndex+12)%12+1;
+  const satH = (rashi(planets.saturn)-signIndex+12)%12+1;
+  const jupH = (rashi(planets.jupiter)-signIndex+12)%12+1;
+
+  let overview = `Today brings a mix of experiences for ${s.name} natives. Your ${s.trait} nature will influence how you handle situations.`;
+
+  let love = "Relationships remain stable but require patience.";
+  if(moonH===7) love="Love life becomes more active today. Emotional exchanges deepen bonds.";
+  if(moonH===5) love="Romantic energy is high, making it a good day for expressing feelings.";
+
+  let career = "Work progresses steadily.";
+  if(satH===10) career="Your efforts will be recognized at workplace, bringing growth opportunities.";
+  if(satH===6) career="Challenges may arise at work, but persistence will help you overcome them.";
+
+  let money = "Financially, maintain balance.";
+  if(jupH===2) money="Financial gains are likely, and savings may improve.";
+  if(jupH===11) money="Income sources may expand, bringing positive results.";
+
+  let health = "Health remains normal, but avoid overthinking.";
+
+  return {overview,love,career,money,health};
 }
 
-// 🔥 REAL PREDICTION ENGINE
-function generatePrediction(signIndex, planets){
-
-  const sign = signs[signIndex];
-
-  const moonHouse = (getRashiIndex(planets.moon)-signIndex+12)%12+1;
-  const saturnHouse = (getRashiIndex(planets.saturn)-signIndex+12)%12+1;
-  const jupiterHouse = (getRashiIndex(planets.jupiter)-signIndex+12)%12+1;
-
-  let love="", career="", money="";
-
-  // ❤️ LOVE
-  if(moonHouse===1){
-    love = `Your ${sign.trait} nature helps you express emotions clearly today.`;
-  } else if(moonHouse===7){
-    love = `Relationships take center stage, bringing emotional clarity.`;
-  } else if(moonHouse===5){
-    love = `Romantic opportunities may arise unexpectedly today.`;
-  } else {
-    love = `Stay calm in love matters and avoid overthinking.`;
-  }
-
-  // 💼 CAREER
-  if(saturnHouse===10){
-    career = `Your ${sign.trait} approach will bring recognition at work.`;
-  } else if(saturnHouse===6){
-    career = `Work pressure may increase, stay disciplined and focused.`;
-  } else if(saturnHouse===3){
-    career = `Efforts and communication will help you progress.`;
-  } else {
-    career = `Steady progress is seen in career matters.`;
-  }
-
-  // 💰 MONEY
-  if(jupiterHouse===2){
-    money = `Financial growth is likely with smart decisions.`;
-  } else if(jupiterHouse===11){
-    money = `Income opportunities and gains are indicated today.`;
-  } else if(jupiterHouse===5){
-    money = `Speculative gains or lucky breaks are possible.`;
-  } else {
-    money = `Control expenses and plan finances wisely.`;
-  }
-
-  return {love, career, money};
-}
-
-// MAIN GENERATOR
+// MAIN
 function generateAll(){
 
   if(!ready) return;
 
-  const now = new Date();
-  const jd = (now/86400000)+2440587.5;
+  const now=new Date();
+  const jd=(now/86400000)+2440587.5;
 
-  const planets = {
-    moon: getPlanet(jd,1),
-    jupiter: getPlanet(jd,5),
-    saturn: getPlanet(jd,6)
+  const planets={
+    moon:getPlanet(jd,1),
+    jupiter:getPlanet(jd,5),
+    saturn:getPlanet(jd,6)
   };
 
-  let html = "";
+  let html="";
 
   signs.forEach((s,i)=>{
 
-    const p = generatePrediction(i, planets);
+    const p=generateLong(i,planets);
 
-    html += `
+    html+=`
     <div class="horo-card">
       <h2>${s.name}</h2>
 
-      <p>❤️ Love: ${p.love}</p>
-      <p>💼 Career: ${p.career}</p>
-      <p>💰 Money: ${p.money}</p>
+      <p><b>Overview:</b> ${p.overview}</p>
+      <p><b>❤️ Love:</b> ${p.love}</p>
+      <p><b>💼 Career:</b> ${p.career}</p>
+      <p><b>💰 Money:</b> ${p.money}</p>
+      <p><b>🩺 Health:</b> ${p.health}</p>
 
       <button onclick="window.open('https://wa.me/8708833177','_blank')">
       Talk to Astrologer
@@ -173,10 +114,7 @@ function generateAll(){
     `;
   });
 
-  document.getElementById("horoscope").innerHTML = html;
+  document.getElementById("horoscope").innerHTML=html;
 }
 
 </script>
-
-</body>
-</html>
