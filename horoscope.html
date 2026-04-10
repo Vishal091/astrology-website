@@ -1,9 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Today's Horoscope 🔮</title>
+<meta name="description" content="Daily horoscope for all zodiac signs. Accurate predictions for love, career and money.">
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+.horo-card{
+  background:#141A40;
+  padding:20px;
+  border-radius:12px;
+  margin-bottom:20px;
+  line-height:1.6;
+}
+.horo-card h2{
+  color:gold;
+}
+.horo-card p{
+  margin:8px 0;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">🔮 Astrodhani</div>
+<nav>
+<a href="index.html">Home</a>
+<a href="services.html">Services</a>
+</nav>
+</header>
+
+<div class="container">
+
+<h1>🔮 Today's Horoscope</h1>
+
+<div id="horoscope"></div>
+
+</div>
+
 <script type="module">
 
 import ModuleFactory from "/swisseph.js";
 
-let Module=null, ready=false;
+let Module=null;
+let ready=false;
 
+// LOAD SWISS
 ModuleFactory({
   locateFile:(f)=>f.endsWith(".wasm")?"/swisseph.wasm":f
 }).then(mod=>{
@@ -16,7 +61,7 @@ ModuleFactory({
   generateAll();
 });
 
-// SIGNS
+// SIGNS + TRAITS
 const signs = [
 {name:"Aries",trait:"bold and energetic"},
 {name:"Taurus",trait:"stable and practical"},
@@ -32,47 +77,69 @@ const signs = [
 {name:"Pisces",trait:"intuitive and dreamy"}
 ];
 
-// PLANET
-function getPlanet(jd,p){
-  const ptr=Module._malloc(8*6);
+// PLANET FUNCTION
+function getPlanet(jd, planet){
+  const ptr = Module._malloc(8*6);
 
-  Module.ccall("swe_calc_ut",null,
+  Module.ccall(
+    "swe_calc_ut",
+    null,
     ["number","number","number","number"],
-    [jd,p,65536,ptr]
+    [jd, planet, 65536, ptr]
   );
 
-  const lon=Module.HEAPF64[ptr/8];
+  const lon = Module.HEAPF64[ptr/8];
   Module._free(ptr);
 
   return (lon+360)%360;
 }
 
-function rashi(d){ return Math.floor(d/30); }
+function getRashiIndex(d){
+  return Math.floor(d/30);
+}
 
-// 🔥 LONG FORMAT GENERATOR
+// 🔥 LONG FORMAT ENGINE
 function generateLong(signIndex, planets){
 
   const s = signs[signIndex];
 
-  const moonH = (rashi(planets.moon)-signIndex+12)%12+1;
-  const satH = (rashi(planets.saturn)-signIndex+12)%12+1;
-  const jupH = (rashi(planets.jupiter)-signIndex+12)%12+1;
+  const moonH = (getRashiIndex(planets.moon)-signIndex+12)%12+1;
+  const satH = (getRashiIndex(planets.saturn)-signIndex+12)%12+1;
+  const jupH = (getRashiIndex(planets.jupiter)-signIndex+12)%12+1;
 
-  let overview = `Today brings a mix of experiences for ${s.name} natives. Your ${s.trait} nature will influence how you handle situations.`;
+  let overview = `Today brings a mix of experiences for ${s.name} natives. Your ${s.trait} nature will strongly influence how you respond to situations. Staying balanced will help you make the most of opportunities.`;
 
-  let love = "Relationships remain stable but require patience.";
-  if(moonH===7) love="Love life becomes more active today. Emotional exchanges deepen bonds.";
-  if(moonH===5) love="Romantic energy is high, making it a good day for expressing feelings.";
+  let love = `Relationships may require patience and understanding today.`;
+  if(moonH===7){
+    love = `Love life becomes more active today. Emotional exchanges deepen bonds and bring clarity in relationships.`;
+  } else if(moonH===5){
+    love = `Romantic energy is high, making it a good day to express your feelings and strengthen connections.`;
+  } else if(moonH===1){
+    love = `You may feel emotionally expressive and open, which helps improve your love life.`;
+  }
 
-  let career = "Work progresses steadily.";
-  if(satH===10) career="Your efforts will be recognized at workplace, bringing growth opportunities.";
-  if(satH===6) career="Challenges may arise at work, but persistence will help you overcome them.";
+  let career = `Work progresses steadily, and consistency will be key.`;
+  if(satH===10){
+    career = `Your efforts are likely to be recognized at the workplace. This is a good time for growth and responsibility.`;
+  } else if(satH===6){
+    career = `Challenges or competition may arise in your career. Stay disciplined and focused to overcome them.`;
+  } else if(satH===3){
+    career = `Communication and effort will bring progress. Short-term efforts can lead to long-term gains.`;
+  }
 
-  let money = "Financially, maintain balance.";
-  if(jupH===2) money="Financial gains are likely, and savings may improve.";
-  if(jupH===11) money="Income sources may expand, bringing positive results.";
+  let money = `Financially, it is a balanced day. Avoid unnecessary risks.`;
+  if(jupH===2){
+    money = `Financial growth is indicated. You may see gains or improvements in savings.`;
+  } else if(jupH===11){
+    money = `Income opportunities increase, and gains from multiple sources are possible.`;
+  } else if(jupH===5){
+    money = `Luck may favor you in speculative matters, but careful planning is still advised.`;
+  }
 
-  let health = "Health remains normal, but avoid overthinking.";
+  let health = `Health remains generally stable, but mental peace is important.`;
+  if(moonH===6){
+    health = `Stress or fatigue may affect your health today. Focus on rest and self-care.`;
+  }
 
   return {overview,love,career,money,health};
 }
@@ -82,22 +149,22 @@ function generateAll(){
 
   if(!ready) return;
 
-  const now=new Date();
-  const jd=(now/86400000)+2440587.5;
+  const now = new Date();
+  const jd = (now/86400000)+2440587.5;
 
-  const planets={
-    moon:getPlanet(jd,1),
-    jupiter:getPlanet(jd,5),
-    saturn:getPlanet(jd,6)
+  const planets = {
+    moon: getPlanet(jd,1),
+    jupiter: getPlanet(jd,5),
+    saturn: getPlanet(jd,6)
   };
 
-  let html="";
+  let html = "";
 
   signs.forEach((s,i)=>{
 
-    const p=generateLong(i,planets);
+    const p = generateLong(i, planets);
 
-    html+=`
+    html += `
     <div class="horo-card">
       <h2>${s.name}</h2>
 
@@ -114,7 +181,10 @@ function generateAll(){
     `;
   });
 
-  document.getElementById("horoscope").innerHTML=html;
+  document.getElementById("horoscope").innerHTML = html;
 }
 
 </script>
+
+</body>
+</html>
