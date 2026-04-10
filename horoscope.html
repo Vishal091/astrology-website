@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,45 +34,149 @@ margin-bottom:20px;
 
 </div>
 
-<script>
+<script type="module">
 
+import ModuleFactory from "/swisseph.js";
+
+let Module=null;
+let ready=false;
+
+// LOAD SWISS
+ModuleFactory({
+  locateFile:(f)=>f.endsWith(".wasm")?"/swisseph.wasm":f
+}).then(mod=>{
+  Module=mod;
+
+  Module.ccall("swe_set_ephe_path",null,["string"],["/ephe"]);
+  Module.ccall("swe_set_sid_mode",null,["number","number","number"],[1,0,0]);
+
+  ready=true;
+  generateAll();
+});
+
+// SIGNS + TRAITS
 const signs = [
-"Aries","Taurus","Gemini","Cancer",
-"Leo","Virgo","Libra","Scorpio",
-"Sagittarius","Capricorn","Aquarius","Pisces"
-]
+{name:"Aries", trait:"bold and energetic"},
+{name:"Taurus", trait:"stable and practical"},
+{name:"Gemini", trait:"curious and communicative"},
+{name:"Cancer", trait:"emotional and nurturing"},
+{name:"Leo", trait:"confident and expressive"},
+{name:"Virgo", trait:"analytical and detail-oriented"},
+{name:"Libra", trait:"balanced and diplomatic"},
+{name:"Scorpio", trait:"intense and passionate"},
+{name:"Sagittarius", trait:"adventurous and optimistic"},
+{name:"Capricorn", trait:"disciplined and focused"},
+{name:"Aquarius", trait:"innovative and independent"},
+{name:"Pisces", trait:"intuitive and dreamy"}
+];
 
-function generateHoro(sign){
+// PLANET FUNCTION
+function getPlanet(jd, planet){
+  const ptr = Module._malloc(8*6);
 
-let love = ["romantic energy","emotional clarity","unexpected connection"]
-let career = ["new opportunity","growth phase","important decision"]
-let money = ["financial gain","careful spending","profit chance"]
+  Module.ccall(
+    "swe_calc_ut",
+    null,
+    ["number","number","number","number"],
+    [jd, planet, 65536, ptr]
+  );
 
-return `
-<div class="horo-card">
-<h2>${sign}</h2>
+  const lon = Module.HEAPF64[ptr/8];
+  Module._free(ptr);
 
-<p>❤️ Love: ${love[Math.floor(Math.random()*love.length)]}</p>
-<p>💼 Career: ${career[Math.floor(Math.random()*career.length)]}</p>
-<p>💰 Money: ${money[Math.floor(Math.random()*money.length)]}</p>
-
-<button onclick="window.open('https://wa.me/8708833177','_blank')">
-Talk to Astrologer
-</button>
-
-</div>
-`
+  return (lon+360)%360;
 }
 
-let html = ""
-signs.forEach(sign=>{
-html += generateHoro(sign)
-})
+function getRashiIndex(d){
+  return Math.floor(d/30);
+}
 
-document.getElementById("horoscope").innerHTML = html
+// 🔥 REAL PREDICTION ENGINE
+function generatePrediction(signIndex, planets){
+
+  const sign = signs[signIndex];
+
+  const moonHouse = (getRashiIndex(planets.moon)-signIndex+12)%12+1;
+  const saturnHouse = (getRashiIndex(planets.saturn)-signIndex+12)%12+1;
+  const jupiterHouse = (getRashiIndex(planets.jupiter)-signIndex+12)%12+1;
+
+  let love="", career="", money="";
+
+  // ❤️ LOVE
+  if(moonHouse===1){
+    love = `Your ${sign.trait} nature helps you express emotions clearly today.`;
+  } else if(moonHouse===7){
+    love = `Relationships take center stage, bringing emotional clarity.`;
+  } else if(moonHouse===5){
+    love = `Romantic opportunities may arise unexpectedly today.`;
+  } else {
+    love = `Stay calm in love matters and avoid overthinking.`;
+  }
+
+  // 💼 CAREER
+  if(saturnHouse===10){
+    career = `Your ${sign.trait} approach will bring recognition at work.`;
+  } else if(saturnHouse===6){
+    career = `Work pressure may increase, stay disciplined and focused.`;
+  } else if(saturnHouse===3){
+    career = `Efforts and communication will help you progress.`;
+  } else {
+    career = `Steady progress is seen in career matters.`;
+  }
+
+  // 💰 MONEY
+  if(jupiterHouse===2){
+    money = `Financial growth is likely with smart decisions.`;
+  } else if(jupiterHouse===11){
+    money = `Income opportunities and gains are indicated today.`;
+  } else if(jupiterHouse===5){
+    money = `Speculative gains or lucky breaks are possible.`;
+  } else {
+    money = `Control expenses and plan finances wisely.`;
+  }
+
+  return {love, career, money};
+}
+
+// MAIN GENERATOR
+function generateAll(){
+
+  if(!ready) return;
+
+  const now = new Date();
+  const jd = (now/86400000)+2440587.5;
+
+  const planets = {
+    moon: getPlanet(jd,1),
+    jupiter: getPlanet(jd,5),
+    saturn: getPlanet(jd,6)
+  };
+
+  let html = "";
+
+  signs.forEach((s,i)=>{
+
+    const p = generatePrediction(i, planets);
+
+    html += `
+    <div class="horo-card">
+      <h2>${s.name}</h2>
+
+      <p>❤️ Love: ${p.love}</p>
+      <p>💼 Career: ${p.career}</p>
+      <p>💰 Money: ${p.money}</p>
+
+      <button onclick="window.open('https://wa.me/8708833177','_blank')">
+      Talk to Astrologer
+      </button>
+    </div>
+    `;
+  });
+
+  document.getElementById("horoscope").innerHTML = html;
+}
 
 </script>
 
 </body>
 </html>
-
