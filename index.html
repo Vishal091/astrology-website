@@ -15,6 +15,45 @@ margin:0;
 font-family:'Segoe UI',sans-serif;
 background:#1a0f00;
 color:white;
+overflow-x:hidden;
+}
+
+/* ===== NAVBAR ===== */
+.navbar{
+position:fixed;
+top:0;
+width:100%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 40px;
+background:rgba(0,0,0,0.5);
+backdrop-filter:blur(10px);
+z-index:1000;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+color:#FFD700;
+font-weight:bold;
+}
+
+.logo img{
+width:40px;
+height:40px;
+border-radius:50%;
+}
+
+nav a{
+margin:0 10px;
+text-decoration:none;
+color:#FFD700;
+}
+
+nav a:hover{
+color:#FF8C00;
 }
 
 /* ===== HERO ===== */
@@ -25,16 +64,12 @@ flex-direction:column;
 justify-content:center;
 align-items:center;
 text-align:center;
-
-background:
-linear-gradient(rgba(60,20,0,0.9), rgba(30,10,0,0.95)),
+background:linear-gradient(rgba(60,20,0,0.9), rgba(30,10,0,0.95)),
 url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee');
-
 background-size:cover;
 background-attachment:fixed;
 }
 
-/* TEXT */
 .hero h1{
 font-size:52px;
 background:linear-gradient(90deg,#FFD700,#FF8C00);
@@ -48,7 +83,6 @@ from{filter:drop-shadow(0 0 5px #FF8C00);}
 to{filter:drop-shadow(0 0 20px #FFD700);}
 }
 
-/* BUTTON */
 .hero button{
 padding:15px 35px;
 border:none;
@@ -57,6 +91,21 @@ background:linear-gradient(90deg,#FF8C00,#FFD700);
 color:black;
 font-weight:bold;
 cursor:pointer;
+}
+
+/* TRUST */
+.trust{
+display:flex;
+gap:40px;
+margin-top:30px;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.trust div{
+background:rgba(255,165,0,0.1);
+padding:15px;
+border-radius:12px;
 }
 
 /* GRID */
@@ -106,6 +155,28 @@ align-items:center;
 justify-content:center;
 }
 
+/* TESTIMONIAL */
+.testimonial-track{
+display:flex;
+gap:20px;
+animation:scroll 20s linear infinite;
+}
+
+.testimonial{
+min-width:250px;
+padding:20px;
+background:rgba(255,165,0,0.1);
+border-radius:12px;
+}
+
+/* CTA */
+.cta-section{
+padding:100px;
+text-align:center;
+background:linear-gradient(90deg,#FF8C00,#FFD700);
+color:black;
+}
+
 /* CHATBOT */
 #chatbot{
 position:fixed;
@@ -132,7 +203,6 @@ padding:10px;
 #chat-input{
 border:none;
 padding:10px;
-outline:none;
 }
 
 /* FLOAT BTN */
@@ -151,8 +221,18 @@ cursor:pointer;
 
 <body>
 
-<header>
-<h2>🔱 Astrodhani</h2>
+<header class="navbar">
+<div class="logo">
+<img src="hanuman-logo.png">
+<span>Astrodhani</span>
+</div>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="services.html">Services</a>
+<a href="horoscope.html">Horoscope</a>
+<a href="panchang.html">Panchang</a>
+</nav>
 </header>
 
 <!-- HERO -->
@@ -161,14 +241,19 @@ cursor:pointer;
 <h1 id="typing-text"></h1>
 
 <div id="zodiac-wheel"></div>
-
 <div id="daily-update"></div>
 
-<p>Vedic Astrology & Divine Solutions</p>
+<p>Vedic Astrology & Divine Solutions 🔱</p>
 
 <button onclick="window.location.href='services.html'">
 Explore Services
 </button>
+
+<div class="trust">
+<div><h2 class="counter" data-target="50000">0</h2><p>Happy Clients</p></div>
+<div><h2 class="counter" data-target="4.8">0</h2><p>Rating</p></div>
+<div><h2>24/7</h2><p>Support</p></div>
+</div>
 
 </div>
 
@@ -180,19 +265,37 @@ Explore Services
 <div class="card-premium">🔮 Healing</div>
 </div>
 
+<!-- TESTIMONIAL -->
+<div class="section">
+<h2>💬 Real Results</h2>
+<div class="testimonial-track">
+<div class="testimonial">Got my ex back 🙏</div>
+<div class="testimonial">Income doubled 💰</div>
+<div class="testimonial">Accurate reading 🔮</div>
+</div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+<h2>Talk to Astrologer</h2>
+<button onclick="window.open('https://wa.me/91XXXXXXXXXX')">
+Chat Now
+</button>
+</div>
+
 <!-- CHATBOT -->
 <div id="chatbot">
 <div id="chat-header">🔮 Astrologer</div>
 <div id="chat-body"></div>
-<input id="chat-input" placeholder="Ask...">
+<input id="chat-input">
 </div>
 
 <div class="float-btn" onclick="toggleChat()">🤖</div>
 
 <script>
 
-/* TEXT */
-const text="Unlock Your Destiny 🔮"
+/* TYPING */
+const text="Unlock Your Destiny 🔮";
 let i=0;
 function typeEffect(){
 if(i<text.length){
@@ -205,7 +308,6 @@ typeEffect();
 /* ZODIAC */
 const zodiac=["♈","♉","♊","♋","♌","♍","♎","♏","♐","♑","♒","♓"];
 const wheel=document.getElementById("zodiac-wheel");
-
 zodiac.forEach((s,i)=>{
 let angle=(i/12)*360;
 let el=document.createElement("div");
@@ -216,12 +318,7 @@ wheel.appendChild(el);
 });
 
 /* DAILY */
-const updates=[
-"🌙 Moon strong today",
-"💰 Money luck today",
-"❤️ Love energy high",
-"🪐 Stay disciplined"
-];
+const updates=["🌙 Moon strong","💰 Money luck","❤️ Love high","🪐 Discipline"];
 document.getElementById("daily-update").innerText=
 updates[new Date().getDate()%updates.length];
 
@@ -235,7 +332,7 @@ document.getElementById("chat-input").addEventListener("keypress",function(e){
 if(e.key==="Enter"){
 let q=this.value;
 addMsg("You: "+q);
-addMsg("Astrologer: "+reply(q));
+addMsg("Astrologer: Stay positive ✨");
 this.value="";
 }
 });
@@ -244,14 +341,6 @@ function addMsg(t){
 let d=document.createElement("div");
 d.innerText=t;
 document.getElementById("chat-body").appendChild(d);
-}
-
-function reply(q){
-q=q.toLowerCase();
-if(q.includes("love")) return "Love improving 💖";
-if(q.includes("career")) return "Career growth 🚀";
-if(q.includes("money")) return "Money gains 💰";
-return "Stay positive ✨";
 }
 
 </script>
