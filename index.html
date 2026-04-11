@@ -3,21 +3,20 @@
 <head>
 <title>Astrodhani</title>
 
-<meta name="description" content="Premium astrology platform">
+<meta name="description" content="Accurate astrology predictions, kundli, horoscope and remedies.">
+
+<link rel="stylesheet" href="style.css">
 
 <style>
 
-/* ===== BODY ===== */
 body{
 margin:0;
 font-family:'Segoe UI',sans-serif;
 background:#FFF5F5;
 color:#3b0000;
-overflow-x:hidden;
-perspective:1000px;
 }
 
-/* ===== NAVBAR ===== */
+/* NAVBAR */
 .navbar{
 position:sticky;
 top:0;
@@ -30,81 +29,92 @@ color:white;
 z-index:1000;
 }
 
-.logo{display:flex;gap:10px;align-items:center;}
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:bold;
+}
+
 .logo img{width:40px}
 
-/* ===== HERO ===== */
+nav a{
+color:#FFD700;
+margin:0 10px;
+text-decoration:none;
+}
+
+nav a:hover{color:white}
+
+/* HERO */
 .hero{
 padding:120px 20px;
 text-align:center;
 background:linear-gradient(135deg,#A83232,#7B1E1E);
 color:white;
-position:relative;
-overflow:hidden;
 }
 
-.hero h1{
-font-size:48px;
-transform-style:preserve-3d;
+.hero h1{font-size:48px}
+
+.hero button{
+padding:12px 30px;
+background:#FFD700;
+border:none;
+border-radius:8px;
+cursor:pointer;
 }
 
-/* GLOW LIGHT */
-.light{
-position:absolute;
-width:300px;
-height:300px;
-background:radial-gradient(circle,rgba(255,215,0,0.3),transparent);
-top:20%;
-left:20%;
-filter:blur(80px);
-animation:moveLight 10s infinite alternate;
+/* STATS */
+.stats{
+display:flex;
+justify-content:center;
+gap:40px;
+padding:40px;
+background:#FFEAEA;
 }
 
-@keyframes moveLight{
-to{transform:translate(200px,100px);}
+.stat{
+text-align:center;
 }
 
-/* ===== GRID ===== */
+/* SECTION */
+.section{
+padding:60px 20px;
+text-align:center;
+}
+
+.section h2{color:#7B1E1E}
+
+/* GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 gap:20px;
-padding:40px;
 }
 
-/* ===== 3D CARD ===== */
+/* CARD */
 .card{
-background:rgba(255,255,255,0.6);
-backdrop-filter:blur(15px);
-padding:25px;
-border-radius:15px;
+background:white;
+padding:20px;
+border-radius:10px;
+border:1px solid #eee;
 transition:0.3s;
-transform-style:preserve-3d;
 cursor:pointer;
-position:relative;
-}
-
-.card::after{
-content:"";
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:linear-gradient(120deg,transparent,rgba(255,255,255,0.4),transparent);
-opacity:0;
-transition:0.3s;
-}
-
-.card:hover::after{
-opacity:1;
 }
 
 .card:hover{
-box-shadow:0 20px 40px rgba(0,0,0,0.2);
+transform:translateY(-8px);
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
 }
 
-/* ===== CTA ===== */
+/* TESTIMONIAL */
+.testimonial{
+background:#fff;
+padding:20px;
+border-radius:10px;
+}
+
+/* CTA */
 .cta{
 background:#A83232;
 color:white;
@@ -112,7 +122,21 @@ padding:60px;
 text-align:center;
 }
 
-/* FLOAT BUTTON */
+/* CHATBOT */
+#chatbot{
+position:fixed;
+bottom:90px;
+right:20px;
+width:280px;
+background:white;
+display:none;
+flex-direction:column;
+border-radius:10px;
+box-shadow:0 0 20px rgba(0,0,0,0.2);
+}
+
+#chat-header{background:#A83232;color:white;padding:10px}
+
 .float-btn{
 position:fixed;
 bottom:20px;
@@ -134,38 +158,87 @@ cursor:pointer;
 <img src="hanuman-logo.png">
 Astrodhani
 </div>
+
+<nav>
+<a href="services.html">Services</a>
+<a href="shop.html">Shop</a>
+<a href="panchang.html">Panchang</a>
+<a href="horoscope.html">Horoscope</a>
+</nav>
 </header>
 
 <!-- HERO -->
 <div class="hero">
-
-<div class="light"></div>
-
 <h1 id="typing-text"></h1>
-<p>Premium Vedic Astrology</p>
+<p>Accurate Vedic Astrology & Solutions</p>
+<button onclick="window.location.href='services.html'">Explore Services</button>
+</div>
 
+<!-- STATS -->
+<div class="stats">
+<div class="stat"><h2>50K+</h2><p>Users</p></div>
+<div class="stat"><h2>4.8⭐</h2><p>Rating</p></div>
+<div class="stat"><h2>10+ Years</h2><p>Experience</p></div>
+</div>
+
+<!-- PANCHANG -->
+<div class="section">
+<h2>📅 Panchang</h2>
+<div class="grid">
+<div class="card" onclick="location.href='panchang.html'">View Today Panchang</div>
+</div>
 </div>
 
 <!-- SERVICES -->
+<div class="section">
+<h2>🔮 Services</h2>
 <div class="grid">
 <div class="card">Love Problem</div>
 <div class="card">Career Growth</div>
-<div class="card">Protection</div>
+<div class="card">Evil Eye</div>
 <div class="card">Healing</div>
+</div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="section">
+<h2>🛒 Products</h2>
+<div class="grid">
+<div class="card">Rudraksha</div>
+<div class="card">Gemstones</div>
+<div class="card">Protection</div>
+</div>
+</div>
+
+<!-- TESTIMONIAL -->
+<div class="section">
+<h2>💬 Testimonials</h2>
+<div class="grid">
+<div class="testimonial">Amazing results 🙏</div>
+<div class="testimonial">Very accurate 🔮</div>
+<div class="testimonial">Life changing ✨</div>
+</div>
 </div>
 
 <!-- CTA -->
 <div class="cta">
 <h2>Talk to Astrologer</h2>
-<button>Chat Now</button>
+<button onclick="window.open('https://wa.me/91XXXXXXXXXX')">Chat Now</button>
 </div>
 
-<div class="float-btn">🤖</div>
+<!-- CHATBOT -->
+<div id="chatbot">
+<div id="chat-header">Astrologer</div>
+<div id="chat-body"></div>
+<input id="chat-input">
+</div>
+
+<div class="float-btn" onclick="toggleChat()">🤖</div>
 
 <script>
 
 /* TYPING */
-let text="Unlock Your Destiny 🔮";
+let text="Unlock Your Destiny 🔮"
 let i=0;
 function type(){
 if(i<text.length){
@@ -175,29 +248,11 @@ setTimeout(type,40);
 }}
 type();
 
-/* 3D CARD EFFECT */
-document.querySelectorAll(".card").forEach(card=>{
-card.addEventListener("mousemove",e=>{
-const rect=card.getBoundingClientRect();
-const x=e.clientX-rect.left;
-const y=e.clientY-rect.top;
-
-card.style.transform=`
-rotateX(${(y-rect.height/2)/15}deg)
-rotateY(${(x-rect.width/2)/15}deg)
-`;
-});
-
-card.addEventListener("mouseleave",()=>{
-card.style.transform="rotateX(0) rotateY(0)";
-});
-});
-
-/* PARALLAX LIGHT */
-document.addEventListener("mousemove",e=>{
-document.querySelector(".light").style.transform=
-`translate(${e.clientX/20}px,${e.clientY/20}px)`;
-});
+/* CHAT */
+function toggleChat(){
+let c=document.getElementById("chatbot");
+c.style.display=c.style.display==="flex"?"none":"flex";
+}
 
 </script>
 
