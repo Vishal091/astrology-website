@@ -3,7 +3,7 @@
 <head>
 <title>Astrodhani</title>
 
-<meta name="description" content="Accurate astrology predictions, kundli, horoscope and remedies.">
+<meta name="description" content="Premium astrology platform">
 
 <style>
 
@@ -14,6 +14,7 @@ font-family:'Segoe UI',sans-serif;
 background:#FFF5F5;
 color:#3b0000;
 overflow-x:hidden;
+perspective:1000px;
 }
 
 /* ===== NAVBAR ===== */
@@ -32,82 +33,75 @@ z-index:1000;
 .logo{display:flex;gap:10px;align-items:center;}
 .logo img{width:40px}
 
-nav a{
-color:#FFD700;
-margin:0 10px;
-text-decoration:none;
-}
-
 /* ===== HERO ===== */
 .hero{
 padding:120px 20px;
 text-align:center;
-background:linear-gradient(270deg,#A83232,#7B1E1E,#A83232);
-background-size:400% 400%;
-animation:gradientMove 8s ease infinite;
+background:linear-gradient(135deg,#A83232,#7B1E1E);
 color:white;
+position:relative;
+overflow:hidden;
 }
 
-@keyframes gradientMove{
-0%{background-position:0%}
-50%{background-position:100%}
-100%{background-position:0%}
+.hero h1{
+font-size:48px;
+transform-style:preserve-3d;
 }
 
-.hero h1{font-size:48px}
-
-.hero button{
-padding:12px 30px;
-background:#FFD700;
-border:none;
-border-radius:8px;
-cursor:pointer;
-animation:pulse 2s infinite;
+/* GLOW LIGHT */
+.light{
+position:absolute;
+width:300px;
+height:300px;
+background:radial-gradient(circle,rgba(255,215,0,0.3),transparent);
+top:20%;
+left:20%;
+filter:blur(80px);
+animation:moveLight 10s infinite alternate;
 }
 
-@keyframes pulse{
-0%{transform:scale(1)}
-50%{transform:scale(1.05)}
-100%{transform:scale(1)}
+@keyframes moveLight{
+to{transform:translate(200px,100px);}
 }
 
-/* ===== SECTION ===== */
-.section{
-padding:60px 20px;
-text-align:center;
-}
-
+/* ===== GRID ===== */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 gap:20px;
+padding:40px;
 }
 
-/* ===== CARD ===== */
+/* ===== 3D CARD ===== */
 .card{
 background:rgba(255,255,255,0.6);
-backdrop-filter:blur(10px);
-padding:20px;
-border-radius:12px;
-transition:0.4s;
+backdrop-filter:blur(15px);
+padding:25px;
+border-radius:15px;
+transition:0.3s;
+transform-style:preserve-3d;
 cursor:pointer;
+position:relative;
+}
+
+.card::after{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:linear-gradient(120deg,transparent,rgba(255,255,255,0.4),transparent);
+opacity:0;
+transition:0.3s;
+}
+
+.card:hover::after{
+opacity:1;
 }
 
 .card:hover{
-transform:translateY(-10px) scale(1.03);
-box-shadow:0 10px 30px rgba(0,0,0,0.2);
-}
-
-/* ===== REVEAL ===== */
-.reveal{
-opacity:0;
-transform:translateY(40px);
-transition:0.8s;
-}
-
-.reveal.active{
-opacity:1;
-transform:translateY(0);
+box-shadow:0 20px 40px rgba(0,0,0,0.2);
 }
 
 /* ===== CTA ===== */
@@ -118,34 +112,7 @@ padding:60px;
 text-align:center;
 }
 
-/* ===== PARTICLES ===== */
-.particle{
-position:fixed;
-width:6px;
-height:6px;
-background:gold;
-border-radius:50%;
-opacity:0.3;
-animation:floatUp linear infinite;
-}
-
-@keyframes floatUp{
-from{transform:translateY(100vh);}
-to{transform:translateY(-10vh);}
-}
-
-/* ===== CHATBOT ===== */
-#chatbot{
-position:fixed;
-bottom:90px;
-right:20px;
-width:280px;
-background:white;
-display:none;
-flex-direction:column;
-border-radius:10px;
-}
-
+/* FLOAT BUTTON */
 .float-btn{
 position:fixed;
 bottom:20px;
@@ -167,47 +134,24 @@ cursor:pointer;
 <img src="hanuman-logo.png">
 Astrodhani
 </div>
-
-<nav>
-<a href="services.html">Services</a>
-<a href="shop.html">Shop</a>
-<a href="panchang.html">Panchang</a>
-<a href="horoscope.html">Horoscope</a>
-</nav>
 </header>
 
 <!-- HERO -->
 <div class="hero">
-<h1 id="typing-text"></h1>
-<p>Accurate Vedic Astrology & Solutions</p>
-<button onclick="location.href='services.html'">Explore</button>
-</div>
 
-<!-- PANCHANG -->
-<div class="section reveal">
-<h2>Panchang</h2>
-<div class="grid">
-<div class="card">View Panchang</div>
-</div>
+<div class="light"></div>
+
+<h1 id="typing-text"></h1>
+<p>Premium Vedic Astrology</p>
+
 </div>
 
 <!-- SERVICES -->
-<div class="section reveal">
-<h2>Services</h2>
 <div class="grid">
 <div class="card">Love Problem</div>
-<div class="card">Career</div>
-<div class="card">Evil Eye</div>
-</div>
-</div>
-
-<!-- PRODUCTS -->
-<div class="section reveal">
-<h2>Products</h2>
-<div class="grid">
-<div class="card">Rudraksha</div>
-<div class="card">Gemstones</div>
-</div>
+<div class="card">Career Growth</div>
+<div class="card">Protection</div>
+<div class="card">Healing</div>
 </div>
 
 <!-- CTA -->
@@ -216,8 +160,6 @@ Astrodhani
 <button>Chat Now</button>
 </div>
 
-<!-- CHATBOT -->
-<div id="chatbot"></div>
 <div class="float-btn">🤖</div>
 
 <script>
@@ -233,24 +175,29 @@ setTimeout(type,40);
 }}
 type();
 
-/* REVEAL */
-const observer=new IntersectionObserver(entries=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting){
-entry.target.classList.add("active")
-}
-})
-});
-document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+/* 3D CARD EFFECT */
+document.querySelectorAll(".card").forEach(card=>{
+card.addEventListener("mousemove",e=>{
+const rect=card.getBoundingClientRect();
+const x=e.clientX-rect.left;
+const y=e.clientY-rect.top;
 
-/* PARTICLES */
-for(let i=0;i<20;i++){
-let p=document.createElement("div");
-p.className="particle";
-p.style.left=Math.random()*100+"vw";
-p.style.animationDuration=(5+Math.random()*10)+"s";
-document.body.appendChild(p);
-}
+card.style.transform=`
+rotateX(${(y-rect.height/2)/15}deg)
+rotateY(${(x-rect.width/2)/15}deg)
+`;
+});
+
+card.addEventListener("mouseleave",()=>{
+card.style.transform="rotateX(0) rotateY(0)";
+});
+});
+
+/* PARALLAX LIGHT */
+document.addEventListener("mousemove",e=>{
+document.querySelector(".light").style.transform=
+`translate(${e.clientX/20}px,${e.clientY/20}px)`;
+});
 
 </script>
 
