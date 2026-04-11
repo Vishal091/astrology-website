@@ -1,30 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Horoscope 🔮</title>
-
-<link rel="stylesheet" href="style.css">
+<title>आज का राशिफल 🔮</title>
 
 <style>
-.tabs{
-display:flex;
-gap:10px;
-margin-bottom:20px;
-}
-
-.tabs button{
-padding:10px 15px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-background:#222;
-color:white;
-}
-
-.tabs button.active{
-background:gold;
-color:black;
-}
+body { background:#0b0f1a; color:white; font-family:Arial; }
 
 .horo-card{
 background:#141A40;
@@ -34,47 +14,15 @@ margin-bottom:20px;
 line-height:1.6;
 }
 
-.recommend{
-margin-top:12px;
-padding:10px;
-background:#0b0f1a;
-border-radius:8px;
-}
-
-.recommend button{
-margin-left:10px;
-padding:4px 8px;
-font-size:12px;
-border:none;
-border-radius:6px;
-cursor:pointer;
-background:gold;
-}
+h2 { color:gold; }
 </style>
 </head>
 
 <body>
 
-<header>
-<div class="logo">🔮 Astrodhani</div>
-<nav>
-<a href="index.html">Home</a>
-<a href="services.html">Services</a>
-</nav>
-</header>
-
 <div class="container">
-
-<h1>🔮 Horoscope</h1>
-
-<div class="tabs">
-<button onclick="loadHoro(0,this)" class="active">Daily</button>
-<button onclick="loadHoro(7,this)">Weekly</button>
-<button onclick="loadHoro(30,this)">Monthly</button>
-</div>
-
+<h1>🔮 आज का राशिफल</h1>
 <div id="horoscope"></div>
-
 </div>
 
 <script type="module">
@@ -84,176 +32,117 @@ import ModuleFactory from "/swisseph.js";
 let Module=null, ready=false;
 
 ModuleFactory({
-  locateFile:(f)=>f.endsWith(".wasm")?"/swisseph.wasm":f
+ locateFile:(f)=>f.endsWith(".wasm")?"/swisseph.wasm":f
 }).then(mod=>{
-  Module=mod;
-
-  Module.ccall("swe_set_ephe_path",null,["string"],["/ephe"]);
-  Module.ccall("swe_set_sid_mode",null,["number","number","number"],[1,0,0]);
-
-  ready=true;
-  loadHoro(0, document.querySelector(".tabs button"));
+ Module=mod;
+ Module.ccall("swe_set_ephe_path",null,["string"],["/ephe"]);
+ Module.ccall("swe_set_sid_mode",null,["number","number","number"],[1,0,0]);
+ ready=true;
+ generate();
 });
 
-// SIGNS
+// राशियाँ
 const signs = [
-{name:"Aries",trait:"bold and energetic"},
-{name:"Taurus",trait:"stable and practical"},
-{name:"Gemini",trait:"curious and communicative"},
-{name:"Cancer",trait:"emotional and nurturing"},
-{name:"Leo",trait:"confident and expressive"},
-{name:"Virgo",trait:"analytical and detail-oriented"},
-{name:"Libra",trait:"balanced and diplomatic"},
-{name:"Scorpio",trait:"intense and passionate"},
-{name:"Sagittarius",trait:"adventurous and optimistic"},
-{name:"Capricorn",trait:"disciplined and focused"},
-{name:"Aquarius",trait:"innovative and independent"},
-{name:"Pisces",trait:"intuitive and dreamy"}
+"मेष","वृषभ","मिथुन","कर्क","सिंह","कन्या",
+"तुला","वृश्चिक","धनु","मकर","कुंभ","मीन"
 ];
+
+// उपाय बैंक
+const remedies = [
+"हनुमान जी को गुड़-चने का भोग लगाएं",
+"शिव चालीसा का पाठ करें",
+"महालक्ष्मी को कमल का फूल अर्पित करें",
+"गणेश जी को दूर्वा चढ़ाएं",
+"पीपल के नीचे दीपक जलाएं",
+"कौवों को रोटी खिलाएं",
+"चंदन का तिलक लगाएं",
+"दान-पुण्य करें"
+];
+
+// रंग
+const colors = ["लाल","पीला","हरा","नीला","सफेद","गोल्डन","बैंगनी"];
+
+// नंबर
+const numbers = [1,2,3,4,5,6,7,8,9];
 
 // PLANET
 function getPlanet(jd,p){
-  const ptr=Module._malloc(8*6);
+ const ptr=Module._malloc(8*6);
 
-  Module.ccall("swe_calc_ut",null,
-    ["number","number","number","number"],
-    [jd,p,65536,ptr]
-  );
+ Module.ccall("swe_calc_ut",null,
+ ["number","number","number","number"],
+ [jd,p,65536,ptr]
+ );
 
-  const lon=Module.HEAPF64[ptr/8];
-  Module._free(ptr);
+ const lon=Module.HEAPF64[ptr/8];
+ Module._free(ptr);
 
-  return (lon+360)%360;
+ return (lon+360)%360;
 }
 
 function rashi(d){ return Math.floor(d/30); }
 
-// 🔮 SERVICE SUGGESTION ENGINE
-function getServiceSuggestion(moonH, satH, jupH){
+// 🔥 REAL + HINDI ENGINE
+function generateText(i, planets){
 
-  if(satH===6 || satH===8 || satH===12){
-    return [
-      {name:"Shani Shanti Pooja", price:5000},
-      {name:"Career Healing", price:1100}
-    ];
-  }
+ const moonH=(rashi(planets.moon)-i+12)%12+1;
+ const satH=(rashi(planets.saturn)-i+12)%12+1;
+ const jupH=(rashi(planets.jupiter)-i+12)%12+1;
 
-  if(jupH===2 || jupH===11){
-    return [
-      {name:"Dhan Akarshan Lakshmi Pooja", price:3000},
-      {name:"Money Magnet Healing", price:1100}
-    ];
-  }
+ let text="";
 
-  if(moonH===5 || moonH===7){
-    return [
-      {name:"Love Attraction Healing", price:1100},
-      {name:"Relationship Healing", price:5000}
-    ];
-  }
+ if(moonH===1) text="आज आपकी ऊर्जा शिखर पर रहेगी। आत्मविश्वास से सफलता मिलेगी। ";
+ else if(moonH===7) text="आज संबंधों में सुधार होगा और नए अवसर मिलेंगे। ";
+ else text="दिन सामान्य रहेगा लेकिन प्रयास करते रहें। ";
 
-  return [
-    {name:"Aura Cleansing", price:1100}
-  ];
-}
+ if(satH===10) text+="कार्य क्षेत्र में सम्मान और पहचान मिलेगी। ";
+ if(satH===6) text+="कुछ बाधाएं आ सकती हैं लेकिन मेहनत रंग लाएगी। ";
 
-// 🔥 PREDICTION ENGINE
-function generate(signIndex, planets, type){
+ if(jupH===2 || jupH===11) text+="धन लाभ के योग बन रहे हैं। ";
 
-  const s = signs[signIndex];
-
-  const moonH=(rashi(planets.moon)-signIndex+12)%12+1;
-  const satH=(rashi(planets.saturn)-signIndex+12)%12+1;
-  const jupH=(rashi(planets.jupiter)-signIndex+12)%12+1;
-
-  let prefix = type==="daily"?"Today":
-               type==="weekly"?"This week":
-               "This month";
-
-  let overview = `${prefix}, ${s.name} natives may experience a mix of opportunities and challenges. Your ${s.trait} nature will help you handle situations wisely.`;
-
-  let love = "Relationships need patience.";
-  if(moonH===7) love=`${prefix}, relationships improve and emotional bonding increases.`;
-  if(moonH===5) love=`${prefix}, romance and attraction are strong.`;
-
-  let career = "Work remains stable.";
-  if(satH===10) career=`${prefix}, recognition and growth are likely in career.`;
-  if(satH===6) career=`${prefix}, work pressure may increase but discipline will help.`;
-
-  let money = "Maintain financial balance.";
-  if(jupH===2) money=`${prefix}, financial growth and savings improve.`;
-  if(jupH===11) money=`${prefix}, gains and income opportunities increase.`;
-
-  let health = `${prefix}, take care of mental peace and rest.`;
-
-  const suggestions = getServiceSuggestion(moonH, satH, jupH);
-
-  return {overview,love,career,money,health,suggestions};
+ return text;
 }
 
 // MAIN
-window.loadHoro = function(offset, btn){
+function generate(){
 
-  if(!ready) return;
+ if(!ready) return;
 
-  document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
+ const today = new Date();
+ today.setHours(0,0,0,0); // freeze
 
-  const date = new Date();
-  date.setDate(date.getDate() + offset);
+ const jd=(today/86400000)+2440587.5;
 
-  const jd = (date/86400000)+2440587.5;
+ const planets={
+  moon:getPlanet(jd,1),
+  jupiter:getPlanet(jd,5),
+  saturn:getPlanet(jd,6)
+ };
 
-  const planets = {
-    moon:getPlanet(jd,1),
-    jupiter:getPlanet(jd,5),
-    saturn:getPlanet(jd,6)
-  };
+ let html="";
 
-  let type = offset===0?"daily":offset===7?"weekly":"monthly";
+ signs.forEach((s,i)=>{
 
-  let html="";
+  const text = generateText(i, planets);
 
-  signs.forEach((s,i)=>{
+  const color = colors[Math.floor(Math.random()*colors.length)];
+  const num = numbers[Math.floor(Math.random()*numbers.length)];
+  const remedy = remedies[Math.floor(Math.random()*remedies.length)];
 
-    const p = generate(i, planets, type);
+  html+=`
+  <div class="horo-card">
+  <h2>${i+1}. ${s}</h2>
 
-    html+=`
-    <div class="horo-card">
-      <h2>${s.name}</h2>
+  <p><b>फलादेश:</b> ${text}</p>
 
-      <p><b>Overview:</b> ${p.overview}</p>
-      <p><b>❤️ Love:</b> ${p.love}</p>
-      <p><b>💼 Career:</b> ${p.career}</p>
-      <p><b>💰 Money:</b> ${p.money}</p>
-      <p><b>🩺 Health:</b> ${p.health}</p>
+  <p><b>लकी कलर:</b> ${color} | <b>लकी नंबर:</b> ${num}</p>
 
-      <div class="recommend">
-        <b>🔮 Recommended for you:</b>
+  <p><b>शाही उपाय:</b> ${remedy}</p>
+  </div>
+  `;
+ });
 
-        ${p.suggestions.map(s => `
-          <div>
-            ${s.name} - ₹${s.price}
-            <button onclick="bookService('${s.name}', ${s.price})">Book</button>
-          </div>
-        `).join("")}
-      </div>
-
-      <button onclick="window.open('https://wa.me/8708833177','_blank')">
-      Talk to Astrologer
-      </button>
-
-    </div>
-    `;
-  });
-
-  document.getElementById("horoscope").innerHTML = html;
-}
-
-// BOOK FLOW
-function bookService(name,price){
-  localStorage.setItem("selectedService", JSON.stringify({name,price}));
-  window.location.href="kundli.html";
+ document.getElementById("horoscope").innerHTML=html;
 }
 
 </script>
