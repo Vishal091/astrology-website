@@ -239,3 +239,36 @@ font-size:18px;
 }
 
 }
+/* ===== FORCE NEW THEME OVERRIDE ===== */
+
+body{
+background:linear-gradient(135deg,#FFF5F5,#FFEAEA) !important;
+color:#3b0000 !important;
+}
+
+header{
+background:#A83232 !important;
+color:white !important;
+}
+
+.logo{
+color:#FFD700 !important;
+}
+
+nav a{
+color:#FFD700 !important;
+}
+
+.card,
+.product-card,
+.service-card,
+.kundli-card{
+background:white !important;
+color:#3b0000 !important;
+border:1px solid rgba(168,50,50,0.2) !important;
+}
+
+button{
+background:linear-gradient(90deg,#A83232,#FFD700) !important;
+color:white !important;
+}
