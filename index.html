@@ -5,18 +5,18 @@
 
 <meta name="description" content="Accurate astrology predictions, kundli, horoscope and remedies.">
 
-<link rel="stylesheet" href="style.css">
-
 <style>
 
+/* ===== BODY ===== */
 body{
 margin:0;
 font-family:'Segoe UI',sans-serif;
 background:#FFF5F5;
 color:#3b0000;
+overflow-x:hidden;
 }
 
-/* NAVBAR */
+/* ===== NAVBAR ===== */
 .navbar{
 position:sticky;
 top:0;
@@ -29,13 +29,7 @@ color:white;
 z-index:1000;
 }
 
-.logo{
-display:flex;
-align-items:center;
-gap:10px;
-font-weight:bold;
-}
-
+.logo{display:flex;gap:10px;align-items:center;}
 .logo img{width:40px}
 
 nav a{
@@ -44,14 +38,20 @@ margin:0 10px;
 text-decoration:none;
 }
 
-nav a:hover{color:white}
-
-/* HERO */
+/* ===== HERO ===== */
 .hero{
 padding:120px 20px;
 text-align:center;
-background:linear-gradient(135deg,#A83232,#7B1E1E);
+background:linear-gradient(270deg,#A83232,#7B1E1E,#A83232);
+background-size:400% 400%;
+animation:gradientMove 8s ease infinite;
 color:white;
+}
+
+@keyframes gradientMove{
+0%{background-position:0%}
+50%{background-position:100%}
+100%{background-position:0%}
 }
 
 .hero h1{font-size:48px}
@@ -62,59 +62,55 @@ background:#FFD700;
 border:none;
 border-radius:8px;
 cursor:pointer;
+animation:pulse 2s infinite;
 }
 
-/* STATS */
-.stats{
-display:flex;
-justify-content:center;
-gap:40px;
-padding:40px;
-background:#FFEAEA;
+@keyframes pulse{
+0%{transform:scale(1)}
+50%{transform:scale(1.05)}
+100%{transform:scale(1)}
 }
 
-.stat{
-text-align:center;
-}
-
-/* SECTION */
+/* ===== SECTION ===== */
 .section{
 padding:60px 20px;
 text-align:center;
 }
 
-.section h2{color:#7B1E1E}
-
-/* GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 gap:20px;
 }
 
-/* CARD */
+/* ===== CARD ===== */
 .card{
-background:white;
+background:rgba(255,255,255,0.6);
+backdrop-filter:blur(10px);
 padding:20px;
-border-radius:10px;
-border:1px solid #eee;
-transition:0.3s;
+border-radius:12px;
+transition:0.4s;
 cursor:pointer;
 }
 
 .card:hover{
-transform:translateY(-8px);
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
+transform:translateY(-10px) scale(1.03);
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
 
-/* TESTIMONIAL */
-.testimonial{
-background:#fff;
-padding:20px;
-border-radius:10px;
+/* ===== REVEAL ===== */
+.reveal{
+opacity:0;
+transform:translateY(40px);
+transition:0.8s;
 }
 
-/* CTA */
+.reveal.active{
+opacity:1;
+transform:translateY(0);
+}
+
+/* ===== CTA ===== */
 .cta{
 background:#A83232;
 color:white;
@@ -122,7 +118,23 @@ padding:60px;
 text-align:center;
 }
 
-/* CHATBOT */
+/* ===== PARTICLES ===== */
+.particle{
+position:fixed;
+width:6px;
+height:6px;
+background:gold;
+border-radius:50%;
+opacity:0.3;
+animation:floatUp linear infinite;
+}
+
+@keyframes floatUp{
+from{transform:translateY(100vh);}
+to{transform:translateY(-10vh);}
+}
+
+/* ===== CHATBOT ===== */
 #chatbot{
 position:fixed;
 bottom:90px;
@@ -132,10 +144,7 @@ background:white;
 display:none;
 flex-direction:column;
 border-radius:10px;
-box-shadow:0 0 20px rgba(0,0,0,0.2);
 }
-
-#chat-header{background:#A83232;color:white;padding:10px}
 
 .float-btn{
 position:fixed;
@@ -171,74 +180,50 @@ Astrodhani
 <div class="hero">
 <h1 id="typing-text"></h1>
 <p>Accurate Vedic Astrology & Solutions</p>
-<button onclick="window.location.href='services.html'">Explore Services</button>
-</div>
-
-<!-- STATS -->
-<div class="stats">
-<div class="stat"><h2>50K+</h2><p>Users</p></div>
-<div class="stat"><h2>4.8⭐</h2><p>Rating</p></div>
-<div class="stat"><h2>10+ Years</h2><p>Experience</p></div>
+<button onclick="location.href='services.html'">Explore</button>
 </div>
 
 <!-- PANCHANG -->
-<div class="section">
-<h2>📅 Panchang</h2>
+<div class="section reveal">
+<h2>Panchang</h2>
 <div class="grid">
-<div class="card" onclick="location.href='panchang.html'">View Today Panchang</div>
+<div class="card">View Panchang</div>
 </div>
 </div>
 
 <!-- SERVICES -->
-<div class="section">
-<h2>🔮 Services</h2>
+<div class="section reveal">
+<h2>Services</h2>
 <div class="grid">
 <div class="card">Love Problem</div>
-<div class="card">Career Growth</div>
+<div class="card">Career</div>
 <div class="card">Evil Eye</div>
-<div class="card">Healing</div>
 </div>
 </div>
 
 <!-- PRODUCTS -->
-<div class="section">
-<h2>🛒 Products</h2>
+<div class="section reveal">
+<h2>Products</h2>
 <div class="grid">
 <div class="card">Rudraksha</div>
 <div class="card">Gemstones</div>
-<div class="card">Protection</div>
-</div>
-</div>
-
-<!-- TESTIMONIAL -->
-<div class="section">
-<h2>💬 Testimonials</h2>
-<div class="grid">
-<div class="testimonial">Amazing results 🙏</div>
-<div class="testimonial">Very accurate 🔮</div>
-<div class="testimonial">Life changing ✨</div>
 </div>
 </div>
 
 <!-- CTA -->
 <div class="cta">
 <h2>Talk to Astrologer</h2>
-<button onclick="window.open('https://wa.me/91XXXXXXXXXX')">Chat Now</button>
+<button>Chat Now</button>
 </div>
 
 <!-- CHATBOT -->
-<div id="chatbot">
-<div id="chat-header">Astrologer</div>
-<div id="chat-body"></div>
-<input id="chat-input">
-</div>
-
-<div class="float-btn" onclick="toggleChat()">🤖</div>
+<div id="chatbot"></div>
+<div class="float-btn">🤖</div>
 
 <script>
 
 /* TYPING */
-let text="Unlock Your Destiny 🔮"
+let text="Unlock Your Destiny 🔮";
 let i=0;
 function type(){
 if(i<text.length){
@@ -248,10 +233,23 @@ setTimeout(type,40);
 }}
 type();
 
-/* CHAT */
-function toggleChat(){
-let c=document.getElementById("chatbot");
-c.style.display=c.style.display==="flex"?"none":"flex";
+/* REVEAL */
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add("active")
+}
+})
+});
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+
+/* PARTICLES */
+for(let i=0;i<20;i++){
+let p=document.createElement("div");
+p.className="particle";
+p.style.left=Math.random()*100+"vw";
+p.style.animationDuration=(5+Math.random()*10)+"s";
+document.body.appendChild(p);
 }
 
 </script>
