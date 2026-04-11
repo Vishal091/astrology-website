@@ -36,7 +36,10 @@ background: linear-gradient(90deg,#fff,#00CEC9,#6C5CE7);
 -webkit-text-fill-color:transparent;
 animation: glowText 3s infinite alternate;
 }
-
+  
+<div id="zodiac-wheel"></div>
+<div id="daily-update" style="margin-top:10px;color:#00CEC9;"></div>
+  
 @keyframes glowText{
 from{filter:drop-shadow(0 0 5px #00CEC9);}
 to{filter:drop-shadow(0 0 20px #6C5CE7);}
@@ -233,7 +236,63 @@ background:#00CEC9;
 bottom:10%;
 right:10%;
 }
+/* ZODIAC WHEEL */
+#zodiac-wheel{
+width:220px;
+height:220px;
+margin:20px auto;
+border-radius:50%;
+border:2px solid rgba(255,255,255,0.2);
+position:relative;
+animation:spin 25s linear infinite;
+}
 
+@keyframes spin{
+from{transform:rotate(0deg);}
+to{transform:rotate(360deg);}
+}
+
+.zodiac-item{
+position:absolute;
+width:40px;
+height:40px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:20px;
+}
+
+/* CHATBOT */
+#chatbot{
+position:fixed;
+bottom:90px;
+right:20px;
+width:280px;
+background:#111;
+border-radius:12px;
+display:none;
+flex-direction:column;
+z-index:1000;
+}
+
+#chat-header{
+background:#6C5CE7;
+padding:10px;
+font-weight:bold;
+}
+
+#chat-body{
+height:200px;
+overflow-y:auto;
+padding:10px;
+font-size:14px;
+}
+
+#chat-input{
+border:none;
+padding:10px;
+outline:none;
+}
 </style>
 </head>
 
@@ -455,8 +514,77 @@ card.addEventListener("mouseleave",()=>{
 card.style.transform="translateY(0)"
 })
 })
+/* ZODIAC WHEEL */
+const zodiacSigns=["♈","♉","♊","♋","♌","♍","♎","♏","♐","♑","♒","♓"];
+const wheel=document.getElementById("zodiac-wheel");
 
+if(wheel){
+zodiacSigns.forEach((sign,i)=>{
+const angle=(i/12)*360;
+const item=document.createElement("div");
+item.className="zodiac-item";
+item.innerHTML=sign;
+
+item.style.transform=`
+rotate(${angle}deg)
+translate(90px)
+rotate(-${angle}deg)
+`;
+
+wheel.appendChild(item);
+});
+}
+
+/* DAILY UPDATE */
+function getDailyUpdate(){
+const updates=[
+"🌙 Moon energy high today",
+"💰 Financial luck strong",
+"❤️ Love vibes positive",
+"🪐 Stay disciplined today"
+];
+const index=new Date().getDate()%updates.length;
+document.getElementById("daily-update").innerText=updates[index];
+}
+getDailyUpdate();
+
+/* CHATBOT */
+function toggleChat(){
+const chat=document.getElementById("chatbot");
+chat.style.display=chat.style.display==="flex"?"none":"flex";
+}
+
+document.getElementById("chat-input").addEventListener("keypress",function(e){
+if(e.key==="Enter"){
+let q=this.value;
+addMsg("You: "+q);
+addMsg("Astrologer: "+getReply(q));
+this.value="";
+}
+});
+
+function addMsg(text){
+let div=document.createElement("div");
+div.innerText=text;
+document.getElementById("chat-body").appendChild(div);
+}
+
+function getReply(q){
+q=q.toLowerCase();
+if(q.includes("love")) return "Love life improving soon 💖";
+if(q.includes("career")) return "Career growth ahead 🚀";
+if(q.includes("money")) return "Financial gains possible 💰";
+return "Stars suggest patience ✨";
+}
 </script>
+<div id="chatbot">
+<div id="chat-header">🔮 Astrologer</div>
+<div id="chat-body"></div>
+<input id="chat-input" placeholder="Ask your question...">
+</div>
 
+<div class="whatsapp-float" onclick="toggleChat()">
+🤖
+</div>
 </body>
 </html>
