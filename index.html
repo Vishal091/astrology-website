@@ -34,14 +34,16 @@ display:flex;
 align-items:center;
 gap:10px;
 font-weight:bold;
+font-size:20px;
+color:#FFD700;
 }
 
-.logo img{width:40px}
-
-nav a{
-color:#FFD700;
-margin:0 10px;
-text-decoration:none;
+.logo img{
+width:45px;
+height:45px;
+border-radius:50%;
+object-fit:cover;
+box-shadow:0 0 10px rgba(255,215,0,0.6);
 }
 
 nav a:hover{color:white}
@@ -155,8 +157,8 @@ cursor:pointer;
 
 <header class="navbar">
 <div class="logo">
-<img src="hanuman-logo.png">
-Astrodhani
+  <img src="hanuman-logo.jpeg" alt="Astrodhani Logo">
+  <span>Astrodhani</span>
 </div>
 
 <nav>
@@ -166,7 +168,28 @@ Astrodhani
 <a href="horoscope.html">Horoscope</a>
 </nav>
 </header>
+<img src="hanuman-logo.jpeg" class="hero-logo">
+.hero-logo{
+width:120px;
+margin-bottom:15px;
+animation:float 4s ease-in-out infinite;
+filter:drop-shadow(0 0 15px gold);
+}
 
+@keyframes float{
+0%{transform:translateY(0);}
+50%{transform:translateY(-10px);}
+100%{transform:translateY(0);}
+}
+.hero-logo::after{
+content:"";
+position:absolute;
+width:150px;
+height:150px;
+background:radial-gradient(circle,rgba(255,215,0,0.3),transparent);
+border-radius:50%;
+z-index:-1;
+}
 <!-- HERO -->
 <div class="hero">
 <h1 id="typing-text"></h1>
