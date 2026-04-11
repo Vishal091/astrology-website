@@ -22,6 +22,19 @@ h1{
   color:gold;
 }
 
+/* BUTTON */
+.premium-btn{
+  display:block;
+  margin:auto;
+  margin-bottom:10px;
+  padding:10px 20px;
+  border:none;
+  border-radius:20px;
+  background:gold;
+  color:black;
+  cursor:pointer;
+}
+
 /* TABS */
 .tabs{
   display:flex;
@@ -110,16 +123,10 @@ h1{
 
 <h1>🔮 राशिफल</h1>
 
-<!-- VOICE SELECTOR -->
-<div style="text-align:center;margin:10px;">
-🎧 Voice:
-<select id="voiceSelect">
-<option value="female">Female</option>
-<option value="male">Male</option>
-</select>
-</div>
+<button class="premium-btn" onclick="unlockPremium()">
+✨ Unlock Premium Voice ₹19
+</button>
 
-<!-- TABS -->
 <div class="tabs">
 <button onclick="loadHoro(0,this)" class="active">Daily</button>
 <button onclick="loadHoro(7,this)">Weekly</button>
@@ -155,15 +162,15 @@ const signs=[
 
 const remedies=[
 "हनुमान जी को गुड़-चने का भोग लगाएं",
-"महालक्ष्मी को सफेद पुष्प अर्पित करें",
-"गणेश जी को दूर्वा चढ़ाएं",
-"शिव चालीसा का पाठ करें",
+"महालक्ष्मी को पुष्प अर्पित करें",
+"गणेश जी की पूजा करें",
+"शिव जी को जल चढ़ाएं",
 "सूर्य को अर्घ्य दें",
 "बुध मंत्र का जाप करें",
 "शुक्र मंत्र का जाप करें",
 "हनुमान चालीसा पढ़ें",
 "गुरु मंत्र का जाप करें",
-"शनि देव को तेल अर्पित करें",
+"शनि देव को तेल चढ़ाएं",
 "कौवों को रोटी खिलाएं",
 "विष्णु सहस्रनाम पढ़ें"
 ];
@@ -188,9 +195,6 @@ function rashi(d){return Math.floor(d/30);}
 // TEXT ENGINE
 function generateText(i, planets, type){
 
- const days=["रविवार","सोमवार","मंगलवार","बुधवार","गुरुवार","शुक्रवार","शनिवार"];
- const dayName=days[new Date().getDay()];
-
  const intros=[
   "आपका आत्मविश्वास चरम पर रहेगा।",
   "सुख-सुविधाओं में वृद्धि होगी।",
@@ -200,7 +204,7 @@ function generateText(i, planets, type){
   "निर्णय शक्ति मजबूत होगी।",
   "संबंधों में संतुलन आएगा।",
   "साहस में वृद्धि होगी।",
-  "भाग्य आपका साथ देगा।",
+  "भाग्य साथ देगा।",
   "मेहनत रंग लाएगी।",
   "नए अवसर मिलेंगे।",
   "अंतर्ज्ञान मजबूत होगा।"
@@ -210,56 +214,82 @@ function generateText(i, planets, type){
  const satH=(rashi(planets.saturn)-i+12)%12+1;
  const jupH=(rashi(planets.jupiter)-i+12)%12+1;
 
- let prefix= type==="daily"?"आज":
-             type==="weekly"?"इस सप्ताह":
-             "इस महीने";
+ let text=intros[i]+" ";
 
- let text=`${prefix} ${dayName} के दिन, ${intros[i]} `;
-
- if(moonH===7) text+="रिश्तों में सुधार होगा। ";
+ if(moonH===7) text+="रिश्ते सुधरेंगे। ";
  if(satH===10) text+="कार्य में सफलता मिलेगी। ";
- if(jupH===11) text+="धन लाभ संभव है। ";
+ if(jupH===11) text+="धन लाभ होगा। ";
 
  return text;
 }
 
-// 🔊 VOICE (AI + fallback)
-async function speakText(text){
+// 🛕 TEMPLE MUSIC
+let bgAudio = new Audio("/temple.mp3");
+bgAudio.loop = true;
+bgAudio.volume = 0.2;
 
-  const voiceType = document.getElementById("voiceSelect").value;
-
-  // ✅ Correct voice mapping
-  const voices = {
-    female: "EXAVITQu4vr4xnSDxMaL", // Rachel (female)
-    male: "TxGEqnHWrfWFTfGW9XjX"   // Josh (male)
-  };
-
-  const voiceId = voices[voiceType];
-
-  try{
-    const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,{
-      method:"POST",
-      headers:{
-        "xi-api-key":"sk_afa4082434ed74a2fb192406972ab0d455a04218c77aea60",
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        text:text,
-        model_id:"eleven_multilingual_v2"
-      })
-    });
-
-    const blob = await res.blob();
-    const audio = new Audio(URL.createObjectURL(blob));
-    audio.play();
-
-  }catch(e){
-    // fallback
-    const speech=new SpeechSynthesisUtterance(text);
-    speech.lang="hi-IN";
-    window.speechSynthesis.speak(speech);
-  }
+function startTempleMusic(){
+  bgAudio.play().catch(()=>{});
 }
+
+function stopTempleMusic(){
+  bgAudio.pause();
+  bgAudio.currentTime=0;
+}
+
+// 💰 PREMIUM
+function isPremium(){
+  return localStorage.getItem("premiumUser")==="true";
+}
+
+function unlockPremium(){
+  alert("Premium Activated (Demo)");
+  localStorage.setItem("premiumUser","true");
+}
+
+// 🔊 VOICE
+function speakText(text){
+
+ window.speechSynthesis.cancel();
+
+ const speech=new SpeechSynthesisUtterance(text);
+
+ const voices=speechSynthesis.getVoices();
+ const hindiVoice=voices.find(v=>v.lang.includes("hi")||v.lang.includes("en-IN"));
+
+ if(hindiVoice) speech.voice=hindiVoice;
+
+ if(isPremium()){
+   speech.rate=0.75;
+   speech.pitch=0.85;
+   startTempleMusic();
+   speech.onend=stopTempleMusic;
+ } else {
+   speech.rate=1;
+   speech.pitch=1;
+ }
+
+ speech.lang="hi-IN";
+
+ window.speechSynthesis.speak(speech);
+}
+
+// AUTO PLAY
+let firstInteraction=false;
+
+document.addEventListener("click",()=>{
+
+ if(!firstInteraction){
+   firstInteraction=true;
+
+   const first=document.querySelector(".speak-btn");
+   if(first){
+     const text=decodeURIComponent(first.dataset.text);
+     speakText(text);
+   }
+ }
+
+});
 
 // MAIN
 window.loadHoro=function(offset,btn){
@@ -281,13 +311,11 @@ window.loadHoro=function(offset,btn){
   saturn:getPlanet(jd,6)
  };
 
- let type=offset===0?"daily":offset===7?"weekly":"monthly";
-
  let html="";
 
  signs.forEach((s,i)=>{
 
-  const text=generateText(i,planets,type);
+  const text=generateText(i,planets);
 
   html+=`
   <div class="horo-card">
@@ -303,14 +331,16 @@ window.loadHoro=function(offset,btn){
 
     <div class="remedy">${remedies[i]}</div>
 
-    <button class="speak-btn" data-text="${encodeURIComponent(text)}">🔊 सुनें</button>
+    <button class="speak-btn" data-text="${encodeURIComponent(text)}">
+      🔊 सुनें
+    </button>
   </div>`;
  });
 
  document.getElementById("horoscope").innerHTML=html;
 }
 
-// CLICK HANDLER
+// CLICK
 document.addEventListener("click",function(e){
  if(e.target.classList.contains("speak-btn")){
    const text=decodeURIComponent(e.target.dataset.text);
