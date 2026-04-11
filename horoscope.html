@@ -37,11 +37,10 @@ h1{
   cursor:pointer;
   background:#222;
   color:white;
-  transition:0.3s;
 }
 
 .tabs button.active{
-  background:linear-gradient(45deg,gold,#ffd700);
+  background:gold;
   color:black;
 }
 
@@ -58,7 +57,6 @@ h1{
   padding:18px;
   border-radius:16px;
   box-shadow:0 10px 25px rgba(0,0,0,0.6);
-  transition:0.3s;
   position:relative;
   animation:fadeUp 0.6s forwards;
 }
@@ -68,11 +66,6 @@ h1{
   to{opacity:1;transform:translateY(0);}
 }
 
-.horo-card:hover{
-  transform:translateY(-8px) scale(1.02);
-}
-
-/* ICON */
 .icon{
   position:absolute;
   top:12px;
@@ -117,6 +110,16 @@ h1{
 
 <h1>🔮 राशिफल</h1>
 
+<!-- VOICE SELECTOR -->
+<div style="text-align:center;margin:10px;">
+🎧 Voice:
+<select id="voiceSelect">
+<option value="female">Female</option>
+<option value="male">Male</option>
+</select>
+</div>
+
+<!-- TABS -->
 <div class="tabs">
 <button onclick="loadHoro(0,this)" class="active">Daily</button>
 <button onclick="loadHoro(7,this)">Weekly</button>
@@ -143,27 +146,26 @@ ModuleFactory({
  loadHoro(0, document.querySelector(".tabs button"));
 });
 
-// SIGNS
+// DATA
 const signs=[
 ["मेष","♈"],["वृषभ","♉"],["मिथुन","♊"],["कर्क","♋"],
 ["सिंह","♌"],["कन्या","♍"],["तुला","♎"],["वृश्चिक","♏"],
 ["धनु","♐"],["मकर","♑"],["कुंभ","♒"],["मीन","♓"]
 ];
 
-// SIGN REMEDIES
 const remedies=[
-"हनुमान जी को गुड़-चने का भोग लगाएं और मंगल स्तोत्र पढ़ें।",
-"महालक्ष्मी को सफेद पुष्प अर्पित करें।",
-"गणेश जी को दूर्वा चढ़ाएं।",
-"शिव चालीसा का पाठ करें।",
-"सूर्य को अर्घ्य दें।",
-"बुध मंत्र का जाप करें।",
-"शुक्र मंत्र का जाप करें।",
-"हनुमान चालीसा पढ़ें।",
-"गुरु मंत्र का जाप करें।",
-"शनि देव को तेल अर्पित करें।",
-"कौवों को रोटी खिलाएं।",
-"विष्णु सहस्रनाम पढ़ें।"
+"हनुमान जी को गुड़-चने का भोग लगाएं",
+"महालक्ष्मी को सफेद पुष्प अर्पित करें",
+"गणेश जी को दूर्वा चढ़ाएं",
+"शिव चालीसा का पाठ करें",
+"सूर्य को अर्घ्य दें",
+"बुध मंत्र का जाप करें",
+"शुक्र मंत्र का जाप करें",
+"हनुमान चालीसा पढ़ें",
+"गुरु मंत्र का जाप करें",
+"शनि देव को तेल अर्पित करें",
+"कौवों को रोटी खिलाएं",
+"विष्णु सहस्रनाम पढ़ें"
 ];
 
 const colors=["लाल","पीला","हरा","नीला","सफेद","गोल्डन"];
@@ -187,12 +189,7 @@ function rashi(d){return Math.floor(d/30);}
 function generateText(i, planets, type){
 
  const days=["रविवार","सोमवार","मंगलवार","बुधवार","गुरुवार","शुक्रवार","शनिवार"];
- const todayDay=new Date().getDay();
- const dayName=days[todayDay];
-
- let prefix= type==="daily"?"आज":
-             type==="weekly"?"इस सप्ताह":
-             "इस महीने";
+ const dayName=days[new Date().getDay()];
 
  const intros=[
   "आपका आत्मविश्वास चरम पर रहेगा।",
@@ -200,10 +197,10 @@ function generateText(i, planets, type){
   "बुद्धिमत्ता आपको आगे बढ़ाएगी।",
   "मानसिक शांति मिलेगी।",
   "नेतृत्व क्षमता बढ़ेगी।",
-  "निर्णय क्षमता मजबूत होगी।",
+  "निर्णय शक्ति मजबूत होगी।",
   "संबंधों में संतुलन आएगा।",
   "साहस में वृद्धि होगी।",
-  "भाग्य साथ देगा।",
+  "भाग्य आपका साथ देगा।",
   "मेहनत रंग लाएगी।",
   "नए अवसर मिलेंगे।",
   "अंतर्ज्ञान मजबूत होगा।"
@@ -213,25 +210,41 @@ function generateText(i, planets, type){
  const satH=(rashi(planets.saturn)-i+12)%12+1;
  const jupH=(rashi(planets.jupiter)-i+12)%12+1;
 
+ let prefix= type==="daily"?"आज":
+             type==="weekly"?"इस सप्ताह":
+             "इस महीने";
+
  let text=`${prefix} ${dayName} के दिन, ${intros[i]} `;
 
- if(moonH===1) text+="आप भावनात्मक रूप से मजबूत रहेंगे। ";
- else if(moonH===7) text+="रिश्तों में सुधार होगा। ";
- else text+="धैर्य बनाए रखें। ";
-
+ if(moonH===7) text+="रिश्तों में सुधार होगा। ";
  if(satH===10) text+="कार्य में सफलता मिलेगी। ";
- if(satH===6) text+="चुनौतियाँ आ सकती हैं। ";
-
- if(jupH===2||jupH===11) text+="धन लाभ संभव है। ";
+ if(jupH===11) text+="धन लाभ संभव है। ";
 
  return text;
 }
 
-// 🔊 VOICE
-function speakText(text){
- const speech=new SpeechSynthesisUtterance(text);
- speech.lang="hi-IN";
- window.speechSynthesis.speak(speech);
+// 🔊 VOICE (AI + fallback)
+async function speakText(text){
+
+ try{
+   const res = await fetch("https://api.elevenlabs.io/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL",{
+     method:"POST",
+     headers:{
+       "xi-api-key":"YOUR_API_KEY_HERE",
+       "Content-Type":"application/json"
+     },
+     body:JSON.stringify({text})
+   });
+
+   const blob=await res.blob();
+   new Audio(URL.createObjectURL(blob)).play();
+
+ }catch(e){
+   // fallback
+   const speech=new SpeechSynthesisUtterance(text);
+   speech.lang="hi-IN";
+   window.speechSynthesis.speak(speech);
+ }
 }
 
 // MAIN
@@ -261,9 +274,6 @@ window.loadHoro=function(offset,btn){
  signs.forEach((s,i)=>{
 
   const text=generateText(i,planets,type);
-  const color=colors[Math.floor(Math.random()*colors.length)];
-  const num=numbers[Math.floor(Math.random()*numbers.length)];
-  const remedy=remedies[i];
 
   html+=`
   <div class="horo-card">
@@ -273,21 +283,26 @@ window.loadHoro=function(offset,btn){
     <p>${text}</p>
 
     <p>
-      <span class="badge color-badge">🎨 ${color}</span>
-      <span class="badge number-badge">🔢 ${num}</span>
+      <span class="badge color-badge">${colors[Math.floor(Math.random()*colors.length)]}</span>
+      <span class="badge number-badge">${numbers[Math.floor(Math.random()*numbers.length)]}</span>
     </p>
 
-    <div class="remedy">🛕 ${remedy}</div>
+    <div class="remedy">${remedies[i]}</div>
 
-    <button class="speak-btn" onclick="speakText('${text}')">
-      🔊 सुनें
-    </button>
-
+    <button class="speak-btn" data-text="${encodeURIComponent(text)}">🔊 सुनें</button>
   </div>`;
  });
 
  document.getElementById("horoscope").innerHTML=html;
 }
+
+// CLICK HANDLER
+document.addEventListener("click",function(e){
+ if(e.target.classList.contains("speak-btn")){
+   const text=decodeURIComponent(e.target.dataset.text);
+   speakText(text);
+ }
+});
 
 </script>
 
