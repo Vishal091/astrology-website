@@ -4,25 +4,104 @@
 <title>आज का राशिफल 🔮</title>
 
 <style>
-body { background:#0b0f1a; color:white; font-family:Arial; }
-
-.horo-card{
-background:#141A40;
-padding:20px;
-border-radius:12px;
-margin-bottom:20px;
-line-height:1.6;
+body {
+  margin:0;
+  font-family: 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at top, #1a1f4d, #0b0f1a);
+  color:white;
 }
 
-h2 { color:gold; }
+.container {
+  max-width:1300px;
+  margin:auto;
+  padding:20px;
+}
+
+h1 {
+  text-align:center;
+  color:gold;
+  margin-bottom:20px;
+}
+
+/* GRID */
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:20px;
+}
+
+/* CARD */
+.horo-card {
+  background:linear-gradient(145deg,#141A40,#0f1330);
+  padding:18px;
+  border-radius:16px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.6);
+  transition:0.3s;
+  position:relative;
+}
+
+.horo-card:hover {
+  transform:translateY(-6px);
+}
+
+/* TITLE */
+.horo-card h2 {
+  color:#FFD700;
+  margin-bottom:10px;
+}
+
+/* TEXT */
+.horo-card p {
+  font-size:14px;
+  margin:6px 0;
+  line-height:1.5;
+}
+
+/* BADGES */
+.badge {
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:8px;
+  font-size:12px;
+  margin-top:5px;
+}
+
+.color-badge {
+  background:#222;
+}
+
+.number-badge {
+  background:gold;
+  color:black;
+}
+
+/* REMEDY BOX */
+.remedy {
+  margin-top:10px;
+  padding:10px;
+  background:#0b0f1a;
+  border-radius:10px;
+  border-left:3px solid gold;
+}
+
+/* HEADER ICON */
+.icon {
+  position:absolute;
+  top:12px;
+  right:12px;
+  font-size:20px;
+}
 </style>
 </head>
 
 <body>
 
 <div class="container">
+
 <h1>🔮 आज का राशिफल</h1>
-<div id="horoscope"></div>
+
+<div id="horoscope" class="grid"></div>
+
 </div>
 
 <script type="module">
@@ -41,48 +120,40 @@ ModuleFactory({
  generate();
 });
 
-// राशियाँ
+// राशियाँ + ICONS
 const signs = [
-"मेष","वृषभ","मिथुन","कर्क","सिंह","कन्या",
-"तुला","वृश्चिक","धनु","मकर","कुंभ","मीन"
+["मेष","♈"],["वृषभ","♉"],["मिथुन","♊"],["कर्क","♋"],
+["सिंह","♌"],["कन्या","♍"],["तुला","♎"],["वृश्चिक","♏"],
+["धनु","♐"],["मकर","♑"],["कुंभ","♒"],["मीन","♓"]
 ];
 
-// उपाय बैंक
 const remedies = [
 "हनुमान जी को गुड़-चने का भोग लगाएं",
 "शिव चालीसा का पाठ करें",
 "महालक्ष्मी को कमल का फूल अर्पित करें",
 "गणेश जी को दूर्वा चढ़ाएं",
 "पीपल के नीचे दीपक जलाएं",
-"कौवों को रोटी खिलाएं",
-"चंदन का तिलक लगाएं",
-"दान-पुण्य करें"
+"कौवों को रोटी खिलाएं"
 ];
 
-// रंग
 const colors = ["लाल","पीला","हरा","नीला","सफेद","गोल्डन","बैंगनी"];
-
-// नंबर
 const numbers = [1,2,3,4,5,6,7,8,9];
 
-// PLANET
+// PLANETS
 function getPlanet(jd,p){
  const ptr=Module._malloc(8*6);
-
  Module.ccall("swe_calc_ut",null,
  ["number","number","number","number"],
  [jd,p,65536,ptr]
  );
-
  const lon=Module.HEAPF64[ptr/8];
  Module._free(ptr);
-
  return (lon+360)%360;
 }
 
 function rashi(d){ return Math.floor(d/30); }
 
-// 🔥 REAL + HINDI ENGINE
+// LOGIC
 function generateText(i, planets){
 
  const moonH=(rashi(planets.moon)-i+12)%12+1;
@@ -91,14 +162,14 @@ function generateText(i, planets){
 
  let text="";
 
- if(moonH===1) text="आज आपकी ऊर्जा शिखर पर रहेगी। आत्मविश्वास से सफलता मिलेगी। ";
- else if(moonH===7) text="आज संबंधों में सुधार होगा और नए अवसर मिलेंगे। ";
+ if(moonH===1) text="आज ऊर्जा और आत्मविश्वास बढ़ेगा। ";
+ else if(moonH===7) text="संबंधों में सुधार और सहयोग मिलेगा। ";
  else text="दिन सामान्य रहेगा लेकिन प्रयास करते रहें। ";
 
- if(satH===10) text+="कार्य क्षेत्र में सम्मान और पहचान मिलेगी। ";
- if(satH===6) text+="कुछ बाधाएं आ सकती हैं लेकिन मेहनत रंग लाएगी। ";
+ if(satH===10) text+="कार्य क्षेत्र में सम्मान मिलेगा। ";
+ if(satH===6) text+="कुछ चुनौतियां आ सकती हैं। ";
 
- if(jupH===2 || jupH===11) text+="धन लाभ के योग बन रहे हैं। ";
+ if(jupH===2||jupH===11) text+="धन लाभ के योग बन रहे हैं। ";
 
  return text;
 }
@@ -106,10 +177,8 @@ function generateText(i, planets){
 // MAIN
 function generate(){
 
- if(!ready) return;
-
- const today = new Date();
- today.setHours(0,0,0,0); // freeze
+ const today=new Date();
+ today.setHours(0,0,0,0);
 
  const jd=(today/86400000)+2440587.5;
 
@@ -123,21 +192,30 @@ function generate(){
 
  signs.forEach((s,i)=>{
 
-  const text = generateText(i, planets);
-
-  const color = colors[Math.floor(Math.random()*colors.length)];
-  const num = numbers[Math.floor(Math.random()*numbers.length)];
-  const remedy = remedies[Math.floor(Math.random()*remedies.length)];
+  const text=generateText(i,planets);
+  const color=colors[Math.floor(Math.random()*colors.length)];
+  const num=numbers[Math.floor(Math.random()*numbers.length)];
+  const remedy=remedies[Math.floor(Math.random()*remedies.length)];
 
   html+=`
   <div class="horo-card">
-  <h2>${i+1}. ${s}</h2>
 
-  <p><b>फलादेश:</b> ${text}</p>
+    <div class="icon">${s[1]}</div>
 
-  <p><b>लकी कलर:</b> ${color} | <b>लकी नंबर:</b> ${num}</p>
+    <h2>${i+1}. ${s[0]}</h2>
 
-  <p><b>शाही उपाय:</b> ${remedy}</p>
+    <p><b>फलादेश:</b> ${text}</p>
+
+    <p>
+      <span class="badge color-badge">🎨 ${color}</span>
+      <span class="badge number-badge">🔢 ${num}</span>
+    </p>
+
+    <div class="remedy">
+      <b>🛕 शाही उपाय:</b><br>
+      ${remedy}
+    </div>
+
   </div>
   `;
  });
