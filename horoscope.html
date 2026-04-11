@@ -22,7 +22,6 @@ h1{
   color:gold;
 }
 
-/* BUTTON */
 .premium-btn{
   display:block;
   margin:auto;
@@ -35,7 +34,6 @@ h1{
   cursor:pointer;
 }
 
-/* TABS */
 .tabs{
   display:flex;
   justify-content:center;
@@ -57,14 +55,12 @@ h1{
   color:black;
 }
 
-/* GRID */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
   gap:20px;
 }
 
-/* CARD */
 .horo-card{
   background:linear-gradient(145deg,#141A40,#0f1330);
   padding:18px;
@@ -192,8 +188,8 @@ function getPlanet(jd,p){
 
 function rashi(d){return Math.floor(d/30);}
 
-// TEXT ENGINE
-function generateText(i, planets, type){
+// TEXT
+function generateText(i, planets){
 
  const intros=[
   "आपका आत्मविश्वास चरम पर रहेगा।",
@@ -224,30 +220,30 @@ function generateText(i, planets, type){
 }
 
 // 🛕 TEMPLE MUSIC
-let bgAudio = new Audio("/temple.mp3");
-bgAudio.loop = true;
-bgAudio.volume = 0.2;
+let bgAudio=new Audio("/temple.mp3");
+bgAudio.loop=true;
+bgAudio.volume=0.2;
 
 function startTempleMusic(){
-  bgAudio.play().catch(()=>{});
+ bgAudio.play().catch(()=>{});
 }
 
 function stopTempleMusic(){
-  bgAudio.pause();
-  bgAudio.currentTime=0;
+ bgAudio.pause();
+ bgAudio.currentTime=0;
 }
 
 // 💰 PREMIUM
 function isPremium(){
-  return localStorage.getItem("premiumUser")==="true";
+ return localStorage.getItem("premiumUser")==="true";
 }
 
 function unlockPremium(){
-  alert("Premium Activated (Demo)");
-  localStorage.setItem("premiumUser","true");
+ alert("Premium Activated (Demo)");
+ localStorage.setItem("premiumUser","true");
 }
 
-// 🔊 VOICE
+// 🔊 FEMALE VOICE ONLY
 function speakText(text){
 
  window.speechSynthesis.cancel();
@@ -255,16 +251,20 @@ function speakText(text){
  const speech=new SpeechSynthesisUtterance(text);
 
  const voices=speechSynthesis.getVoices();
- const hindiVoice=voices.find(v=>v.lang.includes("hi")||v.lang.includes("en-IN"));
 
- if(hindiVoice) speech.voice=hindiVoice;
+ // try best Hindi female voice
+ const femaleVoice=voices.find(v =>
+   v.lang.includes("hi") || v.name.toLowerCase().includes("female")
+ );
+
+ if(femaleVoice) speech.voice=femaleVoice;
 
  if(isPremium()){
    speech.rate=0.75;
-   speech.pitch=0.85;
+   speech.pitch=1.1; // slightly softer feminine tone
    startTempleMusic();
    speech.onend=stopTempleMusic;
- } else {
+ }else{
    speech.rate=1;
    speech.pitch=1;
  }
@@ -273,23 +273,6 @@ function speakText(text){
 
  window.speechSynthesis.speak(speech);
 }
-
-// AUTO PLAY
-let firstInteraction=false;
-
-document.addEventListener("click",()=>{
-
- if(!firstInteraction){
-   firstInteraction=true;
-
-   const first=document.querySelector(".speak-btn");
-   if(first){
-     const text=decodeURIComponent(first.dataset.text);
-     speakText(text);
-   }
- }
-
-});
 
 // MAIN
 window.loadHoro=function(offset,btn){
