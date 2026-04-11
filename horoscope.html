@@ -6,59 +6,92 @@
 <style>
 body {
   margin:0;
-  font-family: 'Segoe UI', sans-serif;
-  background: radial-gradient(circle at top, #1a1f4d, #0b0f1a);
+  font-family:'Segoe UI',sans-serif;
+  background:radial-gradient(circle at top,#1a1f4d,#0b0f1a);
   color:white;
 }
 
-.container {
+/* CONTAINER */
+.container{
   max-width:1300px;
   margin:auto;
   padding:20px;
 }
 
-h1 {
+h1{
   text-align:center;
   color:gold;
-  margin-bottom:20px;
+}
+
+/* TABS */
+.tabs{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin:20px 0;
+}
+
+.tabs button{
+  padding:10px 20px;
+  border:none;
+  border-radius:20px;
+  cursor:pointer;
+  background:#222;
+  color:white;
+  transition:0.3s;
+}
+
+.tabs button.active{
+  background:linear-gradient(45deg,gold,#ffd700);
+  color:black;
 }
 
 /* GRID */
-.grid {
+.grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
   gap:20px;
 }
 
 /* CARD */
-.horo-card {
+.horo-card{
   background:linear-gradient(145deg,#141A40,#0f1330);
   padding:18px;
   border-radius:16px;
   box-shadow:0 10px 25px rgba(0,0,0,0.6);
   transition:0.3s;
   position:relative;
+  opacity:0;
+  transform:translateY(20px);
+  animation:fadeUp 0.6s forwards;
 }
 
-.horo-card:hover {
-  transform:translateY(-6px);
+@keyframes fadeUp{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
 }
 
-/* TITLE */
-.horo-card h2 {
-  color:#FFD700;
-  margin-bottom:10px;
+.horo-card:hover{
+  transform:translateY(-8px) scale(1.02);
+  box-shadow:0 15px 35px rgba(0,0,0,0.8);
+}
+
+/* ICON */
+.icon{
+  position:absolute;
+  top:12px;
+  right:12px;
+  font-size:22px;
 }
 
 /* TEXT */
-.horo-card p {
-  font-size:14px;
-  margin:6px 0;
-  line-height:1.5;
+.horo-card h2{
+  color:#FFD700;
 }
 
-/* BADGES */
-.badge {
+.badge{
   display:inline-block;
   padding:4px 8px;
   border-radius:8px;
@@ -66,30 +99,16 @@ h1 {
   margin-top:5px;
 }
 
-.color-badge {
-  background:#222;
-}
+.color-badge{background:#222;}
+.number-badge{background:gold;color:black;}
 
-.number-badge {
-  background:gold;
-  color:black;
-}
-
-/* REMEDY BOX */
-.remedy {
+/* REMEDY */
+.remedy{
   margin-top:10px;
   padding:10px;
   background:#0b0f1a;
   border-radius:10px;
   border-left:3px solid gold;
-}
-
-/* HEADER ICON */
-.icon {
-  position:absolute;
-  top:12px;
-  right:12px;
-  font-size:20px;
 }
 </style>
 </head>
@@ -98,7 +117,13 @@ h1 {
 
 <div class="container">
 
-<h1>🔮 आज का राशिफल</h1>
+<h1>🔮 राशिफल</h1>
+
+<div class="tabs">
+<button onclick="loadHoro(0,this)" class="active">Daily</button>
+<button onclick="loadHoro(7,this)">Weekly</button>
+<button onclick="loadHoro(30,this)">Monthly</button>
+</div>
 
 <div id="horoscope" class="grid"></div>
 
@@ -117,17 +142,17 @@ ModuleFactory({
  Module.ccall("swe_set_ephe_path",null,["string"],["/ephe"]);
  Module.ccall("swe_set_sid_mode",null,["number","number","number"],[1,0,0]);
  ready=true;
- generate();
+ loadHoro(0, document.querySelector(".tabs button"));
 });
 
-// राशियाँ + ICONS
-const signs = [
+// SIGNS
+const signs=[
 ["मेष","♈"],["वृषभ","♉"],["मिथुन","♊"],["कर्क","♋"],
 ["सिंह","♌"],["कन्या","♍"],["तुला","♎"],["वृश्चिक","♏"],
 ["धनु","♐"],["मकर","♑"],["कुंभ","♒"],["मीन","♓"]
 ];
 
-const remedies = [
+const remedies=[
 "हनुमान जी को गुड़-चने का भोग लगाएं",
 "शिव चालीसा का पाठ करें",
 "महालक्ष्मी को कमल का फूल अर्पित करें",
@@ -136,8 +161,8 @@ const remedies = [
 "कौवों को रोटी खिलाएं"
 ];
 
-const colors = ["लाल","पीला","हरा","नीला","सफेद","गोल्डन","बैंगनी"];
-const numbers = [1,2,3,4,5,6,7,8,9];
+const colors=["लाल","पीला","हरा","नीला","सफेद","गोल्डन"];
+const numbers=[1,2,3,4,5,6,7,8,9];
 
 // PLANETS
 function getPlanet(jd,p){
@@ -151,23 +176,26 @@ function getPlanet(jd,p){
  return (lon+360)%360;
 }
 
-function rashi(d){ return Math.floor(d/30); }
+function rashi(d){return Math.floor(d/30);}
 
 // LOGIC
-function generateText(i, planets){
+function generateText(i, planets, type){
+
+ let prefix= type==="daily"?"आज":
+             type==="weekly"?"इस सप्ताह":
+             "इस महीने";
 
  const moonH=(rashi(planets.moon)-i+12)%12+1;
  const satH=(rashi(planets.saturn)-i+12)%12+1;
  const jupH=(rashi(planets.jupiter)-i+12)%12+1;
 
- let text="";
+ let text=`${prefix} आपके लिए मिश्रित परिणाम लेकर आएगा। `;
 
- if(moonH===1) text="आज ऊर्जा और आत्मविश्वास बढ़ेगा। ";
- else if(moonH===7) text="संबंधों में सुधार और सहयोग मिलेगा। ";
- else text="दिन सामान्य रहेगा लेकिन प्रयास करते रहें। ";
+ if(moonH===1) text+="ऊर्जा और आत्मविश्वास बढ़ेगा। ";
+ if(moonH===7) text+="संबंधों में सुधार होगा। ";
 
- if(satH===10) text+="कार्य क्षेत्र में सम्मान मिलेगा। ";
- if(satH===6) text+="कुछ चुनौतियां आ सकती हैं। ";
+ if(satH===10) text+="कार्य क्षेत्र में सफलता मिलेगी। ";
+ if(satH===6) text+="कुछ चुनौतियाँ आ सकती हैं। ";
 
  if(jupH===2||jupH===11) text+="धन लाभ के योग बन रहे हैं। ";
 
@@ -175,12 +203,19 @@ function generateText(i, planets){
 }
 
 // MAIN
-function generate(){
+window.loadHoro=function(offset,btn){
 
- const today=new Date();
- today.setHours(0,0,0,0);
+ if(!ready) return;
 
- const jd=(today/86400000)+2440587.5;
+ document.querySelectorAll(".tabs button")
+ .forEach(b=>b.classList.remove("active"));
+ btn.classList.add("active");
+
+ const date=new Date();
+ date.setDate(date.getDate()+offset);
+ date.setHours(0,0,0,0);
+
+ const jd=(date/86400000)+2440587.5;
 
  const planets={
   moon:getPlanet(jd,1),
@@ -188,23 +223,23 @@ function generate(){
   saturn:getPlanet(jd,6)
  };
 
+ let type=offset===0?"daily":offset===7?"weekly":"monthly";
+
  let html="";
 
  signs.forEach((s,i)=>{
 
-  const text=generateText(i,planets);
+  const text=generateText(i,planets,type);
   const color=colors[Math.floor(Math.random()*colors.length)];
   const num=numbers[Math.floor(Math.random()*numbers.length)];
   const remedy=remedies[Math.floor(Math.random()*remedies.length)];
 
   html+=`
   <div class="horo-card">
-
     <div class="icon">${s[1]}</div>
-
     <h2>${i+1}. ${s[0]}</h2>
 
-    <p><b>फलादेश:</b> ${text}</p>
+    <p>${text}</p>
 
     <p>
       <span class="badge color-badge">🎨 ${color}</span>
@@ -212,10 +247,8 @@ function generate(){
     </p>
 
     <div class="remedy">
-      <b>🛕 शाही उपाय:</b><br>
-      ${remedy}
+      🛕 ${remedy}
     </div>
-
   </div>
   `;
  });
