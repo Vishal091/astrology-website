@@ -31,6 +31,24 @@ background:#141A40;
 padding:20px;
 border-radius:12px;
 margin-bottom:20px;
+line-height:1.6;
+}
+
+.recommend{
+margin-top:12px;
+padding:10px;
+background:#0b0f1a;
+border-radius:8px;
+}
+
+.recommend button{
+margin-left:10px;
+padding:4px 8px;
+font-size:12px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+background:gold;
 }
 </style>
 </head>
@@ -110,7 +128,36 @@ function getPlanet(jd,p){
 
 function rashi(d){ return Math.floor(d/30); }
 
-// ENGINE
+// 🔮 SERVICE SUGGESTION ENGINE
+function getServiceSuggestion(moonH, satH, jupH){
+
+  if(satH===6 || satH===8 || satH===12){
+    return [
+      {name:"Shani Shanti Pooja", price:5000},
+      {name:"Career Healing", price:1100}
+    ];
+  }
+
+  if(jupH===2 || jupH===11){
+    return [
+      {name:"Dhan Akarshan Lakshmi Pooja", price:3000},
+      {name:"Money Magnet Healing", price:1100}
+    ];
+  }
+
+  if(moonH===5 || moonH===7){
+    return [
+      {name:"Love Attraction Healing", price:1100},
+      {name:"Relationship Healing", price:5000}
+    ];
+  }
+
+  return [
+    {name:"Aura Cleansing", price:1100}
+  ];
+}
+
+// 🔥 PREDICTION ENGINE
 function generate(signIndex, planets, type){
 
   const s = signs[signIndex];
@@ -123,31 +170,32 @@ function generate(signIndex, planets, type){
                type==="weekly"?"This week":
                "This month";
 
-  let overview = `${prefix}, ${s.name} natives may experience a mix of opportunities and challenges. Your ${s.trait} nature will help you navigate situations wisely.`;
+  let overview = `${prefix}, ${s.name} natives may experience a mix of opportunities and challenges. Your ${s.trait} nature will help you handle situations wisely.`;
 
-  let love = "Relationships require patience.";
-  if(moonH===7) love=`${prefix}, relationships become stronger and more meaningful.`;
-  if(moonH===5) love=`${prefix}, romance and attraction increase.`;
+  let love = "Relationships need patience.";
+  if(moonH===7) love=`${prefix}, relationships improve and emotional bonding increases.`;
+  if(moonH===5) love=`${prefix}, romance and attraction are strong.`;
 
-  let career = "Work progresses steadily.";
+  let career = "Work remains stable.";
   if(satH===10) career=`${prefix}, recognition and growth are likely in career.`;
-  if(satH===6) career=`${prefix}, work pressure may increase but persistence will help.`;
+  if(satH===6) career=`${prefix}, work pressure may increase but discipline will help.`;
 
   let money = "Maintain financial balance.";
-  if(jupH===2) money=`${prefix}, financial growth and stability improve.`;
+  if(jupH===2) money=`${prefix}, financial growth and savings improve.`;
   if(jupH===11) money=`${prefix}, gains and income opportunities increase.`;
 
-  let health = `${prefix}, maintain balance and avoid stress.`;
+  let health = `${prefix}, take care of mental peace and rest.`;
 
-  return {overview,love,career,money,health};
+  const suggestions = getServiceSuggestion(moonH, satH, jupH);
+
+  return {overview,love,career,money,health,suggestions};
 }
 
-// MAIN LOADER
+// MAIN
 window.loadHoro = function(offset, btn){
 
   if(!ready) return;
 
-  // tab active
   document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
 
@@ -180,14 +228,32 @@ window.loadHoro = function(offset, btn){
       <p><b>💰 Money:</b> ${p.money}</p>
       <p><b>🩺 Health:</b> ${p.health}</p>
 
+      <div class="recommend">
+        <b>🔮 Recommended for you:</b>
+
+        ${p.suggestions.map(s => `
+          <div>
+            ${s.name} - ₹${s.price}
+            <button onclick="bookService('${s.name}', ${s.price})">Book</button>
+          </div>
+        `).join("")}
+      </div>
+
       <button onclick="window.open('https://wa.me/8708833177','_blank')">
       Talk to Astrologer
       </button>
+
     </div>
     `;
   });
 
   document.getElementById("horoscope").innerHTML = html;
+}
+
+// BOOK FLOW
+function bookService(name,price){
+  localStorage.setItem("selectedService", JSON.stringify({name,price}));
+  window.location.href="kundli.html";
 }
 
 </script>
