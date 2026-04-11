@@ -1,24 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Today's Horoscope 🔮</title>
-<meta name="description" content="Daily horoscope for all zodiac signs. Accurate predictions for love, career and money.">
+<title>Horoscope 🔮</title>
 
 <link rel="stylesheet" href="style.css">
 
 <style>
+.tabs{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+}
+
+.tabs button{
+padding:10px 15px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+background:#222;
+color:white;
+}
+
+.tabs button.active{
+background:gold;
+color:black;
+}
+
 .horo-card{
-  background:#141A40;
-  padding:20px;
-  border-radius:12px;
-  margin-bottom:20px;
-  line-height:1.6;
-}
-.horo-card h2{
-  color:gold;
-}
-.horo-card p{
-  margin:8px 0;
+background:#141A40;
+padding:20px;
+border-radius:12px;
+margin-bottom:20px;
 }
 </style>
 </head>
@@ -35,7 +47,13 @@
 
 <div class="container">
 
-<h1>🔮 Today's Horoscope</h1>
+<h1>🔮 Horoscope</h1>
+
+<div class="tabs">
+<button onclick="loadHoro(0,this)" class="active">Daily</button>
+<button onclick="loadHoro(7,this)">Weekly</button>
+<button onclick="loadHoro(30,this)">Monthly</button>
+</div>
 
 <div id="horoscope"></div>
 
@@ -45,10 +63,8 @@
 
 import ModuleFactory from "/swisseph.js";
 
-let Module=null;
-let ready=false;
+let Module=null, ready=false;
 
-// LOAD SWISS
 ModuleFactory({
   locateFile:(f)=>f.endsWith(".wasm")?"/swisseph.wasm":f
 }).then(mod=>{
@@ -58,10 +74,10 @@ ModuleFactory({
   Module.ccall("swe_set_sid_mode",null,["number","number","number"],[1,0,0]);
 
   ready=true;
-  generateAll();
+  loadHoro(0, document.querySelector(".tabs button"));
 });
 
-// SIGNS + TRAITS
+// SIGNS
 const signs = [
 {name:"Aries",trait:"bold and energetic"},
 {name:"Taurus",trait:"stable and practical"},
@@ -77,94 +93,84 @@ const signs = [
 {name:"Pisces",trait:"intuitive and dreamy"}
 ];
 
-// PLANET FUNCTION
-function getPlanet(jd, planet){
-  const ptr = Module._malloc(8*6);
+// PLANET
+function getPlanet(jd,p){
+  const ptr=Module._malloc(8*6);
 
-  Module.ccall(
-    "swe_calc_ut",
-    null,
+  Module.ccall("swe_calc_ut",null,
     ["number","number","number","number"],
-    [jd, planet, 65536, ptr]
+    [jd,p,65536,ptr]
   );
 
-  const lon = Module.HEAPF64[ptr/8];
+  const lon=Module.HEAPF64[ptr/8];
   Module._free(ptr);
 
   return (lon+360)%360;
 }
 
-function getRashiIndex(d){
-  return Math.floor(d/30);
-}
+function rashi(d){ return Math.floor(d/30); }
 
-// 🔥 LONG FORMAT ENGINE
-function generateLong(signIndex, planets){
+// ENGINE
+function generate(signIndex, planets, type){
 
   const s = signs[signIndex];
 
-  const moonH = (getRashiIndex(planets.moon)-signIndex+12)%12+1;
-  const satH = (getRashiIndex(planets.saturn)-signIndex+12)%12+1;
-  const jupH = (getRashiIndex(planets.jupiter)-signIndex+12)%12+1;
+  const moonH=(rashi(planets.moon)-signIndex+12)%12+1;
+  const satH=(rashi(planets.saturn)-signIndex+12)%12+1;
+  const jupH=(rashi(planets.jupiter)-signIndex+12)%12+1;
 
-  let overview = `Today brings a mix of experiences for ${s.name} natives. Your ${s.trait} nature will strongly influence how you respond to situations. Staying balanced will help you make the most of opportunities.`;
+  let prefix = type==="daily"?"Today":
+               type==="weekly"?"This week":
+               "This month";
 
-  let love = `Relationships may require patience and understanding today.`;
-  if(moonH===7){
-    love = `Love life becomes more active today. Emotional exchanges deepen bonds and bring clarity in relationships.`;
-  } else if(moonH===5){
-    love = `Romantic energy is high, making it a good day to express your feelings and strengthen connections.`;
-  } else if(moonH===1){
-    love = `You may feel emotionally expressive and open, which helps improve your love life.`;
-  }
+  let overview = `${prefix}, ${s.name} natives may experience a mix of opportunities and challenges. Your ${s.trait} nature will help you navigate situations wisely.`;
 
-  let career = `Work progresses steadily, and consistency will be key.`;
-  if(satH===10){
-    career = `Your efforts are likely to be recognized at the workplace. This is a good time for growth and responsibility.`;
-  } else if(satH===6){
-    career = `Challenges or competition may arise in your career. Stay disciplined and focused to overcome them.`;
-  } else if(satH===3){
-    career = `Communication and effort will bring progress. Short-term efforts can lead to long-term gains.`;
-  }
+  let love = "Relationships require patience.";
+  if(moonH===7) love=`${prefix}, relationships become stronger and more meaningful.`;
+  if(moonH===5) love=`${prefix}, romance and attraction increase.`;
 
-  let money = `Financially, it is a balanced day. Avoid unnecessary risks.`;
-  if(jupH===2){
-    money = `Financial growth is indicated. You may see gains or improvements in savings.`;
-  } else if(jupH===11){
-    money = `Income opportunities increase, and gains from multiple sources are possible.`;
-  } else if(jupH===5){
-    money = `Luck may favor you in speculative matters, but careful planning is still advised.`;
-  }
+  let career = "Work progresses steadily.";
+  if(satH===10) career=`${prefix}, recognition and growth are likely in career.`;
+  if(satH===6) career=`${prefix}, work pressure may increase but persistence will help.`;
 
-  let health = `Health remains generally stable, but mental peace is important.`;
-  if(moonH===6){
-    health = `Stress or fatigue may affect your health today. Focus on rest and self-care.`;
-  }
+  let money = "Maintain financial balance.";
+  if(jupH===2) money=`${prefix}, financial growth and stability improve.`;
+  if(jupH===11) money=`${prefix}, gains and income opportunities increase.`;
+
+  let health = `${prefix}, maintain balance and avoid stress.`;
 
   return {overview,love,career,money,health};
 }
 
-// MAIN
-function generateAll(){
+// MAIN LOADER
+window.loadHoro = function(offset, btn){
 
   if(!ready) return;
 
-  const now = new Date();
-  const jd = (now/86400000)+2440587.5;
+  // tab active
+  document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+
+  const date = new Date();
+  date.setDate(date.getDate() + offset);
+
+  const jd = (date/86400000)+2440587.5;
 
   const planets = {
-    moon: getPlanet(jd,1),
-    jupiter: getPlanet(jd,5),
-    saturn: getPlanet(jd,6)
+    moon:getPlanet(jd,1),
+    jupiter:getPlanet(jd,5),
+    saturn:getPlanet(jd,6)
   };
 
-  let html = "";
+  let type = offset===0?"daily":offset===7?"weekly":"monthly";
+
+  let html="";
 
   signs.forEach((s,i)=>{
 
-    const p = generateLong(i, planets);
+    const p = generate(i, planets, type);
 
-    html += `
+    html+=`
     <div class="horo-card">
       <h2>${s.name}</h2>
 
