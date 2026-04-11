@@ -226,25 +226,39 @@ function generateText(i, planets, type){
 // 🔊 VOICE (AI + fallback)
 async function speakText(text){
 
- try{
-   const res = await fetch("https://api.elevenlabs.io/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL",{
-     method:"POST",
-     headers:{
-       "xi-api-key":"sk_8694efab97b56c0297cb97a959311e26bd35d345f0ffa122",
-       "Content-Type":"application/json"
-     },
-     body:JSON.stringify({text})
-   });
+  const voiceType = document.getElementById("voiceSelect").value;
 
-   const blob=await res.blob();
-   new Audio(URL.createObjectURL(blob)).play();
+  // ✅ Correct voice mapping
+  const voices = {
+    female: "EXAVITQu4vr4xnSDxMaL", // Rachel (female)
+    male: "TxGEqnHWrfWFTfGW9XjX"   // Josh (male)
+  };
 
- }catch(e){
-   // fallback
-   const speech=new SpeechSynthesisUtterance(text);
-   speech.lang="hi-IN";
-   window.speechSynthesis.speak(speech);
- }
+  const voiceId = voices[voiceType];
+
+  try{
+    const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,{
+      method:"POST",
+      headers:{
+        "xi-api-key":"YOUR_API_KEY_HERE",
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        text:text,
+        model_id:"eleven_multilingual_v2"
+      })
+    });
+
+    const blob = await res.blob();
+    const audio = new Audio(URL.createObjectURL(blob));
+    audio.play();
+
+  }catch(e){
+    // fallback
+    const speech=new SpeechSynthesisUtterance(text);
+    speech.lang="hi-IN";
+    window.speechSynthesis.speak(speech);
+  }
 }
 
 // MAIN
