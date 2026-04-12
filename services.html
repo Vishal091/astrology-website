@@ -1,238 +1,231 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>Astrology Services - Astrodhani</title>
+
 <link rel="stylesheet" href="style.css">
-<title>Astrodhani Services</title>
 
 <style>
-body {
-  background:#0b0f1a;
-  color:white;
-  font-family:Arial;
+
+/* HERO */
+.services-hero{
+text-align:center;
+padding:100px 20px;
+background:linear-gradient(135deg,#A83232,#7B1E1E);
+color:white;
 }
 
-.container {
-  max-width:1400px;
-  margin:auto;
-  padding:20px;
+.services-hero h1{
+font-size:42px;
+margin-bottom:10px;
 }
 
-h1 {
-  text-align:center;
-  color:gold;
+.services-hero p{
+color:#FFEAEA;
 }
 
-.category-title {
-  margin-top:40px;
-  font-size:24px;
-  color:#F9CA24;
+/* CATEGORY */
+.category{
+margin-top:50px;
 }
 
-.grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
-  gap:18px;
+.category h2{
+text-align:left;
+margin-bottom:20px;
+color:#A83232;
 }
 
-.service-card {
-  background:#141A40;
-  border-radius:14px;
-  padding:16px;
-  text-align:center;
-  transition:0.25s;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  min-height:200px;
+/* GRID */
+.services-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:25px;
 }
 
-.service-card:hover {
-  transform:translateY(-6px);
-  box-shadow:0 10px 20px rgba(0,0,0,0.5);
+/* SERVICE CARD (UPGRADE) */
+.service-card{
+background:white;
+border-radius:16px;
+padding:20px;
+display:flex;
+flex-direction:column;
+text-align:center;
+border:1px solid rgba(168,50,50,0.2);
+transition:0.3s;
+position:relative;
 }
 
-.service-card h3 {
-  font-size:14px;
-  margin-bottom:10px;
-  min-height:40px;
+.service-card:hover{
+transform:translateY(-10px);
+box-shadow:0 10px 30px rgba(168,50,50,0.2);
 }
 
-.old-price {
-  text-decoration:line-through;
-  color:#777;
-  font-size:12px;
+/* BADGE */
+.badge{
+position:absolute;
+top:10px;
+left:10px;
+background:#ff7675;
+color:white;
+font-size:12px;
+padding:4px 8px;
+border-radius:6px;
 }
 
-.new-price {
-  color:#00ffae;
-  font-size:18px;
-  font-weight:bold;
+/* ICON */
+.service-icon{
+font-size:30px;
+margin-bottom:10px;
 }
 
-button {
-  margin-top:12px;
-  padding:10px;
-  border-radius:8px;
-  border:none;
-  background:gold;
-  font-weight:bold;
-  cursor:pointer;
+/* PRICE */
+.price{
+font-size:20px;
+font-weight:bold;
+color:#A83232;
+margin:10px 0;
 }
+
+.old-price{
+text-decoration:line-through;
+color:#999;
+font-size:14px;
+}
+
+/* CTA BUTTON */
+.service-card button{
+margin-top:auto;
+}
+
+/* WHATSAPP FLOAT */
+.whatsapp{
+position:fixed;
+bottom:20px;
+left:20px;
+background:#25D366;
+color:white;
+padding:15px;
+border-radius:50%;
+font-size:20px;
+cursor:pointer;
+}
+
 </style>
 </head>
 
 <body>
 
+<header>
+<div class="logo">
+<img src="hanuman-logo.png">
+Astrodhani
+</div>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="shop.html">Shop</a>
+<a href="panchang.html">Panchang</a>
+<a href="horoscope.html">Horoscope</a>
+</nav>
+</header>
+
+<!-- HERO -->
+<div class="services-hero">
+<h1>🔮 Our Astrology Services</h1>
+<p>Accurate solutions for love, career, money & protection</p>
+</div>
+
 <div class="container">
-<h1>🔮 Astrodhani Services</h1>
-<div id="services"></div>
+
+<!-- LOVE CATEGORY -->
+<div class="category">
+<h2>❤️ Love & Relationship</h2>
+
+<div class="services-grid">
+
+<div class="service-card">
+<div class="badge">🔥 Popular</div>
+<div class="service-icon">❤️</div>
+<h3>Love Problem Solution</h3>
+<p class="old-price">₹2999</p>
+<p class="price">₹1499</p>
+<button onclick="buyNow('Love Problem')">Consult Now</button>
+</div>
+
+<div class="service-card">
+<div class="service-icon">💔</div>
+<h3>Breakup Recovery</h3>
+<p class="old-price">₹2499</p>
+<p class="price">₹1299</p>
+<button onclick="buyNow('Breakup')">Consult Now</button>
+</div>
+
+</div>
+</div>
+
+<!-- CAREER CATEGORY -->
+<div class="category">
+<h2>💰 Career & Finance</h2>
+
+<div class="services-grid">
+
+<div class="service-card">
+<div class="service-icon">💼</div>
+<h3>Career Growth Reading</h3>
+<p class="old-price">₹1999</p>
+<p class="price">₹999</p>
+<button onclick="buyNow('Career')">Consult Now</button>
+</div>
+
+<div class="service-card">
+<div class="service-icon">💸</div>
+<h3>Money Problem Solution</h3>
+<p class="old-price">₹2999</p>
+<p class="price">₹1499</p>
+<button onclick="buyNow('Money')">Consult Now</button>
+</div>
+
+</div>
+</div>
+
+<!-- PROTECTION -->
+<div class="category">
+<h2>🧿 Protection & Remedies</h2>
+
+<div class="services-grid">
+
+<div class="service-card">
+<div class="badge">⭐ Recommended</div>
+<div class="service-icon">🧿</div>
+<h3>Evil Eye Removal</h3>
+<p class="old-price">₹1999</p>
+<p class="price">₹999</p>
+<button onclick="buyNow('Evil Eye')">Consult Now</button>
+</div>
+
+<div class="service-card">
+<div class="service-icon">🔮</div>
+<h3>Black Magic Removal</h3>
+<p class="old-price">₹4999</p>
+<p class="price">₹2499</p>
+<button onclick="buyNow('Black Magic')">Consult Now</button>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<!-- WHATSAPP FLOAT -->
+<div class="whatsapp" onclick="window.open('https://wa.me/918708833177')">
+💬
 </div>
 
 <script>
 
-// 🔥 COMPLETE DATA
-const data = {
-
-"Love":[
-["Love Honey Spell",3000],
-["Attract Your Love Spell",3000],
-["Bring Back Ex",5000],
-["Relationship Healing",5000],
-["Twin Flame Healing",1100],
-["Soulmate Attraction Healing",1100],
-["Unbreakable Bond Healing",1100],
-["Trust Rebuild Healing",1100],
-["Marriage Blessing",1500],
-["Vivah Badha Nivaran Pooja",3000],
-["Special Pooja for Relationships",5000],
-["Divine Marriage Blessing Spell",3000],
-["Forever Love",3000]
-],
-
-"Money / Career":[
-["Money Magnet Healing",1100],
-["Money Magnet Spell",3000],
-["Get Rich Spell",3000],
-["Business Boom Healing",1500],
-["Profit Flow Healing",1100],
-["Customer Attraction Healing",1100],
-["Finance Healing",1100],
-["Career Healing",1100],
-["Promotion Growth Healing",1100],
-["Job Attraction Pooja",3000],
-["Get Your Dream Job Healing",1100],
-["Vyapar Vriddhi Pooja",5000],
-["Dhan Akarshan Lakshmi Pooja",3000]
-],
-
-"Evil Eye":[
-["Evil Eye Removal",1100],
-["Evil Eye for Relationship",1100],
-["Evil Eye for Career",500],
-["Evil Eye for Health",1100],
-["Evil Eye for Finance",1100],
-["Evil Eye for Family",1100],
-["Evil Eye for Business",1100],
-["Evil Eye for Kids",500],
-["Evil Eye for Pets",500],
-["Evil Eye Removal Spell",3000],
-["Aura Cleansing Spell",3000],
-["Buri Nazar Nivaran Maha Pooja",30000]
-],
-
-"Healing":[
-["Reiki Healing",1100],
-["Angel Healing (7 Chakra)",1100],
-["Medical Healing",1100],
-["Career Healing",1100],
-["Prosperity Healing",1100],
-["Legal Matters Healing",1100],
-["Property Healing",1100],
-["Full Moon Healing",1100],
-["Business Healing",1500]
-],
-
-"Pooja":[
-["Maha Rudrabhishek",5000],
-["Navgraha Shanti Pooja",7000],
-["Shani Shanti Pooja",5000],
-["Rahu Ketu Shanti Pooja",3000],
-["Kaal Sarp Dosh Nivaran",7000],
-["Maha Mrityunjaya Jaap",11000],
-["Pitra Dosh Shanti",3000],
-["Vish Dosh Shanti",5000],
-["Guru Chandal Dosh Nivaran",5000],
-["Mangal Dosh Nivaran",5000],
-["Surya Grahan Dosh Shanti",3000],
-["Santaan Prapti Pooja",3000],
-["Saraswati Pooja",5000],
-["Hanuman Rog Mukti Pooja",5000],
-["Baglamukhi Pooja (Job)",3000]
-],
-
-"Spells":[
-["Career Spell",3000],
-["Finance Spell",3000],
-["Protection Spell",3000],
-["Negativity Removal + Divine Blessings",3000],
-["Last Love Manifestation",3000],
-["Interview Success Spell",3000],
-["Jealousy Cleanse Ritual",3000],
-["Impression & Confidence",3000]
-],
-
-"Problem Solving":[
-["Vivah Badha + Mangal Dosh",7000],
-["Relationship + Evil Eye",7000],
-["Career Growth + Job",7000],
-["Loan Mukti + Dhan Akarshan",3000],
-["Money Magnet + Prosperity",3000],
-["Business Boom + Profit Flow",3000],
-["Santaan Prapti + Evil Eye",3000],
-["Rahu Ketu + Navgraha",7000],
-["Buri Nazar + Shani Grah",3000]
-]
-
-};
-
-// 🔥 FAKE PRICE SYSTEM
-function getFakePrice(real){
-  return Math.round(real * (1.6 + Math.random()*0.6));
-}
-
-// RENDER
-const container = document.getElementById("services");
-
-for(let category in data){
-
-  container.innerHTML += `<h2 class="category-title">${category}</h2><div class="grid">`;
-
-  data[category].forEach(item=>{
-
-    const fake = getFakePrice(item[1]);
-
-    container.innerHTML += `
-    <div class="service-card">
-
-      <h3>${item[0]}</h3>
-
-      <div class="old-price">₹${fake}</div>
-      <div class="new-price">₹${item[1]}</div>
-
-      <button onclick="bookService('${item[0]}', ${item[1]})">
-      Book Now
-      </button>
-
-    </div>`;
-  });
-
-  container.innerHTML += `</div>`;
-}
-
-// FLOW
-function bookService(name,price){
-  localStorage.setItem("selectedService", JSON.stringify({name,price}));
-  window.location.href="kundli.html";
+function buyNow(service){
+alert("Booking: " + service);
+window.open("https://wa.me/91XXXXXXXXXX");
 }
 
 </script>
