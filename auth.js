@@ -77,31 +77,38 @@ function updateUI(user){
 // 🔥 PROPER INIT
 document.addEventListener("DOMContentLoaded", () => {
  onAuthStateChanged(auth, (user) => {
-  const loginBtns = document.querySelectorAll(".loginBtn");
-  const signupBtns = document.querySelectorAll(".signupBtn");
-  const logoutBtns = document.querySelectorAll(".logoutBtn");
-  const avatars = document.querySelectorAll(".avatarLetter");
-  const emails = document.querySelectorAll("#userEmail");
+    // Select all buttons
+    const loginBtns = document.querySelectorAll(".loginBtn");
+    const signupBtns = document.querySelectorAll(".signupBtn");
+    const logoutBtns = document.querySelectorAll(".logoutBtn");
+    
+    // Select display elements
+    const avatars = document.querySelectorAll(".avatarLetter");
+    const emails = document.querySelectorAll("#userEmail");
 
-  if (user) {
-    console.log("✅ Logged in:", user.email);
-    avatars.forEach(el => el.innerText = user.email.charAt(0).toUpperCase());
-    emails.forEach(el => el.innerText = user.email);
+    if (user) {
+        console.log("✅ User is logged in:", user.email);
+        
+        // Update UI Text
+        avatars.forEach(el => el.innerText = user.email.charAt(0).toUpperCase());
+        emails.forEach(el => el.innerText = user.email);
 
-    // FIX: Use style.display
-    loginBtns.forEach(el => el.style.display = 'none');
-    signupBtns.forEach(el => el.style.display = 'none');
-    logoutBtns.forEach(el => el.style.display = 'block');
+        // LOGIC: Hide Login/Signup, Show Logout
+        loginBtns.forEach(btn => btn.classList.add("hide-now"));
+        signupBtns.forEach(btn => btn.classList.add("hide-now"));
+        logoutBtns.forEach(btn => btn.classList.remove("hide-now"));
 
-  } else {
-    console.log("❌ Not logged in");
-    avatars.forEach(el => el.innerText = "G");
-    emails.forEach(el => el.innerText = "Guest");
+    } else {
+        console.log("❌ No user logged in");
+        
+        // Reset UI Text
+        avatars.forEach(el => el.innerText = "G");
+        emails.forEach(el => el.innerText = "Guest");
 
-    // FIX: Use style.display
-    loginBtns.forEach(el => el.style.display = 'block');
-    signupBtns.forEach(el => el.style.display = 'block');
-    logoutBtns.forEach(el => el.style.display = 'none');
-  }
+        // LOGIC: Show Login/Signup, Hide Logout
+        loginBtns.forEach(btn => btn.classList.remove("hide-now"));
+        signupBtns.forEach(btn => btn.classList.remove("hide-now"));
+        logoutBtns.forEach(btn => btn.classList.add("hide-now"));
+    }
 });
 });
