@@ -203,15 +203,14 @@ to{transform:translateY(-10vh);}
 </head>
 
 <body>
-
 <header class="navbar" id="navbar">
 
 <div class="logo">
   <img src="hanuman-logo.jpeg">
-  <span>Astrodhani</span>
+  Astrodhani
 </div>
 
-<nav id="navMenu">
+<nav>
   <a href="index.html">Home</a>
   <a href="services.html">Services</a>
   <a href="shop.html">Shop</a>
@@ -219,31 +218,24 @@ to{transform:translateY(-10vh);}
   <a href="horoscope.html">Horoscope</a>
 </nav>
 
-<!-- RIGHT SIDE (IMPORTANT) -->
+<!-- RIGHT SIDE -->
 <div class="nav-right">
 
-  <!-- AVATAR -->
-<div class="profile-dropdown" id="profileMenu">
-
-  <div class="profile-header">
-    <div class="avatar big">
-      <span id="avatarLetter">V</span>
+  <div class="profile" onclick="toggleProfile()">
+    <div class="avatar">
+      <span id="avatarLetter">G</span>
     </div>
-    <div class="profile-text">
-      <p id="userEmail">user@email.com</p>
+
+    <div class="profile-dropdown" id="profileMenu">
+      <a href="login.html" id="loginBtn">Login</a>
+      <a href="signup.html" id="signupBtn">Signup</a>
+      <a href="#" id="logoutBtn" onclick="logout()" style="display:none;">Logout</a>
     </div>
-  </div>
-
-  <div class="profile-links">
-    <a href="dashboard.html">📊 Dashboard</a>
-    <a href="orders.html">🛒 My Orders</a>
-  </div>
-
-  <div class="profile-footer">
-    <a href="#" id="logoutBtn" onclick="logout()">Logout</a>
   </div>
 
 </div>
+
+</header>
 
 </header>
 
