@@ -823,13 +823,7 @@ text-decoration:none;
 font-weight:600;
 }
 
-#loginBtn, #signupBtn{
-color:#7B1E1E;
-}
 
-#logoutBtn{
-color:#ff4444;
-}
 
 .profile-footer a:hover{
 background:#FFF5F5;
