@@ -548,3 +548,35 @@ animation:softGlow 3s infinite alternate;
 from{box-shadow:0 0 5px rgba(255,215,0,0.3);}
 to{box-shadow:0 0 15px rgba(255,215,0,0.7);}
 }
+.nav-right{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+/* FIX PROFILE POSITION */
+.profile{
+position:relative;
+display:flex;
+align-items:center;
+}
+
+/* DROPDOWN FIX */
+.profile-dropdown{
+position:absolute;
+top:50px;
+right:0;
+background:white;
+border-radius:10px;
+box-shadow:0 10px 20px rgba(0,0,0,0.15);
+display:none;
+min-width:140px;
+z-index:1000;
+}
+
+.profile-dropdown a{
+display:block;
+padding:10px;
+color:#7B1E1E;
+text-decoration:none;
+}
