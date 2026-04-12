@@ -85,32 +85,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const avatars = document.querySelectorAll(".avatarLetter");
   const emails = document.querySelectorAll("#userEmail");
 
-  // 🔥 RESET FIRST (VERY IMPORTANT)
-  loginBtns.forEach(el => el.style.display = "none");
-  signupBtns.forEach(el => el.style.display = "none");
-  logoutBtns.forEach(el => el.style.display = "none");
-
   if(user){
 
-    console.log("Logged in:", user.email);
-
-    // Avatar + Email
     avatars.forEach(el => el.innerText = user.email.charAt(0).toUpperCase());
     emails.forEach(el => el.innerText = user.email);
 
-    // ONLY logout visible
+    loginBtns.forEach(el => el.style.display = "none");
+    signupBtns.forEach(el => el.style.display = "none");
     logoutBtns.forEach(el => el.style.display = "block");
 
   } else {
 
-    console.log("Not logged in");
-
     avatars.forEach(el => el.innerText = "G");
     emails.forEach(el => el.innerText = "Guest");
 
-    // ONLY login/signup visible
     loginBtns.forEach(el => el.style.display = "block");
     signupBtns.forEach(el => el.style.display = "block");
+    logoutBtns.forEach(el => el.style.display = "none");
   }
 
 });
