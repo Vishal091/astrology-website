@@ -52,12 +52,17 @@ onAuthStateChanged(auth, user => {
   const signupBtn = document.getElementById("signupBtn");
   const logoutBtn = document.getElementById("logoutBtn");
 
-  if(user){
+const avatarLetter = document.getElementById("avatarLetter");
 
-    // ✅ Avatar letter
-    if(avatar){
-      const firstLetter = user.email.charAt(0).toUpperCase();
-      avatar.innerText = firstLetter;
+if(user){
+  if(avatarLetter){
+    avatarLetter.innerText = user.email.charAt(0).toUpperCase();
+  }
+}else{
+  if(avatarLetter){
+    avatarLetter.innerText = "G";
+  }
+}.innerText = firstLetter;
     }
 
     if(loginBtn) loginBtn.style.display = "none";
