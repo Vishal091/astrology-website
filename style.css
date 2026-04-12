@@ -272,3 +272,94 @@ button{
 background:linear-gradient(90deg,#A83232,#FFD700) !important;
 color:white !important;
 }
+/* ================= PREMIUM NAVBAR ================= */
+
+.navbar{
+position:sticky;
+top:0;
+z-index:999;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 40px;
+
+/* GLASS EFFECT */
+background:rgba(168,50,50,0.85);
+backdrop-filter:blur(10px);
+border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+/* LOGO */
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:20px;
+font-weight:bold;
+color:#FFD700;
+}
+
+.logo img{
+width:45px;
+height:45px;
+border-radius:50%;
+box-shadow:0 0 15px rgba(255,215,0,0.6);
+}
+
+/* NAV LINKS */
+nav a{
+position:relative;
+margin:0 12px;
+text-decoration:none;
+color:#FFD700;
+font-weight:500;
+transition:0.3s;
+}
+
+/* UNDERLINE ANIMATION */
+nav a::after{
+content:"";
+position:absolute;
+bottom:-5px;
+left:0;
+width:0%;
+height:2px;
+background:#FFD700;
+transition:0.3s;
+}
+
+nav a:hover::after{
+width:100%;
+}
+
+nav a:hover{
+color:white;
+}
+
+/* CTA BUTTON */
+.nav-cta button{
+background:linear-gradient(90deg,#FFD700,#ffcc00);
+color:#7B1E1E;
+border:none;
+padding:10px 20px;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+.nav-cta button:hover{
+transform:scale(1.08);
+box-shadow:0 5px 20px rgba(255,215,0,0.5);
+}
+
+/* MOBILE */
+@media(max-width:768px){
+nav{
+display:none;
+}
+
+.nav-cta{
+display:none;
+}
+}
