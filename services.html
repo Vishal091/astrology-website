@@ -2,112 +2,47 @@
 <html>
 <head>
 <title>Astrology Services - Astrodhani</title>
-
 <link rel="stylesheet" href="style.css">
 
 <style>
-
-/* HERO */
 .services-hero{
 text-align:center;
-padding:100px 20px;
+padding:80px 20px;
 background:linear-gradient(135deg,#A83232,#7B1E1E);
 color:white;
 }
 
-.services-hero h1{
-font-size:42px;
-margin-bottom:10px;
-}
-
-.services-hero p{
-color:#FFEAEA;
-}
-
-/* CATEGORY */
-.category{
-margin-top:50px;
-}
+.category{margin-top:50px;}
 
 .category h2{
-text-align:left;
-margin-bottom:20px;
 color:#A83232;
+margin-bottom:20px;
 }
 
-/* GRID */
-.services-grid{
+.grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-gap:25px;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
 }
 
-/* SERVICE CARD (UPGRADE) */
-.service-card{
+.card{
 background:white;
-border-radius:16px;
 padding:20px;
-display:flex;
-flex-direction:column;
-text-align:center;
+border-radius:12px;
 border:1px solid rgba(168,50,50,0.2);
-transition:0.3s;
-position:relative;
+text-align:center;
 }
 
-.service-card:hover{
-transform:translateY(-10px);
-box-shadow:0 10px 30px rgba(168,50,50,0.2);
-}
-
-/* BADGE */
-.badge{
-position:absolute;
-top:10px;
-left:10px;
-background:#ff7675;
-color:white;
-font-size:12px;
-padding:4px 8px;
-border-radius:6px;
-}
-
-/* ICON */
-.service-icon{
-font-size:30px;
-margin-bottom:10px;
-}
-
-/* PRICE */
 .price{
 font-size:20px;
 font-weight:bold;
 color:#A83232;
-margin:10px 0;
 }
 
-.old-price{
+.old{
 text-decoration:line-through;
 color:#999;
 font-size:14px;
-}
-
-/* CTA BUTTON */
-.service-card button{
-margin-top:auto;
-}
-
-/* WHATSAPP FLOAT */
-.whatsapp{
-position:fixed;
-bottom:20px;
-left:20px;
-background:#25D366;
-color:white;
-padding:15px;
-border-radius:50%;
-font-size:20px;
-cursor:pointer;
 }
 
 </style>
@@ -120,115 +55,151 @@ cursor:pointer;
 <img src="hanuman-logo.png">
 Astrodhani
 </div>
-
-<nav>
-<a href="index.html">Home</a>
-<a href="shop.html">Shop</a>
-<a href="panchang.html">Panchang</a>
-<a href="horoscope.html">Horoscope</a>
-</nav>
 </header>
 
-<!-- HERO -->
 <div class="services-hero">
-<h1>🔮 Our Astrology Services</h1>
-<p>Accurate solutions for love, career, money & protection</p>
+<h1>🔮 Premium Astrology Services</h1>
+<p>Trusted Vedic Solutions by Experts</p>
 </div>
 
 <div class="container">
 
-<!-- LOVE CATEGORY -->
+<!-- 🔥 RAHU KETU / POOJA -->
 <div class="category">
-<h2>❤️ Love & Relationship</h2>
+<h2>🪔 Pooja & Grah Shanti</h2>
+<div class="grid">
 
-<div class="services-grid">
-
-<div class="service-card">
-<div class="badge">🔥 Popular</div>
-<div class="service-icon">❤️</div>
-<h3>Love Problem Solution</h3>
-<p class="old-price">₹2999</p>
-<p class="price">₹1499</p>
-<button onclick="buyNow('Love Problem')">Consult Now</button>
+<div class="card">
+<h3>Rahu Ketu Grah Shanti</h3>
+<p class="old">₹6000</p>
+<p class="price">₹3000</p>
 </div>
 
-<div class="service-card">
-<div class="service-icon">💔</div>
-<h3>Breakup Recovery</h3>
-<p class="old-price">₹2499</p>
-<p class="price">₹1299</p>
-<button onclick="buyNow('Breakup')">Consult Now</button>
+<div class="card">
+<h3>Kaal Sarp Dosh Nivaran</h3>
+<p class="old">₹14000</p>
+<p class="price">₹7000</p>
+</div>
+
+<div class="card">
+<h3>Maha Rudrabhishek</h3>
+<p class="old">₹10000</p>
+<p class="price">₹5000</p>
+</div>
+
+<div class="card">
+<h3>Rog Rin Nivaran</h3>
+<p class="old">₹10000</p>
+<p class="price">₹5000</p>
+</div>
+
+<div class="card">
+<h3>Maha Mrityunjaya Jaap</h3>
+<p class="old">₹22000</p>
+<p class="price">₹11000</p>
+</div>
+
+<div class="card">
+<h3>Navgrah Shanti</h3>
+<p class="old">₹14000</p>
+<p class="price">₹7000</p>
+</div>
+
+<div class="card">
+<h3>Pitra Dosh Shanti</h3>
+<p class="old">₹6000</p>
+<p class="price">₹3000</p>
+</div>
+
+<div class="card">
+<h3>Loan Mukti Pooja</h3>
+<p class="old">₹6000</p>
+<p class="price">₹3000</p>
 </div>
 
 </div>
 </div>
 
-<!-- CAREER CATEGORY -->
+<!-- 💔 RELATIONSHIP -->
 <div class="category">
-<h2>💰 Career & Finance</h2>
+<h2>❤️ Relationship & Love</h2>
+<div class="grid">
 
-<div class="services-grid">
-
-<div class="service-card">
-<div class="service-icon">💼</div>
-<h3>Career Growth Reading</h3>
-<p class="old-price">₹1999</p>
-<p class="price">₹999</p>
-<button onclick="buyNow('Career')">Consult Now</button>
+<div class="card">
+<h3>Relationship Healing</h3>
+<p class="old">₹10000</p>
+<p class="price">₹5000</p>
 </div>
 
-<div class="service-card">
-<div class="service-icon">💸</div>
-<h3>Money Problem Solution</h3>
-<p class="old-price">₹2999</p>
-<p class="price">₹1499</p>
-<button onclick="buyNow('Money')">Consult Now</button>
+<div class="card">
+<h3>Vivah Badha Nivaran</h3>
+<p class="old">₹6000</p>
+<p class="price">₹3000</p>
+</div>
+
+<div class="card">
+<h3>Divine Marriage Blessing</h3>
+<p class="old">₹10000</p>
+<p class="price">₹5000</p>
 </div>
 
 </div>
 </div>
 
-<!-- PROTECTION -->
+<!-- 🧿 EVIL EYE -->
 <div class="category">
-<h2>🧿 Protection & Remedies</h2>
+<h2>🧿 Evil Eye Removal</h2>
+<div class="grid">
 
-<div class="services-grid">
-
-<div class="service-card">
-<div class="badge">⭐ Recommended</div>
-<div class="service-icon">🧿</div>
-<h3>Evil Eye Removal</h3>
-<p class="old-price">₹1999</p>
-<p class="price">₹999</p>
-<button onclick="buyNow('Evil Eye')">Consult Now</button>
-</div>
-
-<div class="service-card">
-<div class="service-icon">🔮</div>
-<h3>Black Magic Removal</h3>
-<p class="old-price">₹4999</p>
-<p class="price">₹2499</p>
-<button onclick="buyNow('Black Magic')">Consult Now</button>
-</div>
+<div class="card"><h3>General Nazar Removal</h3><p class="old">₹2200</p><p class="price">₹1100</p></div>
+<div class="card"><h3>Relationship Nazar</h3><p class="old">₹2200</p><p class="price">₹1100</p></div>
+<div class="card"><h3>Career Nazar</h3><p class="old">₹1000</p><p class="price">₹500</p></div>
+<div class="card"><h3>Health Nazar</h3><p class="old">₹2200</p><p class="price">₹1100</p></div>
+<div class="card"><h3>Finance Nazar</h3><p class="old">₹2200</p><p class="price">₹1100</p></div>
+<div class="card"><h3>Family Nazar</h3><p class="old">₹2200</p><p class="price">₹1100</p></div>
+<div class="card"><h3>Business Nazar</h3><p class="old">₹2200</p><p class="price">₹1100</p></div>
+<div class="card"><h3>Pet Nazar</h3><p class="old">₹1000</p><p class="price">₹500</p></div>
+<div class="card"><h3>Kids Nazar</h3><p class="old">₹1000</p><p class="price">₹500</p></div>
 
 </div>
 </div>
 
+<!-- 🔮 HEALING -->
+<div class="category">
+<h2>✨ Reiki & Healing</h2>
+<div class="grid">
+
+<div class="card"><h3>Money Magnet Healing</h3><p class="old">₹22000</p><p class="price">₹11000</p></div>
+<div class="card"><h3>Business Healing</h3><p class="old">₹3000</p><p class="price">₹1500</p></div>
+<div class="card"><h3>Marriage Blessing</h3><p class="old">₹3000</p><p class="price">₹1500</p></div>
+<div class="card"><h3>Career Healing</h3><p class="old">₹22000</p><p class="price">₹11000</p></div>
+<div class="card"><h3>Finance Healing</h3><p class="old">₹22000</p><p class="price">₹11000</p></div>
+<div class="card"><h3>Legal Healing</h3><p class="old">₹22000</p><p class="price">₹11000</p></div>
+
+</div>
 </div>
 
-<!-- WHATSAPP FLOAT -->
-<div class="whatsapp" onclick="window.open('https://wa.me/918708833177')">
-💬
+<!-- 🪄 SPELL -->
+<div class="category">
+<h2>🪄 Special Spells</h2>
+<div class="grid">
+
+<div class="card">
+<h3>All Spells Package</h3>
+<p class="old">₹6000</p>
+<p class="price">₹3000</p>
 </div>
 
-<script>
+<div class="card"><h3>Love Spell</h3><p class="old">₹6000</p><p class="price">₹3000</p></div>
+<div class="card"><h3>Career Spell</h3><p class="old">₹6000</p><p class="price">₹3000</p></div>
+<div class="card"><h3>Money Spell</h3><p class="old">₹6000</p><p class="price">₹3000</p></div>
+<div class="card"><h3>Protection Spell</h3><p class="old">₹6000</p><p class="price">₹3000</p></div>
+<div class="card"><h3>Marriage Spell</h3><p class="old">₹6000</p><p class="price">₹3000</p></div>
 
-function buyNow(service){
-alert("Booking: " + service);
-window.open("https://wa.me/91XXXXXXXXXX");
-}
+</div>
+</div>
 
-</script>
+</div>
 
 </body>
 </html>
