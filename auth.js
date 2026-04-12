@@ -47,32 +47,30 @@ window.logout = function(){
 // USER STATE
 onAuthStateChanged(auth, user => {
 
-  const avatar = document.getElementById("avatar");
+  const avatarLetter = document.getElementById("avatarLetter");
   const loginBtn = document.getElementById("loginBtn");
   const signupBtn = document.getElementById("signupBtn");
   const logoutBtn = document.getElementById("logoutBtn");
 
-const avatarLetter = document.getElementById("avatarLetter");
+  if(user){
 
-if(user){
-  if(avatarLetter){
-    avatarLetter.innerText = user.email.charAt(0).toUpperCase();
-  }
-}else{
-  if(avatarLetter){
-    avatarLetter.innerText = "G";
-  }
-}.innerText = firstLetter;
+    // ✅ Set avatar letter
+    if(avatarLetter){
+      avatarLetter.innerText = user.email.charAt(0).toUpperCase();
     }
 
+    // ✅ Hide login/signup
     if(loginBtn) loginBtn.style.display = "none";
     if(signupBtn) signupBtn.style.display = "none";
+
+    // ✅ Show logout
     if(logoutBtn) logoutBtn.style.display = "block";
 
   } else {
 
-    if(avatar){
-      avatar.innerText = "G"; // Guest
+    // ❌ Not logged in
+    if(avatarLetter){
+      avatarLetter.innerText = "G";
     }
 
     if(loginBtn) loginBtn.style.display = "block";
