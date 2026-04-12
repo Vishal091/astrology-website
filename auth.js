@@ -83,12 +83,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const logoutBtns = document.querySelectorAll(".logoutBtn");
 
   if (user) {
-    // ✅ ONLY logout visible
-    logoutBtns.forEach(el => el.style.display = "block");
+
+    loginBtns.forEach(el => el.hidden = true);
+    signupBtns.forEach(el => el.hidden = true);
+    logoutBtns.forEach(el => el.hidden = false);
+
   } else {
-    // ✅ ONLY login + signup visible
-    loginBtns.forEach(el => el.style.display = "block");
-    signupBtns.forEach(el => el.style.display = "block");
+
+    loginBtns.forEach(el => el.hidden = false);
+    signupBtns.forEach(el => el.hidden = false);
+    logoutBtns.forEach(el => el.hidden = true);
   }
 
 });
