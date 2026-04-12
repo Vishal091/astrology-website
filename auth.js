@@ -48,30 +48,30 @@ window.logout = function(){
 onAuthStateChanged(auth, user => {
 
   const avatarLetter = document.getElementById("avatarLetter");
+  const userEmail = document.getElementById("userEmail");
+
   const loginBtn = document.getElementById("loginBtn");
   const signupBtn = document.getElementById("signupBtn");
   const logoutBtn = document.getElementById("logoutBtn");
 
   if(user){
 
-    // ✅ Set avatar letter
     if(avatarLetter){
       avatarLetter.innerText = user.email.charAt(0).toUpperCase();
     }
 
-    // ✅ Hide login/signup
+    if(userEmail){
+      userEmail.innerText = user.email;
+    }
+
     if(loginBtn) loginBtn.style.display = "none";
     if(signupBtn) signupBtn.style.display = "none";
-
-    // ✅ Show logout
     if(logoutBtn) logoutBtn.style.display = "block";
 
   } else {
 
-    // ❌ Not logged in
-    if(avatarLetter){
-      avatarLetter.innerText = "G";
-    }
+    if(avatarLetter) avatarLetter.innerText = "G";
+    if(userEmail) userEmail.innerText = "Guest";
 
     if(loginBtn) loginBtn.style.display = "block";
     if(signupBtn) signupBtn.style.display = "block";
