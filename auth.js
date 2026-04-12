@@ -82,26 +82,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupBtns = document.querySelectorAll(".signupBtn");
   const logoutBtns = document.querySelectorAll(".logoutBtn");
 
-  const avatars = document.querySelectorAll(".avatarLetter");
-  const emails = document.querySelectorAll("#userEmail");
-
-  if(user){
-
-    avatars.forEach(el => el.innerText = user.email.charAt(0).toUpperCase());
-    emails.forEach(el => el.innerText = user.email);
-
-    loginBtns.forEach(el => el.style.display = "none");
-    signupBtns.forEach(el => el.style.display = "none");
+  if (user) {
+    // ✅ ONLY logout visible
     logoutBtns.forEach(el => el.style.display = "block");
-
   } else {
-
-    avatars.forEach(el => el.innerText = "G");
-    emails.forEach(el => el.innerText = "Guest");
-
+    // ✅ ONLY login + signup visible
     loginBtns.forEach(el => el.style.display = "block");
     signupBtns.forEach(el => el.style.display = "block");
-    logoutBtns.forEach(el => el.style.display = "none");
   }
 
 });
