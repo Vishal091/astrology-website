@@ -580,3 +580,23 @@ padding:10px;
 color:#7B1E1E;
 text-decoration:none;
 }
+/* PROFILE INFO */
+.profile-info{
+padding:10px;
+border-bottom:1px solid #eee;
+font-size:14px;
+color:#7B1E1E;
+font-weight:bold;
+}
+
+/* DROPDOWN UPGRADE */
+.profile-dropdown{
+width:200px;
+background:white;
+border-radius:12px;
+overflow:hidden;
+}
+
+.profile-dropdown a:hover{
+background:#FFF5F5;
+}
