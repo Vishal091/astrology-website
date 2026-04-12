@@ -47,43 +47,37 @@ window.logout = function(){
 // USER STATE
 onAuthStateChanged(auth, (user) => {
 
-  setTimeout(() => {
+  const loginBtns = document.querySelectorAll(".loginBtn");
+  const signupBtns = document.querySelectorAll(".signupBtn");
+  const logoutBtns = document.querySelectorAll(".logoutBtn");
 
-    const avatars = document.querySelectorAll(".avatarLetter");
-    const loginBtns = document.querySelectorAll(".loginBtn");
-    const signupBtns = document.querySelectorAll(".signupBtn");
-    const logoutBtns = document.querySelectorAll(".logoutBtn");
-    const emails = document.querySelectorAll("#userEmail");
+  const avatars = document.querySelectorAll(".avatarLetter");
+  const emails = document.querySelectorAll("#userEmail");
 
-    if(user){
+  if(user){
 
-      // ✅ Update ALL avatars
-      avatars.forEach(el => {
-        el.innerText = user.email.charAt(0).toUpperCase();
-      });
+    console.log("Logged in:", user.email);
 
-      // ✅ Update email
-      emails.forEach(el => {
-        el.innerText = user.email;
-      });
+    avatars.forEach(el => {
+      el.innerText = user.email.charAt(0).toUpperCase();
+    });
 
-      // ✅ Hide login/signup everywhere
-      loginBtns.forEach(el => el.style.display = "none");
-      signupBtns.forEach(el => el.style.display = "none");
+    emails.forEach(el => {
+      el.innerText = user.email;
+    });
 
-      // ✅ Show logout everywhere
-      logoutBtns.forEach(el => el.style.display = "block");
+    loginBtns.forEach(el => el.style.display = "none");
+    signupBtns.forEach(el => el.style.display = "none");
+    logoutBtns.forEach(el => el.style.display = "block");
 
-    } else {
+  } else {
 
-      avatars.forEach(el => el.innerText = "G");
-      emails.forEach(el => el.innerText = "Guest");
+    avatars.forEach(el => el.innerText = "G");
+    emails.forEach(el => el.innerText = "Guest");
 
-      loginBtns.forEach(el => el.style.display = "block");
-      signupBtns.forEach(el => el.style.display = "block");
-      logoutBtns.forEach(el => el.style.display = "none");
-    }
-
-  }, 200);
+    loginBtns.forEach(el => el.style.display = "block");
+    signupBtns.forEach(el => el.style.display = "block");
+    logoutBtns.forEach(el => el.style.display = "none");
+  }
 
 });
