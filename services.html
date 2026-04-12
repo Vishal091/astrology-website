@@ -50,25 +50,60 @@ font-size:14px;
 
 <body>
 
-<header class="navbar">
+<header class="navbar" id="navbar">
 
+<!-- LOGO -->
 <div class="logo">
-  <img src="hanuman-logo.jpeg" alt="Astrodhani Logo">
+  <img src="hanuman-logo.jpeg">
   <span>Astrodhani</span>
 </div>
 
-<nav>
+<!-- HAMBURGER -->
+<div class="hamburger" onclick="toggleMenu()">
+  ☰
+</div>
+
+<!-- NAV MENU -->
+<nav id="navMenu">
+
   <a href="index.html">Home</a>
-  <a href="services.html">Services</a>
+
+  <!-- DROPDOWN -->
+  <div class="dropdown">
+    <a href="#">Services ▾</a>
+    <div class="dropdown-content">
+      <a href="services.html">All Services</a>
+      <a href="services.html#love">Love</a>
+      <a href="services.html#career">Career</a>
+      <a href="services.html#pooja">Pooja</a>
+      <a href="services.html#healing">Healing</a>
+    </div>
+  </div>
+
   <a href="shop.html">Shop</a>
   <a href="panchang.html">Panchang</a>
   <a href="horoscope.html">Horoscope</a>
+
 </nav>
 
-<div class="nav-cta">
+<!-- RIGHT SIDE -->
+<div class="nav-right">
+
+  <!-- USER PROFILE -->
+  <div class="profile" onclick="toggleProfile()">
+    👤
+    <div class="profile-dropdown" id="profileMenu">
+      <a href="#">Login</a>
+      <a href="#">My Orders</a>
+      <a href="#">Logout</a>
+    </div>
+  </div>
+
+  <!-- CTA -->
   <button onclick="window.open('https://wa.me/918708833177')">
-    🔮 Consult Now
+    🔮 Consult
   </button>
+
 </div>
 
 </header>
