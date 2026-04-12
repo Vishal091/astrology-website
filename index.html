@@ -54,6 +54,56 @@ color:#FFD700;
 
 nav a:hover{color:white}
 
+/* ===== NAV RIGHT FIX ===== */
+.nav-right{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+/* PROFILE */
+.profile{
+position:relative;
+cursor:pointer;
+}
+
+/* AVATAR */
+.avatar{
+width:40px;
+height:40px;
+border-radius:50%;
+background:linear-gradient(135deg,#FFD700,#ffcc00);
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+color:#7B1E1E;
+}
+
+/* DROPDOWN */
+.profile-dropdown{
+display:none;
+position:absolute;
+top:50px;
+right:0;
+background:white;
+border-radius:12px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+min-width:160px;
+z-index:999;
+}
+
+.profile-dropdown a{
+display:block;
+padding:10px;
+text-decoration:none;
+color:#7B1E1E;
+}
+
+.profile-dropdown a:hover{
+background:#FFF5F5;
+}
+
 /* ===== HERO ===== */
 .hero{
 padding:120px 20px;
@@ -117,7 +167,7 @@ gap:20px;
 padding:20px;
 }
 
-/* ===== CARD (3D EFFECT) ===== */
+/* ===== CARD ===== */
 .card{
 background:rgba(255,255,255,0.7);
 backdrop-filter:blur(10px);
@@ -203,6 +253,7 @@ to{transform:translateY(-10vh);}
 </head>
 
 <body>
+
 <header class="navbar" id="navbar">
 
 <div class="logo">
@@ -218,9 +269,7 @@ to{transform:translateY(-10vh);}
   <a href="horoscope.html">Horoscope</a>
 </nav>
 
-<!-- RIGHT SIDE -->
 <div class="nav-right">
-
   <div class="profile" onclick="toggleProfile()">
     <div class="avatar">
       <span id="avatarLetter">G</span>
@@ -232,10 +281,7 @@ to{transform:translateY(-10vh);}
       <a href="#" id="logoutBtn" onclick="logout()" style="display:none;">Logout</a>
     </div>
   </div>
-
 </div>
-
-</header>
 
 </header>
 
@@ -248,7 +294,6 @@ to{transform:translateY(-10vh);}
 <p>Vedic Astrology & Divine Guidance 🔱</p>
 
 <button onclick="location.href='services.html'">Explore Services</button>
-
 <button onclick="speakAstro()">🔱 सुनें भविष्य</button>
 
 </div>
@@ -306,6 +351,12 @@ to{transform:translateY(-10vh);}
 
 <script>
 
+/* PROFILE TOGGLE */
+function toggleProfile(){
+let menu=document.getElementById("profileMenu");
+menu.style.display = menu.style.display==="block"?"none":"block";
+}
+
 /* TYPING */
 let text="Unlock Your Destiny 🔮";
 let i=0;
@@ -342,6 +393,8 @@ document.body.appendChild(p);
 }
 
 </script>
+
 <script type="module" src="auth.js"></script>
+
 </body>
 </html>
