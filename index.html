@@ -222,16 +222,26 @@ to{transform:translateY(-10vh);}
 <div class="nav-right">
 
   <!-- AVATAR -->
-  <div class="profile" onclick="toggleProfile()">
-    <div class="avatar">
-      <span id="avatarLetter">G</span>
+ <div class="profile" onclick="toggleProfile()">
+
+  <div class="avatar">
+    <span id="avatarLetter">G</span>
+  </div>
+
+  <div class="profile-dropdown" id="profileMenu">
+
+    <!-- USER INFO -->
+    <div class="profile-info">
+      <p id="userEmail">Guest</p>
     </div>
 
-    <div class="profile-dropdown" id="profileMenu">
-      <a href="login.html" id="loginBtn">Login</a>
-      <a href="signup.html" id="signupBtn">Signup</a>
-      <a href="#" id="logoutBtn" onclick="logout()" style="display:none;">Logout</a>
-    </div>
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="orders.html">🛒 My Orders</a>
+
+    <a href="login.html" id="loginBtn">Login</a>
+    <a href="signup.html" id="signupBtn">Signup</a>
+    <a href="#" id="logoutBtn" onclick="logout()" style="display:none;">Logout</a>
+
   </div>
 
 </div>
