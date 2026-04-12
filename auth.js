@@ -77,23 +77,31 @@ function updateUI(user){
 // 🔥 PROPER INIT
 document.addEventListener("DOMContentLoaded", () => {
  onAuthStateChanged(auth, (user) => {
-
   const loginBtns = document.querySelectorAll(".loginBtn");
   const signupBtns = document.querySelectorAll(".signupBtn");
   const logoutBtns = document.querySelectorAll(".logoutBtn");
+  const avatars = document.querySelectorAll(".avatarLetter");
+  const emails = document.querySelectorAll("#userEmail");
 
   if (user) {
+    console.log("✅ Logged in:", user.email);
+    avatars.forEach(el => el.innerText = user.email.charAt(0).toUpperCase());
+    emails.forEach(el => el.innerText = user.email);
 
-    loginBtns.forEach(el => el.hidden = true);
-    signupBtns.forEach(el => el.hidden = true);
-    logoutBtns.forEach(el => el.hidden = false);
+    // FIX: Use style.display
+    loginBtns.forEach(el => el.style.display = 'none');
+    signupBtns.forEach(el => el.style.display = 'none');
+    logoutBtns.forEach(el => el.style.display = 'block');
 
   } else {
+    console.log("❌ Not logged in");
+    avatars.forEach(el => el.innerText = "G");
+    emails.forEach(el => el.innerText = "Guest");
 
-    loginBtns.forEach(el => el.hidden = false);
-    signupBtns.forEach(el => el.hidden = false);
-    logoutBtns.forEach(el => el.hidden = true);
+    // FIX: Use style.display
+    loginBtns.forEach(el => el.style.display = 'block');
+    signupBtns.forEach(el => el.style.display = 'block');
+    logoutBtns.forEach(el => el.style.display = 'none');
   }
-
 });
 });
