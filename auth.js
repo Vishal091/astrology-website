@@ -47,49 +47,43 @@ window.logout = function(){
 // USER STATE
 onAuthStateChanged(auth, (user) => {
 
-  // DELAY FIX (VERY IMPORTANT)
   setTimeout(() => {
 
-    const loginBtn = document.getElementById("loginBtn");
-    const signupBtn = document.getElementById("signupBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    const avatarLetter = document.getElementById("avatarLetter");
-    const userEmail = document.getElementById("userEmail");
+    const avatars = document.querySelectorAll(".avatarLetter");
+    const loginBtns = document.querySelectorAll(".loginBtn");
+    const signupBtns = document.querySelectorAll(".signupBtn");
+    const logoutBtns = document.querySelectorAll(".logoutBtn");
+    const emails = document.querySelectorAll("#userEmail");
 
     if(user){
 
-      console.log("User logged in:", user.email);
+      // ✅ Update ALL avatars
+      avatars.forEach(el => {
+        el.innerText = user.email.charAt(0).toUpperCase();
+      });
 
-      // Avatar
-      if(avatarLetter){
-        avatarLetter.innerText = user.email.charAt(0).toUpperCase();
-      }
+      // ✅ Update email
+      emails.forEach(el => {
+        el.innerText = user.email;
+      });
 
-      // Email
-      if(userEmail){
-        userEmail.innerText = user.email;
-      }
+      // ✅ Hide login/signup everywhere
+      loginBtns.forEach(el => el.style.display = "none");
+      signupBtns.forEach(el => el.style.display = "none");
 
-      // Hide login/signup
-      if(loginBtn) loginBtn.style.display = "none";
-      if(signupBtn) signupBtn.style.display = "none";
-
-      // Show logout
-      if(logoutBtn) logoutBtn.style.display = "block";
+      // ✅ Show logout everywhere
+      logoutBtns.forEach(el => el.style.display = "block");
 
     } else {
 
-      console.log("No user");
+      avatars.forEach(el => el.innerText = "G");
+      emails.forEach(el => el.innerText = "Guest");
 
-      if(avatarLetter) avatarLetter.innerText = "G";
-      if(userEmail) userEmail.innerText = "Guest";
-
-      if(loginBtn) loginBtn.style.display = "block";
-      if(signupBtn) signupBtn.style.display = "block";
-      if(logoutBtn) logoutBtn.style.display = "none";
+      loginBtns.forEach(el => el.style.display = "block");
+      signupBtns.forEach(el => el.style.display = "block");
+      logoutBtns.forEach(el => el.style.display = "none");
     }
 
-  }, 300); // 🔥 THIS FIXES TIMING ISSUE
+  }, 200);
 
 });
