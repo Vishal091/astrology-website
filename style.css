@@ -834,3 +834,6 @@ color:#ff4444;
 .profile-footer a:hover{
 background:#FFF5F5;
 }
+.loginBtn, .signupBtn, .logoutBtn{
+display:none;
+}
