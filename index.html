@@ -203,31 +203,39 @@ to{transform:translateY(-10vh);}
 
 <body>
 
-<header class="navbar">
+<header class="navbar" id="navbar">
+
 <div class="logo">
-<img src="hanuman-logo.jpeg">
-Astrodhani
+  <img src="hanuman-logo.jpeg">
+  <span>Astrodhani</span>
 </div>
 
-<nav>
-<a href="services.html">Services</a>
-<a href="shop.html">Shop</a>
-<a href="panchang.html">Panchang</a>
-<a href="horoscope.html">Horoscope</a>
+<nav id="navMenu">
+  <a href="index.html">Home</a>
+  <a href="services.html">Services</a>
+  <a href="shop.html">Shop</a>
+  <a href="panchang.html">Panchang</a>
+  <a href="horoscope.html">Horoscope</a>
 </nav>
-<div class="profile" onclick="toggleProfile()">
 
-  <div class="avatar" id="avatar">
-    <span id="avatarLetter">G</span>
-  </div>
+<!-- RIGHT SIDE (IMPORTANT) -->
+<div class="nav-right">
 
-  <div class="profile-dropdown" id="profileMenu">
-    <a href="login.html" id="loginBtn">Login</a>
-    <a href="signup.html" id="signupBtn">Signup</a>
-    <a href="#" id="logoutBtn" onclick="logout()" style="display:none;">Logout</a>
+  <!-- AVATAR -->
+  <div class="profile" onclick="toggleProfile()">
+    <div class="avatar">
+      <span id="avatarLetter">G</span>
+    </div>
+
+    <div class="profile-dropdown" id="profileMenu">
+      <a href="login.html" id="loginBtn">Login</a>
+      <a href="signup.html" id="signupBtn">Signup</a>
+      <a href="#" id="logoutBtn" onclick="logout()" style="display:none;">Logout</a>
+    </div>
   </div>
 
 </div>
+
 </header>
 
 <!-- HERO -->
