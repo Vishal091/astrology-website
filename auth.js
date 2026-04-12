@@ -45,37 +45,51 @@ window.logout = function(){
 }
 
 // USER STATE
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(auth, (user) => {
 
-  const avatarLetter = document.getElementById("avatarLetter");
-  const userEmail = document.getElementById("userEmail");
+  // DELAY FIX (VERY IMPORTANT)
+  setTimeout(() => {
 
-  const loginBtn = document.getElementById("loginBtn");
-  const signupBtn = document.getElementById("signupBtn");
-  const logoutBtn = document.getElementById("logoutBtn");
+    const loginBtn = document.getElementById("loginBtn");
+    const signupBtn = document.getElementById("signupBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
 
-  if(user){
+    const avatarLetter = document.getElementById("avatarLetter");
+    const userEmail = document.getElementById("userEmail");
 
-    if(avatarLetter){
-      avatarLetter.innerText = user.email.charAt(0).toUpperCase();
+    if(user){
+
+      console.log("User logged in:", user.email);
+
+      // Avatar
+      if(avatarLetter){
+        avatarLetter.innerText = user.email.charAt(0).toUpperCase();
+      }
+
+      // Email
+      if(userEmail){
+        userEmail.innerText = user.email;
+      }
+
+      // Hide login/signup
+      if(loginBtn) loginBtn.style.display = "none";
+      if(signupBtn) signupBtn.style.display = "none";
+
+      // Show logout
+      if(logoutBtn) logoutBtn.style.display = "block";
+
+    } else {
+
+      console.log("No user");
+
+      if(avatarLetter) avatarLetter.innerText = "G";
+      if(userEmail) userEmail.innerText = "Guest";
+
+      if(loginBtn) loginBtn.style.display = "block";
+      if(signupBtn) signupBtn.style.display = "block";
+      if(logoutBtn) logoutBtn.style.display = "none";
     }
 
-    if(userEmail){
-      userEmail.innerText = user.email;
-    }
-
-    if(loginBtn) loginBtn.style.display = "none";
-    if(signupBtn) signupBtn.style.display = "none";
-    if(logoutBtn) logoutBtn.style.display = "block";
-
-  } else {
-
-    if(avatarLetter) avatarLetter.innerText = "G";
-    if(userEmail) userEmail.innerText = "Guest";
-
-    if(loginBtn) loginBtn.style.display = "block";
-    if(signupBtn) signupBtn.style.display = "block";
-    if(logoutBtn) logoutBtn.style.display = "none";
-  }
+  }, 300); // 🔥 THIS FIXES TIMING ISSUE
 
 });
