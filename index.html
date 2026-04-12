@@ -208,7 +208,14 @@ to{transform:translateY(-10vh);}
 <img src="hanuman-logo.jpeg">
 Astrodhani
 </div>
+<div class="profile" onclick="toggleProfile()">
+  👤 <span id="userName">Guest</span>
 
+  <div class="profile-dropdown" id="profileMenu">
+    <a href="login.html">Login</a>
+    <a href="#" onclick="logout()">Logout</a>
+  </div>
+</div>
 <nav>
 <a href="services.html">Services</a>
 <a href="shop.html">Shop</a>
@@ -320,6 +327,6 @@ document.body.appendChild(p);
 }
 
 </script>
-
+<script type="module" src="auth.js"></script>
 </body>
 </html>
