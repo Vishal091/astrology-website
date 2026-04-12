@@ -720,3 +720,30 @@ font-weight:600 !important;
 .profile-footer{
 border-top:1px solid #eee !important;
 }
+/* ===== FIX NAVBAR RIGHT SIDE ===== */
+
+.nav-right{
+display:flex !important;
+align-items:center;
+gap:15px;
+}
+
+/* MAKE PROFILE VISIBLE */
+.profile{
+display:flex !important;
+align-items:center;
+cursor:pointer;
+position:relative;
+}
+
+/* AVATAR FIX */
+.avatar{
+display:flex !important;
+}
+
+/* ENSURE NAVBAR LAYOUT */
+.navbar{
+display:flex !important;
+justify-content:space-between;
+align-items:center;
+}
