@@ -30,6 +30,7 @@ color:#FFD700;
 max-width:800px;
 margin:auto;
 opacity:0.9;
+line-height:1.6;
 }
 
 /* STATS */
@@ -43,15 +44,15 @@ flex-wrap:wrap;
 
 .stat-card{
 background:#ffffff10;
-padding:20px;
-border-radius:12px;
+padding:25px;
+border-radius:14px;
 text-align:center;
 backdrop-filter:blur(10px);
 transition:0.3s;
 }
 
 .stat-card:hover{
-transform:translateY(-10px) scale(1.05);
+transform:translateY(-10px);
 }
 
 .stat-card h2{
@@ -68,18 +69,36 @@ animation:fadeUp 1s ease;
 
 .section h2{
 color:#FFD700;
+margin-bottom:10px;
 }
 
 /* BOX */
 .box{
 background:#ffffff10;
-padding:20px;
-border-radius:12px;
+padding:25px;
+border-radius:14px;
 margin-top:20px;
 backdrop-filter:blur(10px);
+line-height:1.7;
 }
 
-/* ASTROLOGERS */
+/* AVATAR */
+.avatar-circle{
+width:70px;
+height:70px;
+border-radius:50%;
+background:linear-gradient(135deg,#FFD700,#ffcc00);
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+color:#7B1E1E;
+font-size:22px;
+margin:auto;
+margin-bottom:10px;
+}
+
+/* ASTRO GRID */
 .astro-grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -90,20 +109,13 @@ margin-top:30px;
 .astro-card{
 background:#ffffff10;
 padding:20px;
-border-radius:12px;
+border-radius:14px;
 text-align:center;
 transition:0.3s;
 }
 
 .astro-card:hover{
 transform:translateY(-10px);
-}
-
-.astro-card img{
-width:70px;
-height:70px;
-border-radius:50%;
-margin-bottom:10px;
 }
 
 .rating{
@@ -121,6 +133,7 @@ gap:20px;
 background:#ffffff10;
 padding:20px;
 border-radius:12px;
+line-height:1.6;
 }
 
 /* CTA */
@@ -138,7 +151,7 @@ cursor:pointer;
 border-radius:8px;
 }
 
-/* ANIMATION */
+/* ANIMATIONS */
 @keyframes fadeIn{
 from{opacity:0}
 to{opacity:1}
@@ -157,12 +170,15 @@ to{opacity:1; transform:translateY(0)}
 <!-- HERO -->
 <div class="about-hero">
 <h1>About Astrodhani 🔱</h1>
-<p>Your trusted platform for Vedic astrology, healing and life guidance.</p>
+<p>
+Astrodhani is a modern Vedic astrology platform built to provide accurate predictions, spiritual guidance and real-life solutions.
+We combine ancient wisdom with modern technology to help people navigate life’s biggest challenges.
+</p>
 </div>
 
 <!-- STATS -->
 <div class="stats">
-<div class="stat-card"><h2>1L+</h2><p>Users</p></div>
+<div class="stat-card"><h2>1L+</h2><p>Happy Users</p></div>
 <div class="stat-card"><h2>500+</h2><p>Astrologers</p></div>
 <div class="stat-card"><h2>20+</h2><p>Countries</p></div>
 </div>
@@ -171,18 +187,48 @@ to{opacity:1; transform:translateY(0)}
 <div class="section">
 <h2>WHO WE ARE</h2>
 <div class="box">
-Astrodhani connects you with expert astrologers for real-life guidance in love, career, finance and health.
+Astrodhani is a trusted astrology platform where users can connect with experienced astrologers, tarot readers, healers and numerologists.  
+We aim to solve real-life problems like career confusion, relationship issues, financial stress and mental anxiety using authentic Vedic knowledge.
+<br><br>
+Our platform ensures that every prediction and remedy is based on deep analysis and years of expertise.
+</div>
+</div>
+
+<!-- WHAT WE DO -->
+<div class="section">
+<h2>WHAT WE DO</h2>
+<div class="box">
+We provide services like Kundli analysis, love and marriage guidance, career predictions, healing sessions and spiritual remedies.  
+Users can explore daily horoscope, Panchang, and personalized consultations with experts.
+<br><br>
+Our goal is not just prediction — but **providing clarity, confidence and direction in life**.
+</div>
+</div>
+
+<!-- MISSION -->
+<div class="section">
+<h2>MISSION</h2>
+<div class="box">
+To empower individuals by giving them the right guidance during difficult phases of life through astrology and spiritual science.
+</div>
+</div>
+
+<!-- VISION -->
+<div class="section">
+<h2>VISION</h2>
+<div class="box">
+To become one of the most trusted astrology platforms globally by delivering accurate predictions, honest guidance and meaningful solutions.
 </div>
 </div>
 
 <!-- ASTROLOGERS -->
 <div class="section">
-<h2>⭐ Our Top Astrologers</h2>
+<h2>⭐ Our Astrologers</h2>
 
 <div class="astro-grid">
 
 <div class="astro-card">
-<img src="https://i.pravatar.cc/100?img=1">
+<div class="avatar-circle">S</div>
 <h3>Sharma Ji</h3>
 <p>Vedic Expert</p>
 <p class="rating">⭐⭐⭐⭐⭐</p>
@@ -190,7 +236,7 @@ Astrodhani connects you with expert astrologers for real-life guidance in love, 
 </div>
 
 <div class="astro-card">
-<img src="https://i.pravatar.cc/100?img=2">
+<div class="avatar-circle">N</div>
 <h3>Neha Tarot</h3>
 <p>Love Specialist</p>
 <p class="rating">⭐⭐⭐⭐</p>
@@ -198,7 +244,7 @@ Astrodhani connects you with expert astrologers for real-life guidance in love, 
 </div>
 
 <div class="astro-card">
-<img src="https://i.pravatar.cc/100?img=3">
+<div class="avatar-circle">R</div>
 <h3>Raj Healer</h3>
 <p>Energy Healing</p>
 <p class="rating">⭐⭐⭐⭐⭐</p>
@@ -216,33 +262,22 @@ Astrodhani connects you with expert astrologers for real-life guidance in love, 
 <div class="testimonials">
 
 <div class="test-card">
-<p>"Got accurate prediction about my career. Highly recommended!"</p>
-<strong>- Rahul</strong>
+"Astrodhani helped me take the right career decision. Very accurate guidance."
+<br><strong>- Rahul</strong>
 </div>
 
 <div class="test-card">
-<p>"My relationship improved after consultation. Amazing experience."</p>
-<strong>- Priya</strong>
+"My relationship improved after consultation. Truly powerful predictions."
+<br><strong>- Priya</strong>
 </div>
 
 <div class="test-card">
-<p>"Best astrology platform I’ve used. Genuine and helpful."</p>
-<strong>- Amit</strong>
+"Best astrology platform. Feels genuine and trustworthy."
+<br><strong>- Amit</strong>
 </div>
 
 </div>
 
-</div>
-
-<!-- WHY -->
-<div class="section">
-<h2>WHY ASTRODHANI</h2>
-<div class="box">
-✔ Verified astrologers <br>
-✔ Accurate predictions <br>
-✔ Affordable services <br>
-✔ 100% privacy <br>
-</div>
 </div>
 
 <!-- CTA -->
