@@ -456,7 +456,7 @@ function startChat(){
 }
 
 /* SEND MESSAGE */
-function sendMsg(){
+async function sendMsg(){
 
   if(time<=0) return;
 
@@ -468,10 +468,30 @@ function sendMsg(){
   addMsg("You: " + msg);
   input.value="";
 
-  // FAKE ASTRO RESPONSE
-  setTimeout(()=>{
-    botReply(generateAstroReply(msg));
-  },800);
+  botReply("🔮 Reading your kundli...");
+
+  try{
+
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: msg,
+        name: userData.name,
+        dob: userData.dob,
+        tob: userData.tob
+      })
+    });
+
+    const data = await res.json();
+
+    botReply(data.reply);
+
+  }catch(err){
+    botReply("⚠️ Network issue, try again");
+  }
 }
 
 /* MESSAGE ADD */
