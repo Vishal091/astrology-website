@@ -991,3 +991,46 @@ left:50%;
 transform:translateX(-50%);
 }
 }
+/* SLIDER WRAPPER */
+.slides{
+position:relative;
+}
+
+/* SLIDES */
+.slide{
+display:none;
+align-items:center;
+gap:20px;
+animation:fadeSlide 0.6s ease;
+}
+
+.slide.active{
+display:flex;
+}
+
+@keyframes fadeSlide{
+from{opacity:0; transform:translateX(20px)}
+to{opacity:1; transform:translateX(0)}
+}
+
+/* DOTS */
+.slider-dots{
+text-align:center;
+margin-top:15px;
+}
+
+.dot{
+height:10px;
+width:10px;
+margin:0 5px;
+background:#ffffff88;
+border-radius:50%;
+display:inline-block;
+cursor:pointer;
+transition:0.3s;
+}
+
+.dot.active{
+background:#7B1E1E;
+transform:scale(1.3);
+}
