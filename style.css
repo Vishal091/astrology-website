@@ -833,3 +833,71 @@ background:#FFF5F5;
 .hide-now {
     display: none !important;
 }
+/* 🔥 BANNER */
+.astro-banner{
+margin:20px;
+background:linear-gradient(135deg,#FFD700,#FFC300);
+border-radius:16px;
+padding:20px;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+.banner-content{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.banner-text h2{
+margin:0;
+color:#7B1E1E;
+font-size:20px;
+}
+
+.banner-text span{
+font-weight:bold;
+}
+
+.banner-text p{
+margin:5px 0 10px;
+color:#5a0000;
+}
+
+.banner-text button{
+background:black;
+color:white;
+border:none;
+padding:10px 18px;
+border-radius:25px;
+cursor:pointer;
+font-weight:bold;
+transition:0.3s;
+}
+
+.banner-text button:hover{
+transform:scale(1.05);
+}
+
+/* AVATAR */
+.pandit-avatar{
+width:70px;
+height:70px;
+border-radius:50%;
+background:#7B1E1E;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:30px;
+color:#FFD700;
+box-shadow:0 0 15px rgba(0,0,0,0.3);
+}
+
+/* MOBILE OPTIMIZATION */
+@media(max-width:600px){
+.banner-content{
+flex-direction:column;
+text-align:center;
+}
+}
