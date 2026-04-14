@@ -1,9 +1,9 @@
 /* ================= GLOBAL ================= */
 body{
-font-family: Arial, sans-serif;
 margin:0;
+font-family: Arial, sans-serif;
 color:#3b0000;
-background:linear-gradient(135deg,#FFF5F5,#FFEAEA);
+background:linear-gradient(135deg,#7B1E1E,#A83232);
 overflow-x:hidden;
 }
 
@@ -841,19 +841,15 @@ background:linear-gradient(135deg,#7B1E1E,#A83232);
 }
 
 /* 🔥 PREMIUM BANNER */
+/* 🔥 PREMIUM BANNER FINAL */
+
 .astro-slider{
-margin:20px;
+margin:0 20px 40px 20px; /* FIX GAP */
 border-radius:20px;
 background:linear-gradient(135deg,#FFD700,#FFB300);
 box-shadow:0 20px 40px rgba(0,0,0,0.4);
 position:relative;
 padding:25px;
-overflow:visible;
-}
-
-/* REMOVE WHITE STRIP ISSUE */
-section, div{
-background:transparent;
 }
 
 /* LAYOUT */
@@ -886,7 +882,7 @@ color:#5a0000;
 font-size:16px;
 }
 
-/* BUTTON (UPGRADED) */
+/* BUTTON */
 .right button{
 background:linear-gradient(135deg,#7B1E1E,#A83232);
 color:#FFD700;
@@ -903,33 +899,28 @@ transition:0.3s;
 transform:scale(1.08);
 }
 
-/* 🔥 PREMIUM BADGE */
+/* 🔥 PREMIUM BADGE FINAL */
 .free-badge{
 position:absolute;
-bottom:-22px;
-left:25px;
+bottom:-18px;
+left:30px;
 
-background:linear-gradient(135deg,#ffffff,#f3f3f3);
-padding:12px 20px;
+background:linear-gradient(135deg,#ffffff,#f1f1f1);
+padding:10px 18px;
 border-radius:40px;
 
 font-weight:700;
 color:#7B1E1E;
 
 box-shadow:
-0 10px 25px rgba(0,0,0,0.3),
-inset 0 2px 5px rgba(255,255,255,0.6);
+0 12px 25px rgba(0,0,0,0.25),
+inset 0 2px 6px rgba(255,255,255,0.6);
 
 display:flex;
 align-items:center;
-gap:8px;
+gap:10px;
 
-transition:0.3s;
-}
-
-/* 🔥 HOVER EFFECT */
-.free-badge:hover{
-transform:translateY(-3px) scale(1.05);
+border:2px solid rgba(255,215,0,0.4);
 }
 
 /* MOBILE */
