@@ -256,21 +256,45 @@ Astrodhani
 
 </header>
 <!-- 🔥 ASTRO BANNER -->
-<div class="astro-banner">
+<!-- 🔥 ASTRO SLIDER -->
+<div class="astro-slider">
 
-  <div class="banner-content">
-    
-    <div class="banner-text">
-      <h2>🔱 Pandit Ji recommends <span>Astrodhani</span></h2>
-      <p>Get accurate guidance from expert astrologers</p>
-      <button onclick="location.href='services.html'">🔮 Chat Now</button>
+  <div class="slides">
+
+    <!-- SLIDE 1 -->
+    <div class="slide active">
+      <img src="hanuman-logo.jpeg" class="pandit-img">
+      <div class="slide-text">
+        <h2>🔱 Astrodhani Guidance</h2>
+        <p>Talk to expert astrologers instantly</p>
+        <button onclick="location.href='services.html'">Chat Now</button>
+      </div>
     </div>
 
-    <div class="banner-avatar">
-      <div class="pandit-avatar">🧙‍♂️</div>
+    <!-- SLIDE 2 -->
+    <div class="slide">
+      <img src="hanuman-logo.jpeg" class="pandit-img">
+      <div class="slide-text">
+        <h2>✨ First Chat FREE</h2>
+        <p>Get your first consultation at no cost</p>
+        <button onclick="location.href='services.html'">Start Now</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide">
+      <img src="hanuman-logo.jpeg" class="pandit-img">
+      <div class="slide-text">
+        <h2>💰 Solve Your Problems</h2>
+        <p>Love • Career • Money • Health</p>
+        <button onclick="location.href='services.html'">Consult Now</button>
+      </div>
     </div>
 
   </div>
+
+  <!-- 🔥 BADGE -->
+  <div class="free-badge">🎁 First Chat Free</div>
 
 </div>
 <!-- HERO -->
@@ -320,6 +344,21 @@ menu.style.display = menu.style.display==="block"?"none":"block";
 </script>
 
 <script type="module" src="auth.js"></script>
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll(".slide");
 
+function showSlide(index){
+  slides.forEach(slide => slide.classList.remove("active"));
+  slides[index].classList.add("active");
+}
+
+function autoSlide(){
+  currentSlide = (currentSlide + 1) % slides.length;
+  showSlide(currentSlide);
+}
+
+setInterval(autoSlide, 3000);
+</script>
 </body>
 </html>
