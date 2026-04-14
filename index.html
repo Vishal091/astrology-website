@@ -283,7 +283,10 @@ Astrodhani
         <button onclick="location.href='services.html'">Start Now</button>
       </div>
 
-      <div class="free-badge">🔥 Limited Offer</div>
+      <div class="free-badge" onclick="openChat()">
+🎁 First Chat Free
+<span style="font-size:12px;opacity:0.7;">Limited Offer</span>
+</div>
     </div>
 
     <!-- SLIDE 3 -->
@@ -347,7 +350,36 @@ Astrodhani
 <h2>Talk to Astrologer</h2>
 <button onclick="window.open('https://wa.me/918708833177')">Chat Now</button>
 </div>
+<!-- 🔮 ASTRO CHAT SYSTEM -->
+<div id="astroChat" class="chat-modal">
 
+  <div class="chat-box">
+
+    <div class="chat-header">
+      🔮 Astrodhani AI Pandit
+      <span onclick="closeChat()">✖</span>
+    </div>
+
+    <!-- USER DETAILS -->
+    <div id="userForm">
+      <input type="text" id="name" placeholder="Your Name">
+      <input type="date" id="dob">
+      <input type="time" id="tob">
+      <button onclick="startChat()">Start Chat</button>
+    </div>
+
+    <!-- CHAT -->
+    <div id="chatArea" style="display:none;">
+      <div id="messages"></div>
+
+      <input id="userMsg" placeholder="Ask your question...">
+      <button onclick="sendMsg()">Send</button>
+
+      <div id="timer">⏳ 02:00</div>
+    </div>
+
+  </div>
+</div>
 <script>
 function toggleProfile(){
 let menu=document.getElementById("profileMenu");
@@ -380,6 +412,131 @@ function goToSlide(index){
 }
 
 setInterval(nextSlide, 4000);
+</script>
+    <script>
+
+let time = 120;
+let timerInterval;
+let userData = {};
+
+/* OPEN CHAT */
+function openChat(){
+  document.getElementById("astroChat").style.display="flex";
+}
+
+/* CLOSE CHAT */
+function closeChat(){
+  document.getElementById("astroChat").style.display="none";
+}
+
+/* START CHAT */
+function startChat(){
+
+  const name = document.getElementById("name").value;
+  const dob = document.getElementById("dob").value;
+  const tob = document.getElementById("tob").value;
+
+  if(!name || !dob || !tob){
+    alert("Please fill all details 🙏");
+    return;
+  }
+
+  userData = {name,dob,tob};
+
+  document.getElementById("userForm").style.display="none";
+  document.getElementById("chatArea").style.display="block";
+
+  botReply(`Namaste ${name} 🙏 Your kundli is being analyzed...`);
+
+  setTimeout(()=>{
+    botReply("You can now ask your question 🔮");
+  },1000);
+
+  startTimer();
+}
+
+/* SEND MESSAGE */
+function sendMsg(){
+
+  if(time<=0) return;
+
+  const input = document.getElementById("userMsg");
+  const msg = input.value;
+
+  if(!msg) return;
+
+  addMsg("You: " + msg);
+  input.value="";
+
+  // FAKE ASTRO RESPONSE
+  setTimeout(()=>{
+    botReply(generateAstroReply(msg));
+  },800);
+}
+
+/* MESSAGE ADD */
+function addMsg(text){
+  const div = document.createElement("div");
+  div.innerText = text;
+  document.getElementById("messages").appendChild(div);
+  div.scrollIntoView();
+}
+
+/* BOT REPLY */
+function botReply(text){
+  addMsg("🔮 Pandit: " + text);
+}
+
+/* SIMPLE AI LOGIC */
+function generateAstroReply(msg){
+
+  if(msg.toLowerCase().includes("love"))
+    return "Your love life shows positive energy soon ❤️";
+
+  if(msg.toLowerCase().includes("career"))
+    return "Career growth is coming but requires patience 💼";
+
+  if(msg.toLowerCase().includes("money"))
+    return "Financial stability will improve gradually 💰";
+
+  return "Your stars indicate a transformation phase 🔮 Stay calm.";
+}
+
+/* TIMER */
+function startTimer(){
+
+  time = 120;
+
+  timerInterval = setInterval(()=>{
+
+    time--;
+
+    let min = Math.floor(time/60);
+    let sec = time%60;
+
+    document.getElementById("timer").innerText =
+      `⏳ ${min}:${sec<10?'0'+sec:sec}`;
+
+    if(time<=0){
+      clearInterval(timerInterval);
+      endChat();
+    }
+
+  },1000);
+}
+
+/* END CHAT */
+function endChat(){
+
+  document.getElementById("userMsg").disabled = true;
+
+  botReply("⛔ Your free time is over.");
+
+  setTimeout(()=>{
+    alert("Recharge to continue your consultation 💰");
+  },1000);
+}
+
 </script>
 </body>
 </html>
