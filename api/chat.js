@@ -1,8 +1,8 @@
 export default async function handler(req, res) {
 
-  const { message, name, dob, tob } = req.body;
-
   try {
+
+    const { message, name, dob, tob } = req.body;
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -15,16 +15,16 @@ export default async function handler(req, res) {
         messages: [
           {
             role: "system",
-            content: `You are a Vedic astrologer. Speak in Hinglish. Use kundli, grah, shani, rahu.
-
-User:
-Name: ${name}
-DOB: ${dob}
-Time: ${tob}`
+            content: `You are a Vedic astrologer. Speak in Hinglish. Keep answers short.`
           },
           {
             role: "user",
-            content: message
+            content: `User details:
+Name: ${name}
+DOB: ${dob}
+Time: ${tob}
+
+Question: ${message}`
           }
         ]
       })
@@ -32,11 +32,23 @@ Time: ${tob}`
 
     const data = await response.json();
 
+    console.log("OPENAI RESPONSE:", data); // 🔥 DEBUG
+
+    // ✅ SAFE CHECK
+    if (!data.choices || !data.choices[0]) {
+      return res.status(500).json({
+        reply: "⚠️ AI failed. Try again."
+      });
+    }
+
     res.status(200).json({
       reply: data.choices[0].message.content
     });
 
   } catch (err) {
-    res.status(500).json({ error: "AI failed" });
+    console.error(err);
+    res.status(500).json({
+      reply: "⚠️ Server error"
+    });
   }
 }
