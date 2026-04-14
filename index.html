@@ -255,25 +255,57 @@ Astrodhani
 </div>
 
 </header>
+<!-- 🔥 SLIDER BANNER -->
 <div class="astro-slider">
 
-  <div class="slide active">
+  <div class="slides">
 
-    <div class="left">
+    <!-- SLIDE 1 -->
+    <div class="slide active">
       <img src="hanuman-logo.jpeg" class="pandit-img">
+
+      <div class="right">
+        <h2>💰 Solve Your Problems</h2>
+        <p>Love • Career • Money • Health</p>
+        <button onclick="location.href='services.html'">Consult Now</button>
+      </div>
+
+      <div class="free-badge">🎁 First Chat Free</div>
     </div>
 
-    <div class="right">
-      <h2>💰 Solve Your Problems</h2>
-      <p>Love • Career • Money • Health</p>
-      <button onclick="location.href='services.html'">Consult Now</button>
+    <!-- SLIDE 2 -->
+    <div class="slide">
+      <img src="hanuman-logo.jpeg" class="pandit-img">
+
+      <div class="right">
+        <h2>✨ First Chat FREE</h2>
+        <p>Limited time offer for new users</p>
+        <button onclick="location.href='services.html'">Start Now</button>
+      </div>
+
+      <div class="free-badge">🔥 Limited Offer</div>
     </div>
 
-    <div class="free-badge">
-      🎁 First Chat Free
-      <span style="font-size:12px;opacity:0.7;">Limited Offer</span>
+    <!-- SLIDE 3 -->
+    <div class="slide">
+      <img src="hanuman-logo.jpeg" class="pandit-img">
+
+      <div class="right">
+        <h2>🔮 Get Accurate Predictions</h2>
+        <p>Talk to expert astrologers instantly</p>
+        <button onclick="location.href='services.html'">Chat Now</button>
+      </div>
+
+      <div class="free-badge">⭐ 50K+ Users</div>
     </div>
 
+  </div>
+
+  <!-- DOTS -->
+  <div class="slider-dots">
+    <span class="dot active" onclick="goToSlide(0)"></span>
+    <span class="dot" onclick="goToSlide(1)"></span>
+    <span class="dot" onclick="goToSlide(2)"></span>
   </div>
 
 </div>
@@ -327,18 +359,27 @@ menu.style.display = menu.style.display==="block"?"none":"block";
 <script>
 let currentSlide = 0;
 const slides = document.querySelectorAll(".slide");
+const dots = document.querySelectorAll(".dot");
 
 function showSlide(index){
-  slides.forEach(slide => slide.classList.remove("active"));
+  slides.forEach(s => s.classList.remove("active"));
+  dots.forEach(d => d.classList.remove("active"));
+
   slides[index].classList.add("active");
+  dots[index].classList.add("active");
 }
 
-function autoSlide(){
+function nextSlide(){
   currentSlide = (currentSlide + 1) % slides.length;
   showSlide(currentSlide);
 }
 
-setInterval(autoSlide, 3000);
+function goToSlide(index){
+  currentSlide = index;
+  showSlide(index);
+}
+
+setInterval(nextSlide, 4000);
 </script>
 </body>
 </html>
