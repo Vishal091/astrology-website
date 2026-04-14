@@ -491,7 +491,7 @@ async function sendMsg(){
 
     const data = await res.json();
 
-    botReply(data.reply);
+   botReply(data.reply || "⚠️ No response from AI");
 
   }catch(err){
     botReply("⚠️ Network issue, try again");
