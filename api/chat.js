@@ -37,8 +37,8 @@ Question: ${message}`
     // ✅ SAFE CHECK
     if (!data.choices || !data.choices[0]) {
       return res.status(500).json({
-        reply: "⚠️ AI failed. Try again."
-      });
+  reply: JSON.stringify(data)
+});
     }
 
     res.status(200).json({
