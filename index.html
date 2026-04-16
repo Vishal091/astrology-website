@@ -424,8 +424,47 @@ let timerInterval;
 let userData = {};
 
 /* OPEN CHAT */
-function openChat(){
-  document.getElementById("astroChat").style.display="flex";
+async function startChat(){
+
+  const name = document.getElementById("name").value;
+  const dob = document.getElementById("dob").value;
+  const tob = document.getElementById("tob").value;
+
+  if(!name || !dob || !tob){
+    alert("Please fill all details 🙏");
+    return;
+  }
+
+  const user = auth.currentUser;
+
+  if(!user){
+    alert("Please login first");
+    return;
+  }
+
+  const userRef = doc(db, "users", user.uid);
+  const userSnap = await getDoc(userRef);
+
+  // 🔴 CHECK IF ALREADY USED
+  if(userSnap.exists() && userSnap.data().freeUsed){
+    alert("❌ Free chat already used. Please recharge 💰");
+    return;
+  }
+
+  // ✅ MARK AS USED
+  await setDoc(userRef, {
+    freeUsed: true
+  }, { merge: true });
+
+  // CONTINUE CHAT
+  userData = {name, dob, tob};
+
+  document.getElementById("userForm").style.display="none";
+  document.getElementById("chatArea").style.display="block";
+
+  botReply(`Namaste ${name} 🙏 Your kundli is being analyzed...`);
+
+  startTimer();
 }
 
 /* CLOSE CHAT */
