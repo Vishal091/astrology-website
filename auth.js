@@ -8,6 +8,12 @@ import {
   onAuthStateChanged,
   sendEmailVerification   // ✅ ADD THIS
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 // CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyA2ytO0jnhM9baGrByUS1jgSc47q6xJ64s",
@@ -18,6 +24,7 @@ const firebaseConfig = {
 // INIT
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 // SIGNUP
 window.signup = function(){
