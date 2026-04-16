@@ -21,21 +21,37 @@ const auth = getAuth(app);
 
 // SIGNUP
 window.signup = function(){
+
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
   createUserWithEmailAndPassword(auth, email, password)
-    .then(() => alert("Signup successful"))
+    .then(async (userCred) => {
+
+      await sendEmailVerification(userCred.user);
+
+      alert("📩 Verification email sent! Check your inbox.");
+
+    })
     .catch(err => alert(err.message));
 }
 
 // LOGIN
 window.login = function(){
+
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
   signInWithEmailAndPassword(auth, email, password)
-    .then(() => window.location = "index.html")
+    .then((userCred) => {
+
+      if (!userCred.user.emailVerified) {
+        alert("❌ Please verify your email first");
+        return;
+      }
+
+      window.location = "index.html";
+    })
     .catch(err => alert(err.message));
 }
 
