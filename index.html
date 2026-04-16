@@ -499,9 +499,7 @@ function startChat(){
 }
 
 /* SEND MESSAGE */
-async function sendMsg(){
-
-  if(time<=0) return;
+function sendMsg(){
 
   const input = document.getElementById("userMsg");
   const msg = input.value;
@@ -511,30 +509,7 @@ async function sendMsg(){
   addMsg("You: " + msg);
   input.value="";
 
-  botReply("🔮 Reading your kundli...");
-
-  try{
-
-    const res = await fetch("/api/ai", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        message: msg,
-        name: userData.name,
-        dob: userData.dob,
-        tob: userData.tob
-      })
-    });
-
-    const data = await res.json();
-
-   botReply(data.reply || "⚠️ No response from AI");
-
-  }catch(err){
-    botReply("⚠️ Network issue, try again");
-  }
+  botReply("📡 Connecting you to astrologer...");
 }
 
 /* MESSAGE ADD */
@@ -599,7 +574,31 @@ function endChat(){
     alert("Recharge to continue your consultation 💰");
   },1000);
 }
+function simulateAstrologer(){
 
+  const names = [
+    "Pandit Sharma Ji",
+    "Acharya Rahul Ji",
+    "Pandit Vishnu Ji",
+    "Guru Prakash Ji",
+    "Pandit Mahadev Ji"
+  ];
+
+  let i = 0;
+
+  const interval = setInterval(()=>{
+
+    if(i < names.length){
+      botReply(`🔔 ${names[i]} joined the chat...`);
+      i++;
+    } else {
+      clearInterval(interval);
+
+      botReply("⏳ Please wait, astrologer will join shortly on WhatsApp 📱");
+    }
+
+  },1500);
+}
 </script>
 </body>
 </html>
