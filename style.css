@@ -983,7 +983,15 @@ animation:pulse 2s infinite;
 
 /* MOBILE */
 @media(max-width:600px){
-.slide{
+.pandit-img{
+width:70px;
+height:70px;
+margin:auto;
+display:block;
+}
+}
+@media(max-width:600px){
+    .slide{
 flex-direction:column;
 text-align:center;
 }
@@ -1136,9 +1144,13 @@ text-align:center;
 }
 
 .pandit-img{
+width:100px;
+height:100px;
+max-width:100%;
+object-fit:cover;
+border-radius:50%;
 flex-shrink:0;
 }
-
 /* BADGE */
 .free-badge{
 position:static;
