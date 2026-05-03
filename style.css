@@ -1136,8 +1136,7 @@ text-align:center;
 }
 
 .pandit-img{
-width:80px;
-height:80px;
+flex-shrink:0;
 }
 
 /* BADGE */
@@ -1452,9 +1451,10 @@ will-change:transform;
 }
 
 /* EACH SLIDE */
-.slider-container .slide{
-min-width:100vw !important;   /* 🔥 critical fix */
-flex-shrink:0 !important;
+.slide{
+width:100%;
+min-height:180px;
+align-items:center;
 }
 
 /* IMAGE FIX */
