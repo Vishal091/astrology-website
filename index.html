@@ -203,7 +203,22 @@ cursor:pointer;
 <body>
 
 <header class="navbar">
+<div class="navbar">
 
+  <!-- LOGO -->
+  <div class="logo">Astrodhani</div>
+
+  <!-- HAMBURGER -->
+  <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+  <!-- MENU -->
+  <nav id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="about.html">About</a>
+  </nav>
+
+</div>
 <div class="logo">
 <img src="hanuman-logo.jpeg">
 Astrodhani
@@ -600,5 +615,18 @@ function simulateAstrologer(){
   },1500);
 }
 </script>
+    <script>
+function toggleMenu(){
+  document.getElementById("mobileMenu").classList.toggle("show");
+}
+</script>
+    <div class="bottom-nav">
+
+  <a href="index.html">🏠<br>Home</a>
+  <a href="services.html">🔮<br>Services</a>
+  <a href="#" onclick="openChat()">💬<br>Chat</a>
+  <a href="about.html">👤<br>Profile</a>
+
+</div>
 </body>
 </html>
