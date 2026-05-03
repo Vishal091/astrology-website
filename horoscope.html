@@ -1,159 +1,115 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Personalized Horoscope 🔮</title>
-
+<title>आज का राशिफल 🔮</title>
 <link rel="stylesheet" href="style.css">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-
-body{
-margin:0;
-font-family:'Segoe UI',sans-serif;
-background:radial-gradient(circle at top,#1a1f4d,#0b0f1a);
-color:white;
+body {
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:radial-gradient(circle at top,#1a1f4d,#0b0f1a);
+  color:white;
 }
 
-/* CONTAINER */
 .container{
-max-width:900px;
-margin:auto;
-padding:20px;
+  max-width:1300px;
+  margin:auto;
+  padding:20px;
 }
 
-/* TITLE */
 h1{
-text-align:center;
-color:#FFD700;
+  text-align:center;
+  color:gold;
 }
 
-/* FORM */
-.kundli-form{
-display:flex;
-flex-wrap:wrap;
-gap:10px;
-justify-content:center;
-margin-bottom:25px;
+.premium-btn{
+  display:block;
+  margin:auto;
+  margin-bottom:10px;
+  padding:10px 20px;
+  border:none;
+  border-radius:20px;
+  background:gold;
+  color:black;
+  cursor:pointer;
 }
 
-.kundli-form input{
-padding:10px;
-border-radius:8px;
-border:none;
-outline:none;
+.tabs{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin:20px 0;
 }
 
-.kundli-form button{
-padding:10px 20px;
-background:linear-gradient(45deg,#FFD700,#ffcc00);
-border:none;
-border-radius:10px;
-font-weight:bold;
-cursor:pointer;
+.tabs button{
+  padding:10px 20px;
+  border:none;
+  border-radius:20px;
+  cursor:pointer;
+  background:#222;
+  color:white;
 }
 
-/* CARD */
+.tabs button.active{
+  background:gold;
+  color:black;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:20px;
+}
+
 .horo-card{
-background:linear-gradient(145deg,#1a1f4d,#0b0f1a);
-padding:20px;
-border-radius:18px;
-box-shadow:0 10px 30px rgba(0,0,0,0.8);
-border:1px solid rgba(255,215,0,0.2);
-color:white;
-transition:0.3s;
+  background:linear-gradient(145deg,#141A40,#0f1330);
+  padding:18px;
+  border-radius:16px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.6);
+  position:relative;
+  animation:fadeUp 0.6s forwards;
 }
 
-.horo-card:hover{
-transform:translateY(-5px);
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
 }
 
-/* TITLE */
-.horo-card h2{
-color:#FFD700;
-margin-bottom:10px;
+.icon{
+  position:absolute;
+  top:12px;
+  right:12px;
+  font-size:22px;
 }
 
-/* TEXT */
-.horo-card p{
-color:#e0e0e0;
-line-height:1.5;
+.badge{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:8px;
+  font-size:12px;
+  margin-top:5px;
 }
 
-/* REMEDY */
+.color-badge{background:#222;}
+.number-badge{background:gold;color:black;}
+
 .remedy{
-margin-top:15px;
-padding:12px;
-background:rgba(255,215,0,0.12);
-border-radius:10px;
-color:#FFD700;
+  margin-top:10px;
+  padding:10px;
+  background:#0b0f1a;
+  border-radius:10px;
+  border-left:3px solid gold;
 }
 
-/* BUTTONS */
-.actions{
-display:flex;
-gap:10px;
-margin-top:15px;
+.speak-btn{
+  margin-top:10px;
+  padding:6px 10px;
+  border:none;
+  border-radius:8px;
+  background:#6C5CE7;
+  color:white;
+  cursor:pointer;
 }
-
-.chat-btn{
-flex:1;
-background:linear-gradient(45deg,#ff7a18,#ffd200);
-border:none;
-padding:10px;
-border-radius:10px;
-font-weight:bold;
-color:white;
-cursor:pointer;
-}
-
-.report-btn{
-flex:1;
-background:linear-gradient(45deg,#6C5CE7,#8c7aff);
-border:none;
-padding:10px;
-border-radius:10px;
-color:white;
-cursor:pointer;
-}
-
-/* MODAL */
-.modal{
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.85);
-justify-content:center;
-align-items:center;
-z-index:999;
-}
-
-.modal-content{
-background:#1a1f4d;
-padding:20px;
-border-radius:12px;
-width:90%;
-max-width:400px;
-}
-
-.astro-card{
-display:flex;
-justify-content:space-between;
-padding:10px 0;
-border-bottom:1px solid #333;
-}
-
-.astro-card button{
-background:#FFD700;
-border:none;
-padding:6px 10px;
-border-radius:6px;
-cursor:pointer;
-}
-
 </style>
 </head>
 
@@ -161,137 +117,221 @@ cursor:pointer;
 
 <div class="container">
 
-<h1>🔮 Personalized Horoscope</h1>
+<h1>🔮 राशिफल</h1>
 
-<!-- FORM -->
-<div class="kundli-form">
-<input id="userName" placeholder="Name">
-<input type="date" id="userDob">
-<input type="time" id="userTime">
-<button onclick="generateKundli()">Generate Kundli</button>
+<button class="premium-btn" onclick="unlockPremium()">
+✨ Unlock Premium Voice ₹19
+</button>
+
+<div class="tabs">
+<button onclick="loadHoro(0,this)" class="active">Daily</button>
+<button onclick="loadHoro(7,this)">Weekly</button>
+<button onclick="loadHoro(30,this)">Monthly</button>
 </div>
 
-<div id="horoscope"></div>
+<div id="horoscope" class="grid"></div>
 
-</div>
-
-<!-- ASTROLOGER MODAL -->
-<div id="astroModal" class="modal">
-<div class="modal-content">
-
-<h3>Select Astrologer</h3>
-
-<div class="astro-card">
-<span>Pandit Sharma</span>
-<button onclick="openChat()">Chat</button>
-</div>
-
-<div class="astro-card">
-<span>Acharya Rahul</span>
-<button onclick="openChat()">Chat</button>
-</div>
-
-<div class="astro-card">
-<span>Guru Prakash</span>
-<button onclick="openChat()">Chat</button>
-</div>
-
-<button onclick="closeModal()" style="margin-top:10px;">Close</button>
-
-</div>
 </div>
 
 <script type="module">
 
 import ModuleFactory from "/swisseph.js";
 
-let Module = null;
+let Module=null, ready=false;
 
 ModuleFactory({
  locateFile:(f)=>f.endsWith(".wasm")?"/swisseph.wasm":f
 }).then(mod=>{
- Module = mod;
-
+ Module=mod;
  Module.ccall("swe_set_ephe_path",null,["string"],["/ephe"]);
  Module.ccall("swe_set_sid_mode",null,["number","number","number"],[1,0,0]);
+ ready=true;
+ loadHoro(0, document.querySelector(".tabs button"));
 });
 
-/* 🔮 REAL KUNDLI */
-window.generateKundli = function(){
-
-const name = document.getElementById("userName").value;
-const dob = document.getElementById("userDob").value;
-const time = document.getElementById("userTime").value || "12:00";
-
-if(!name || !dob){
-alert("Fill all details");
-return;
-}
-
-// Convert date
-const dt = new Date(`${dob}T${time}`);
-const jd = (dt/86400000)+2440587.5;
-
-// Moon calc
-const ptr = Module._malloc(8*6);
-
-Module.ccall("swe_calc_ut", null,
-["number","number","number","number"],
-[jd, 1, 65536, ptr]
-);
-
-const moonLon = Module.HEAPF64[ptr/8];
-Module._free(ptr);
-
-const rashiIndex = Math.floor(moonLon / 30);
-
-const rashis = [
-"मेष","वृषभ","मिथुन","कर्क",
-"सिंह","कन्या","तुला","वृश्चिक",
-"धनु","मकर","कुंभ","मीन"
+// DATA
+const signs=[
+["मेष","♈"],["वृषभ","♉"],["मिथुन","♊"],["कर्क","♋"],
+["सिंह","♌"],["कन्या","♍"],["तुला","♎"],["वृश्चिक","♏"],
+["धनु","♐"],["मकर","♑"],["कुंभ","♒"],["मीन","♓"]
 ];
 
-const userSign = rashis[rashiIndex];
+const remedies=[
+"हनुमान जी को गुड़-चने का भोग लगाएं",
+"महालक्ष्मी को पुष्प अर्पित करें",
+"गणेश जी की पूजा करें",
+"शिव जी को जल चढ़ाएं",
+"सूर्य को अर्घ्य दें",
+"बुध मंत्र का जाप करें",
+"शुक्र मंत्र का जाप करें",
+"हनुमान चालीसा पढ़ें",
+"गुरु मंत्र का जाप करें",
+"शनि देव को तेल चढ़ाएं",
+"कौवों को रोटी खिलाएं",
+"विष्णु सहस्रनाम पढ़ें"
+];
 
-const text = `${name}, आपकी चंद्र राशि ${userSign} है। आज चंद्रमा की स्थिति आपके विचार और निर्णयों को प्रभावित करेगी।`;
+const colors=["लाल","पीला","हरा","नीला","सफेद","गोल्डन"];
+const numbers=[1,2,3,4,5,6,7,8,9];
 
-document.getElementById("horoscope").innerHTML = `
-<div class="horo-card">
+// PLANETS
+function getPlanet(jd,p){
+ const ptr=Module._malloc(8*6);
+ Module.ccall("swe_calc_ut",null,
+ ["number","number","number","number"],
+ [jd,p,65536,ptr]
+ );
+ const lon=Module.HEAPF64[ptr/8];
+ Module._free(ptr);
+ return (lon+360)%360;
+}
 
-<h2>${userSign} (Moon Sign)</h2>
+function rashi(d){return Math.floor(d/30);}
 
-<p>${text}</p>
+// TEXT
+function generateText(i, planets){
 
-<div class="remedy">
-🧿 सोमवार को शिव जी को जल अर्पित करें
-</div>
+ const intros=[
+  "आपका आत्मविश्वास चरम पर रहेगा।",
+  "सुख-सुविधाओं में वृद्धि होगी।",
+  "बुद्धिमत्ता आपको आगे बढ़ाएगी।",
+  "मानसिक शांति मिलेगी।",
+  "नेतृत्व क्षमता बढ़ेगी।",
+  "निर्णय शक्ति मजबूत होगी।",
+  "संबंधों में संतुलन आएगा।",
+  "साहस में वृद्धि होगी।",
+  "भाग्य साथ देगा।",
+  "मेहनत रंग लाएगी।",
+  "नए अवसर मिलेंगे।",
+  "अंतर्ज्ञान मजबूत होगा।"
+ ];
 
-<div class="actions">
-<button class="chat-btn" onclick="openAstro()">💬 Consult</button>
-<button class="report-btn" onclick="buyReport()">₹99 Report</button>
-</div>
+ const moonH=(rashi(planets.moon)-i+12)%12+1;
+ const satH=(rashi(planets.saturn)-i+12)%12+1;
+ const jupH=(rashi(planets.jupiter)-i+12)%12+1;
 
-</div>`;
-};
+ let text=intros[i]+" ";
 
-/* MODAL */
-window.openAstro = function(){
-document.getElementById("astroModal").style.display="flex";
-};
+ if(moonH===7) text+="रिश्ते सुधरेंगे। ";
+ if(satH===10) text+="कार्य में सफलता मिलेगी। ";
+ if(jupH===11) text+="धन लाभ होगा। ";
 
-window.closeModal = function(){
-document.getElementById("astroModal").style.display="none";
-};
+ return text;
+}
 
-/* PAYMENT */
-window.buyReport = function(){
-alert("Integrate Razorpay here ₹99");
-};
+// 🛕 TEMPLE MUSIC
+let bgAudio=new Audio("/temple.mp3");
+bgAudio.loop=true;
+bgAudio.volume=0.2;
+
+function startTempleMusic(){
+ bgAudio.play().catch(()=>{});
+}
+
+function stopTempleMusic(){
+ bgAudio.pause();
+ bgAudio.currentTime=0;
+}
+
+// 💰 PREMIUM
+function isPremium(){
+ return localStorage.getItem("premiumUser")==="true";
+}
+
+function unlockPremium(){
+ alert("Premium Activated (Demo)");
+ localStorage.setItem("premiumUser","true");
+}
+
+// 🔊 FEMALE VOICE ONLY
+function speakText(text){
+
+ window.speechSynthesis.cancel();
+
+ const speech=new SpeechSynthesisUtterance(text);
+
+ const voices=speechSynthesis.getVoices();
+
+ // try best Hindi female voice
+ const femaleVoice=voices.find(v =>
+   v.lang.includes("hi") || v.name.toLowerCase().includes("female")
+ );
+
+ if(femaleVoice) speech.voice=femaleVoice;
+
+ if(isPremium()){
+   speech.rate=0.75;
+   speech.pitch=1.1; // slightly softer feminine tone
+   startTempleMusic();
+   speech.onend=stopTempleMusic;
+ }else{
+   speech.rate=1;
+   speech.pitch=1;
+ }
+
+ speech.lang="hi-IN";
+
+ window.speechSynthesis.speak(speech);
+}
+
+// MAIN
+window.loadHoro=function(offset,btn){
+
+ if(!ready) return;
+
+ document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
+ btn.classList.add("active");
+
+ const date=new Date();
+ date.setDate(date.getDate()+offset);
+ date.setHours(0,0,0,0);
+
+ const jd=(date/86400000)+2440587.5;
+
+ const planets={
+  moon:getPlanet(jd,1),
+  jupiter:getPlanet(jd,5),
+  saturn:getPlanet(jd,6)
+ };
+
+ let html="";
+
+ signs.forEach((s,i)=>{
+
+  const text=generateText(i,planets);
+
+  html+=`
+  <div class="horo-card">
+    <div class="icon">${s[1]}</div>
+    <h2>${i+1}. ${s[0]}</h2>
+
+    <p>${text}</p>
+
+    <p>
+      <span class="badge color-badge">${colors[Math.floor(Math.random()*colors.length)]}</span>
+      <span class="badge number-badge">${numbers[Math.floor(Math.random()*numbers.length)]}</span>
+    </p>
+
+    <div class="remedy">${remedies[i]}</div>
+
+    <button class="speak-btn" data-text="${encodeURIComponent(text)}">
+      🔊 सुनें
+    </button>
+  </div>`;
+ });
+
+ document.getElementById("horoscope").innerHTML=html;
+}
+
+// CLICK
+document.addEventListener("click",function(e){
+ if(e.target.classList.contains("speak-btn")){
+   const text=decodeURIComponent(e.target.dataset.text);
+   speakText(text);
+ }
+});
 
 </script>
-
-<!-- Your chat system -->
-<script src="auth.js"></script>
 
 </body>
 </html>
