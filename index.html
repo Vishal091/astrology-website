@@ -414,15 +414,14 @@ const slides = document.querySelectorAll(".slide");
 const dots = document.querySelectorAll(".dot");
 
 function showSlide(index){
-  slides.forEach(s => {
-    s.classList.remove("active");
-    s.style.transform = "translateZ(0)";
-  });
-
+  slides.forEach(s => s.classList.remove("active"));
   dots.forEach(d => d.classList.remove("active"));
 
   slides[index].classList.add("active");
   dots[index].classList.add("active");
+
+  // 🔥 FORCE REFLOW (fix mobile glitch)
+  slides[index].offsetHeight;
 }
 
 function nextSlide(){
@@ -436,9 +435,7 @@ function goToSlide(index){
 }
 
 setInterval(nextSlide, 4000);
-setInterval(() => {
-  slides.forEach(s => s.style.transform = "translateZ(0)");
-}, 4000);
+showSlide(0);
 </script>
     <script>
 
