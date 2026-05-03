@@ -16,7 +16,7 @@ color:white;
 }
 
 .container{
-max-width:1300px;
+max-width:1200px;
 margin:auto;
 padding:20px;
 }
@@ -26,7 +26,7 @@ text-align:center;
 color:#FFD700;
 }
 
-/* 🔮 Kundli Form */
+/* FORM */
 .kundli-form{
 display:flex;
 flex-wrap:wrap;
@@ -35,17 +35,14 @@ justify-content:center;
 margin-bottom:20px;
 }
 
-.kundli-form input{
+.kundli-form input, .kundli-form button{
 padding:10px;
 border-radius:8px;
 border:none;
 }
 
 .kundli-form button{
-padding:10px 20px;
 background:#FFD700;
-border:none;
-border-radius:10px;
 font-weight:bold;
 cursor:pointer;
 }
@@ -63,39 +60,12 @@ background:linear-gradient(145deg,#1a1f4d,#0b0f1a);
 padding:18px;
 border-radius:18px;
 box-shadow:0 10px 30px rgba(0,0,0,0.8);
-position:relative;
 border:1px solid rgba(255,215,0,0.15);
-transition:0.3s;
-}
-
-.horo-card:hover{
-transform:translateY(-5px);
-}
-
-/* ICON (zodiac emoji now) */
-.icon{
-position:absolute;
-top:12px;
-right:12px;
-font-size:24px;
-color:#FFD700;
-}
-
-/* TITLE */
-.horo-card h2{
-color:#FFD700;
-margin-bottom:6px;
-}
-
-/* TEXT */
-.horo-card p{
-font-size:14px;
-color:#ddd;
 }
 
 /* REMEDY */
 .remedy{
-margin-top:12px;
+margin-top:10px;
 padding:10px;
 background:rgba(255,215,0,0.1);
 border-radius:10px;
@@ -109,16 +79,6 @@ gap:10px;
 margin-top:10px;
 }
 
-.speak-btn{
-flex:1;
-background:#6C5CE7;
-border:none;
-padding:8px;
-border-radius:10px;
-color:white;
-cursor:pointer;
-}
-
 .chat-btn{
 flex:1;
 background:#FFD700;
@@ -129,6 +89,42 @@ font-weight:bold;
 cursor:pointer;
 }
 
+.report-btn{
+flex:1;
+background:#6C5CE7;
+border:none;
+padding:8px;
+border-radius:10px;
+color:white;
+cursor:pointer;
+}
+
+/* ASTROLOGER MODAL */
+.modal{
+display:none;
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,0.8);
+justify-content:center;
+align-items:center;
+}
+
+.modal-content{
+background:#1a1f4d;
+padding:20px;
+border-radius:10px;
+width:90%;
+max-width:400px;
+}
+
+.astro-card{
+display:flex;
+justify-content:space-between;
+padding:10px;
+border-bottom:1px solid #333;
+}
+
 </style>
 </head>
 
@@ -136,126 +132,119 @@ cursor:pointer;
 
 <div class="container">
 
-<h1>🔮 राशिफल</h1>
+<h1>🔮 Personalized Horoscope</h1>
 
-<!-- 🧿 Kundli Input -->
+<!-- FORM -->
 <div class="kundli-form">
 <input id="userName" placeholder="Name">
 <input type="date" id="userDob">
-<input type="time" id="userTime">
-<button onclick="saveUser()">Generate</button>
+<button onclick="generateKundli()">Generate</button>
 </div>
 
 <div id="horoscope" class="grid"></div>
 
 </div>
 
-<script type="module">
+<!-- ASTROLOGER LIST -->
+<div id="astroModal" class="modal">
+<div class="modal-content">
 
-import ModuleFactory from "/swisseph.js";
+<h3>Select Astrologer</h3>
 
-let Module=null, ready=false;
-let userData=null;
+<div class="astro-card">
+<span>Pandit Sharma</span>
+<button onclick="openChat()">Chat</button>
+</div>
 
-ModuleFactory({
- locateFile:(f)=>f.endsWith(".wasm")?"/swisseph.wasm":f
-}).then(mod=>{
- Module=mod;
- ready=true;
- loadHoro();
-});
+<div class="astro-card">
+<span>Acharya Rahul</span>
+<button onclick="openChat()">Chat</button>
+</div>
 
-/* Zodiac (emoji only now) */
-const signs=[
-["मेष","♈"],["वृषभ","♉"],["मिथुन","♊"],["कर्क","♋"],
-["सिंह","♌"],["कन्या","♍"],["तुला","♎"],["वृश्चिक","♏"],
-["धनु","♐"],["मकर","♑"],["कुंभ","♒"],["मीन","♓"]
-];
+<div class="astro-card">
+<span>Guru Prakash</span>
+<button onclick="openChat()">Chat</button>
+</div>
 
-const remedies=[
-"हनुमान जी को गुड़-चने का भोग लगाएं",
-"महालक्ष्मी को पुष्प अर्पित करें",
-"गणेश जी की पूजा करें",
-"शिव जी को जल चढ़ाएं",
-"सूर्य को अर्घ्य दें",
-"बुध मंत्र का जाप करें",
-"शुक्र मंत्र का जाप करें",
-"हनुमान चालीसा पढ़ें",
-"गुरु मंत्र का जाप करें",
-"शनि देव को तेल चढ़ाएं",
-"कौवों को रोटी खिलाएं",
-"विष्णु सहस्रनाम पढ़ें"
-];
+<button onclick="closeModal()">Close</button>
 
-/* Save Kundli */
-window.saveUser=function(){
-const name=document.getElementById("userName").value;
-const dob=document.getElementById("userDob").value;
-const time=document.getElementById("userTime").value;
+</div>
+</div>
 
-if(!name || !dob || !time){
-alert("Fill all details");
+<script>
+
+let userSign = null;
+
+/* SIMPLE KUNDLI (DOB → Zodiac) */
+function getZodiac(dob){
+const date = new Date(dob);
+const day = date.getDate();
+const month = date.getMonth()+1;
+
+if((month==3 && day>=21)||(month==4 && day<=19)) return "मेष";
+if((month==4 && day>=20)||(month==5 && day<=20)) return "वृषभ";
+if((month==5 && day>=21)||(month==6 && day<=20)) return "मिथुन";
+if((month==6 && day>=21)||(month==7 && day<=22)) return "कर्क";
+if((month==7 && day>=23)||(month==8 && day<=22)) return "सिंह";
+if((month==8 && day>=23)||(month==9 && day<=22)) return "कन्या";
+if((month==9 && day>=23)||(month==10 && day<=22)) return "तुला";
+if((month==10 && day>=23)||(month==11 && day<=21)) return "वृश्चिक";
+if((month==11 && day>=22)||(month==12 && day<=21)) return "धनु";
+if((month==12 && day>=22)||(month==1 && day<=19)) return "मकर";
+if((month==1 && day>=20)||(month==2 && day<=18)) return "कुंभ";
+return "मीन";
+}
+
+/* GENERATE */
+function generateKundli(){
+
+const name = document.getElementById("userName").value;
+const dob = document.getElementById("userDob").value;
+
+if(!name || !dob){
+alert("Fill details");
 return;
 }
 
-userData={name,dob,time};
-alert("Kundli generated 🔮");
+userSign = getZodiac(dob);
 
-loadHoro();
-}
+const text = `${name}, आपकी राशि ${userSign} है। आज का दिन आपके लिए सकारात्मक ऊर्जा लेकर आएगा।`;
 
-/* Generate Text */
-function generateText(i){
-if(userData){
-return `${userData.name}, आज का दिन आपके लिए विशेष संकेत दे रहा है।`;
-}
-return "आज का दिन आपके लिए महत्वपूर्ण रहेगा।";
-}
-
-/* Load */
-window.loadHoro=function(){
-
-if(!ready) return;
-
-let html="";
-
-signs.forEach((s,i)=>{
-
-const text=generateText(i);
-
-html+=`
+document.getElementById("horoscope").innerHTML = `
 <div class="horo-card">
-
-<div class="icon">${s[1]}</div>
-
-<h2>${i+1}. ${s[0]}</h2>
-
+<h2>${userSign}</h2>
 <p>${text}</p>
 
-<div class="remedy">${remedies[i]}</div>
+<div class="remedy">आज: हनुमान चालीसा का पाठ करें</div>
 
 <div class="actions">
-<button class="speak-btn" onclick="speakText('${text}')">🔊 सुनें</button>
-<button class="chat-btn" onclick="openChat()">💬 Consult</button>
+<button class="chat-btn" onclick="openAstro()">💬 Consult</button>
+<button class="report-btn" onclick="buyReport()">₹99 Report</button>
 </div>
 
 </div>`;
-});
-
-document.getElementById("horoscope").innerHTML=html;
 }
 
-/* Voice */
-function speakText(text){
-const speech=new SpeechSynthesisUtterance(text);
-speech.lang="hi-IN";
-window.speechSynthesis.speak(speech);
+/* ASTRO MODAL */
+function openAstro(){
+document.getElementById("astroModal").style.display="flex";
+}
+
+function closeModal(){
+document.getElementById("astroModal").style.display="none";
+}
+
+/* PAYMENT MOCK */
+function buyReport(){
+alert("Redirecting to payment ₹99 💰 (integrate Razorpay)");
+}
+
+/* CHAT (existing) */
+function openChat(){
+alert("Connect your chat system here");
 }
 
 </script>
-
-<!-- 🔥 USE YOUR EXISTING CHAT -->
-<script src="auth.js"></script>
 
 </body>
 </html>
