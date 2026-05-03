@@ -952,31 +952,8 @@ transform:scale(1.1);
 .free-badge{
 position:absolute;
 top:50%;
-right:20px;
-
-transform:translateY(-50%) translateZ(0); /* 🔥 GPU fix */
-
-background:linear-gradient(135deg,#ffffff,#f1f1f1);
-padding:10px 18px;
-border-radius:40px;
-
-font-weight:700;
-color:#7B1E1E;
-
-box-shadow:
-0 10px 20px rgba(0,0,0,0.25),
-inset 0 2px 6px rgba(255,255,255,0.6);
-
-display:flex;
-align-items:center;
-gap:8px;
-
-border:2px solid rgba(255,215,0,0.4);
-
-/* 🔥 CRITICAL FIX */
-will-change:transform;
-backface-visibility:hidden;
-}
+right:25px;
+transform:translateY(-50%);
 
 background:linear-gradient(135deg,#ffffff,#f1f1f1);
 padding:12px 20px;
@@ -1041,8 +1018,6 @@ display:none;
 align-items:center;
 gap:20px;
 animation:fadeSlide 0.6s ease;
-transform:translateZ(0);
-backface-visibility:hidden;
 }
 
 .slide.active{
