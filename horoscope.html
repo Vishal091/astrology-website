@@ -2,114 +2,148 @@
 <html>
 <head>
 <title>आज का राशिफल 🔮</title>
+
 <link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-body {
-  margin:0;
-  font-family:'Segoe UI',sans-serif;
-  background:radial-gradient(circle at top,#1a1f4d,#0b0f1a);
-  color:white;
+
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:radial-gradient(circle at top,#1a1f4d,#0b0f1a);
+color:white;
 }
 
+/* CONTAINER */
 .container{
-  max-width:1300px;
-  margin:auto;
-  padding:20px;
+max-width:1300px;
+margin:auto;
+padding:20px;
 }
 
+/* TITLE */
 h1{
-  text-align:center;
-  color:gold;
+text-align:center;
+color:#FFD700;
+font-size:32px;
 }
 
+/* PREMIUM BUTTON */
 .premium-btn{
-  display:block;
-  margin:auto;
-  margin-bottom:10px;
-  padding:10px 20px;
-  border:none;
-  border-radius:20px;
-  background:gold;
-  color:black;
-  cursor:pointer;
+display:block;
+margin:20px auto;
+padding:12px 28px;
+border:none;
+border-radius:30px;
+background:linear-gradient(45deg,#FFD700,#ffcc00);
+color:black;
+font-weight:bold;
+cursor:pointer;
+box-shadow:0 0 15px rgba(255,215,0,0.5);
 }
 
+/* TABS */
 .tabs{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  margin:20px 0;
+display:flex;
+justify-content:center;
+gap:10px;
+margin:25px 0;
 }
 
 .tabs button{
-  padding:10px 20px;
-  border:none;
-  border-radius:20px;
-  cursor:pointer;
-  background:#222;
-  color:white;
+padding:10px 20px;
+border:none;
+border-radius:25px;
+background:#111;
+color:#ccc;
+cursor:pointer;
 }
 
 .tabs button.active{
-  background:gold;
-  color:black;
+background:#FFD700;
+color:black;
+font-weight:bold;
 }
 
+/* GRID */
 .grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:20px;
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+gap:20px;
 }
 
+/* CARD */
 .horo-card{
-  background:linear-gradient(145deg,#141A40,#0f1330);
-  padding:18px;
-  border-radius:16px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.6);
-  position:relative;
-  animation:fadeUp 0.6s forwards;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(10px);
+padding:18px;
+border-radius:16px;
+border:1px solid rgba(255,255,255,0.1);
+box-shadow:0 10px 30px rgba(0,0,0,0.6);
+position:relative;
+transition:0.4s;
 }
 
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(20px);}
-  to{opacity:1;transform:translateY(0);}
+.horo-card:hover{
+transform:translateY(-6px);
 }
 
+/* ICON */
 .icon{
-  position:absolute;
-  top:12px;
-  right:12px;
-  font-size:22px;
+position:absolute;
+top:12px;
+right:12px;
+font-size:26px;
 }
 
+/* BADGES */
 .badge{
-  display:inline-block;
-  padding:4px 8px;
-  border-radius:8px;
-  font-size:12px;
-  margin-top:5px;
+display:inline-block;
+padding:5px 10px;
+border-radius:12px;
+font-size:12px;
+margin-top:8px;
 }
 
-.color-badge{background:#222;}
-.number-badge{background:gold;color:black;}
+.color-badge{background:#111;}
+.number-badge{background:#FFD700;color:black;font-weight:bold;}
 
+/* REMEDY */
 .remedy{
-  margin-top:10px;
-  padding:10px;
-  background:#0b0f1a;
-  border-radius:10px;
-  border-left:3px solid gold;
+margin-top:12px;
+padding:12px;
+background:rgba(0,0,0,0.4);
+border-radius:10px;
+border-left:3px solid #FFD700;
 }
 
+/* BUTTONS */
 .speak-btn{
-  margin-top:10px;
-  padding:6px 10px;
-  border:none;
-  border-radius:8px;
-  background:#6C5CE7;
-  color:white;
-  cursor:pointer;
+margin-top:10px;
+padding:8px 12px;
+border:none;
+border-radius:10px;
+background:#6C5CE7;
+color:white;
+cursor:pointer;
 }
+
+.chat-btn{
+margin-top:10px;
+padding:8px 12px;
+border:none;
+border-radius:10px;
+background:#FFD700;
+color:black;
+cursor:pointer;
+font-weight:bold;
+}
+
+@media(max-width:768px){
+h1{font-size:24px;}
+}
+
 </style>
 </head>
 
@@ -149,7 +183,6 @@ ModuleFactory({
  loadHoro(0, document.querySelector(".tabs button"));
 });
 
-// DATA
 const signs=[
 ["मेष","♈"],["वृषभ","♉"],["मिथुन","♊"],["कर्क","♋"],
 ["सिंह","♌"],["कन्या","♍"],["तुला","♎"],["वृश्चिक","♏"],
@@ -174,7 +207,6 @@ const remedies=[
 const colors=["लाल","पीला","हरा","नीला","सफेद","गोल्डन"];
 const numbers=[1,2,3,4,5,6,7,8,9];
 
-// PLANETS
 function getPlanet(jd,p){
  const ptr=Module._malloc(8*6);
  Module.ccall("swe_calc_ut",null,
@@ -188,7 +220,6 @@ function getPlanet(jd,p){
 
 function rashi(d){return Math.floor(d/30);}
 
-// TEXT
 function generateText(i, planets){
 
  const intros=[
@@ -219,21 +250,6 @@ function generateText(i, planets){
  return text;
 }
 
-// 🛕 TEMPLE MUSIC
-let bgAudio=new Audio("/temple.mp3");
-bgAudio.loop=true;
-bgAudio.volume=0.2;
-
-function startTempleMusic(){
- bgAudio.play().catch(()=>{});
-}
-
-function stopTempleMusic(){
- bgAudio.pause();
- bgAudio.currentTime=0;
-}
-
-// 💰 PREMIUM
 function isPremium(){
  return localStorage.getItem("premiumUser")==="true";
 }
@@ -243,38 +259,13 @@ function unlockPremium(){
  localStorage.setItem("premiumUser","true");
 }
 
-// 🔊 FEMALE VOICE ONLY
 function speakText(text){
-
- window.speechSynthesis.cancel();
-
  const speech=new SpeechSynthesisUtterance(text);
-
- const voices=speechSynthesis.getVoices();
-
- // try best Hindi female voice
- const femaleVoice=voices.find(v =>
-   v.lang.includes("hi") || v.name.toLowerCase().includes("female")
- );
-
- if(femaleVoice) speech.voice=femaleVoice;
-
- if(isPremium()){
-   speech.rate=0.75;
-   speech.pitch=1.1; // slightly softer feminine tone
-   startTempleMusic();
-   speech.onend=stopTempleMusic;
- }else{
-   speech.rate=1;
-   speech.pitch=1;
- }
-
  speech.lang="hi-IN";
-
+ speech.rate=isPremium()?0.8:1;
  window.speechSynthesis.speak(speech);
 }
 
-// MAIN
 window.loadHoro=function(offset,btn){
 
  if(!ready) return;
@@ -307,6 +298,10 @@ window.loadHoro=function(offset,btn){
 
     <p>${text}</p>
 
+    <p style="font-size:13px;color:#aaa;">
+    ✨ आज का दिन आपके लिए खास संकेत दे रहा है
+    </p>
+
     <p>
       <span class="badge color-badge">${colors[Math.floor(Math.random()*colors.length)]}</span>
       <span class="badge number-badge">${numbers[Math.floor(Math.random()*numbers.length)]}</span>
@@ -314,16 +309,23 @@ window.loadHoro=function(offset,btn){
 
     <div class="remedy">${remedies[i]}</div>
 
-    <button class="speak-btn" data-text="${encodeURIComponent(text)}">
-      🔊 सुनें
-    </button>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+
+      <button class="speak-btn" data-text="${encodeURIComponent(text)}">
+        🔊 सुनें
+      </button>
+
+      <button class="chat-btn" onclick="alert('Connect chat here')">
+        💬 Consult
+      </button>
+
+    </div>
   </div>`;
  });
 
  document.getElementById("horoscope").innerHTML=html;
 }
 
-// CLICK
 document.addEventListener("click",function(e){
  if(e.target.classList.contains("speak-btn")){
    const text=decodeURIComponent(e.target.dataset.text);
