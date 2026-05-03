@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Astrologer Panel</title>
+<style>
+
+body{
+background:#0b0f1a;
+color:white;
+font-family:sans-serif;
+padding:20px;
+}
+
+.chat{
+background:#1a1f4d;
+padding:10px;
+margin-bottom:10px;
+border-radius:10px;
+}
+
+</style>
+</head>
+<body>
+
+<h2>Astrologer Panel</h2>
+
+<div id="chatList"></div>
+
+<script type="module">
+
+import { getFirestore, collection, onSnapshot, updateDoc, doc, arrayUnion } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  authDomain: "YOUR_DOMAIN",
+  projectId: "YOUR_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// LISTEN CHATS
+onSnapshot(collection(db,"chats"), (snap)=>{
+
+let html="";
+
+snap.forEach(docSnap=>{
+ const data = docSnap.data();
+
+ html += `
+ <div class="chat">
+ <b>${data.name}</b><br>
+ ${data.messages?.map(m=>m.text).join("<br>") || ""}
+
+ <input placeholder="Reply..." onkeydown="reply(event,'${docSnap.id}')">
+ </div>`;
+});
+
+document.getElementById("chatList").innerHTML = html;
+
+});
+
+// REPLY
+window.reply = async function(e,id){
+ if(e.key==="Enter"){
+
+  await updateDoc(doc(db,"chats",id),{
+    messages: arrayUnion({
+      sender:"astrologer",
+      text:e.target.value
+    })
+  });
+
+  e.target.value="";
+ }
+}
+
+</script>
+
+</body>
+</html>
