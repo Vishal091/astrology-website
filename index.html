@@ -273,7 +273,8 @@ Astrodhani
 <!-- 🔥 SLIDER BANNER -->
 <div class="astro-slider">
 
-  <div class="slides">
+  <div class="slider-container">
+    <div class="slides">
 
     <!-- SLIDE 1 -->
     <div class="slide active">
@@ -418,6 +419,9 @@ function showSlide(index){
 
   slides[index].classList.add("active");
   dots[index].classList.add("active");
+
+  // 🔥 FORCE REFLOW (fix mobile glitch)
+  slides[index].offsetHeight;
 }
 
 function nextSlide(){
@@ -431,6 +435,7 @@ function goToSlide(index){
 }
 
 setInterval(nextSlide, 4000);
+showSlide(0);
 </script>
     <script>
 
