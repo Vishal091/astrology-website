@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>आज का राशिफल 🔮</title>
+<title>Personalized Horoscope 🔮</title>
 
 <link rel="stylesheet" href="style.css">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +16,7 @@ color:white;
 }
 
 .container{
-max-width:1200px;
+max-width:1000px;
 margin:auto;
 padding:20px;
 }
@@ -35,38 +35,34 @@ justify-content:center;
 margin-bottom:20px;
 }
 
-.kundli-form input, .kundli-form button{
+.kundli-form input{
 padding:10px;
 border-radius:8px;
 border:none;
 }
 
 .kundli-form button{
+padding:10px 20px;
 background:#FFD700;
+border:none;
+border-radius:10px;
 font-weight:bold;
 cursor:pointer;
-}
-
-/* GRID */
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-gap:20px;
 }
 
 /* CARD */
 .horo-card{
 background:linear-gradient(145deg,#1a1f4d,#0b0f1a);
-padding:18px;
+padding:20px;
 border-radius:18px;
 box-shadow:0 10px 30px rgba(0,0,0,0.8);
-border:1px solid rgba(255,215,0,0.15);
+border:1px solid rgba(255,215,0,0.2);
 }
 
 /* REMEDY */
 .remedy{
-margin-top:10px;
-padding:10px;
+margin-top:15px;
+padding:12px;
 background:rgba(255,215,0,0.1);
 border-radius:10px;
 color:#FFD700;
@@ -76,14 +72,14 @@ color:#FFD700;
 .actions{
 display:flex;
 gap:10px;
-margin-top:10px;
+margin-top:15px;
 }
 
 .chat-btn{
 flex:1;
 background:#FFD700;
 border:none;
-padding:8px;
+padding:10px;
 border-radius:10px;
 font-weight:bold;
 cursor:pointer;
@@ -93,13 +89,13 @@ cursor:pointer;
 flex:1;
 background:#6C5CE7;
 border:none;
-padding:8px;
+padding:10px;
 border-radius:10px;
 color:white;
 cursor:pointer;
 }
 
-/* ASTROLOGER MODAL */
+/* MODAL */
 .modal{
 display:none;
 position:fixed;
@@ -121,7 +117,7 @@ max-width:400px;
 .astro-card{
 display:flex;
 justify-content:space-between;
-padding:10px;
+padding:10px 0;
 border-bottom:1px solid #333;
 }
 
@@ -138,14 +134,15 @@ border-bottom:1px solid #333;
 <div class="kundli-form">
 <input id="userName" placeholder="Name">
 <input type="date" id="userDob">
-<button onclick="generateKundli()">Generate</button>
+<input type="time" id="userTime">
+<button onclick="generateKundli()">Generate Kundli</button>
 </div>
 
-<div id="horoscope" class="grid"></div>
+<div id="horoscope"></div>
 
 </div>
 
-<!-- ASTROLOGER LIST -->
+<!-- ASTROLOGER MODAL -->
 <div id="astroModal" class="modal">
 <div class="modal-content">
 
@@ -171,80 +168,97 @@ border-bottom:1px solid #333;
 </div>
 </div>
 
-<script>
+<script type="module">
 
-let userSign = null;
+import ModuleFactory from "/swisseph.js";
 
-/* SIMPLE KUNDLI (DOB → Zodiac) */
-function getZodiac(dob){
-const date = new Date(dob);
-const day = date.getDate();
-const month = date.getMonth()+1;
+let Module = null;
 
-if((month==3 && day>=21)||(month==4 && day<=19)) return "मेष";
-if((month==4 && day>=20)||(month==5 && day<=20)) return "वृषभ";
-if((month==5 && day>=21)||(month==6 && day<=20)) return "मिथुन";
-if((month==6 && day>=21)||(month==7 && day<=22)) return "कर्क";
-if((month==7 && day>=23)||(month==8 && day<=22)) return "सिंह";
-if((month==8 && day>=23)||(month==9 && day<=22)) return "कन्या";
-if((month==9 && day>=23)||(month==10 && day<=22)) return "तुला";
-if((month==10 && day>=23)||(month==11 && day<=21)) return "वृश्चिक";
-if((month==11 && day>=22)||(month==12 && day<=21)) return "धनु";
-if((month==12 && day>=22)||(month==1 && day<=19)) return "मकर";
-if((month==1 && day>=20)||(month==2 && day<=18)) return "कुंभ";
-return "मीन";
-}
+ModuleFactory({
+ locateFile:(f)=>f.endsWith(".wasm")?"/swisseph.wasm":f
+}).then(mod=>{
+ Module = mod;
 
-/* GENERATE */
-function generateKundli(){
+ Module.ccall("swe_set_ephe_path",null,["string"],["/ephe"]);
+ Module.ccall("swe_set_sid_mode",null,["number","number","number"],[1,0,0]);
+});
+
+/* 🔮 REAL KUNDLI */
+window.generateKundli = function(){
 
 const name = document.getElementById("userName").value;
 const dob = document.getElementById("userDob").value;
+const time = document.getElementById("userTime").value || "12:00";
 
 if(!name || !dob){
 alert("Fill details");
 return;
 }
 
-userSign = getZodiac(dob);
+// Convert date
+const dt = new Date(`${dob}T${time}`);
+const jd = (dt/86400000)+2440587.5;
 
-const text = `${name}, आपकी राशि ${userSign} है। आज का दिन आपके लिए सकारात्मक ऊर्जा लेकर आएगा।`;
+// Moon calculation
+const ptr = Module._malloc(8*6);
+
+Module.ccall("swe_calc_ut", null,
+["number","number","number","number"],
+[jd, 1, 65536, ptr]
+);
+
+const moonLon = Module.HEAPF64[ptr/8];
+Module._free(ptr);
+
+const rashiIndex = Math.floor(moonLon / 30);
+
+const rashis = [
+"मेष","वृषभ","मिथुन","कर्क",
+"सिंह","कन्या","तुला","वृश्चिक",
+"धनु","मकर","कुंभ","मीन"
+];
+
+const userSign = rashis[rashiIndex];
+
+const text = `${name}, आपकी चंद्र राशि ${userSign} है। आज आपके मन और निर्णय चंद्रमा से प्रभावित रहेंगे।`;
 
 document.getElementById("horoscope").innerHTML = `
 <div class="horo-card">
-<h2>${userSign}</h2>
+
+<h2>${userSign} (Moon Sign)</h2>
+
 <p>${text}</p>
 
-<div class="remedy">आज: हनुमान चालीसा का पाठ करें</div>
+<div class="remedy">
+🧿 सोमवार को शिव जी को जल अर्पित करें
+</div>
 
 <div class="actions">
-<button class="chat-btn" onclick="openAstro()">💬 Consult</button>
-<button class="report-btn" onclick="buyReport()">₹99 Report</button>
+<button class="chat-btn" onclick="openAstro()">💬 Consult Astrologer</button>
+<button class="report-btn" onclick="buyReport()">₹99 Full Report</button>
 </div>
 
 </div>`;
-}
+};
 
 /* ASTRO MODAL */
-function openAstro(){
+window.openAstro = function(){
 document.getElementById("astroModal").style.display="flex";
-}
+};
 
-function closeModal(){
+window.closeModal = function(){
 document.getElementById("astroModal").style.display="none";
-}
+};
 
-/* PAYMENT MOCK */
-function buyReport(){
-alert("Redirecting to payment ₹99 💰 (integrate Razorpay)");
-}
-
-/* CHAT (existing) */
-function openChat(){
-alert("Connect your chat system here");
-}
+/* PAYMENT (placeholder) */
+window.buyReport = function(){
+alert("Redirect to Razorpay ₹99 (integrate here)");
+};
 
 </script>
+
+<!-- 🔥 YOUR EXISTING CHAT SYSTEM -->
+<script src="auth.js"></script>
 
 </body>
 </html>
