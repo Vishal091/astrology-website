@@ -1537,3 +1537,64 @@ object-fit:contain !important;
 }
 display:block;
 }
+/* ================= FINAL HARD FIX (BANNER + LOGO) ================= */
+
+/* 🚫 Disable any background/overlay interference */
+.slide::before{
+display:none !important;
+}
+
+/* 🧱 LOCK SLIDE LAYOUT */
+.astro-slider .slides .slide{
+display:none;
+align-items:center !important;
+justify-content:flex-start !important;
+gap:20px;
+width:100% !important;
+min-height:180px;
+overflow:hidden;
+}
+
+.astro-slider .slides .slide.active{
+display:flex !important;
+}
+
+/* 🖼️ FIX ONLY THE HANUMAN LOGO IMAGE */
+.slide img.pandit-img{
+width:120px !important;
+height:120px !important;
+object-fit:contain !important;
+border-radius:50% !important;
+flex-shrink:0 !important;
+display:block;
+}
+
+/* 🚫 STOP GENERIC IMAGE RULE BREAKING IT */
+.slider-container .slide img:not(.pandit-img){
+width:auto !important;
+height:auto !important;
+max-width:100% !important;
+object-fit:contain !important;
+}
+
+/* 🧠 TEXT SIDE FIX */
+.slide .right{
+flex:1;
+min-width:0;
+}
+
+/* 📱 MOBILE FIX */
+@media(max-width:768px){
+
+.astro-slider .slides .slide{
+flex-direction:column !important;
+text-align:center;
+}
+
+.slide img.pandit-img{
+width:80px !important;
+height:80px !important;
+margin:auto;
+}
+
+}
