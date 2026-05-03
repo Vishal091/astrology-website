@@ -15,12 +15,14 @@ background:radial-gradient(circle at top,#1a1f4d,#0b0f1a);
 color:white;
 }
 
+/* CONTAINER */
 .container{
-max-width:1000px;
+max-width:900px;
 margin:auto;
 padding:20px;
 }
 
+/* TITLE */
 h1{
 text-align:center;
 color:#FFD700;
@@ -32,18 +34,19 @@ display:flex;
 flex-wrap:wrap;
 gap:10px;
 justify-content:center;
-margin-bottom:20px;
+margin-bottom:25px;
 }
 
 .kundli-form input{
 padding:10px;
 border-radius:8px;
 border:none;
+outline:none;
 }
 
 .kundli-form button{
 padding:10px 20px;
-background:#FFD700;
+background:linear-gradient(45deg,#FFD700,#ffcc00);
 border:none;
 border-radius:10px;
 font-weight:bold;
@@ -57,13 +60,31 @@ padding:20px;
 border-radius:18px;
 box-shadow:0 10px 30px rgba(0,0,0,0.8);
 border:1px solid rgba(255,215,0,0.2);
+color:white;
+transition:0.3s;
+}
+
+.horo-card:hover{
+transform:translateY(-5px);
+}
+
+/* TITLE */
+.horo-card h2{
+color:#FFD700;
+margin-bottom:10px;
+}
+
+/* TEXT */
+.horo-card p{
+color:#e0e0e0;
+line-height:1.5;
 }
 
 /* REMEDY */
 .remedy{
 margin-top:15px;
 padding:12px;
-background:rgba(255,215,0,0.1);
+background:rgba(255,215,0,0.12);
 border-radius:10px;
 color:#FFD700;
 }
@@ -77,17 +98,18 @@ margin-top:15px;
 
 .chat-btn{
 flex:1;
-background:#FFD700;
+background:linear-gradient(45deg,#ff7a18,#ffd200);
 border:none;
 padding:10px;
 border-radius:10px;
 font-weight:bold;
+color:white;
 cursor:pointer;
 }
 
 .report-btn{
 flex:1;
-background:#6C5CE7;
+background:linear-gradient(45deg,#6C5CE7,#8c7aff);
 border:none;
 padding:10px;
 border-radius:10px;
@@ -99,17 +121,20 @@ cursor:pointer;
 .modal{
 display:none;
 position:fixed;
-top:0;left:0;
-width:100%;height:100%;
-background:rgba(0,0,0,0.8);
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.85);
 justify-content:center;
 align-items:center;
+z-index:999;
 }
 
 .modal-content{
 background:#1a1f4d;
 padding:20px;
-border-radius:10px;
+border-radius:12px;
 width:90%;
 max-width:400px;
 }
@@ -119,6 +144,14 @@ display:flex;
 justify-content:space-between;
 padding:10px 0;
 border-bottom:1px solid #333;
+}
+
+.astro-card button{
+background:#FFD700;
+border:none;
+padding:6px 10px;
+border-radius:6px;
+cursor:pointer;
 }
 
 </style>
@@ -163,7 +196,7 @@ border-bottom:1px solid #333;
 <button onclick="openChat()">Chat</button>
 </div>
 
-<button onclick="closeModal()">Close</button>
+<button onclick="closeModal()" style="margin-top:10px;">Close</button>
 
 </div>
 </div>
@@ -191,7 +224,7 @@ const dob = document.getElementById("userDob").value;
 const time = document.getElementById("userTime").value || "12:00";
 
 if(!name || !dob){
-alert("Fill details");
+alert("Fill all details");
 return;
 }
 
@@ -199,7 +232,7 @@ return;
 const dt = new Date(`${dob}T${time}`);
 const jd = (dt/86400000)+2440587.5;
 
-// Moon calculation
+// Moon calc
 const ptr = Module._malloc(8*6);
 
 Module.ccall("swe_calc_ut", null,
@@ -220,7 +253,7 @@ const rashis = [
 
 const userSign = rashis[rashiIndex];
 
-const text = `${name}, आपकी चंद्र राशि ${userSign} है। आज आपके मन और निर्णय चंद्रमा से प्रभावित रहेंगे।`;
+const text = `${name}, आपकी चंद्र राशि ${userSign} है। आज चंद्रमा की स्थिति आपके विचार और निर्णयों को प्रभावित करेगी।`;
 
 document.getElementById("horoscope").innerHTML = `
 <div class="horo-card">
@@ -234,14 +267,14 @@ document.getElementById("horoscope").innerHTML = `
 </div>
 
 <div class="actions">
-<button class="chat-btn" onclick="openAstro()">💬 Consult Astrologer</button>
-<button class="report-btn" onclick="buyReport()">₹99 Full Report</button>
+<button class="chat-btn" onclick="openAstro()">💬 Consult</button>
+<button class="report-btn" onclick="buyReport()">₹99 Report</button>
 </div>
 
 </div>`;
 };
 
-/* ASTRO MODAL */
+/* MODAL */
 window.openAstro = function(){
 document.getElementById("astroModal").style.display="flex";
 };
@@ -250,14 +283,14 @@ window.closeModal = function(){
 document.getElementById("astroModal").style.display="none";
 };
 
-/* PAYMENT (placeholder) */
+/* PAYMENT */
 window.buyReport = function(){
-alert("Redirect to Razorpay ₹99 (integrate here)");
+alert("Integrate Razorpay here ₹99");
 };
 
 </script>
 
-<!-- 🔥 YOUR EXISTING CHAT SYSTEM -->
+<!-- Your chat system -->
 <script src="auth.js"></script>
 
 </body>
