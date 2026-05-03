@@ -8,173 +8,125 @@
 
 <style>
 
-body {
-  margin:0;
-  font-family:'Segoe UI',sans-serif;
-  background:radial-gradient(circle at top,#1a1f4d,#0b0f1a);
-  color:white;
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:radial-gradient(circle at top,#1a1f4d,#0b0f1a);
+color:white;
 }
 
-/* CONTAINER */
 .container{
-  max-width:1300px;
-  margin:auto;
-  padding:20px;
+max-width:1300px;
+margin:auto;
+padding:20px;
 }
 
 h1{
-  text-align:center;
-  color:#FFD700;
-  font-size:32px;
+text-align:center;
+color:#FFD700;
 }
 
-/* PREMIUM BUTTON */
-.premium-btn{
-  display:block;
-  margin:20px auto;
-  padding:12px 28px;
-  border:none;
-  border-radius:30px;
-  background:linear-gradient(45deg,#FFD700,#ffcc00);
-  color:black;
-  font-weight:bold;
-  cursor:pointer;
-  box-shadow:0 0 15px rgba(255,215,0,0.5);
+/* 🔮 Kundli Form */
+.kundli-form{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+justify-content:center;
+margin-bottom:20px;
 }
 
-/* TABS */
-.tabs{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  margin:25px 0;
+.kundli-form input{
+padding:10px;
+border-radius:8px;
+border:none;
 }
 
-.tabs button{
-  padding:10px 20px;
-  border:none;
-  border-radius:25px;
-  background:#111;
-  color:#ccc;
-  cursor:pointer;
-}
-
-.tabs button.active{
-  background:#FFD700;
-  color:black;
-  font-weight:bold;
+.kundli-form button{
+padding:10px 20px;
+background:#FFD700;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
 }
 
 /* GRID */
 .grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:20px;
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+gap:20px;
 }
 
-/* 🔥 PREMIUM CARD */
+/* CARD */
 .horo-card{
-  background:linear-gradient(145deg,#1a1f4d,#0b0f1a);
-  padding:18px;
-  border-radius:18px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.8);
-  position:relative;
-  transition:0.3s;
-  border:1px solid rgba(255,215,0,0.15);
+background:linear-gradient(145deg,#1a1f4d,#0b0f1a);
+padding:18px;
+border-radius:18px;
+box-shadow:0 10px 30px rgba(0,0,0,0.8);
+position:relative;
+border:1px solid rgba(255,215,0,0.15);
+transition:0.3s;
 }
 
 .horo-card:hover{
-  transform:translateY(-6px) scale(1.02);
-  box-shadow:0 20px 40px rgba(0,0,0,1);
+transform:translateY(-5px);
+}
+
+/* ICON (zodiac emoji now) */
+.icon{
+position:absolute;
+top:12px;
+right:12px;
+font-size:24px;
+color:#FFD700;
 }
 
 /* TITLE */
 .horo-card h2{
-  font-size:20px;
-  font-weight:700;
-  color:#FFD700;
-  margin-bottom:8px;
+color:#FFD700;
+margin-bottom:6px;
 }
 
 /* TEXT */
 .horo-card p{
-  color:#ddd;
-  font-size:14px;
-  line-height:1.5;
-}
-
-/* ICON */
-.icon{
-  position:absolute;
-  top:12px;
-  right:12px;
-  font-size:24px;
-  color:#FFD700;
-}
-
-/* BADGES */
-.badge{
-  display:inline-block;
-  padding:5px 10px;
-  border-radius:20px;
-  font-size:12px;
-  margin-top:8px;
-}
-
-.color-badge{
-  background:#000;
-  color:white;
-}
-
-.number-badge{
-  background:#FFD700;
-  color:black;
-  border-radius:50%;
-  padding:6px 10px;
-  font-weight:bold;
+font-size:14px;
+color:#ddd;
 }
 
 /* REMEDY */
 .remedy{
-  margin-top:12px;
-  padding:12px;
-  background:rgba(255,215,0,0.08);
-  border-radius:12px;
-  border:1px solid rgba(255,215,0,0.3);
-  color:#FFD700;
+margin-top:12px;
+padding:10px;
+background:rgba(255,215,0,0.1);
+border-radius:10px;
+color:#FFD700;
 }
 
 /* BUTTONS */
 .actions{
-  display:flex;
-  gap:10px;
-  margin-top:12px;
+display:flex;
+gap:10px;
+margin-top:10px;
 }
 
 .speak-btn{
-  flex:1;
-  padding:10px;
-  border:none;
-  border-radius:12px;
-  background:linear-gradient(45deg,#6C5CE7,#8c7aff);
-  color:white;
-  font-weight:600;
-  cursor:pointer;
+flex:1;
+background:#6C5CE7;
+border:none;
+padding:8px;
+border-radius:10px;
+color:white;
+cursor:pointer;
 }
 
 .chat-btn{
-  flex:1;
-  padding:10px;
-  border:none;
-  border-radius:12px;
-  background:linear-gradient(45deg,#FFD700,#ffb700);
-  color:black;
-  font-weight:700;
-  cursor:pointer;
-}
-
-@media(max-width:768px){
-  h1{font-size:24px;}
+flex:1;
+background:#FFD700;
+border:none;
+padding:8px;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
 }
 
 </style>
@@ -186,14 +138,12 @@ h1{
 
 <h1>🔮 राशिफल</h1>
 
-<button class="premium-btn" onclick="unlockPremium()">
-✨ Unlock Premium Voice ₹19
-</button>
-
-<div class="tabs">
-<button onclick="loadHoro(0,this)" class="active">Daily</button>
-<button onclick="loadHoro(7,this)">Weekly</button>
-<button onclick="loadHoro(30,this)">Monthly</button>
+<!-- 🧿 Kundli Input -->
+<div class="kundli-form">
+<input id="userName" placeholder="Name">
+<input type="date" id="userDob">
+<input type="time" id="userTime">
+<button onclick="saveUser()">Generate</button>
 </div>
 
 <div id="horoscope" class="grid"></div>
@@ -205,18 +155,17 @@ h1{
 import ModuleFactory from "/swisseph.js";
 
 let Module=null, ready=false;
+let userData=null;
 
 ModuleFactory({
  locateFile:(f)=>f.endsWith(".wasm")?"/swisseph.wasm":f
 }).then(mod=>{
  Module=mod;
- Module.ccall("swe_set_ephe_path",null,["string"],["/ephe"]);
- Module.ccall("swe_set_sid_mode",null,["number","number","number"],[1,0,0]);
  ready=true;
- loadHoro(0, document.querySelector(".tabs button"));
+ loadHoro();
 });
 
-/* SAME DATA (UNCHANGED) */
+/* Zodiac (emoji only now) */
 const signs=[
 ["मेष","♈"],["वृषभ","♉"],["मिथुन","♊"],["कर्क","♋"],
 ["सिंह","♌"],["कन्या","♍"],["तुला","♎"],["वृश्चिक","♏"],
@@ -238,108 +187,75 @@ const remedies=[
 "विष्णु सहस्रनाम पढ़ें"
 ];
 
-const colors=["लाल","पीला","हरा","नीला","सफेद","गोल्डन"];
-const numbers=[1,2,3,4,5,6,7,8,9];
+/* Save Kundli */
+window.saveUser=function(){
+const name=document.getElementById("userName").value;
+const dob=document.getElementById("userDob").value;
+const time=document.getElementById("userTime").value;
 
-/* SAME LOGIC */
-function getPlanet(jd,p){
- const ptr=Module._malloc(8*6);
- Module.ccall("swe_calc_ut",null,
- ["number","number","number","number"],
- [jd,p,65536,ptr]
- );
- const lon=Module.HEAPF64[ptr/8];
- Module._free(ptr);
- return (lon+360)%360;
+if(!name || !dob || !time){
+alert("Fill all details");
+return;
 }
 
-function rashi(d){return Math.floor(d/30);}
+userData={name,dob,time};
+alert("Kundli generated 🔮");
 
-function generateText(i, planets){
- return "आज का दिन आपके लिए महत्वपूर्ण रहेगा।";
+loadHoro();
 }
 
-/* PREMIUM */
-function isPremium(){
- return localStorage.getItem("premiumUser")==="true";
+/* Generate Text */
+function generateText(i){
+if(userData){
+return `${userData.name}, आज का दिन आपके लिए विशेष संकेत दे रहा है।`;
+}
+return "आज का दिन आपके लिए महत्वपूर्ण रहेगा।";
 }
 
-function unlockPremium(){
- alert("Premium Activated (Demo)");
- localStorage.setItem("premiumUser","true");
-}
+/* Load */
+window.loadHoro=function(){
 
-/* VOICE */
-function speakText(text){
- const speech=new SpeechSynthesisUtterance(text);
- speech.lang="hi-IN";
- speech.rate=isPremium()?0.8:1;
- window.speechSynthesis.speak(speech);
-}
+if(!ready) return;
 
-/* MAIN */
-window.loadHoro=function(offset,btn){
+let html="";
 
- if(!ready) return;
+signs.forEach((s,i)=>{
 
- document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
- btn.classList.add("active");
+const text=generateText(i);
 
- const date=new Date();
- date.setDate(date.getDate()+offset);
- date.setHours(0,0,0,0);
+html+=`
+<div class="horo-card">
 
- const jd=(date/86400000)+2440587.5;
+<div class="icon">${s[1]}</div>
 
- const planets={
-  moon:getPlanet(jd,1),
-  jupiter:getPlanet(jd,5),
-  saturn:getPlanet(jd,6)
- };
+<h2>${i+1}. ${s[0]}</h2>
 
- let html="";
+<p>${text}</p>
 
- signs.forEach((s,i)=>{
+<div class="remedy">${remedies[i]}</div>
 
-  const text=generateText(i,planets);
+<div class="actions">
+<button class="speak-btn" onclick="speakText('${text}')">🔊 सुनें</button>
+<button class="chat-btn" onclick="openChat()">💬 Consult</button>
+</div>
 
-  html+=`
-  <div class="horo-card">
-    <div class="icon">${s[1]}</div>
-    <h2>${i+1}. ${s[0]}</h2>
-
-    <p>${text}</p>
-
-    <p style="font-size:13px;color:#aaa;">
-      ✨ आज का दिन आपके लिए खास संकेत दे रहा है
-    </p>
-
-    <p>
-      <span class="badge color-badge">${colors[Math.floor(Math.random()*colors.length)]}</span>
-      <span class="badge number-badge">${numbers[Math.floor(Math.random()*numbers.length)]}</span>
-    </p>
-
-    <div class="remedy">${remedies[i]}</div>
-
-    <div class="actions">
-      <button class="speak-btn" data-text="${encodeURIComponent(text)}">🔊 सुनें</button>
-      <button class="chat-btn" onclick="openChat()">💬 Consult</button>
-    </div>
-
-  </div>`;
- });
-
- document.getElementById("horoscope").innerHTML=html;
-}
-
-document.addEventListener("click",function(e){
- if(e.target.classList.contains("speak-btn")){
-   const text=decodeURIComponent(e.target.dataset.text);
-   speakText(text);
- }
+</div>`;
 });
 
+document.getElementById("horoscope").innerHTML=html;
+}
+
+/* Voice */
+function speakText(text){
+const speech=new SpeechSynthesisUtterance(text);
+speech.lang="hi-IN";
+window.speechSynthesis.speak(speech);
+}
+
 </script>
+
+<!-- 🔥 USE YOUR EXISTING CHAT -->
+<script src="auth.js"></script>
 
 </body>
 </html>
