@@ -1198,29 +1198,7 @@ const saturn=getPlanet(jd,6);
 const rahu=getPlanet(jd,10);
 
 const ketu=(rahu+180)%360;
-/* ===== MANGlik ===== */
 
-const manglikHouses=[1,4,7,8,12];
-
-const isManglik =
-manglikHouses.includes(marsHouse);
-
-document.getElementById(
-"manglikResult"
-).innerHTML = isManglik
-? "⚠️ Present"
-: "✅ Not Present";
-
-/* ===== KAAL SARP ===== */
-
-const isKaalSarp =
-Math.abs(rahuHouse-ketuHouse)===6;
-
-document.getElementById(
-"kaalResult"
-).innerHTML = isKaalSarp
-? "⚠️ Possible"
-: "✅ Not Found";
 
 /* ===== SHANI ===== */
 
@@ -1299,6 +1277,30 @@ getHouse(rahu,houseData.cusps);
 
 const ketuHouse =
 getHouse(ketu,houseData.cusps);
+/* ===== MANGlik ===== */
+
+const manglikHouses=[1,4,7,8,12];
+
+const isManglik =
+manglikHouses.includes(marsHouse);
+
+document.getElementById(
+"manglikResult"
+).innerHTML = isManglik
+? "⚠️ Present"
+: "✅ Not Present";
+
+/* ===== KAAL SARP ===== */
+
+const isKaalSarp =
+Math.abs(rahuHouse-ketuHouse)===6;
+
+document.getElementById(
+"kaalResult"
+).innerHTML = isKaalSarp
+? "⚠️ Possible"
+: "✅ Not Found";
+
 /* ===== KUNDLI CHART DATA ===== */
 
 document.getElementById("lagnaChart")
