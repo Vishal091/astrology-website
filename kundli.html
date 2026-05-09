@@ -306,7 +306,6 @@ color:white;
 padding:5px;
 text-align:center;
 overflow:hidden;
-transform:rotate(-45deg);
 }
 
 /* CENTER */
@@ -430,6 +429,52 @@ font-size:12px;
 .house{
 font-size:11px;
 }
+
+}
+/* ===== FIX PLANET TEXT ===== */
+
+.planet-text{
+
+transform:rotate(-45deg);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:15px;
+
+font-weight:700;
+
+color:white;
+
+line-height:1.4;
+
+text-align:center;
+
+}
+
+/* FIX CENTER */
+.center{
+
+transform:
+translate(-50%,-50%);
+
+}
+
+/* HOUSE LAYOUT */
+.house{
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+gap:4px;
 
 }
 </style>
@@ -916,7 +961,13 @@ function placePlanet(house,planet){
 
 document.getElementById(
 `house${house}`
-).innerHTML += planet + "<br>";
+).innerHTML += `
+
+<div class="planet-text">
+${planet}
+</div>
+
+`;
 
 }
 
