@@ -477,6 +477,49 @@ justify-content:center;
 gap:4px;
 
 }
+/* ===== CITY AUTOCOMPLETE ===== */
+
+.city-suggestions{
+
+position:absolute;
+
+background:white;
+
+width:100%;
+
+max-height:220px;
+
+overflow-y:auto;
+
+border-radius:12px;
+
+margin-top:5px;
+
+z-index:9999;
+
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+
+display:none;
+
+}
+
+.city-item{
+
+padding:12px;
+
+cursor:pointer;
+
+color:#222;
+
+transition:0.2s;
+
+}
+
+.city-item:hover{
+
+background:#f5f5f5;
+
+}
 </style>
 </head>
 
@@ -519,25 +562,19 @@ id="dob">
 <input type="time"
 id="tob">
 
+<div style="position:relative;">
+
 <input type="text"
 id="city"
 placeholder="Enter Birth City">
 
+<div id="citySuggestions"
+class="city-suggestions"></div>
 <input type="hidden" id="latitude">
 <input type="hidden" id="longitude">
+</div>
 
-<option value="">Select Birth City</option>
 
-<option value="delhi">Delhi</option>
-<option value="mumbai">Mumbai</option>
-<option value="chandigarh">Chandigarh</option>
-<option value="kolkata">Kolkata</option>
-<option value="bangalore">Bangalore</option>
-<option value="hyderabad">Hyderabad</option>
-<option value="chennai">Chennai</option>
-<option value="pune">Pune</option>
-
-</select>
 
 </div>
 
@@ -737,7 +774,93 @@ const nakshatras=[
 "Purva Bhadrapada","Uttara Bhadrapada",
 "Revati"
 ];
+/* ===== CITY AUTOCOMPLETE ===== */
 
+const cityInput =
+document.getElementById("city");
+
+const suggestionBox =
+document.getElementById("citySuggestions");
+
+let typingTimer;
+
+cityInput.addEventListener("input",()=>{
+
+clearTimeout(typingTimer);
+
+const query = cityInput.value.trim();
+
+if(query.length < 2){
+
+suggestionBox.style.display="none";
+
+return;
+
+}
+
+typingTimer = setTimeout(async()=>{
+
+try{
+
+const res = await fetch(
+
+`https://nominatim.openstreetmap.org/search?format=json&q=${query}`
+
+);
+
+const data = await res.json();
+
+suggestionBox.innerHTML="";
+
+if(data.length === 0){
+
+suggestionBox.style.display="none";
+
+return;
+
+}
+
+data.slice(0,5).forEach(place=>{
+
+const div =
+document.createElement("div");
+
+div.className="city-item";
+
+div.innerText = place.display_name;
+
+div.onclick=()=>{
+
+cityInput.value =
+place.display_name;
+
+document.getElementById(
+"latitude"
+).value = place.lat;
+
+document.getElementById(
+"longitude"
+).value = place.lon;
+
+suggestionBox.style.display="none";
+
+};
+
+suggestionBox.appendChild(div);
+
+});
+
+suggestionBox.style.display="block";
+
+}catch(err){
+
+console.log(err);
+
+}
+
+},400);
+
+});
 ModuleFactory({
 locateFile:(f)=>
 f.endsWith(".wasm")
@@ -780,41 +903,7 @@ return (lon+360)%360;
 }
 /* ===== CITY GEOLOCATION ===== */
 
-async function getCoordinates(city){
 
-try{
-
-const res = await fetch(
-
-`https://nominatim.openstreetmap.org/search?format=json&q=${city}`
-
-);
-
-const data = await res.json();
-
-if(data && data.length > 0){
-
-document.getElementById("latitude").value =
-data[0].lat;
-
-document.getElementById("longitude").value =
-data[0].lon;
-
-return true;
-
-}
-
-return false;
-
-}catch(err){
-
-console.log(err);
-
-return false;
-
-}
-
-}
 /* ===== HOUSE CALC ===== */
 
 function calculateHouses(jd,lat,lon){
@@ -896,15 +985,6 @@ document.getElementById("tob").value;
 
 const city=
 document.getElementById("city").value;
-const success = await getCoordinates(city);
-
-if(!success){
-
-alert("City not found");
-
-return;
-
-}
 
 const lat =
 parseFloat(
@@ -915,6 +995,14 @@ const lon =
 parseFloat(
 document.getElementById("longitude").value
 );
+
+if(!lat || !lon){
+
+alert("Please select city from suggestions");
+
+return;
+
+}
 
 if(!name || !dob || !tob || !city){
 
