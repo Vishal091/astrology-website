@@ -279,13 +279,13 @@ font-size:34px;
 .kundli-chart-wrapper{
 display:flex;
 justify-content:center;
-margin:40px auto;
+margin:80px auto;
 }
 
 .north-chart{
 position:relative;
-width:420px;
-height:420px;
+width:340px;
+height:340px;
 transform:rotate(45deg);
 border:3px solid #FFD700;
 background:#11152d;
@@ -416,8 +416,8 @@ height:70px;
 @media(max-width:768px){
 
 .north-chart{
-width:300px;
-height:300px;
+width:260px;
+height:260px;
 }
 
 .center{
@@ -519,7 +519,12 @@ id="dob">
 <input type="time"
 id="tob">
 
-<select id="city">
+<input type="text"
+id="city"
+placeholder="Enter Birth City">
+
+<input type="hidden" id="latitude">
+<input type="hidden" id="longitude">
 
 <option value="">Select Birth City</option>
 
@@ -773,6 +778,43 @@ Module._free(ptr);
 return (lon+360)%360;
 
 }
+/* ===== CITY GEOLOCATION ===== */
+
+async function getCoordinates(city){
+
+try{
+
+const res = await fetch(
+
+`https://nominatim.openstreetmap.org/search?format=json&q=${city}`
+
+);
+
+const data = await res.json();
+
+if(data && data.length > 0){
+
+document.getElementById("latitude").value =
+data[0].lat;
+
+document.getElementById("longitude").value =
+data[0].lon;
+
+return true;
+
+}
+
+return false;
+
+}catch(err){
+
+console.log(err);
+
+return false;
+
+}
+
+}
 /* ===== HOUSE CALC ===== */
 
 function calculateHouses(jd,lat,lon){
@@ -833,7 +875,7 @@ Math.floor(deg/(360/27))
 
 }
 
-window.generateKundli=function(){
+window.generateKundli= async function(){
 
 if(!ready){
 
@@ -854,8 +896,25 @@ document.getElementById("tob").value;
 
 const city=
 document.getElementById("city").value;
-  const lat = cities[city].lat;
-const lon = cities[city].lon;
+const success = await getCoordinates(city);
+
+if(!success){
+
+alert("City not found");
+
+return;
+
+}
+
+const lat =
+parseFloat(
+document.getElementById("latitude").value
+);
+
+const lon =
+parseFloat(
+document.getElementById("longitude").value
+);
 
 if(!name || !dob || !tob || !city){
 
@@ -971,13 +1030,13 @@ ${planet}
 
 }
 
-placePlanet(sunHouse,"☀️ Sun");
-placePlanet(moonHouse,"🌙 Moon");
-placePlanet(marsHouse,"♂️ Mars");
-placePlanet(mercuryHouse,"☿ Mercury");
-placePlanet(jupiterHouse,"♃ Jupiter");
-placePlanet(venusHouse,"♀ Venus");
-placePlanet(saturnHouse,"♄ Saturn");
+placePlanet(sunHouse,"☀️ सूर्य");
+placePlanet(moonHouse,"🌙 चंद्र");
+placePlanet(marsHouse,"♂️ मंगल");
+placePlanet(mercuryHouse,"☿ बुध");
+placePlanet(jupiterHouse,"♃ गुरु");
+placePlanet(venusHouse,"♀ शुक्र");
+placePlanet(saturnHouse,"♄ शनि");
 document.getElementById(
 "moonSign"
 ).innerText=getSign(moon);
