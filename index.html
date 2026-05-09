@@ -837,36 +837,36 @@ Close
 
 <h3>Horoscope</h3>
 
-<a href="#">
+<a href=""horoscope.html?type=today"">
 <i class="fa-solid fa-star"></i>
 Today's Horoscope
 </a>
 
-<a href="#">
+<a href="horoscope.html?type=daily">
 <i class="fa-solid fa-star"></i>
 Daily Horoscope
 </a>
 
-<a href="#">
+<a href="horoscope.html?type=weekly">
 <i class="fa-solid fa-star"></i>
 Weekly Horoscope
 </a>
 
-<a href="#">
+<a href="horoscope.html?type=monthly">
 <i class="fa-solid fa-star"></i>
 Monthly Horoscope
 </a>
 
-<a href="#">
+<a href="horoscope.html?type=yearly">
 <i class="fa-solid fa-star"></i>
 Yearly Horoscope
 </a>
 
 <h3>Shubh Muhurat</h3>
 
-<a href="#">Marriage Muhurat</a>
-<a href="#">Griha Pravesh</a>
-<a href="#">Mundan</a>
+<a href="muhurat.html?type=marriage">Marriage Muhurat</a>
+<a href="muhurat.html?type=griha">Griha Pravesh</a>
+<a href="muhurat.html?type=mundan">Mundan</a>
 
 </div>
 
@@ -884,11 +884,11 @@ Astromall
 Today Panchang
 </a>
 
-<a href="services.html">
+<a href="kundli.html">
 Free Kundli
 </a>
 
-<a href="services.html">
+<a href="kundli-match.html">
 Kundli Matching
 </a>
 
@@ -896,11 +896,11 @@ Kundli Matching
 Chat with Astrologer
 </a>
 
-<a href="#" onclick="openChat()">
+<a href="javascript:void(0)" onclick="openChat()">
 Talk to Astrologer
 </a>
 
-<a href="#">
+<a href="numerology.html">
 Numerology
 </a>
 
@@ -911,16 +911,16 @@ Numerology
 
 <h3>Explore</h3>
 
-<a href="#">Tarot</a>
-<a href="#">Zodiac Signs</a>
-<a href="#">Vastu Shastra</a>
-<a href="#">Love Calculator</a>
+<a href="tarot.html">Tarot</a>
+<a href="zodiac.html">Zodiac Signs</a>
+<a href="vastu.html">Vastu Shastra</a>
+<a href="love-calculator.html">Love Calculator</a>
 
 <h3>Shop</h3>
 
-<a href="#">Evil Eye</a>
-<a href="#">Rudraksha</a>
-<a href="#">Gemstones</a>
+<a href="shop.html?category=evil-eye">Evil Eye</a>
+<a href="shop.html?category=rudraksha">Rudraksha</a>
+<a href="shop.html?category=gemstones">Gemstones</a>
 
 </div>
 
@@ -936,7 +936,7 @@ Numerology
 <input type="email"
 placeholder="Enter email">
 
-<button>
+<button onclick="subscribeNewsletter()">
 Subscribe
 </button>
 
@@ -1259,7 +1259,24 @@ rzp.open();
 }
 
 updateWalletUI();
+function subscribeNewsletter(){
 
+const email =
+document.querySelector(".newsletter input").value;
+
+if(!email){
+
+alert("Please enter email 📧");
+
+return;
+
+}
+
+alert("Subscribed Successfully 🔮");
+
+document.querySelector(".newsletter input").value="";
+
+}
 </script>
 
 </body>
