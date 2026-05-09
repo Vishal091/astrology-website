@@ -517,6 +517,11 @@ onclick="generateMatch()">
 <div class="result-card">
 <h3>💍 Marriage Stability</h3>
 <p id="marriageMatch">Very Good</p>
+
+  <div class="result-card">
+<h3>🧬 Nadi Match</h3>
+<p id="nadiMatch">Compatible</p>
+</div>
 </div>
 
 </div>
@@ -763,25 +768,46 @@ getMoonSign(boyDate);
 const girlSign =
 getMoonSign(girlDate);
 
+const boyNak =
+getNakshatra(boyDate);
+
+const girlNak =
+getNakshatra(girlDate);
+
 const boyIndex =
 zodiacSigns.indexOf(boySign);
 
 const girlIndex =
 zodiacSigns.indexOf(girlSign);
 
-const diff =
+const signDiff =
 Math.abs(boyIndex-girlIndex);
 
-/* REALISTIC GUNA */
+const nakDiff =
+Math.abs(
+nakshatras.indexOf(boyNak)
+-
+nakshatras.indexOf(girlNak)
+);
 
-let guna = 36 - (diff*2);
+/* ===== ASHTAKOOT STYLE ===== */
+
+let guna = 36;
+
+/* SIGN DIFFERENCE */
+guna -= signDiff;
+
+/* NAKSHATRA DIFFERENCE */
+guna -= Math.floor(nakDiff/2);
+
+/* LIMITS */
 
 if(guna < 18){
-guna=18;
+guna = 18;
 }
 
 if(guna > 36){
-guna=36;
+guna = 36;
 }
 
 const percent=
@@ -815,7 +841,13 @@ document.getElementById(
 guna>29
 ? "Very Good"
 : "Good";
-
+  
+document.getElementById(
+"nadiMatch"
+).innerText =
+nakDiff < 10
+? "Compatible"
+: "Needs Attention";
 /* AI-LIKE INSIGHTS */
 
 document.getElementById(
@@ -917,7 +949,15 @@ function getMoonSign(date){
 const month=date.getMonth()+1;
 
 const day=date.getDate();
+function getNakshatra(date){
 
+const day = date.getDate();
+
+return nakshatras[
+day % 27
+];
+
+}
 /* SIMPLE ZODIAC */
 
 if((month==3 && day>=21) || (month==4 && day<=19))
@@ -956,6 +996,41 @@ return "Aquarius";
 return "Pisces";
 
 }
+const nakshatras=[
+
+"Ashwini",
+"Bharani",
+"Krittika",
+"Rohini",
+"Mrigashira",
+"Ardra",
+
+"Punarvasu",
+"Pushya",
+"Ashlesha",
+"Magha",
+"Purva Phalguni",
+"Uttara Phalguni",
+
+"Hasta",
+"Chitra",
+"Swati",
+"Vishakha",
+"Anuradha",
+"Jyeshtha",
+
+"Mula",
+"Purva Ashadha",
+"Uttara Ashadha",
+"Shravana",
+"Dhanishta",
+"Shatabhisha",
+
+"Purva Bhadrapada",
+"Uttara Bhadrapada",
+"Revati"
+
+];
 </script>
 
 </body>
