@@ -517,13 +517,12 @@ onclick="generateMatch()">
 <div class="result-card">
 <h3>💍 Marriage Stability</h3>
 <p id="marriageMatch">Very Good</p>
+</div>
 
-  <div class="result-card">
+<div class="result-card">
 <h3>🧬 Nadi Match</h3>
 <p id="nadiMatch">Compatible</p>
 </div>
-</div>
-
 </div>
 
 <!-- ===== INSIGHTS ===== -->
@@ -949,15 +948,7 @@ function getMoonSign(date){
 const month=date.getMonth()+1;
 
 const day=date.getDate();
-function getNakshatra(date){
 
-const day = date.getDate();
-
-return nakshatras[
-day % 27
-];
-
-}
 /* SIMPLE ZODIAC */
 
 if((month==3 && day>=21) || (month==4 && day<=19))
@@ -994,6 +985,18 @@ if((month==1 && day>=20) || (month==2 && day<=18))
 return "Aquarius";
 
 return "Pisces";
+
+}
+
+/* ===== NAKSHATRA ===== */
+
+function getNakshatra(date){
+
+const day = date.getDate();
+
+return nakshatras[
+day % 27
+];
 
 }
 const nakshatras=[
