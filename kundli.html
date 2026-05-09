@@ -537,6 +537,43 @@ transform:rotate(-45deg);
 text-shadow:0 0 8px rgba(255,215,0,0.3);
 
 }
+/* ===== HOUSE NUMBER ===== */
+
+.house-number{
+
+position:absolute;
+
+top:4px;
+
+left:6px;
+
+font-size:11px;
+
+font-weight:bold;
+
+color:#aaa;
+
+transform:rotate(-45deg);
+
+}
+
+/* ===== LAGNA ===== */
+
+.lagna-marker{
+
+font-size:13px;
+
+font-weight:800;
+
+color:#00ffcc;
+
+margin-top:4px;
+
+transform:rotate(-45deg);
+
+text-shadow:0 0 10px rgba(0,255,200,0.5);
+
+}
 </style>
 </head>
 
@@ -1142,11 +1179,31 @@ document.getElementById(
 `house${i}`
 ).innerHTML = `
 
+<div class="house-number">
+${i}
+</div>
+
 <div class="house-sign">
 ${zodiacHindi[signIndex]}
 </div>
 
 `;
+
+/* LAGNA MARK */
+
+if(i===1){
+
+document.getElementById(
+`house${i}`
+).innerHTML += `
+
+<div class="lagna-marker">
+लग्न
+</div>
+
+`;
+
+}
 
 }
 
