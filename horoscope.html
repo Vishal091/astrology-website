@@ -338,8 +338,45 @@ document.addEventListener("click",function(e){
    speakText(text);
  }
 });
+window.payNow = function(){
 
+const options = {
+
+key: "icS6bUVLfFKHSruleF9S2vDd",
+
+amount: 9900, // ₹99
+
+currency: "INR",
+
+name: "Astrodhani",
+
+description: "Premium Horoscope Report",
+
+image: "logo.png",
+
+handler: function(response){
+
+alert("Payment Successful ✅");
+
+console.log(response);
+
+// Unlock premium
+localStorage.setItem("premiumReport", "true");
+
+},
+
+theme: {
+color: "#A83232"
+}
+
+};
+
+const rzp = new Razorpay(options);
+
+rzp.open();
+
+}
 </script>
-
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </body>
 </html>
