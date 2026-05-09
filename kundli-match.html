@@ -863,37 +863,49 @@ const percent=
 Math.floor((guna/36)*100);
 /* ===== ASHTAKOOT ===== */
 
+/* ===== REALISTIC ASHTAKOOT ===== */
+
 /* VARNA */
 const varna =
-signDiff < 4 ? 1 : 0;
+signDiff <= 1 ? 1 : 0;
 
 /* VASHYA */
 const vashya =
-signDiff < 6 ? 2 : 1;
+signDiff <= 2 ? 2 :
+signDiff <= 5 ? 1 : 0;
 
 /* TARA */
 const tara =
-nakDiff < 10 ? 3 : 1;
+nakDiff <= 4 ? 3 :
+nakDiff <= 10 ? 2 : 1;
 
 /* YONI */
 const yoni =
-nakDiff < 14 ? 4 : 2;
+nakDiff <= 3 ? 4 :
+nakDiff <= 8 ? 3 :
+nakDiff <= 15 ? 2 : 1;
 
 /* GRAHA MAITRI */
 const graha =
-signDiff < 5 ? 5 : 3;
+signDiff <= 2 ? 5 :
+signDiff <= 5 ? 3 : 1;
 
 /* GANA */
 const gana =
-nakDiff < 15 ? 6 : 3;
+nakDiff <= 5 ? 6 :
+nakDiff <= 12 ? 4 : 2;
 
 /* BHAKOOT */
 const bhakoot =
-signDiff < 7 ? 7 : 2;
+signDiff <= 1 ? 7 :
+signDiff <= 4 ? 5 :
+signDiff <= 7 ? 3 : 1;
 
 /* NADI */
 const nadi =
-nakDiff < 10 ? 8 : 4;
+nakDiff <= 3 ? 8 :
+nakDiff <= 8 ? 6 :
+nakDiff <= 15 ? 4 : 2;
 
 /* UPDATE UI */
 
