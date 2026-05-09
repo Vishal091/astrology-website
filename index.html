@@ -408,7 +408,86 @@ margin-top:15px;
 }
 
 }
+/* ===== PREMIUM FOOTER ===== */
 
+.footer{
+background:#111;
+color:white;
+padding:60px 20px 20px;
+}
+
+.footer-container{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:30px;
+max-width:1200px;
+margin:auto;
+}
+
+.footer-col h3{
+color:#FFD700;
+margin-bottom:15px;
+}
+
+.footer-col a{
+display:block;
+color:#ddd;
+text-decoration:none;
+margin:8px 0;
+transition:0.3s;
+}
+
+.footer-col a:hover{
+color:#FFD700;
+transform:translateX(5px);
+}
+
+.newsletter{
+display:flex;
+margin-top:10px;
+}
+
+.newsletter input{
+flex:1;
+padding:10px;
+border:none;
+border-radius:10px 0 0 10px;
+}
+
+.newsletter button{
+padding:10px 15px;
+border:none;
+background:#FFD700;
+color:black;
+font-weight:bold;
+border-radius:0 10px 10px 0;
+cursor:pointer;
+}
+
+.socials{
+display:flex;
+gap:15px;
+margin-top:15px;
+font-size:22px;
+}
+
+.socials i{
+cursor:pointer;
+transition:0.3s;
+}
+
+.socials i:hover{
+color:#FFD700;
+transform:scale(1.2);
+}
+
+.footer-bottom{
+text-align:center;
+margin-top:40px;
+padding-top:20px;
+border-top:1px solid rgba(255,255,255,0.1);
+color:#aaa;
+}
 </style>
 </head>
 
@@ -750,6 +829,146 @@ Close
 
 <!-- ===== FOOTER ===== -->
 <footer class="footer">
+
+<div class="footer-container">
+
+<!-- COLUMN 1 -->
+<div class="footer-col">
+
+<h3>Horoscope</h3>
+
+<a href="#">
+<i class="fa-solid fa-star"></i>
+Today's Horoscope
+</a>
+
+<a href="#">
+<i class="fa-solid fa-star"></i>
+Daily Horoscope
+</a>
+
+<a href="#">
+<i class="fa-solid fa-star"></i>
+Weekly Horoscope
+</a>
+
+<a href="#">
+<i class="fa-solid fa-star"></i>
+Monthly Horoscope
+</a>
+
+<a href="#">
+<i class="fa-solid fa-star"></i>
+Yearly Horoscope
+</a>
+
+<h3>Shubh Muhurat</h3>
+
+<a href="#">Marriage Muhurat</a>
+<a href="#">Griha Pravesh</a>
+<a href="#">Mundan</a>
+
+</div>
+
+<!-- COLUMN 2 -->
+<div class="footer-col">
+
+<h3>Important Links</h3>
+
+<a href="shop.html">
+<i class="fa-solid fa-store"></i>
+Astromall
+</a>
+
+<a href="panchang.html">
+Today Panchang
+</a>
+
+<a href="services.html">
+Free Kundli
+</a>
+
+<a href="services.html">
+Kundli Matching
+</a>
+
+<a href="#" onclick="openChat()">
+Chat with Astrologer
+</a>
+
+<a href="#" onclick="openChat()">
+Talk to Astrologer
+</a>
+
+<a href="#">
+Numerology
+</a>
+
+</div>
+
+<!-- COLUMN 3 -->
+<div class="footer-col">
+
+<h3>Explore</h3>
+
+<a href="#">Tarot</a>
+<a href="#">Zodiac Signs</a>
+<a href="#">Vastu Shastra</a>
+<a href="#">Love Calculator</a>
+
+<h3>Shop</h3>
+
+<a href="#">Evil Eye</a>
+<a href="#">Rudraksha</a>
+<a href="#">Gemstones</a>
+
+</div>
+
+<!-- COLUMN 4 -->
+<div class="footer-col">
+
+<h3>Newsletter</h3>
+
+<p>Get daily horoscope & offers 🔮</p>
+
+<div class="newsletter">
+
+<input type="email"
+placeholder="Enter email">
+
+<button>
+Subscribe
+</button>
+
+</div>
+
+<h3>Contact</h3>
+
+<p>
+<i class="fa-solid fa-envelope"></i>
+support@astrodhani.com
+</p>
+
+<p>
+<i class="fa-solid fa-headset"></i>
+24x7 Support
+</p>
+
+<div class="socials">
+
+<i class="fa-brands fa-facebook"></i>
+
+<i class="fa-brands fa-instagram"></i>
+
+<i class="fa-brands fa-linkedin"></i>
+
+<i class="fa-brands fa-youtube"></i>
+
+</div>
+
+</div>
+
+</div>
 
 <div class="footer-bottom">
 © 2026 Astrodhani • All Rights Reserved
