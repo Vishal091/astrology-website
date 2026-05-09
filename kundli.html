@@ -520,6 +520,23 @@ transition:0.2s;
 background:#f5f5f5;
 
 }
+/* ===== HOUSE ZODIAC ===== */
+
+.house-sign{
+
+font-size:16px;
+
+font-weight:800;
+
+color:#FFD700;
+
+margin-bottom:6px;
+
+transform:rotate(-45deg);
+
+text-shadow:0 0 8px rgba(255,215,0,0.3);
+
+}
 </style>
 </head>
 
@@ -762,7 +779,23 @@ const zodiac=[
 "Leo","Virgo","Libra","Scorpio",
 "Sagittarius","Capricorn","Aquarius","Pisces"
 ];
+const zodiacHindi=[
 
+"मेष",
+"वृषभ",
+"मिथुन",
+"कर्क",
+"सिंह",
+"कन्या",
+
+"तुला",
+"वृश्चिक",
+"धनु",
+"मकर",
+"कुंभ",
+"मीन"
+
+];
 const nakshatras=[
 "Ashwini","Bharani","Krittika","Rohini",
 "Mrigashira","Ardra","Punarvasu","Pushya",
@@ -955,7 +988,11 @@ function getSign(deg){
 return zodiac[Math.floor(deg/30)];
 
 }
+function getSignIndex(deg){
 
+return Math.floor(deg / 30);
+
+}
 function getNakshatra(deg){
 
 return nakshatras[
@@ -1094,11 +1131,22 @@ document.getElementById("lagnaChart")
 
 /* CLEAR HOUSES */
 
+/* CLEAR HOUSES */
+
 for(let i=1;i<=12;i++){
+
+const signIndex =
+(getSignIndex(ascendant)+(i-1)) % 12;
 
 document.getElementById(
 `house${i}`
-).innerHTML="";
+).innerHTML = `
+
+<div class="house-sign">
+${zodiacHindi[signIndex]}
+</div>
+
+`;
 
 }
 
