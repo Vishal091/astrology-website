@@ -574,6 +574,65 @@ transform:rotate(-45deg);
 text-shadow:0 0 10px rgba(0,255,200,0.5);
 
 }
+/* ===== DOSHAS ===== */
+
+.dosha-title{
+
+text-align:center;
+
+margin-top:50px;
+
+font-size:34px;
+
+color:#FFD700;
+
+}
+
+.dosha-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(240px,1fr));
+
+gap:20px;
+
+margin-top:25px;
+
+}
+
+.dosha-card{
+
+background:
+linear-gradient(145deg,#1b2248,#11152d);
+
+padding:22px;
+
+border-radius:20px;
+
+border:1px solid rgba(255,215,0,0.15);
+
+box-shadow:0 15px 40px rgba(0,0,0,0.4);
+
+text-align:center;
+
+}
+
+.dosha-card h3{
+
+color:#FFD700;
+
+margin-bottom:10px;
+
+}
+
+.dosha-card p{
+
+font-size:18px;
+
+font-weight:700;
+
+}
 </style>
 </head>
 
@@ -721,7 +780,35 @@ onclick="generateKundli()">
 </h2>
 
 <div class="planets" id="planets"></div>
+<!-- ===== DOSHAS ===== -->
 
+<h2 class="dosha-title">
+⚠️ Dosha Analysis
+</h2>
+
+<div class="dosha-grid">
+
+<div class="dosha-card">
+<h3>🔥 Manglik Dosha</h3>
+<p id="manglikResult">-</p>
+</div>
+
+<div class="dosha-card">
+<h3>🐍 Kaal Sarp Dosha</h3>
+<p id="kaalResult">-</p>
+</div>
+
+<div class="dosha-card">
+<h3>🪐 Shani Dosha</h3>
+<p id="shaniResult">-</p>
+</div>
+
+<div class="dosha-card">
+<h3>👴 Pitra Dosha</h3>
+<p id="pitraResult">-</p>
+</div>
+
+</div>
 <div class="cta-box">
 
 <h2>
@@ -1108,6 +1195,54 @@ const mercury=getPlanet(jd,2);
 const jupiter=getPlanet(jd,5);
 const venus=getPlanet(jd,3);
 const saturn=getPlanet(jd,6);
+const rahu=getPlanet(jd,10);
+
+const ketu=(rahu+180)%360;
+/* ===== MANGlik ===== */
+
+const manglikHouses=[1,4,7,8,12];
+
+const isManglik =
+manglikHouses.includes(marsHouse);
+
+document.getElementById(
+"manglikResult"
+).innerHTML = isManglik
+? "⚠️ Present"
+: "✅ Not Present";
+
+/* ===== KAAL SARP ===== */
+
+const isKaalSarp =
+Math.abs(rahuHouse-ketuHouse)===6;
+
+document.getElementById(
+"kaalResult"
+).innerHTML = isKaalSarp
+? "⚠️ Possible"
+: "✅ Not Found";
+
+/* ===== SHANI ===== */
+
+const isShani =
+[1,4,7,8,10].includes(saturnHouse);
+
+document.getElementById(
+"shaniResult"
+).innerHTML = isShani
+? "⚠️ Strong Influence"
+: "✅ Normal";
+
+/* ===== PITRA ===== */
+
+const isPitra =
+Math.abs(sunHouse-rahuHouse)<=1;
+
+document.getElementById(
+"pitraResult"
+).innerHTML = isPitra
+? "⚠️ Possible"
+: "✅ Not Found";
 /* ===== PLANET HOUSE MAPPING ===== */
 
 function getHouse(planetDeg,cusps){
@@ -1159,6 +1294,11 @@ getHouse(venus,houseData.cusps);
 
 const saturnHouse =
 getHouse(saturn,houseData.cusps);
+const rahuHouse =
+getHouse(rahu,houseData.cusps);
+
+const ketuHouse =
+getHouse(ketu,houseData.cusps);
 /* ===== KUNDLI CHART DATA ===== */
 
 document.getElementById("lagnaChart")
@@ -1230,6 +1370,9 @@ placePlanet(mercuryHouse,"☿ बुध");
 placePlanet(jupiterHouse,"♃ गुरु");
 placePlanet(venusHouse,"♀ शुक्र");
 placePlanet(saturnHouse,"♄ शनि");
+placePlanet(rahuHouse,"☊ राहु");
+
+placePlanet(ketuHouse,"☋ केतु");
 document.getElementById(
 "moonSign"
 ).innerText=getSign(moon);
