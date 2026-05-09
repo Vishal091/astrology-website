@@ -841,34 +841,7 @@ nakshatras.indexOf(girlNak)
 
 /* ===== ASHTAKOOT STYLE ===== */
 
-let guna =
-varna +
-vashya +
-tara +
-yoni +
-graha +
-gana +
-bhakoot +
-nadi;
 
-/* SIGN DIFFERENCE */
-guna -= signDiff;
-
-/* NAKSHATRA DIFFERENCE */
-guna -= Math.floor(nakDiff/2);
-
-/* LIMITS */
-
-if(guna < 18){
-guna = 18;
-}
-
-if(guna > 36){
-guna = 36;
-}
-
-const percent=
-Math.floor((guna/36)*100);
 /* ===== ASHTAKOOT ===== */
 
 /* ===== REALISTIC ASHTAKOOT ===== */
@@ -915,6 +888,34 @@ nakDiff <= 3 ? 8 :
 nakDiff <= 8 ? 6 :
 nakDiff <= 15 ? 4 : 2;
 
+  let guna =
+varna +
+vashya +
+tara +
+yoni +
+graha +
+gana +
+bhakoot +
+nadi;
+
+/* SIGN DIFFERENCE */
+guna -= signDiff;
+
+/* NAKSHATRA DIFFERENCE */
+guna -= Math.floor(nakDiff/2);
+
+/* LIMITS */
+
+if(guna < 18){
+guna = 18;
+}
+
+if(guna > 36){
+guna = 36;
+}
+
+const percent=
+Math.floor((guna/36)*100);
 /* UPDATE UI */
 
 document.getElementById(
