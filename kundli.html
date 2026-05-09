@@ -1202,25 +1202,7 @@ const ketu=(rahu+180)%360;
 
 /* ===== SHANI ===== */
 
-const isShani =
-[1,4,7,8,10].includes(saturnHouse);
 
-document.getElementById(
-"shaniResult"
-).innerHTML = isShani
-? "⚠️ Strong Influence"
-: "✅ Normal";
-
-/* ===== PITRA ===== */
-
-const isPitra =
-Math.abs(sunHouse-rahuHouse)<=1;
-
-document.getElementById(
-"pitraResult"
-).innerHTML = isPitra
-? "⚠️ Possible"
-: "✅ Not Found";
 /* ===== PLANET HOUSE MAPPING ===== */
 
 function getHouse(planetDeg,cusps){
@@ -1300,7 +1282,25 @@ document.getElementById(
 ).innerHTML = isKaalSarp
 ? "⚠️ Possible"
 : "✅ Not Found";
+const isShani =
+[1,4,7,8,10].includes(saturnHouse);
 
+document.getElementById(
+"shaniResult"
+).innerHTML = isShani
+? "⚠️ Strong Influence"
+: "✅ Normal";
+
+/* ===== PITRA ===== */
+
+const isPitra =
+Math.abs(sunHouse-rahuHouse)<=1;
+
+document.getElementById(
+"pitraResult"
+).innerHTML = isPitra
+? "⚠️ Possible"
+: "✅ Not Found";
 /* ===== KUNDLI CHART DATA ===== */
 
 document.getElementById("lagnaChart")
