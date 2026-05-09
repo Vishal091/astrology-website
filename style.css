@@ -1598,3 +1598,12 @@ margin:auto;
 }
 
 }
+/* ===== GLOBAL TEXT FIX ===== */
+
+.dark-card p,
+.dark-card span,
+.dark-card li{
+
+color:white;
+
+}
