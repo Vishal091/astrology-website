@@ -725,7 +725,52 @@ Module._free(ptr);
 return (lon+360)%360;
 
 }
+/* ===== HOUSE CALC ===== */
 
+function calculateHouses(jd,lat,lon){
+
+const cuspsPtr =
+Module._malloc(8 * 13);
+
+const ascmcPtr =
+Module._malloc(8 * 10);
+
+Module.ccall(
+"swe_houses",
+"number",
+["number","number","number","number","number","number"],
+[
+jd,
+lat,
+lon,
+80, // Placidus
+cuspsPtr,
+ascmcPtr
+]
+);
+
+const cusps=[];
+
+for(let i=1;i<=12;i++){
+
+cusps.push(
+Module.HEAPF64[(cuspsPtr/8)+i]
+);
+
+}
+
+const asc =
+Module.HEAPF64[(ascmcPtr/8)];
+
+Module._free(cuspsPtr);
+Module._free(ascmcPtr);
+
+return {
+cusps,
+asc
+};
+
+}
 function getSign(deg){
 
 return zodiac[Math.floor(deg/30)];
@@ -761,6 +806,8 @@ document.getElementById("tob").value;
 
 const city=
 document.getElementById("city").value;
+  const lat = cities[city].lat;
+const lon = cities[city].lon;
 
 if(!name || !dob || !tob || !city){
 
@@ -779,6 +826,11 @@ setTimeout(()=>{
 const dt=new Date(`${dob}T${tob}`);
 
 const jd=(dt/86400000)+2440587.5;
+const houseData =
+calculateHouses(jd,lat,lon);
+
+const ascendant =
+houseData.asc;
 
 const sun=getPlanet(jd,0);
 const moon=getPlanet(jd,1);
@@ -787,47 +839,91 @@ const mercury=getPlanet(jd,2);
 const jupiter=getPlanet(jd,5);
 const venus=getPlanet(jd,3);
 const saturn=getPlanet(jd,6);
+/* ===== PLANET HOUSE MAPPING ===== */
+
+function getHouse(planetDeg,cusps){
+
+for(let i=0;i<12;i++){
+
+let start=cusps[i];
+let end=cusps[(i+1)%12];
+
+if(end < start){
+end += 360;
+}
+
+let p=planetDeg;
+
+if(p < start){
+p += 360;
+}
+
+if(p >= start && p < end){
+
+return i+1;
+
+}
+
+}
+
+return 1;
+
+}
+
+const sunHouse =
+getHouse(sun,houseData.cusps);
+
+const moonHouse =
+getHouse(moon,houseData.cusps);
+
+const marsHouse =
+getHouse(mars,houseData.cusps);
+
+const mercuryHouse =
+getHouse(mercury,houseData.cusps);
+
+const jupiterHouse =
+getHouse(jupiter,houseData.cusps);
+
+const venusHouse =
+getHouse(venus,houseData.cusps);
+
+const saturnHouse =
+getHouse(saturn,houseData.cusps);
 /* ===== KUNDLI CHART DATA ===== */
 
 document.getElementById("lagnaChart")
-.innerText = getSign((moon+90)%360);
+.innerText = getSign(ascendant);
 
 /* DEMO HOUSE PLACEMENTS */
 
-document.getElementById("house1")
-.innerHTML = `
-☀️ Sun<br>${getSign(sun)}
-`;
+/* CLEAR HOUSES */
 
-document.getElementById("house2")
-.innerHTML = `
-🌙 Moon<br>${getSign(moon)}
-`;
+for(let i=1;i<=12;i++){
 
-document.getElementById("house3")
-.innerHTML = `
-♂️ Mars<br>${getSign(mars)}
-`;
+document.getElementById(
+`house${i}`
+).innerHTML="";
 
-document.getElementById("house4")
-.innerHTML = `
-☿ Mercury<br>${getSign(mercury)}
-`;
+}
 
-document.getElementById("house5")
-.innerHTML = `
-♃ Jupiter<br>${getSign(jupiter)}
-`;
+/* ADD PLANETS */
 
-document.getElementById("house6")
-.innerHTML = `
-♀ Venus<br>${getSign(venus)}
-`;
+function placePlanet(house,planet){
 
-document.getElementById("house7")
-.innerHTML = `
-♄ Saturn<br>${getSign(saturn)}
-`;
+document.getElementById(
+`house${house}`
+).innerHTML += planet + "<br>";
+
+}
+
+placePlanet(sunHouse,"☀️ Sun");
+placePlanet(moonHouse,"🌙 Moon");
+placePlanet(marsHouse,"♂️ Mars");
+placePlanet(mercuryHouse,"☿ Mercury");
+placePlanet(jupiterHouse,"♃ Jupiter");
+placePlanet(venusHouse,"♀ Venus");
+placePlanet(saturnHouse,"♄ Saturn");
 document.getElementById(
 "moonSign"
 ).innerText=getSign(moon);
@@ -838,7 +934,7 @@ document.getElementById(
 
 document.getElementById(
 "lagna"
-).innerText=getSign((moon+90)%360);
+).innerText=getSign(ascendant);
 
 document.getElementById(
 "nakshatra"
