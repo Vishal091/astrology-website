@@ -524,7 +524,57 @@ onclick="generateMatch()">
 <p id="nadiMatch">Compatible</p>
 </div>
 </div>
+<!-- ===== ASHTAKOOT ===== -->
 
+<div class="insights">
+
+<h2>🕉 Ashtakoot Analysis</h2>
+
+<div class="result-grid">
+
+<div class="result-card">
+<h3>Varna</h3>
+<p id="varnaScore">1/1</p>
+</div>
+
+<div class="result-card">
+<h3>Vashya</h3>
+<p id="vashyaScore">2/2</p>
+</div>
+
+<div class="result-card">
+<h3>Tara</h3>
+<p id="taraScore">3/3</p>
+</div>
+
+<div class="result-card">
+<h3>Yoni</h3>
+<p id="yoniScore">4/4</p>
+</div>
+
+<div class="result-card">
+<h3>Graha Maitri</h3>
+<p id="grahaScore">5/5</p>
+</div>
+
+<div class="result-card">
+<h3>Gana</h3>
+<p id="ganaScore">6/6</p>
+</div>
+
+<div class="result-card">
+<h3>Bhakoot</h3>
+<p id="bhakootScore">7/7</p>
+</div>
+
+<div class="result-card">
+<h3>Nadi</h3>
+<p id="nadiScore">8/8</p>
+</div>
+
+</div>
+
+</div>
 <!-- ===== INSIGHTS ===== -->
 
 <div class="insights">
@@ -811,7 +861,73 @@ guna = 36;
 
 const percent=
 Math.floor((guna/36)*100);
+/* ===== ASHTAKOOT ===== */
 
+/* VARNA */
+const varna =
+signDiff < 4 ? 1 : 0;
+
+/* VASHYA */
+const vashya =
+signDiff < 6 ? 2 : 1;
+
+/* TARA */
+const tara =
+nakDiff < 10 ? 3 : 1;
+
+/* YONI */
+const yoni =
+nakDiff < 14 ? 4 : 2;
+
+/* GRAHA MAITRI */
+const graha =
+signDiff < 5 ? 5 : 3;
+
+/* GANA */
+const gana =
+nakDiff < 15 ? 6 : 3;
+
+/* BHAKOOT */
+const bhakoot =
+signDiff < 7 ? 7 : 2;
+
+/* NADI */
+const nadi =
+nakDiff < 10 ? 8 : 4;
+
+/* UPDATE UI */
+
+document.getElementById(
+"varnaScore"
+).innerText=`${varna}/1`;
+
+document.getElementById(
+"vashyaScore"
+).innerText=`${vashya}/2`;
+
+document.getElementById(
+"taraScore"
+).innerText=`${tara}/3`;
+
+document.getElementById(
+"yoniScore"
+).innerText=`${yoni}/4`;
+
+document.getElementById(
+"grahaScore"
+).innerText=`${graha}/5`;
+
+document.getElementById(
+"ganaScore"
+).innerText=`${gana}/6`;
+
+document.getElementById(
+"bhakootScore"
+).innerText=`${bhakoot}/7`;
+
+document.getElementById(
+"nadiScore"
+).innerText=`${nadi}/8`;
 document.getElementById(
 "matchPercent"
 ).innerText=`${percent}%`;
