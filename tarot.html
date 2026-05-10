@@ -168,6 +168,7 @@ backface-visibility:hidden;
 overflow:hidden;
 box-shadow:
 0 20px 50px rgba(0,0,0,0.6);
+transition:0.4s;
 }
 
 .card-front{
@@ -588,89 +589,38 @@ love:[
 
 {
 title:"The Lovers",
-meaning:
-"A powerful romantic connection is entering your life."
+
+upright:
+"A powerful romantic connection is entering your life.",
+
+reversed:
+"Emotional confusion or imbalance may affect relationships."
+
 },
 
 {
 title:"The Empress",
-meaning:
-"Love and emotional nurturing are surrounding you."
+
+upright:
+"Love and emotional nurturing are surrounding you.",
+
+reversed:
+"Emotional distance or insecurity may need attention."
+
 },
 
 {
 title:"Two of Cups",
-meaning:
-"Mutual attraction and understanding will strengthen relationships."
+
+upright:
+"Mutual attraction and understanding will strengthen relationships.",
+
+reversed:
+"Miscommunication could create temporary emotional distance."
+
 }
 
 ],
-
-career:[
-
-{
-title:"The Emperor",
-meaning:
-"Leadership and authority will help your career rise."
-},
-
-{
-title:"Ace of Pentacles",
-meaning:
-"A strong financial opportunity is approaching."
-},
-
-{
-title:"The Chariot",
-meaning:
-"Focused effort will lead to rapid success."
-}
-
-],
-
-finance:[
-
-{
-title:"Ten of Pentacles",
-meaning:
-"Financial growth and stability are indicated."
-},
-
-{
-title:"King of Pentacles",
-meaning:
-"Wise financial decisions will bring prosperity."
-},
-
-{
-title:"Wheel of Fortune",
-meaning:
-"A positive financial shift is coming soon."
-}
-
-],
-
-spiritual:[
-
-{
-title:"The Hermit",
-meaning:
-"Inner wisdom and spiritual growth are guiding you."
-},
-
-{
-title:"The Moon",
-meaning:
-"Listen carefully to your intuition and dreams."
-},
-
-{
-title:"Judgement",
-meaning:
-"A spiritual awakening is beginning."
-}
-
-]
 
 };
 
@@ -684,17 +634,67 @@ if(card.classList.contains("flipped"))
 return;
 
 card.classList.add("flipped");
+if(isReversed){
 
+card.querySelector(
+".card-back"
+).style.transform =
+
+"rotateY(180deg) rotate(180deg)";
+
+}
 const data=
 tarotData[currentCategory][index];
 
+/* RANDOM ORIENTATION */
+
+const isReversed =
+Math.random() > 0.5;
+
+const orientation =
+isReversed
+? "Reversed"
+: "Upright";
+
+card.classList.add("flipped");
+
+if(isReversed){
+
+card.querySelector(
+".card-back"
+).style.transform =
+"rotateY(180deg) rotate(180deg)";
+
+}
+
+/* TITLE */
+
 document.getElementById(
 `cardTitle${index}`
-).innerText=data.title;
+).innerText =
+
+`${data.title}
+(${orientation})`;
+
+/* MEANING */
 
 document.getElementById(
 `cardMeaning${index}`
-).innerText=data.meaning;
+).innerText =
+
+isReversed
+? data.reversed
+: data.upright;
+
+/* MEANING */
+
+document.getElementById(
+`cardMeaning${index}`
+).innerText =
+
+isReversed
+? data.reversed
+: data.upright;
 
 flippedCount++;
 
