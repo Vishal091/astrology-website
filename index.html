@@ -1436,9 +1436,11 @@ botReply(
 `Namaste ${name} 🙏 Your kundli is being analyzed...`
 );
 
-startTimer();
+
 
 }
+
+let freeTimerStarted = false;
 
 function sendMsg(){
 
@@ -1448,6 +1450,16 @@ document.getElementById("userMsg");
 const msg = input.value;
 
 if(!msg) return;
+
+/* START FREE TIMER ON FIRST MESSAGE */
+
+if(!freeTimerStarted){
+
+freeTimerStarted = true;
+
+startFreeTimer();
+
+}
 
 addMsg("You: " + msg);
 
@@ -1522,6 +1534,50 @@ localStorage.setItem("wallet",0);
 updateWalletUI();
 
 alert("Recharge to continue 💰");
+
+}
+
+},1000);
+
+}
+
+/* ===== FREE TIMER ===== */
+
+function startFreeTimer(){
+
+time = 120;
+
+clearInterval(timerInterval);
+
+timerInterval = setInterval(()=>{
+
+time--;
+
+let min = Math.floor(time/60);
+
+let sec = time%60;
+
+document.getElementById("timer")
+.innerText =
+
+`⏳ ${min}:${sec<10?'0'+sec:sec}`;
+
+if(time <= 0){
+
+clearInterval(timerInterval);
+
+document.getElementById("timer")
+.innerText = "Free Time Ended";
+
+botReply(
+"⏰ Your free consultation has ended."
+);
+
+setTimeout(()=>{
+
+openRechargeModal();
+
+},1000);
 
 }
 
