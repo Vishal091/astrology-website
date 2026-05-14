@@ -1457,6 +1457,10 @@ if(!freeTimerStarted){
 
 freeTimerStarted = true;
 
+/* NOTIFY ASTROLOGER */
+
+notifyAstrologer(msg);
+
 startFreeTimer();
 
 }
@@ -1491,7 +1495,68 @@ function botReply(text){
 addMsg("Shubham: " + text);
 
 }
+/* ===== TELEGRAM ALERT ===== */
 
+async function notifyAstrologer(msg){
+
+const name =
+document.getElementById("name").value;
+
+const dob =
+document.getElementById("dob").value;
+
+const text =
+
+`🚨 New Consultation
+
+👤 Name: ${name}
+
+📅 DOB: ${dob}
+
+💬 Message:
+${msg}`;
+
+const botToken =
+"8819204658:AAEZBz2MQdx827i-zWVZD3JnBPqWxurgHTo";
+
+const chatId =
+"6956229419";
+
+const url =
+
+`https://api.telegram.org/bot${botToken}/sendMessage`;
+
+try{
+
+await fetch(url,{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+chat_id:chatId,
+
+text:text
+
+})
+
+});
+
+console.log(
+"Astrologer notified"
+);
+
+}catch(err){
+
+console.log(err);
+
+}
+
+}
 /* ===== TIMER ===== */
 
 function startTimer(){
