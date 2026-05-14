@@ -1329,7 +1329,55 @@ support@astrodhani.com
 
 <!-- ===== AUTH ===== -->
 <script type="module" src="auth.js"></script>
+<script type="module">
 
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+serverTimestamp,
+onSnapshot,
+query,
+orderBy
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* ===== FIREBASE CONFIG ===== */
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyA2ytO0jnhM9baGrByUS1jgSc47q6xJ64s",
+
+authDomain: "astrodhani-935c8.firebaseapp.com",
+
+projectId: "astrodhani-935c8",
+
+storageBucket: "astrodhani-935c8.firebasestorage.app",
+
+messagingSenderId: "158324229234",
+
+appId: "1:158324229234:web:bff8d74888b356be362eeb"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+/* GLOBAL */
+
+window.db = db;
+window.collection = collection;
+window.addDoc = addDoc;
+window.serverTimestamp =
+serverTimestamp;
+
+</script>
 <!-- ===== MAIN JS ===== -->
 <script>
 
@@ -1448,7 +1496,8 @@ const input =
 document.getElementById("userMsg");
 
 const msg = input.value;
-
+const name =
+document.getElementById("name").value;
 if(!msg) return;
 
 /* START FREE TIMER ON FIRST MESSAGE */
@@ -1466,7 +1515,25 @@ startFreeTimer();
 }
 
 addMsg("You: " + msg);
+/* SAVE TO FIREBASE */
 
+addDoc(
+
+collection(db,"consultations"),
+
+{
+
+user:name.value,
+
+message:msg,
+
+sender:"user",
+
+createdAt:serverTimestamp()
+
+}
+
+);
 input.value = "";
 
 botReply(
