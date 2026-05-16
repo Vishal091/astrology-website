@@ -518,12 +518,15 @@ onclick="history.back()">
 
 <div class="hero">
 
-<img src="image.png">
+<img id="astroImage"
+src="">
 
 <div class="info">
 
-<h1>
-Acharya Neetu Sharma Ji
+<h1 id="astroName">
+
+Astrologer Name
+
 </h1>
 
 <div class="verified">
@@ -536,12 +539,18 @@ Verified Astrologer
 
 <div class="meta">
 
-<div class="meta-box">
-🕉 12+ Years Experience
+<div class="meta-box"
+id="astroExperience">
+
+Experience
+
 </div>
 
-<div class="meta-box">
-🌐 Hindi, English, Punjabi
+<div class="meta-box"
+id="astroLanguages">
+
+Languages
+
 </div>
 
 <div class="meta-box">
@@ -554,9 +563,10 @@ Verified Astrologer
 
 </div>
 
-<div class="price">
+<div class="price"
+id="astroPrice">
 
-₹100/min
+₹0/min
 
 </div>
 
@@ -595,17 +605,8 @@ onclick="startConsultation()">
 📖 About Astrologer
 </h2>
 
-<div class="about">
-
-Acharya Neetu Sharma Ji is a renowned Vedic Astrologer and Spiritual Consultant known for providing accurate guidance and powerful spiritual remedies for various life problems.
-
-With deep knowledge of Vedic Astrology, Tarot Card Reading, Face Reading, Numerology, Palmistry, Spiritual Healing, and Vastu Consultation, she has successfully guided thousands of people toward positivity, peace, success, and spiritual growth.
-
-She specializes in Marriage Consultation, Love & Relationship Guidance, Career Problems, Business Growth, Family Issues, Financial Stability, Grah Dosh Analysis, Kundli Reading, Vastu Guidance, and Spiritual Healing.
-
-Her remedies are simple, effective, spiritually powerful, and based on ancient Vedic wisdom.
-
-</div>
+<div class="about"
+id="astroAbout">
 
 </div>
 
@@ -617,43 +618,8 @@ Her remedies are simple, effective, spiritually powerful, and based on ancient V
 🔮 Expertise
 </h2>
 
-<div class="tags">
-
-<div class="tag">
-Vedic Astrology
-</div>
-
-<div class="tag">
-Tarot Card Reading
-</div>
-
-<div class="tag">
-Numerology
-</div>
-
-<div class="tag">
-Palmistry
-</div>
-
-<div class="tag">
-Face Reading
-</div>
-
-<div class="tag">
-Spiritual Healing
-</div>
-
-<div class="tag">
-Vastu Consultation
-</div>
-
-<div class="tag">
-Marriage Consultation
-</div>
-
-<div class="tag">
-Love & Relationship
-</div>
+<div class="tags"
+id="astroTags">
 
 </div>
 
@@ -800,13 +766,170 @@ Very humble astrologer. Face reading and tarot predictions were surprisingly acc
 </div>
 <script>
 
+/* ===== ASTROLOGERS DATA ===== */
+
+const astrologers = {
+
+neetu:{
+
+name:
+"Acharya Neetu Sharma Ji",
+
+image:
+"image.png",
+
+experience:
+"🕉 12+ Years Experience",
+
+languages:
+"🌐 Hindi, English, Punjabi",
+
+price:
+"₹100/min",
+
+about:
+`Acharya Neetu Sharma Ji is a renowned Vedic Astrologer and Spiritual Consultant known for providing accurate guidance and powerful spiritual remedies for various life problems.`,
+
+tags:[
+
+"Vedic Astrology",
+"Tarot",
+"Palmistry",
+"Numerology",
+"Face Reading",
+"Vastu"
+
+]
+
+},
+
+rajkumar:{
+
+name:
+"Acharya Rajkumar Ji",
+
+image:
+"https://ui-avatars.com/api/?name=Rajkumar&background=7b000f&color=fff",
+
+experience:
+"🕉 30+ Years Experience",
+
+languages:
+"🌐 Hindi, English, Haryanvi",
+
+price:
+"₹100/min",
+
+about:
+`Highly experienced Vedic Astrologer known for accurate guidance and effective spiritual remedies.`,
+
+tags:[
+
+"Vedic Astrology"
+
+]
+
+},
+
+shivani:{
+
+name:
+"Acharya Shivani Ji",
+
+image:
+"https://ui-avatars.com/api/?name=Shivani&background=7b000f&color=fff",
+
+experience:
+"🕉 7+ Years Experience",
+
+languages:
+"🌐 Hindi, English",
+
+price:
+"₹75/min",
+
+about:
+`Professional Vedic Astrologer and Tarot Reader helping people gain positivity and confidence.`,
+
+tags:[
+
+"Vedic Astrology",
+"Tarot Reading",
+"Face Reading"
+
+]
+
+}
+
+};
+
+/* ===== GET URL PARAM ===== */
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+const id =
+params.get("id") || "neetu";
+
+const astro =
+astrologers[id];
+
+/* ===== LOAD DATA ===== */
+
+document.getElementById(
+"astroName"
+).innerText = astro.name;
+
+document.getElementById(
+"astroImage"
+).src = astro.image;
+
+document.getElementById(
+"astroExperience"
+).innerText =
+astro.experience;
+
+document.getElementById(
+"astroLanguages"
+).innerText =
+astro.languages;
+
+document.getElementById(
+"astroPrice"
+).innerText =
+astro.price;
+
+document.getElementById(
+"astroAbout"
+).innerText =
+astro.about;
+
+/* ===== TAGS ===== */
+
+const tagsDiv =
+document.getElementById(
+"astroTags"
+);
+
+astro.tags.forEach(tag=>{
+
+tagsDiv.innerHTML +=
+
+`<div class="tag">${tag}</div>`;
+
+});
+
+/* ===== CHAT ===== */
+
 function startConsultation(){
 
 localStorage.setItem(
 
 "selectedAstrologer",
 
-"Acharya Neetu Sharma Ji"
+astro.name
 
 );
 
