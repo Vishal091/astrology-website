@@ -18,8 +18,16 @@ box-sizing:border-box;
 
 body{
 font-family:'Poppins',sans-serif;
-background:#0f172a;
-color:white;
+
+background:
+linear-gradient(
+180deg,
+#f7ecec 0%,
+#fff8f0 100%
+);
+
+color:#5b0f16;
+
 overflow-x:hidden;
 }
 
@@ -40,8 +48,30 @@ margin:auto;
 }
 
 .hero{
-padding:100px 20px 70px;
+
+padding:90px 20px 70px;
+
 text-align:center;
+
+background:
+linear-gradient(
+135deg,
+#8b111c,
+#b3262e
+);
+
+border-bottom-left-radius:40px;
+border-bottom-right-radius:40px;
+
+position:relative;
+
+overflow:hidden;
+
+color:white;
+
+box-shadow:
+0 15px 40px rgba(139,17,28,0.25);
+
 }
 
 .hero h1{
@@ -51,7 +81,17 @@ margin-bottom:20px;
 }
 
 .hero h1 span{
-color:#f59e0b;
+
+background:
+linear-gradient(
+to right,
+#ffd700,
+#ffb300
+);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
 }
 
 .hero p{
@@ -72,12 +112,26 @@ margin:50px 0;
 }
 
 select{
+
 padding:14px 18px;
+
 border:none;
-border-radius:12px;
-background:#1e293b;
-color:white;
+
+border-radius:14px;
+
+background:white;
+
+color:#7a1018;
+
 font-size:15px;
+
+font-weight:500;
+
+border:1px solid rgba(139,17,28,0.12);
+
+box-shadow:
+0 4px 12px rgba(0,0,0,0.04);
+
 }
 
 .month-grid{
@@ -88,17 +142,39 @@ margin-bottom:80px;
 }
 
 .month-card{
-background:linear-gradient(145deg,#1e293b,#111827);
-border-radius:25px;
+
+background:white;
+
+border-radius:28px;
+
 overflow:hidden;
-border:1px solid rgba(255,255,255,0.08);
+
+border:1px solid rgba(139,17,28,0.08);
+
+box-shadow:
+0 8px 24px rgba(0,0,0,0.06);
+
+transition:.3s;
+
 }
 
 .month-header{
+
 padding:20px 25px;
-background:linear-gradient(to right,#f59e0b,#ec4899);
+
+background:
+linear-gradient(
+to right,
+#8b111c,
+#b3262e
+);
+
 font-size:24px;
+
 font-weight:600;
+
+color:#ffd700;
+
 }
 
 .muhurat-list{
@@ -131,11 +207,27 @@ font-size:14px;
 }
 
 .cta{
+
 margin:100px 0;
+
 text-align:center;
+
 padding:70px 20px;
-border-radius:30px;
-background:linear-gradient(135deg,#f59e0b,#ec4899);
+
+border-radius:35px;
+
+background:
+linear-gradient(
+135deg,
+#8b111c,
+#b3262e
+);
+
+color:white;
+
+box-shadow:
+0 12px 35px rgba(139,17,28,0.25);
+
 }
 
 .cta h2{
@@ -167,8 +259,21 @@ cursor:pointer;
 }
 
 .primary-btn{
-background:white;
-color:black;
+
+background:
+linear-gradient(
+to right,
+#ffcc00,
+#ffb300
+);
+
+color:#7a1018;
+
+font-weight:700;
+
+box-shadow:
+0 6px 18px rgba(255,179,0,0.35);
+
 }
 
 .secondary-btn{
@@ -196,18 +301,18 @@ padding:0 20px;
 }
 
 .countdown-card{
+
 width:100%;
 max-width:720px;
 
-background:linear-gradient(
-145deg,
-rgba(30,41,59,0.95),
-rgba(15,23,42,0.95)
+background:
+linear-gradient(
+135deg,
+#8b111c,
+#a5141f
 );
 
-border:1px solid rgba(255,255,255,0.08);
-
-backdrop-filter:blur(20px);
+border:2px solid rgba(255,215,0,0.18);
 
 padding:35px 25px;
 
@@ -216,8 +321,8 @@ border-radius:28px;
 text-align:center;
 
 box-shadow:
-0 10px 30px rgba(0,0,0,0.35),
-0 0 40px rgba(251,191,36,0.08);
+0 12px 35px rgba(139,17,28,0.35);
+
 }
 
 .countdown-label{
@@ -253,67 +358,54 @@ color:#cbd5e1;
 
 /* MOBILE */
 
-@media(max-width:768px){
+@media(max-width:600px){
 
 .hero{
-padding:70px 15px 50px;
+padding:70px 16px 50px;
 }
 
 .hero h1{
-font-size:38px;
-line-height:1.2;
+font-size:34px;
 }
 
 .hero p{
-font-size:15px;
-line-height:1.7;
-}
-
-.countdown-card{
-padding:28px 18px;
-border-radius:22px;
-}
-
-#countdownTimer{
-font-size:28px;
-}
-
-.countdown-date{
 font-size:14px;
 }
 
-.filters{
-flex-direction:column;
-align-items:center;
+.countdown-card{
+padding:24px 16px;
 }
 
-.filters select{
-width:100%;
-max-width:320px;
+#countdownTimer{
+font-size:24px;
 }
 
-.month-grid{
-grid-template-columns:1fr;
-gap:20px;
+.month-header{
+font-size:20px;
+}
+
+.muhurat-item{
+padding:14px 0;
+}
+
+.date{
+font-size:16px;
+}
+
+.time{
+font-size:14px;
 }
 
 .cta{
-padding:45px 20px;
-border-radius:24px;
+padding:45px 16px;
 }
 
 .cta h2{
-font-size:30px;
-line-height:1.2;
-}
-
-.cta-buttons{
-flex-direction:column;
+font-size:28px;
 }
 
 .cta-buttons button{
 width:100%;
-max-width:320px;
 }
 
 }
