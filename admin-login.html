@@ -357,6 +357,8 @@ return;
 
 try{
 
+const userCredential =
+
 await signInWithEmailAndPassword(
 
 auth,
@@ -364,6 +366,28 @@ email,
 password
 
 );
+
+/* ALLOW ONLY ADMIN */
+
+const allowedAdmin =
+
+"support@astrodhani.com";
+
+if(
+
+userCredential.user.email
+!== allowedAdmin
+
+){
+
+status.innerText =
+"Unauthorized Account ❌";
+
+await auth.signOut();
+
+return;
+
+}
 
 status.innerText =
 "Login Successful ✅";
