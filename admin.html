@@ -365,9 +365,17 @@ getAuth(app);
 const db = getFirestore(app);
 /* ===== ADMIN AUTH CHECK ===== */
 
+/* ===== ADMIN AUTH CHECK ===== */
+
 onAuthStateChanged(auth,(user)=>{
 
-if(!user){
+const allowedAdmin =
+"support@astrodhani.com";
+
+if(
+!user ||
+user.email !== allowedAdmin
+){
 
 window.location.href =
 "admin-login.html";
