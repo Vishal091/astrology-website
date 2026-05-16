@@ -527,6 +527,92 @@ font-size:30px;
 }
 
 }
+/* MOBILE STICKY BAR */
+
+.mobile-sticky-bar{
+
+position:fixed;
+
+bottom:0;
+
+left:0;
+
+width:100%;
+
+display:none;
+
+z-index:9999;
+
+background:white;
+
+padding:10px;
+
+gap:10px;
+
+box-shadow:
+0 -5px 20px rgba(0,0,0,0.12);
+
+}
+
+.mobile-sticky-bar a{
+
+flex:1;
+
+text-align:center;
+
+padding:16px 10px;
+
+border-radius:16px;
+
+text-decoration:none;
+
+font-weight:600;
+
+font-size:15px;
+
+}
+
+.sticky-call{
+
+background:
+linear-gradient(
+to right,
+#8b111c,
+#b3262e
+);
+
+color:white;
+
+}
+
+.sticky-whatsapp{
+
+background:
+linear-gradient(
+to right,
+#25D366,
+#1ebe5d
+);
+
+color:white;
+
+}
+
+@media(max-width:768px){
+
+.mobile-sticky-bar{
+
+display:flex;
+
+}
+
+body{
+
+padding-bottom:90px;
+
+}
+
+}
 </style>
 </head>
 <body>
@@ -1002,6 +1088,29 @@ this.reset();
 
 });
 </script>
+<!-- MOBILE STICKY BAR -->
 
+<div class="mobile-sticky-bar">
+
+<a
+href="tel:+918708833177"
+class="sticky-call"
+>
+
+📞 Call Astrologer
+
+</a>
+
+<a
+href="https://wa.me/8708833177?text=Hi%20Astrodhani,%20I%20need%20Marriage%20Muhurat%20guidance"
+target="_blank"
+class="sticky-whatsapp"
+>
+
+💬 WhatsApp
+
+</a>
+
+</div>
 </body>
 </html>
