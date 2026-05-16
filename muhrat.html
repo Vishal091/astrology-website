@@ -613,6 +613,126 @@ padding-bottom:90px;
 }
 
 }
+/* FAQ SECTION */
+
+.faq-section{
+
+margin-bottom:100px;
+
+}
+
+.faq-section h2{
+
+text-align:center;
+
+font-size:42px;
+
+margin-bottom:40px;
+
+color:#8b111c;
+
+}
+
+.faq-item{
+
+background:white;
+
+border-radius:22px;
+
+margin-bottom:20px;
+
+overflow:hidden;
+
+box-shadow:
+0 6px 18px rgba(0,0,0,0.05);
+
+}
+
+.faq-question{
+
+width:100%;
+
+background:none;
+
+border:none;
+
+padding:24px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+font-size:18px;
+
+font-weight:600;
+
+cursor:pointer;
+
+color:#8b111c;
+
+text-align:left;
+
+}
+
+.faq-question span{
+
+font-size:28px;
+
+font-weight:400;
+
+}
+
+.faq-answer{
+
+max-height:0;
+
+overflow:hidden;
+
+transition:.4s;
+
+}
+
+.faq-answer p{
+
+padding:0 24px 24px;
+
+line-height:1.8;
+
+color:#555;
+
+}
+
+.faq-item.active .faq-answer{
+
+max-height:300px;
+
+}
+
+.faq-item.active .faq-question span{
+
+transform:rotate(45deg);
+
+}
+
+@media(max-width:768px){
+
+.faq-section h2{
+
+font-size:30px;
+
+}
+
+.faq-question{
+
+font-size:16px;
+
+padding:20px;
+
+}
+
+}
 </style>
 </head>
 <body>
@@ -761,6 +881,119 @@ Book Consultation
 </button>
 
 </form>
+
+</div>
+
+</section>
+<!-- FAQ SECTION -->
+
+<section class="container">
+
+<div class="faq-section">
+
+<h2>
+Marriage Muhurat 2026 FAQs
+</h2>
+
+<div class="faq-item">
+
+<button class="faq-question">
+
+Which month is best for marriage in 2026?
+
+<span>+</span>
+
+</button>
+
+<div class="faq-answer">
+
+<p>
+February, May, June, and December contain the highest number of auspicious marriage Muhurat dates in 2026 according to Vedic astrology.
+</p>
+
+</div>
+
+</div>
+
+<div class="faq-item">
+
+<button class="faq-question">
+
+Is May 2026 good for marriage?
+
+<span>+</span>
+
+</button>
+
+<div class="faq-answer">
+
+<p>
+Yes, May 2026 is considered highly favorable for weddings with multiple auspicious Nakshatras and Muhurat timings.
+</p>
+
+</div>
+
+</div>
+
+<div class="faq-item">
+
+<button class="faq-question">
+
+Which Nakshatra is best for marriage?
+
+<span>+</span>
+
+</button>
+
+<div class="faq-answer">
+
+<p>
+Rohini, Uttara Phalguni, Swati, and Anuradha are considered among the most auspicious Nakshatras for marriage ceremonies.
+</p>
+
+</div>
+
+</div>
+
+<div class="faq-item">
+
+<button class="faq-question">
+
+Can marriage happen during Chaturmas?
+
+<span>+</span>
+
+</button>
+
+<div class="faq-answer">
+
+<p>
+Traditionally, Hindu weddings are avoided during Chaturmas, which usually falls between August and October.
+</p>
+
+</div>
+
+</div>
+
+<div class="faq-item">
+
+<button class="faq-question">
+
+How is Marriage Muhurat calculated?
+
+<span>+</span>
+
+</button>
+
+<div class="faq-answer">
+
+<p>
+Marriage Muhurat is calculated using Panchang, planetary positions, Nakshatra, Tithi, and horoscope compatibility according to Vedic astrology principles.
+</p>
+
+</div>
+
+</div>
 
 </div>
 
@@ -1163,6 +1396,23 @@ console.log(error);
 
 }
 );
+// FAQ TOGGLE
+
+const faqItems =
+document.querySelectorAll('.faq-item');
+
+faqItems.forEach(item => {
+
+const button =
+item.querySelector('.faq-question');
+
+button.addEventListener('click', () => {
+
+item.classList.toggle('active');
+
+});
+
+});
 </script>
 <!-- MOBILE STICKY BAR -->
 
@@ -1188,5 +1438,51 @@ class="sticky-whatsapp"
 </a>
 
 </div>
+<script type="application/ld+json">
+
+{
+"@context":"https://schema.org",
+"@type":"FAQPage",
+
+"mainEntity":[
+
+{
+"@type":"Question",
+"name":"Which month is best for marriage in 2026?",
+
+"acceptedAnswer":{
+"@type":"Answer",
+
+"text":"February, May, June, and December contain the highest number of auspicious marriage Muhurat dates in 2026."
+}
+},
+
+{
+"@type":"Question",
+"name":"Is May 2026 good for marriage?",
+
+"acceptedAnswer":{
+"@type":"Answer",
+
+"text":"Yes, May 2026 is considered highly favorable for weddings with multiple auspicious Muhurat timings."
+}
+},
+
+{
+"@type":"Question",
+"name":"Which Nakshatra is best for marriage?",
+
+"acceptedAnswer":{
+"@type":"Answer",
+
+"text":"Rohini, Uttara Phalguni, Swati, and Anuradha are considered highly auspicious Nakshatras for marriage."
+}
+}
+
+]
+
+}
+
+</script>
 </body>
 </html>
