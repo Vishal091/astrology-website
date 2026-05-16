@@ -1490,23 +1490,23 @@ listenForReplies();
 
 let freeTimerStarted = false;
 
-function sendMsg(){
+async function sendMsg(){
 
 const input =
 document.getElementById("userMsg");
 
 const msg = input.value;
+
 const name =
 document.getElementById("name").value;
+
 if(!msg) return;
 
-/* START FREE TIMER ON FIRST MESSAGE */
+/* START FREE TIMER */
 
 if(!freeTimerStarted){
 
 freeTimerStarted = true;
-
-/* NOTIFY ASTROLOGER */
 
 notifyAstrologer(msg);
 
@@ -1515,15 +1515,16 @@ startFreeTimer();
 }
 
 addMsg("You: " + msg);
+
 /* SAVE TO FIREBASE */
 
-addDoc(
+await addDoc(
 
 collection(db,"consultations"),
 
 {
 
-user:name.value,
+user:name,
 
 message:msg,
 
@@ -1534,9 +1535,8 @@ createdAt:serverTimestamp()
 }
 
 );
+
 input.value = "";
-
-
 
 }
 
