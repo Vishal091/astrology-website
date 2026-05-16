@@ -712,22 +712,25 @@ Get personalized marriage Muhurat guidance from expert astrologers.
 
 <input
 type="text"
+id="name"
 placeholder="Your Name"
 required
 />
 
 <input
 type="tel"
+id="phone"
 placeholder="Phone Number"
 required
 />
 
 <input
 type="date"
+id="date"
 required
 />
 
-<select required>
+<select id="consultation" required>
 
 <option value="">
 Consultation Type
@@ -748,6 +751,7 @@ Love Marriage Guidance
 </select>
 
 <textarea
+id="query"
 placeholder="Your Query"
 rows="5"
 ></textarea>
@@ -1073,20 +1077,94 @@ document.getElementById(
 }
 // BOOKING FORM
 
+// BOOKING FORM SUBMIT
+
 document
 .getElementById('bookingForm')
 
-.addEventListener('submit', function(e){
+.addEventListener(
+'submit',
+
+async function(e){
 
 e.preventDefault();
 
-alert(
-'Consultation request submitted successfully!'
+const button =
+this.querySelector('button');
+
+button.innerHTML =
+'Submitting...';
+
+const formData = {
+
+name:
+document.getElementById('name').value,
+
+phone:
+document.getElementById('phone').value,
+
+consultation:
+document.getElementById('consultation').value,
+
+date:
+document.getElementById('date').value,
+
+query:
+document.getElementById('query').value
+
+};
+
+try{
+
+await fetch(
+
+'https://script.google.com/macros/s/AKfycbwrJMyzaoMo9JtFW5WjnAZyzixFDvfdMGTc26YzhBFbLOGLObuNPnRQ2rk71ZiiKTZ2/exec',
+
+{
+
+method:'POST',
+
+body:JSON.stringify(formData)
+
+}
+
 );
 
-this.reset();
+button.innerHTML =
+'Submitted Successfully';
 
-});
+window.open(
+
+`https://wa.me/8708833177?text=
+New%20Marriage%20Muhurat%20Lead
+
+%0AName:%20${formData.name}
+
+%0APhone:%20${formData.phone}
+
+%0AConsultation:%20${formData.consultation}
+
+%0ADate:%20${formData.date}
+
+%0AQuery:%20${formData.query}`
+
+);
+
+document
+.getElementById('bookingForm')
+.reset();
+
+}catch(error){
+
+button.innerHTML =
+'Try Again';
+
+console.log(error);
+
+}
+
+}
+);
 </script>
 <!-- MOBILE STICKY BAR -->
 
