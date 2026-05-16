@@ -460,13 +460,19 @@ Renowned Vedic Astrologer and Spiritual Consultant known for accurate guidance, 
 
 <div class="buttons">
 
-<button class="btn chat-btn">
+<button class="btn chat-btn"
+
+onclick="startConsultation(
+'Acharya Neetu Sharma Ji'
+)">
 
 Chat Now
 
 </button>
 
-<button class="btn profile-btn">
+<button class="btn profile-btn"
+
+onclick="openProfile('neetu')">
 
 View Profile
 
@@ -547,13 +553,19 @@ Highly experienced Vedic Astrologer providing accurate guidance and effective sp
 
 <div class="buttons">
 
-<button class="btn chat-btn">
+<button class="btn chat-btn"
+
+onclick="startConsultation(
+'Acharya Rajkumar Ji'
+)">
 
 Chat Now
 
 </button>
 
-<button class="btn profile-btn">
+<button class="btn profile-btn"
+
+onclick="openProfile('rajkumar')">
 
 View Profile
 
@@ -642,13 +654,19 @@ Professional astrologer and tarot reader helping people gain clarity, positivity
 
 <div class="buttons">
 
-<button class="btn chat-btn">
+<button class="btn chat-btn"
+
+onclick="startConsultation(
+'Acharya Shivani Ji'
+)">
 
 Chat Now
 
 </button>
 
-<button class="btn profile-btn">
+<button class="btn profile-btn"
+
+onclick="openProfile('shivani')">
 
 View Profile
 
@@ -661,6 +679,35 @@ View Profile
 </div>
 
 </div>
+<script>
 
+/* ===== START CONSULTATION ===== */
+
+function startConsultation(astrologer){
+
+localStorage.setItem(
+
+"selectedAstrologer",
+
+astrologer
+
+);
+
+window.location.href =
+"index.html?chat=true";
+
+}
+
+/* ===== OPEN PROFILE ===== */
+
+function openProfile(id){
+
+window.location.href =
+
+`astrologer-profile.html?id=${id}`;
+
+}
+
+</script>
 </body>
 </html>
