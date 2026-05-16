@@ -231,8 +231,26 @@ font-size:18px;
 🔮 Astrodhani Admin
 </div>
 
+<div style="display:flex;gap:12px;align-items:center;">
+
 <div class="admin-badge">
 LIVE CONSULTATIONS
+</div>
+
+<button onclick="logoutAdmin()"
+style="
+padding:10px 16px;
+border:none;
+border-radius:12px;
+background:#FFD700;
+font-weight:700;
+cursor:pointer;
+">
+
+Logout
+
+</button>
+
 </div>
 
 </div>
@@ -302,6 +320,7 @@ import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
+
 getFirestore,
 collection,
 addDoc,
@@ -309,8 +328,20 @@ query,
 orderBy,
 onSnapshot,
 serverTimestamp
+
 }
+
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+
+getAuth,
+onAuthStateChanged,
+signOut
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 /* ===== YOUR FIREBASE CONFIG ===== */
 
@@ -331,9 +362,21 @@ appId: "1:158324229234:web:bff8d74888b356be362eeb"
 };
 
 const app = initializeApp(firebaseConfig);
-
+const auth =
+getAuth(app);
 const db = getFirestore(app);
+/* ===== ADMIN AUTH CHECK ===== */
 
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+
+window.location.href =
+"admin-login.html";
+
+}
+
+});
 /* ===== GLOBAL ===== */
 
 let currentUser = "";
@@ -485,7 +528,16 @@ createdAt:serverTimestamp()
 input.value = "";
 
 }
+/* ===== LOGOUT ===== */
 
+window.logoutAdmin = async function(){
+
+await signOut(auth);
+
+window.location.href =
+"admin-login.html";
+
+}
 </script>
 
 </body>
