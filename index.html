@@ -145,16 +145,9 @@ background:linear-gradient(135deg,#A83232,#7B1E1E);
 color:white;
 }
 
-.hero-logo{
-width:120px;
-animation:float 4s infinite;
-}
 
-@keyframes float{
-50%{
-transform:translateY(-10px);
-}
-}
+
+
 
 /* ===== SLIDER ===== */
 .slide{
@@ -168,14 +161,6 @@ animation:fadeSlide 0.6s ease;
 display:flex;
 }
 
-.slide img.pandit-img{
-width:120px !important;
-height:120px !important;
-object-fit:contain !important;
-border-radius:50%;
-flex-shrink:0 !important;
-display:block;
-}
 
 .slider-container{
 width:100%;
@@ -393,11 +378,7 @@ flex-direction:column;
 text-align:center;
 }
 
-.slide img.pandit-img{
-width:80px !important;
-height:80px !important;
-margin:auto;
-}
+
 
 .free-badge{
 position:relative;
@@ -836,6 +817,57 @@ padding:30px 20px !important;
 }
 
 }
+/* ===== MYSTIC SYMBOL ===== */
+
+.mystic-symbol{
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+font-size:90px;
+
+color:#FFD700;
+
+margin-bottom:20px;
+
+text-shadow:
+0 0 20px rgba(255,215,0,0.8),
+0 0 40px rgba(255,215,0,0.5);
+
+animation: glowPulse 2s infinite;
+
+}
+
+/* ===== GLOW ===== */
+
+@keyframes glowPulse{
+
+0%{
+
+transform:scale(1);
+
+opacity:0.8;
+
+}
+
+50%{
+
+transform:scale(1.08);
+
+opacity:1;
+
+}
+
+100%{
+
+transform:scale(1);
+
+opacity:0.8;
+
+}
+
+}
 </style>
 </head>
 
@@ -906,8 +938,7 @@ Astrodhani
 
 <div class="slide active">
 
-<img src="hanuman-logo.jpeg"
-class="pandit-img">
+
 
 <div class="right">
 
@@ -936,8 +967,7 @@ Limited Offer
 
 <div class="slide">
 
-<img src="hanuman-logo.jpeg"
-class="pandit-img">
+
 
 <div class="right">
 
@@ -966,8 +996,7 @@ Limited Offer
 
 <div class="slide">
 
-<img src="hanuman-logo.jpeg"
-class="pandit-img">
+
 
 <div class="right">
 
@@ -1016,8 +1045,9 @@ Recharge Wallet
 <!-- ===== HERO ===== -->
 <div class="hero">
 
-<img src="hanuman-logo.jpeg"
-class="hero-logo">
+<div class="mystic-symbol">
+ॐ
+</div>
 
 <h1 id="typing-text">
 Welcome to Astrodhani 🔮
