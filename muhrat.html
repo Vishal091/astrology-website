@@ -409,6 +409,124 @@ width:100%;
 }
 
 }
+/* CONSULTATION FORM */
+
+.consultation-form{
+
+background:white;
+
+padding:60px 30px;
+
+border-radius:35px;
+
+margin-bottom:100px;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,0.08);
+
+text-align:center;
+
+}
+
+.consultation-form h2{
+
+font-size:42px;
+
+margin-bottom:15px;
+
+color:#8b111c;
+
+}
+
+.consultation-form p{
+
+margin-bottom:40px;
+
+color:#666;
+
+}
+
+#bookingForm{
+
+display:flex;
+
+flex-direction:column;
+
+gap:20px;
+
+max-width:700px;
+
+margin:auto;
+
+}
+
+#bookingForm input,
+#bookingForm select,
+#bookingForm textarea{
+
+padding:18px;
+
+border-radius:16px;
+
+border:1px solid rgba(139,17,28,0.12);
+
+font-size:15px;
+
+font-family:'Poppins',sans-serif;
+
+outline:none;
+
+}
+
+#bookingForm button{
+
+padding:18px;
+
+border:none;
+
+border-radius:18px;
+
+background:
+linear-gradient(
+to right,
+#8b111c,
+#b3262e
+);
+
+color:white;
+
+font-size:16px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+#bookingForm button:hover{
+
+transform:translateY(-3px);
+
+}
+
+.cta-link{
+text-decoration:none;
+}
+
+@media(max-width:768px){
+
+.consultation-form{
+padding:40px 20px;
+border-radius:25px;
+}
+
+.consultation-form h2{
+font-size:30px;
+}
+
+}
 </style>
 </head>
 <body>
@@ -472,14 +590,91 @@ Consult expert astrologers for Kundli matching, personalized wedding dates, and 
 </p>
 
 <div class="cta-buttons">
-<button class="primary-btn">Book Astrologer Consultation</button>
-<button class="secondary-btn">WhatsApp Astrologer</button>
+
+<a href="#consultationForm" class="cta-link">
+<button class="primary-btn">
+Book Astrologer Consultation
+</button>
+</a>
+
+<a
+href="https://wa.me/8708833177?text=Hi%20Astrodhani,%20I%20want%20marriage%20muhurat%20consultation"
+target="_blank"
+class="cta-link"
+>
+<button class="secondary-btn">
+WhatsApp Astrologer
+</button>
+</a>
+
 </div>
 
 </div>
 
 </section>
+<section class="container">
 
+<div class="consultation-form" id="consultationForm">
+
+<h2>Book Marriage Muhurat Consultation</h2>
+
+<p>
+Get personalized marriage Muhurat guidance from expert astrologers.
+</p>
+
+<form id="bookingForm">
+
+<input
+type="text"
+placeholder="Your Name"
+required
+/>
+
+<input
+type="tel"
+placeholder="Phone Number"
+required
+/>
+
+<input
+type="date"
+required
+/>
+
+<select required>
+
+<option value="">
+Consultation Type
+</option>
+
+<option>
+Marriage Muhurat
+</option>
+
+<option>
+Kundli Matching
+</option>
+
+<option>
+Love Marriage Guidance
+</option>
+
+</select>
+
+<textarea
+placeholder="Your Query"
+rows="5"
+></textarea>
+
+<button type="submit">
+Book Consultation
+</button>
+
+</form>
+
+</div>
+
+</section>
 <script>
 
 // DYNAMIC MUHURAT DATA
@@ -790,6 +985,22 @@ document.getElementById(
 'No Upcoming Muhurat';
 
 }
+// BOOKING FORM
+
+document
+.getElementById('bookingForm')
+
+.addEventListener('submit', function(e){
+
+e.preventDefault();
+
+alert(
+'Consultation request submitted successfully!'
+);
+
+this.reset();
+
+});
 </script>
 
 </body>
