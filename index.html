@@ -1483,7 +1483,7 @@ document.getElementById(
 botReply(
 `Namaste ${name} 🙏 Your kundli is being analyzed...`
 );
-
+listenForReplies();
 
 
 }
@@ -1536,9 +1536,7 @@ createdAt:serverTimestamp()
 );
 input.value = "";
 
-botReply(
-"📡 Connecting you to astrologer..."
-);
+
 
 }
 
@@ -1560,6 +1558,51 @@ div.scrollIntoView();
 function botReply(text){
 
 addMsg("Shubham: " + text);
+
+}
+/* ===== LIVE ADMIN REPLIES ===== */
+
+function listenForReplies(){
+
+const q = query(
+
+collection(db,"consultations"),
+
+orderBy("createdAt")
+
+);
+
+onSnapshot(q,(snapshot)=>{
+
+snapshot.docChanges().forEach(change=>{
+
+if(change.type !== "added")
+return;
+
+const data = change.doc.data();
+
+const currentUser =
+document.getElementById("name").value;
+
+/* ONLY CURRENT USER */
+
+if(data.user !== currentUser)
+return;
+
+/* ONLY ADMIN MSG */
+
+if(data.sender !== "admin")
+return;
+
+/* SHOW MESSAGE */
+
+addMsg(
+"Astrologer: " + data.message
+);
+
+});
+
+});
 
 }
 /* ===== TELEGRAM ALERT ===== */
