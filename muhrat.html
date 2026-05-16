@@ -861,10 +861,274 @@ font-weight:500;
 opacity:.5;
 
 }
+/* FLOATING ORBS */
+
+.orb{
+
+position:fixed;
+
+border-radius:50%;
+
+filter:blur(90px);
+
+opacity:.18;
+
+pointer-events:none;
+
+z-index:-1;
+
+animation:floatOrb 12s ease-in-out infinite;
+
+}
+
+.orb1{
+
+width:300px;
+height:300px;
+
+background:#ffcc00;
+
+top:10%;
+left:-100px;
+
+}
+
+.orb2{
+
+width:260px;
+height:260px;
+
+background:#8b111c;
+
+bottom:10%;
+right:-80px;
+
+animation-delay:3s;
+
+}
+
+.orb3{
+
+width:220px;
+height:220px;
+
+background:#ff7b00;
+
+top:50%;
+left:50%;
+
+animation-delay:6s;
+
+}
+
+@keyframes floatOrb{
+
+0%{
+transform:translateY(0px);
+}
+
+50%{
+transform:translateY(-40px);
+}
+
+100%{
+transform:translateY(0px);
+}
+
+}
+
+/* SPARKLES */
+
+.sparkles{
+
+position:fixed;
+
+inset:0;
+
+pointer-events:none;
+
+overflow:hidden;
+
+z-index:-1;
+
+}
+
+.sparkles span{
+
+position:absolute;
+
+width:4px;
+height:4px;
+
+background:white;
+
+border-radius:50%;
+
+opacity:.6;
+
+animation:sparkleAnimation linear infinite;
+
+}
+
+.sparkles span:nth-child(1){
+
+left:10%;
+top:20%;
+animation-duration:8s;
+
+}
+
+.sparkles span:nth-child(2){
+
+left:30%;
+top:70%;
+animation-duration:10s;
+
+}
+
+.sparkles span:nth-child(3){
+
+left:60%;
+top:40%;
+animation-duration:12s;
+
+}
+
+.sparkles span:nth-child(4){
+
+left:80%;
+top:15%;
+animation-duration:9s;
+
+}
+
+.sparkles span:nth-child(5){
+
+left:90%;
+top:80%;
+animation-duration:11s;
+
+}
+
+.sparkles span:nth-child(6){
+
+left:45%;
+top:10%;
+animation-duration:13s;
+
+}
+
+@keyframes sparkleAnimation{
+
+0%{
+transform:translateY(0px) scale(1);
+opacity:.2;
+}
+
+50%{
+transform:translateY(-30px) scale(1.5);
+opacity:1;
+}
+
+100%{
+transform:translateY(0px) scale(1);
+opacity:.2;
+}
+
+}
+
+/* PREMIUM CARD HOVER */
+
+.month-card,
+.faq-item,
+.consultation-form,
+.cta{
+
+transition:
+transform .35s ease,
+box-shadow .35s ease;
+
+}
+
+.month-card:hover,
+.faq-item:hover,
+.consultation-form:hover{
+
+transform:translateY(-6px);
+
+box-shadow:
+0 15px 35px rgba(139,17,28,0.12);
+
+}
+
+/* BUTTON HOVER */
+
+button{
+
+transition:
+transform .3s ease,
+box-shadow .3s ease;
+
+}
+
+button:hover{
+
+transform:translateY(-2px);
+
+}
+
+/* HERO GLOW */
+
+.hero::before{
+
+content:'';
+
+position:absolute;
+
+width:500px;
+height:500px;
+
+background:
+radial-gradient(
+circle,
+rgba(255,204,0,0.25),
+transparent 70%
+);
+
+top:-200px;
+right:-150px;
+
+pointer-events:none;
+
+}
+
+/* SMOOTH SCROLL */
+
+html{
+
+scroll-behavior:smooth;
+
+}
 </style>
 </head>
 <body>
+<!-- FLOATING ORBS -->
 
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+<!-- SPARKLES -->
+
+<div class="sparkles">
+
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+
+</div>
 <section class="hero">
 <div class="container">
 
@@ -1559,6 +1823,56 @@ item.classList.toggle('active');
 });
 
 });
+// SCROLL REVEAL
+
+const revealElements =
+document.querySelectorAll(
+
+'.month-card, .faq-item, .consultation-form, .cta'
+
+);
+
+function revealOnScroll(){
+
+const windowHeight =
+window.innerHeight;
+
+revealElements.forEach(el => {
+
+const position =
+el.getBoundingClientRect().top;
+
+if(position < windowHeight - 80){
+
+el.style.opacity = '1';
+
+el.style.transform =
+'translateY(0px)';
+
+}
+
+});
+
+}
+
+revealElements.forEach(el => {
+
+el.style.opacity = '0';
+
+el.style.transform =
+'translateY(40px)';
+
+el.style.transition =
+'all 0.7s ease';
+
+});
+
+window.addEventListener(
+'scroll',
+revealOnScroll
+);
+
+revealOnScroll();
 </script>
 <!-- MOBILE STICKY BAR -->
 
