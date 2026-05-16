@@ -1137,24 +1137,16 @@ body:JSON.stringify(formData)
 );
 
 button.innerHTML =
-'Submitted Successfully';
+'Consultation Booked ✓';
 
-window.open(
+button.style.background =
+'#16a34a';
 
-`https://wa.me/8708833177?text=
-New%20Marriage%20Muhurat%20Lead
-
-%0AName:%20${formData.name}
-
-%0APhone:%20${formData.phone}
-
-%0AConsultation:%20${formData.consultation}
-
-%0ADate:%20${formData.date}
-
-%0AQuery:%20${formData.query}`
-
+alert(
+'Your consultation request has been submitted successfully. Our astrologer will contact you shortly.'
 );
+
+
 
 document
 .getElementById('bookingForm')
