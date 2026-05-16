@@ -1,0 +1,388 @@
+<!-- SAVE AS: admin-login.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Astrodhani Admin Login</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+/* ===== BODY ===== */
+
+body{
+
+margin:0;
+font-family:'Segoe UI',sans-serif;
+
+background:
+linear-gradient(
+135deg,
+#120505,
+#2b0b0b
+);
+
+height:100vh;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+overflow:hidden;
+
+}
+
+/* ===== GLOW ===== */
+
+.glow{
+
+position:absolute;
+
+width:500px;
+height:500px;
+
+background:
+radial-gradient(
+circle,
+rgba(255,215,0,0.15),
+transparent 70%
+);
+
+filter:blur(60px);
+
+z-index:0;
+
+}
+
+/* ===== LOGIN BOX ===== */
+
+.login-box{
+
+position:relative;
+z-index:2;
+
+width:90%;
+max-width:420px;
+
+padding:40px;
+
+border-radius:28px;
+
+background:
+linear-gradient(
+145deg,
+rgba(255,255,255,0.06),
+rgba(255,255,255,0.03)
+);
+
+backdrop-filter:blur(16px);
+
+border:
+1px solid rgba(255,255,255,0.08);
+
+box-shadow:
+0 20px 60px rgba(0,0,0,0.45);
+
+text-align:center;
+
+color:white;
+
+}
+
+/* ===== LOGO ===== */
+
+.logo{
+
+font-size:38px;
+margin-bottom:10px;
+
+}
+
+.login-box h1{
+
+margin:0;
+font-size:32px;
+color:#FFD700;
+
+}
+
+.login-box p{
+
+color:#ddd;
+margin-bottom:35px;
+
+}
+
+/* ===== INPUTS ===== */
+
+.input-group{
+
+position:relative;
+margin-bottom:22px;
+
+}
+
+.input-group i{
+
+position:absolute;
+top:50%;
+left:16px;
+
+transform:translateY(-50%);
+
+color:#FFD700;
+
+}
+
+.input-group input{
+
+width:100%;
+padding:15px 15px 15px 48px;
+
+border:none;
+outline:none;
+
+border-radius:16px;
+
+background:
+rgba(255,255,255,0.08);
+
+color:white;
+
+font-size:15px;
+
+box-sizing:border-box;
+
+}
+
+/* ===== BUTTON ===== */
+
+.login-btn{
+
+width:100%;
+
+padding:15px;
+
+border:none;
+
+border-radius:16px;
+
+font-size:16px;
+font-weight:700;
+
+cursor:pointer;
+
+background:
+linear-gradient(
+45deg,
+#FFD700,
+#ffb700
+);
+
+color:black;
+
+transition:0.3s;
+
+}
+
+.login-btn:hover{
+
+transform:translateY(-3px);
+
+}
+
+/* ===== STATUS ===== */
+
+.status{
+
+margin-top:18px;
+font-size:14px;
+color:#ffb4b4;
+
+}
+
+/* ===== MOBILE ===== */
+
+@media(max-width:768px){
+
+.login-box{
+
+padding:30px 22px;
+
+}
+
+.login-box h1{
+
+font-size:28px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="glow"></div>
+
+<div class="login-box">
+
+<div class="logo">
+🔮
+</div>
+
+<h1>Astrodhani Admin</h1>
+
+<p>
+Secure astrologer dashboard login
+</p>
+
+<div class="input-group">
+
+<i class="fa-solid fa-envelope"></i>
+
+<input type="email"
+id="email"
+placeholder="Admin Email">
+
+</div>
+
+<div class="input-group">
+
+<i class="fa-solid fa-lock"></i>
+
+<input type="password"
+id="password"
+placeholder="Password">
+
+</div>
+
+<button class="login-btn"
+onclick="loginAdmin()">
+
+Login To Dashboard
+
+</button>
+
+<div class="status"
+id="status"></div>
+
+</div>
+
+<script type="module">
+
+/* ===== FIREBASE ===== */
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+
+getAuth,
+signInWithEmailAndPassword,
+onAuthStateChanged
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+/* ===== FIREBASE CONFIG ===== */
+
+const firebaseConfig = {
+
+apiKey: "YOUR_API_KEY",
+
+authDomain: "YOUR_AUTH_DOMAIN",
+
+projectId: "YOUR_PROJECT_ID",
+
+storageBucket: "YOUR_STORAGE_BUCKET",
+
+messagingSenderId: "YOUR_MESSAGING_ID",
+
+appId: "YOUR_APP_ID"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const auth =
+getAuth(app);
+
+/* ===== AUTO REDIRECT ===== */
+
+onAuthStateChanged(auth,(user)=>{
+
+if(user){
+
+window.location.href =
+"admin.html";
+
+}
+
+});
+
+/* ===== LOGIN ===== */
+
+window.loginAdmin = async function(){
+
+const email =
+document.getElementById("email").value;
+
+const password =
+document.getElementById("password").value;
+
+const status =
+document.getElementById("status");
+
+if(!email || !password){
+
+status.innerText =
+"Please fill all fields";
+
+return;
+
+}
+
+try{
+
+await signInWithEmailAndPassword(
+
+auth,
+email,
+password
+
+);
+
+status.innerText =
+"Login Successful ✅";
+
+window.location.href =
+"admin.html";
+
+}catch(err){
+
+status.innerText =
+"Invalid email or password ❌";
+
+console.log(err);
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
