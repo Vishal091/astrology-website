@@ -562,7 +562,8 @@ Verified Astrologer
 
 <div class="buttons">
 
-<button class="btn chat-btn">
+<button class="btn chat-btn"
+onclick="startConsultation()">
 
 💬 Chat Now
 
@@ -797,6 +798,23 @@ Very humble astrologer. Face reading and tarot predictions were surprisingly acc
 </div>
 
 </div>
+<script>
 
+function startConsultation(){
+
+localStorage.setItem(
+
+"selectedAstrologer",
+
+"Acharya Neetu Sharma Ji"
+
+);
+
+window.location.href =
+"index.html?chat=true";
+
+}
+
+</script>
 </body>
 </html>
