@@ -1,12 +1,13 @@
+# Marriage Muhurat 2026 – Original HTML/CSS/JS Version (Enhanced)
 
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Marriage Muhurat 2026 | Astrodhani</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marriage Muhurat 2026</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -19,8 +20,8 @@ box-sizing:border-box;
 
 body{
 font-family:'Poppins',sans-serif;
-background:#07111f;
-color:#fff;
+background:#0f172a;
+color:white;
 overflow-x:hidden;
 }
 
@@ -29,8 +30,8 @@ content:'';
 position:fixed;
 inset:0;
 background:
-radial-gradient(circle at top left,#ff980025,transparent 30%),
-radial-gradient(circle at bottom right,#7c3aed25,transparent 30%);
+radial-gradient(circle at top left,#ff7b0025,transparent 30%),
+radial-gradient(circle at bottom right,#9333ea30,transparent 30%);
 z-index:-1;
 }
 
@@ -40,213 +41,80 @@ max-width:1300px;
 margin:auto;
 }
 
-/* HERO */
-
 .hero{
-padding:110px 20px 80px;
+padding:100px 20px 70px;
 text-align:center;
 }
 
-.hero-badge{
-display:inline-block;
-padding:10px 20px;
-border-radius:40px;
-background:rgba(255,255,255,0.08);
-border:1px solid rgba(255,255,255,0.08);
-margin-bottom:25px;
-font-size:14px;
-color:#fbbf24;
-}
-
 .hero h1{
-font-size:64px;
-line-height:1.1;
+font-size:60px;
+font-weight:700;
 margin-bottom:20px;
 }
 
 .hero h1 span{
-background:linear-gradient(to right,#f59e0b,#ec4899);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
+color:#f59e0b;
 }
 
 .hero p{
-max-width:900px;
-margin:auto;
-font-size:17px;
-line-height:1.9;
-color:#cbd5e1;
-}
-
-.hero-buttons{
-margin-top:40px;
-display:flex;
-gap:20px;
-justify-content:center;
-flex-wrap:wrap;
-}
-
-.hero-buttons button{
-padding:16px 32px;
-border:none;
-border-radius:50px;
-font-size:15px;
-font-weight:600;
-cursor:pointer;
-transition:.3s;
-}
-
-.primary-btn{
-background:linear-gradient(to right,#f59e0b,#ec4899);
-color:white;
-}
-
-.secondary-btn{
-background:rgba(255,255,255,0.08);
-color:white;
-border:1px solid rgba(255,255,255,0.08);
-}
-
-.hero-buttons button:hover{
-transform:translateY(-4px);
-}
-
-/* STATS */
-
-.stats-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-margin-top:30px;
-}
-
-.stat-card{
-background:rgba(255,255,255,0.06);
-border:1px solid rgba(255,255,255,0.06);
-padding:30px;
-border-radius:24px;
-text-align:center;
-backdrop-filter:blur(12px);
-}
-
-.stat-card h2{
-font-size:42px;
-margin-bottom:10px;
-color:#fbbf24;
-}
-
-.stat-card p{
-color:#d1d5db;
-}
-
-/* SECTION */
-
-.section{
-margin-top:100px;
-}
-
-.section-title{
-font-size:42px;
-text-align:center;
-margin-bottom:16px;
-}
-
-.section-subtitle{
 max-width:850px;
 margin:auto;
-text-align:center;
-color:#cbd5e1;
 line-height:1.8;
-margin-bottom:50px;
+color:#cbd5e1;
 }
 
-/* TITHI */
-
-.tithi-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-gap:24px;
-}
-
-.tithi-card{
-background:linear-gradient(145deg,#111827,#1f2937);
-padding:30px;
-border-radius:24px;
+.countdown{
+margin-top:35px;
+display:inline-block;
+padding:18px 35px;
+border-radius:20px;
+background:rgba(255,255,255,0.08);
 border:1px solid rgba(255,255,255,0.08);
-transition:.3s;
-}
-
-.tithi-card:hover{
-transform:translateY(-8px);
-border-color:#f59e0b;
-}
-
-.tithi-card h3{
-font-size:24px;
-margin-bottom:14px;
+font-size:20px;
+font-weight:600;
 color:#fbbf24;
 }
 
-.tithi-card p{
-line-height:1.8;
-color:#d1d5db;
-font-size:15px;
-}
-
-/* FILTER */
-
-.filter-buttons{
+.filters{
 display:flex;
-justify-content:center;
 flex-wrap:wrap;
-gap:14px;
-margin-bottom:50px;
+gap:15px;
+justify-content:center;
+margin:50px 0;
 }
 
-.filter-btn{
-padding:12px 22px;
-border-radius:50px;
+select{
+padding:14px 18px;
 border:none;
+border-radius:12px;
 background:#1e293b;
 color:white;
-cursor:pointer;
-transition:.3s;
+font-size:15px;
 }
-
-.filter-btn.active,
-.filter-btn:hover{
-background:linear-gradient(to right,#f59e0b,#ec4899);
-}
-
-/* MONTH CARDS */
 
 .month-grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
-gap:28px;
+gap:30px;
+margin-bottom:80px;
 }
 
 .month-card{
-background:linear-gradient(145deg,#0f172a,#1e293b);
-border-radius:28px;
+background:linear-gradient(145deg,#1e293b,#111827);
+border-radius:25px;
 overflow:hidden;
-border:1px solid rgba(255,255,255,0.06);
-transition:.3s;
-}
-
-.month-card:hover{
-transform:scale(1.02);
+border:1px solid rgba(255,255,255,0.08);
 }
 
 .month-header{
-padding:22px 28px;
+padding:20px 25px;
 background:linear-gradient(to right,#f59e0b,#ec4899);
-font-size:26px;
+font-size:24px;
 font-weight:600;
 }
 
 .muhurat-list{
-padding:28px;
+padding:25px;
 }
 
 .muhurat-item{
@@ -256,18 +124,17 @@ border-bottom:1px solid rgba(255,255,255,0.08);
 
 .muhurat-item:last-child{
 border:none;
-padding-bottom:0;
 }
 
 .date{
-font-size:20px;
+font-size:19px;
 font-weight:600;
 margin-bottom:8px;
 }
 
 .time{
 color:#fbbf24;
-margin-bottom:6px;
+margin-bottom:5px;
 }
 
 .nakshatra{
@@ -275,295 +142,339 @@ color:#cbd5e1;
 font-size:14px;
 }
 
-/* CTA */
-
 .cta{
 margin:100px 0;
-padding:70px 20px;
 text-align:center;
+padding:70px 20px;
 border-radius:30px;
 background:linear-gradient(135deg,#f59e0b,#ec4899);
 }
 
 .cta h2{
-font-size:46px;
+font-size:42px;
 margin-bottom:20px;
 }
 
 .cta p{
-max-width:760px;
+max-width:750px;
 margin:auto;
 line-height:1.8;
-margin-bottom:35px;
+margin-bottom:30px;
 }
 
-.cta button{
-padding:18px 36px;
+.cta-buttons{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:20px;
+}
+
+.cta-buttons button{
+padding:16px 35px;
 border:none;
 border-radius:50px;
-font-size:16px;
+font-size:15px;
 font-weight:600;
 cursor:pointer;
 }
 
-/* FOOTER */
-
-.footer{
-padding:30px 20px 60px;
-text-align:center;
-color:#94a3b8;
-font-size:14px;
+.primary-btn{
+background:white;
+color:black;
 }
 
-/* MOBILE */
+.secondary-btn{
+background:transparent;
+color:white;
+border:1px solid rgba(255,255,255,0.5) !important;
+}
 
 @media(max-width:768px){
-
 .hero h1{
-font-size:42px;
+font-size:40px;
 }
 
-.section-title{
-font-size:32px;
+.countdown{
+font-size:16px;
 }
-
-.cta h2{
-font-size:34px;
-}
-
 }
 
 </style>
 </head>
 <body>
 
-<!-- HERO -->
-
 <section class="hero">
 <div class="container">
-
-<div class="hero-badge">
-✨ Auspicious Hindu Wedding Dates 2026
-</div>
 
 <h1>Marriage Muhurat <span>2026</span></h1>
 
 <p>
-Discover the most auspicious wedding dates and timings for 2026 according to Vedic astrology, Nakshatra alignment, and Hindu Panchang calculations. Begin your married journey under divine blessings and positive cosmic energies.
+Find the most auspicious marriage dates and timings according to Vedic astrology and Panchang calculations.
 </p>
 
-<div class="hero-buttons">
-<button class="primary-btn">Check Personalized Muhurat</button>
-<button class="secondary-btn">Talk To Astrologer</button>
+<div class="countdown">
+Next Muhurat Starts In: <span id="countdownTimer"></span>
 </div>
 
 </div>
 </section>
-
-<!-- STATS -->
 
 <section class="container">
 
-<div class="stats-grid">
+<div class="filters">
 
-<div class="stat-card">
-<h2>50+</h2>
-<p>Auspicious Muhurat Dates</p>
-</div>
+<select id="monthFilter">
+<option value="All">All Months</option>
+</select>
 
-<div class="stat-card">
-<h2>12</h2>
-<p>Highly Favorable Nakshatras</p>
-</div>
-
-<div class="stat-card">
-<h2>2026</h2>
-<p>Updated Panchang Timings</p>
-</div>
-
-<div class="stat-card">
-<h2>24x7</h2>
-<p>Astrologer Support</p>
-</div>
+<select id="nakshatraFilter">
+<option value="All">All Nakshatras</option>
+</select>
 
 </div>
+
+<div class="month-grid" id="muhuratContainer"></div>
 
 </section>
-
-<!-- TITHIS -->
-
-<section class="section container">
-
-<h2 class="section-title">Best Wedding Tithis</h2>
-
-<p class="section-subtitle">
-Certain lunar days are considered highly auspicious for marriage ceremonies in Vedic astrology.
-</p>
-
-<div class="tithi-grid">
-
-<div class="tithi-card">
-<h3>Dwitiya</h3>
-<p>Represents prosperity, harmony, and a stable beginning for married life.</p>
-</div>
-
-<div class="tithi-card">
-<h3>Tritiya</h3>
-<p>Promotes understanding, emotional balance, and mutual respect between partners.</p>
-</div>
-
-<div class="tithi-card">
-<h3>Panchami</h3>
-<p>Associated with abundance, growth, success, and financial stability.</p>
-</div>
-
-<div class="tithi-card">
-<h3>Saptami</h3>
-<p>Considered excellent for happiness, positive energy, and marital bliss.</p>
-</div>
-
-<div class="tithi-card">
-<h3>Trayodashi</h3>
-<p>One of the most auspicious wedding tithis for a successful and peaceful marriage.</p>
-</div>
-
-</div>
-
-</section>
-
-<!-- MUHURAT -->
-
-<section class="section container">
-
-<h2 class="section-title">Month Wise Marriage Muhurat</h2>
-
-<p class="section-subtitle">
-Browse all favorable marriage dates and timings for 2026.
-</p>
-
-<div class="filter-buttons">
-<button class="filter-btn active">All</button>
-<button class="filter-btn">February</button>
-<button class="filter-btn">April</button>
-<button class="filter-btn">May</button>
-<button class="filter-btn">June</button>
-<button class="filter-btn">July</button>
-<button class="filter-btn">December</button>
-</div>
-
-<div class="month-grid">
-
-<!-- FEB -->
-<div class="month-card">
-<div class="month-header">February 2026</div>
-<div class="muhurat-list">
-
-<div class="muhurat-item">
-<div class="date">4 February</div>
-<div class="time">07:12 PM – 11:45 PM</div>
-<div class="nakshatra">Nakshatra: Rohini</div>
-</div>
-
-<div class="muhurat-item">
-<div class="date">5 February</div>
-<div class="time">06:45 AM – 10:30 AM</div>
-<div class="nakshatra">Nakshatra: Mrigashira</div>
-</div>
-
-<div class="muhurat-item">
-<div class="date">14 February</div>
-<div class="time">06:40 PM – 10:55 PM</div>
-<div class="nakshatra">Nakshatra: Magha</div>
-</div>
-
-<div class="muhurat-item">
-<div class="date">21 February</div>
-<div class="time">Full Day Muhurat</div>
-<div class="nakshatra">Nakshatra: Chitra</div>
-</div>
-
-</div>
-</div>
-
-<!-- APRIL -->
-<div class="month-card">
-<div class="month-header">April 2026</div>
-<div class="muhurat-list">
-
-<div class="muhurat-item">
-<div class="date">15 April</div>
-<div class="time">02:52 PM – 10:01 PM</div>
-<div class="nakshatra">Nakshatra: Revati</div>
-</div>
-
-<div class="muhurat-item">
-<div class="date">20 April</div>
-<div class="time">05:50 AM – 10:15 AM</div>
-<div class="nakshatra">Nakshatra: Ashwini</div>
-</div>
-
-<div class="muhurat-item">
-<div class="date">25 April</div>
-<div class="time">05:35 AM – 09:50 AM</div>
-<div class="nakshatra">Nakshatra: Rohini</div>
-</div>
-
-</div>
-</div>
-
-<!-- MAY -->
-<div class="month-card">
-<div class="month-header">May 2026</div>
-<div class="muhurat-list">
-
-<div class="muhurat-item">
-<div class="date">1 May</div>
-<div class="time">05:15 AM – 09:30 AM</div>
-<div class="nakshatra">Nakshatra: Pushya</div>
-</div>
-
-<div class="muhurat-item">
-<div class="date">6 May</div>
-<div class="time">07:51 AM – 03:53 PM</div>
-<div class="nakshatra">Nakshatra: Purva Phalguni</div>
-</div>
-
-<div class="muhurat-item">
-<div class="date">13 May</div>
-<div class="time">04:50 PM – 11:45 PM</div>
-<div class="nakshatra">Nakshatra: Swati</div>
-</div>
-
-</div>
-</div>
-
-</div>
-
-</section>
-
-<!-- CTA -->
 
 <section class="container">
 
 <div class="cta">
+
 <h2>Need Personalized Marriage Muhurat?</h2>
 
 <p>
-Get Kundli-based marriage Muhurat recommendations from experienced astrologers. Receive the best wedding timing based on horoscope matching, Nakshatra, planetary combinations, and family traditions.
+Consult expert astrologers for Kundli matching, personalized wedding dates, and marriage compatibility guidance.
 </p>
 
-<button>Consult Astrologer</button>
+<div class="cta-buttons">
+<button class="primary-btn">Book Astrologer Consultation</button>
+<button class="secondary-btn">WhatsApp Astrologer</button>
+</div>
 
 </div>
 
 </section>
 
-<!-- FOOTER -->
+<script>
 
-<div class="footer">
-© 2026 Astrodhani • Marriage Muhurat • Vedic Astrology Services
+// DYNAMIC MUHURAT DATA
+
+const muhuratData = [
+{
+month: "February",
+items: [
+{
+date: "4 February 2026",
+time: "07:12 PM – 11:45 PM",
+nakshatra: "Rohini",
+startDate: "2026-02-04T19:12:00"
+},
+{
+date: "5 February 2026",
+time: "06:45 AM – 10:30 AM",
+nakshatra: "Mrigashira",
+startDate: "2026-02-05T06:45:00"
+}
+]
+},
+{
+month: "March",
+items: [
+{
+date: "2 March 2026",
+time: "06:00 AM – 09:15 AM",
+nakshatra: "Vishakha",
+startDate: "2026-03-02T06:00:00"
+}
+]
+},
+{
+month: "April",
+items: [
+{
+date: "15 April 2026",
+time: "02:52 PM – 10:01 PM",
+nakshatra: "Revati",
+startDate: "2026-04-15T14:52:00"
+}
+]
+},
+{
+month: "May",
+items: [
+{
+date: "1 May 2026",
+time: "05:15 AM – 09:30 AM",
+nakshatra: "Pushya",
+startDate: "2026-05-01T05:15:00"
+}
+]
+},
+{
+month: "June",
+items: [
+{
+date: "21 June 2026",
+time: "09:31 AM – 11:21 AM",
+nakshatra: "Uttara Phalguni",
+startDate: "2026-06-21T09:31:00"
+}
+]
+},
+{
+month: "July",
+items: [
+{
+date: "1 July 2026",
+time: "06:51 AM – 04:04 PM",
+nakshatra: "Uttara Ashadha",
+startDate: "2026-07-01T06:51:00"
+}
+]
+},
+{
+month: "December",
+items: [
+{
+date: "2 December 2026",
+time: "10:32 AM – 06:57 AM",
+nakshatra: "Uttara Phalguni",
+startDate: "2026-12-02T10:32:00"
+}
+]
+}
+];
+
+const container = document.getElementById('muhuratContainer');
+const monthFilter = document.getElementById('monthFilter');
+const nakshatraFilter = document.getElementById('nakshatraFilter');
+
+// ADD MONTHS DYNAMICALLY
+
+muhuratData.forEach(month => {
+
+const option = document.createElement('option');
+option.value = month.month;
+option.innerText = month.month;
+monthFilter.appendChild(option);
+
+});
+
+// ADD NAKSHATRAS DYNAMICALLY
+
+const nakshatras = [...new Set(
+muhuratData.flatMap(month =>
+month.items.map(item => item.nakshatra)
+)
+)];
+
+nakshatras.forEach(nak => {
+
+const option = document.createElement('option');
+option.value = nak;
+option.innerText = nak;
+nakshatraFilter.appendChild(option);
+
+});
+
+// RENDER DATA
+
+function renderMuhurat() {
+
+container.innerHTML = '';
+
+const selectedMonth = monthFilter.value;
+const selectedNakshatra = nakshatraFilter.value;
+
+muhuratData.forEach(month => {
+
+if(selectedMonth !== 'All' && selectedMonth !== month.month) return;
+
+const filteredItems = month.items.filter(item => {
+return selectedNakshatra === 'All' || item.nakshatra === selectedNakshatra;
+});
+
+if(filteredItems.length === 0) return;
+
+const card = document.createElement('div');
+card.classList.add('month-card');
+
+let html = `
+<div class="month-header">${month.month} 2026</div>
+<div class="muhurat-list">
+`;
+
+filteredItems.forEach(item => {
+
+html += `
+<div class="muhurat-item">
+<div class="date">${item.date}</div>
+<div class="time">${item.time}</div>
+<div class="nakshatra">Nakshatra: ${item.nakshatra}</div>
 </div>
+`;
+
+});
+
+html += `</div>`;
+
+card.innerHTML = html;
+container.appendChild(card);
+
+});
+
+}
+
+renderMuhurat();
+
+monthFilter.addEventListener('change', renderMuhurat);
+nakshatraFilter.addEventListener('change', renderMuhurat);
+
+// COUNTDOWN TIMER
+
+const nextMuhuratDate = new Date('2026-02-04T19:12:00').getTime();
+
+setInterval(() => {
+
+const now = new Date().getTime();
+const distance = nextMuhuratDate - now;
+
+const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+if(distance < 0){
+document.getElementById('countdownTimer').innerHTML = 'Muhurat Started';
+return;
+}
+
+document.getElementById('countdownTimer').innerHTML = `${days}d ${hours}h ${minutes}m`;
+
+},1000);
+
+// PANCHANG API CONNECTION
+
+async function fetchPanchangData(){
+
+try{
+
+const response = await fetch('https://json.astrologyapi.com/v1/muhurat');
+const data = await response.json();
+
+console.log('Panchang API Data:', data);
+
+}catch(error){
+console.log(error);
+
+}
+
+}
+
+fetchPanchangData();
+
+</script>
 
 </body>
 </html>
-
+```
