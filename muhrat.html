@@ -390,7 +390,11 @@ muhuratData.forEach(month => {
 if(selectedMonth !== 'All' && selectedMonth !== month.month) return;
 
 const filteredItems = month.items.filter(item => {
-return selectedNakshatra === 'All' || item.nakshatra === selectedNakshatra;
+
+return (
+(selectedNakshatra === 'All' || item.nakshatra === selectedNakshatra)
+);
+
 });
 
 if(filteredItems.length === 0) return;
