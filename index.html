@@ -1562,7 +1562,14 @@ addMsg("Shubham: " + text);
 }
 /* ===== LIVE ADMIN REPLIES ===== */
 
+/* ===== LIVE ADMIN REPLIES ===== */
+
+let shownMessages = new Set();
+
 function listenForReplies(){
+
+const currentUser =
+document.getElementById("name").value;
 
 const q = query(
 
@@ -1574,25 +1581,26 @@ orderBy("createdAt")
 
 onSnapshot(q,(snapshot)=>{
 
-snapshot.docChanges().forEach(change=>{
+snapshot.forEach(doc=>{
 
-if(change.type !== "added")
-return;
-
-const data = change.doc.data();
-
-const currentUser =
-document.getElementById("name").value;
+const data = doc.data();
 
 /* ONLY CURRENT USER */
 
 if(data.user !== currentUser)
 return;
 
-/* ONLY ADMIN MSG */
+/* ONLY ADMIN */
 
 if(data.sender !== "admin")
 return;
+
+/* AVOID DUPLICATES */
+
+if(shownMessages.has(doc.id))
+return;
+
+shownMessages.add(doc.id);
 
 /* SHOW MESSAGE */
 
