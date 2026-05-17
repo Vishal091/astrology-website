@@ -1057,6 +1057,92 @@ font-size:16px;
 }
 
 }
+/* TOAST */
+
+.toast{
+
+position:fixed;
+
+top:100px;
+right:25px;
+
+z-index:99999;
+
+display:flex;
+
+align-items:center;
+
+gap:14px;
+
+padding:
+16px 22px;
+
+border-radius:22px;
+
+background:white;
+
+box-shadow:
+0 18px 40px rgba(0,0,0,0.12);
+
+transform:
+translateX(140%);
+
+transition:.4s;
+
+}
+
+.toast.show{
+
+transform:
+translateX(0);
+
+}
+
+.toast-icon{
+
+font-size:24px;
+
+}
+
+.toast-text{
+
+display:flex;
+
+flex-direction:column;
+
+}
+
+.toast-text strong{
+
+color:#8b111c;
+
+font-size:15px;
+
+}
+
+.toast-text span{
+
+font-size:13px;
+
+color:#666;
+
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.toast{
+
+right:14px;
+left:14px;
+
+top:auto;
+bottom:90px;
+
+}
+
+}
 </style>
 </head>
 
@@ -1605,12 +1691,36 @@ floatingCart.style.display =
 }
 
 toggleFloatingCart();
+function showToast(productName){
+
+const toast =
+document.getElementById(
+'toast'
+);
+
+document.getElementById(
+'toastProduct'
+).innerText =
+productName;
+
+toast.classList.add('show');
+
+setTimeout(()=>{
+
+toast.classList.remove(
+'show'
+);
+
+},2500);
+
+}
 function addToCart(name, price){
 cart.push({name, price})
 localStorage.setItem("cart", JSON.stringify(cart))
 updateCartCount();
 toggleFloatingCart();
-alert(name + " added to cart 🛒")
+showToast(name);
+
 }
 
 // AUTO APPLY DISCOUNT TO 5-7 PRODUCTS PER CATEGORY
@@ -1791,5 +1901,24 @@ section.style.display = 'none';
 </p>
 
 </footer>
+<div class="toast" id="toast">
+
+<div class="toast-icon">
+🛒
+</div>
+
+<div class="toast-text">
+
+<strong>
+Added to Cart
+</strong>
+
+<span id="toastProduct">
+Product Added
+</span>
+
+</div>
+
+</div>
 </body>
 </html>
