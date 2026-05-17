@@ -988,10 +988,9 @@ localStorage.setItem(
 JSON.stringify(cart)
 );
 
-window.addEventListener(
-'DOMContentLoaded',
-renderCart
-);
+renderCart();
+
+}
 
 }
 const ORDER_API =
@@ -1058,7 +1057,8 @@ let subtotal = 0;
 cart.forEach(item => {
 
 subtotal +=
-item.price * (item.qty || 1);
+Number(item.price) *
+(item.qty || 1);
 
 });
 
@@ -1092,7 +1092,8 @@ let total = 0;
 cart.forEach(item => {
 
 total +=
-item.price * (item.qty || 1);
+Number(item.price) *
+(item.qty || 1);
 
 });
 
