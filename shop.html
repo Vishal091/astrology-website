@@ -1539,14 +1539,35 @@ updateCartCount();
 
 function updateCartCount(){
 
+const cartCount =
 document.getElementById(
 'cartCount'
-).innerText = cart.length;
+);
 
+if(cartCount){
+
+cartCount.innerText = cart.length;
+
+}
+
+const floatingCartCount =
 document.getElementById(
 'floatingCartCount'
-).innerText =
+);
+
+if(floatingCartCount){
+
+floatingCartCount.innerText =
 cart.length + ' Items';
+
+}
+
+const floatingCartTotal =
+document.getElementById(
+'floatingCartTotal'
+);
+
+if(floatingCartTotal){
 
 let total = 0;
 
@@ -1554,10 +1575,10 @@ cart.forEach(item => {
 total += item.price;
 });
 
-document.getElementById(
-'floatingCartTotal'
-).innerText =
+floatingCartTotal.innerText =
 '₹' + total;
+
+}
 
 }
 function toggleFloatingCart(){
@@ -1566,6 +1587,8 @@ const floatingCart =
 document.getElementById(
 'floatingCart'
 );
+
+if(!floatingCart) return;
 
 if(cart.length === 0){
 
