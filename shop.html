@@ -3,7 +3,486 @@
 <html>
 <head>
 <title>Astrodhani Shop</title>
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet"
+/>
 <link rel="stylesheet" href="style.css">
+<style>
+  *{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+
+font-family:'Poppins',sans-serif;
+
+background:
+linear-gradient(
+180deg,
+#fff7ed 0%,
+#fff1f2 100%
+);
+
+color:#4c0519;
+
+overflow-x:hidden;
+
+}
+
+/* HEADER */
+
+header{
+
+position:sticky;
+
+top:0;
+
+z-index:999;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:18px 5%;
+
+background:
+rgba(255,255,255,0.88);
+
+backdrop-filter:blur(12px);
+
+border-bottom:
+1px solid rgba(139,17,28,0.08);
+
+}
+
+.logo{
+
+font-size:28px;
+
+font-weight:700;
+
+color:#8b111c;
+
+}
+
+nav{
+
+display:flex;
+
+gap:25px;
+
+align-items:center;
+
+}
+
+nav a{
+
+text-decoration:none;
+
+font-weight:500;
+
+color:#7a1018;
+
+transition:.3s;
+
+}
+
+nav a:hover{
+
+color:#c02633;
+
+}
+
+/* CATEGORY TITLE */
+
+.category-title{
+
+font-size:42px;
+
+margin:
+70px 5% 35px;
+
+color:#8b111c;
+
+position:relative;
+
+}
+
+.category-title::after{
+
+content:'';
+
+position:absolute;
+
+left:0;
+bottom:-10px;
+
+width:90px;
+height:4px;
+
+border-radius:20px;
+
+background:
+linear-gradient(
+to right,
+#8b111c,
+#f59e0b
+);
+
+}
+
+/* SHOP GRID */
+
+.shop-container{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(260px,1fr));
+
+gap:28px;
+
+padding:
+0 5% 20px;
+
+}
+
+/* PRODUCT CARD */
+
+.product-card{
+
+position:relative;
+
+background:
+rgba(255,255,255,0.88);
+
+backdrop-filter:blur(12px);
+
+border:
+1px solid rgba(139,17,28,0.08);
+
+border-radius:30px;
+
+padding:28px 22px;
+
+overflow:hidden;
+
+transition:.4s;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,0.05);
+
+}
+
+.product-card::before{
+
+content:'';
+
+position:absolute;
+
+inset:0;
+
+background:
+linear-gradient(
+135deg,
+rgba(255,255,255,0.2),
+transparent
+);
+
+pointer-events:none;
+
+}
+
+/* HOVER */
+
+.product-card:hover{
+
+transform:
+translateY(-8px)
+scale(1.01);
+
+box-shadow:
+0 20px 40px rgba(139,17,28,0.12);
+
+}
+
+/* PRODUCT TITLE */
+
+.product-card h3{
+
+font-size:20px;
+
+line-height:1.5;
+
+margin-bottom:14px;
+
+min-height:72px;
+
+color:#7a1018;
+
+}
+
+/* PRICE */
+
+.product-card p{
+
+font-size:28px;
+
+font-weight:700;
+
+margin-bottom:18px;
+
+color:#b91c1c;
+
+}
+
+/* BUTTON */
+
+.product-card button{
+
+width:100%;
+
+padding:15px;
+
+border:none;
+
+border-radius:18px;
+
+cursor:pointer;
+
+font-size:15px;
+
+font-weight:600;
+
+color:white;
+
+background:
+linear-gradient(
+135deg,
+#8b111c,
+#b3262e
+);
+
+transition:.3s;
+
+box-shadow:
+0 10px 20px rgba(139,17,28,0.2);
+
+}
+
+.product-card button:hover{
+
+transform:translateY(-2px);
+
+box-shadow:
+0 14px 28px rgba(139,17,28,0.3);
+
+}
+
+/* REVIEWS */
+
+.reviews{
+
+display:flex;
+
+flex-direction:column;
+
+gap:4px;
+
+margin-bottom:15px;
+
+}
+
+.stars{
+
+color:#f59e0b;
+
+font-size:18px;
+
+}
+
+.rating-text{
+
+font-size:13px;
+
+color:#666;
+
+}
+
+/* DISCOUNT BOX */
+
+.conversion-box{
+
+margin-bottom:18px;
+
+padding:14px;
+
+border-radius:18px;
+
+background:
+linear-gradient(
+135deg,
+#fff7ed,
+#fef3c7
+);
+
+border:
+1px solid rgba(245,158,11,0.2);
+
+}
+
+.old-price{
+
+text-decoration:line-through;
+
+color:#888;
+
+font-size:14px;
+
+margin-bottom:4px;
+
+}
+
+.new-price{
+
+font-size:24px;
+
+color:#b91c1c;
+
+margin-bottom:10px;
+
+}
+
+.urgency{
+
+font-size:13px;
+
+font-weight:600;
+
+color:#dc2626;
+
+margin-bottom:6px;
+
+}
+
+.social-proof{
+
+font-size:13px;
+
+color:#92400e;
+
+}
+
+/* FLOATING GLOW */
+
+.product-card::after{
+
+content:'';
+
+position:absolute;
+
+width:180px;
+height:180px;
+
+background:
+radial-gradient(
+circle,
+rgba(245,158,11,0.12),
+transparent 70%
+);
+
+top:-80px;
+right:-80px;
+
+pointer-events:none;
+
+}
+
+/* FOOTER */
+
+footer{
+
+margin-top:100px;
+
+padding:50px 20px;
+
+text-align:center;
+
+background:#5b0f16;
+
+color:white;
+
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+header{
+
+padding:16px 20px;
+
+}
+
+.logo{
+
+font-size:22px;
+
+}
+
+nav{
+
+gap:16px;
+
+}
+
+.category-title{
+
+font-size:32px;
+
+margin:
+50px 20px 25px;
+
+}
+
+.shop-container{
+
+padding:
+0 20px 20px;
+
+grid-template-columns:1fr;
+
+}
+
+.product-card{
+
+padding:24px 18px;
+
+border-radius:24px;
+
+}
+
+.product-card h3{
+
+font-size:18px;
+
+min-height:auto;
+
+}
+
+.product-card p{
+
+font-size:24px;
+
+}
+
+}
+</style>
 </head>
 
 <body>
@@ -206,6 +685,12 @@ generateReviews()
 </script>
 
 
+<footer>
 
+<p>
+© 2026 Astrodhani — Trusted Spiritual Store
+</p>
+
+</footer>
 </body>
 </html>
