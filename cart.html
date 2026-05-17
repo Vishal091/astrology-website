@@ -376,23 +376,90 @@ color:#666;
 
 .cart-page{
 
-grid-template-columns:1fr;
+display:flex;
+
+flex-direction:column;
+
+gap:25px;
+
+padding:25px 20px 120px;
+
+}
+
+.cart-items{
+
+width:100%;
+
+display:flex;
+
+flex-direction:column;
+
+gap:18px;
 
 }
 
 .cart-card{
 
+width:100%;
+
 flex-direction:column;
 
 align-items:flex-start;
 
-gap:20px;
+gap:18px;
+
+padding:20px;
+
+border-radius:24px;
+
+}
+
+.cart-info{
+
+width:100%;
+
+}
+
+.cart-info h3{
+
+font-size:18px;
+
+line-height:1.5;
+
+}
+
+.cart-actions{
+
+width:100%;
+
+justify-content:space-between;
 
 }
 
 .cart-summary{
 
+width:100%;
+
 position:static;
+
+padding:24px;
+
+border-radius:26px;
+
+}
+
+.summary-total{
+
+font-size:22px;
+
+}
+
+.checkout-btn,
+.shop-btn{
+
+padding:16px;
+
+font-size:15px;
 
 }
 
@@ -689,10 +756,20 @@ Continue Shopping
 
 <script>
 
-let cart =
+let cart = [];
+
+try{
+
+cart =
 JSON.parse(
 localStorage.getItem('cart')
 ) || [];
+
+}catch{
+
+cart = [];
+
+}
 
 function renderCart(){
 
@@ -798,7 +875,8 @@ let subtotal = 0;
 cart.forEach(item => {
 
 subtotal +=
-item.price * (item.qty || 1);
+Number(item.price) *
+(item.qty || 1);
 
 });
 
@@ -910,7 +988,10 @@ localStorage.setItem(
 JSON.stringify(cart)
 );
 
-renderCart();
+window.addEventListener(
+'DOMContentLoaded',
+renderCart
+);
 
 }
 const ORDER_API =
@@ -1088,7 +1169,10 @@ rzp.open();
 }
 
 
-renderCart();
+window.addEventListener(
+'DOMContentLoaded',
+renderCart
+);
 
 </script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
