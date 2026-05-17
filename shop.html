@@ -818,6 +818,100 @@ padding:
 }
 
 }
+/* FILTER PILLS */
+
+.filter-section{
+
+padding:20px 20px 10px;
+
+display:flex;
+
+justify-content:center;
+
+}
+
+.filter-pills{
+
+display:flex;
+
+gap:14px;
+
+flex-wrap:wrap;
+
+justify-content:center;
+
+}
+
+.filter-btn{
+
+border:none;
+
+padding:
+13px 24px;
+
+border-radius:50px;
+
+cursor:pointer;
+
+font-size:15px;
+
+font-weight:600;
+
+font-family:'Poppins',sans-serif;
+
+background:white;
+
+color:#8b111c;
+
+box-shadow:
+0 6px 18px rgba(0,0,0,0.06);
+
+transition:.3s;
+
+}
+
+.filter-btn:hover{
+
+transform:translateY(-2px);
+
+}
+
+.filter-btn.active{
+
+background:
+linear-gradient(
+135deg,
+#8b111c,
+#b3262e
+);
+
+color:white;
+
+box-shadow:
+0 10px 25px rgba(139,17,28,0.25);
+
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.filter-pills{
+
+gap:10px;
+
+}
+
+.filter-btn{
+
+padding:
+11px 18px;
+
+font-size:14px;
+
+}
+
+}
 </style>
 </head>
 
@@ -873,9 +967,36 @@ placeholder="Search bracelets, rudraksha, crystals..."
 <div>🛡️ Secure Checkout</div>
 
 </div>
-<!-- ================= BRACELETS ================= -->
-<!-- ================= BRACELETS ================= -->
+<section class="filter-section">
 
+<div class="filter-pills">
+
+<button class="filter-btn active" data-category="all">
+All
+</button>
+
+<button class="filter-btn" data-category="bracelets">
+Bracelets
+</button>
+
+<button class="filter-btn" data-category="rudraksha">
+Rudraksha
+</button>
+
+<button class="filter-btn" data-category="crystals">
+Crystals
+</button>
+
+<button class="filter-btn" data-category="spiritual">
+Spiritual
+</button>
+
+</div>
+
+</section>
+<!-- ================= BRACELETS ================= -->
+<!-- ================= BRACELETS ================= -->
+<section class="category-section" data-category="bracelets">
 <h2 class="category-title">💰 Bracelets</h2>
 
 <div class="shop-container">
@@ -971,9 +1092,9 @@ placeholder="Search bracelets, rudraksha, crystals..."
 </div>
 
 </div>
-
+</section>
 <!-- ================= RUDRAKSHA ================= -->
-
+<section class="category-section" data-category="rudraksha">
 <h2 class="category-title">🔴 Rudraksha</h2>
 
 <div class="shop-container">
@@ -1069,9 +1190,9 @@ placeholder="Search bracelets, rudraksha, crystals..."
 </div>
 
 </div>
-
+</section>
 <!-- ================= CRYSTALS ================= -->
-
+<section class="category-section" data-category="crystals">
 <h2 class="category-title">🔮 Crystals</h2>
 
 <div class="shop-container">
@@ -1167,9 +1288,9 @@ placeholder="Search bracelets, rudraksha, crystals..."
 </div>
 
 </div>
-
+</section>
 <!-- ================= SPIRITUAL ================= -->
-
+<section class="category-section" data-category="spiritual">
 <h2 class="category-title">🛕 Spiritual Items</h2>
 
 <div class="shop-container">
@@ -1265,7 +1386,7 @@ placeholder="Search bracelets, rudraksha, crystals..."
 </div>
 
 </div>
-
+</section>
 <script>
 
 let cart = JSON.parse(localStorage.getItem("cart")) || []
@@ -1405,7 +1526,56 @@ noResults
 </script>
 
 
+<script>
 
+// CATEGORY FILTERS
+
+const filterBtns =
+document.querySelectorAll(
+'.filter-btn'
+);
+
+const categorySections =
+document.querySelectorAll(
+'.category-section'
+);
+
+filterBtns.forEach(btn => {
+
+btn.addEventListener('click', () => {
+
+filterBtns.forEach(b =>
+b.classList.remove('active')
+);
+
+btn.classList.add('active');
+
+const category =
+btn.dataset.category;
+
+categorySections.forEach(section => {
+
+if(
+category === 'all'
+||
+section.dataset.category === category
+){
+
+section.style.display = 'block';
+
+}else{
+
+section.style.display = 'none';
+
+}
+
+});
+
+});
+
+});
+
+</script>
 
 <footer>
 
