@@ -397,7 +397,69 @@ position:static;
 }
 
 }
+/* COUPON */
 
+.coupon-box{
+
+display:flex;
+
+gap:10px;
+
+margin:
+25px 0 10px;
+
+}
+
+.coupon-box input{
+
+flex:1;
+
+padding:14px;
+
+border-radius:14px;
+
+border:
+1px solid rgba(139,17,28,0.12);
+
+font-family:'Poppins',sans-serif;
+
+font-size:14px;
+
+}
+
+.coupon-box button{
+
+padding:
+14px 20px;
+
+border:none;
+
+border-radius:14px;
+
+cursor:pointer;
+
+font-weight:600;
+
+background:
+linear-gradient(
+135deg,
+#8b111c,
+#b3262e
+);
+
+color:white;
+
+}
+
+#couponMessage{
+
+font-size:14px;
+
+margin-bottom:15px;
+
+color:#16a34a;
+
+}
 </style>
 
 </head>
@@ -447,7 +509,21 @@ Order Summary
 Free
 </span>
 </div>
+<div class="coupon-box">
 
+<input
+type="text"
+id="couponInput"
+placeholder="Enter Coupon Code"
+/>
+
+<button onclick="applyCoupon()">
+Apply
+</button>
+
+</div>
+
+<p id="couponMessage"></p>
 <div class="summary-total">
 <span>Total</span>
 <span id="total">
@@ -576,7 +652,7 @@ Remove
 updateSummary();
 
 }
-
+let appliedDiscount = 0;
 function updateSummary(){
 
 let subtotal = 0;
@@ -588,6 +664,13 @@ item.price * (item.qty || 1);
 
 });
 
+let finalTotal =
+subtotal - appliedDiscount;
+
+if(finalTotal < 0){
+finalTotal = 0;
+}
+
 document.getElementById(
 'subtotal'
 ).innerText =
@@ -596,10 +679,52 @@ document.getElementById(
 document.getElementById(
 'total'
 ).innerText =
-'₹' + subtotal;
+'₹' + finalTotal;
+
+}
+function applyCoupon(){
+
+const code =
+document.getElementById(
+'couponInput'
+).value.trim();
+
+const message =
+document.getElementById(
+'couponMessage'
+);
+
+let subtotal = 0;
+
+cart.forEach(item => {
+
+subtotal +=
+item.price * (item.qty || 1);
+
+});
+
+if(code === 'FREE100'){
+
+appliedDiscount = subtotal;
+
+message.innerText =
+'100% discount applied successfully 🎉';
+
+}else{
+
+appliedDiscount = 0;
+
+message.innerText =
+'Invalid coupon code';
+
+message.style.color =
+'#dc2626';
 
 }
 
+updateSummary();
+
+}
 function increaseQty(index){
 
 if(!cart[index].qty){
@@ -656,14 +781,21 @@ if(cart.length === 0){
 return;
 }
 
-let total = 0;
+let subtotal = 0;
 
 cart.forEach(item => {
 
-total +=
+subtotal +=
 item.price * (item.qty || 1);
 
 });
+
+let total =
+subtotal - appliedDiscount;
+
+if(total < 0){
+total = 0;
+}
 
 const options = {
 
