@@ -176,7 +176,9 @@ transition:.4s;
 
 box-shadow:
 0 10px 30px rgba(0,0,0,0.05);
-
+transition:
+opacity .3s ease,
+transform .3s ease;
 }
 
 .product-card::before{
@@ -1325,11 +1327,23 @@ if(title.includes(searchTerm)){
 
 card.style.display = 'block';
 
+setTimeout(()=>{
+
+card.style.opacity = '1';
+card.style.transform = 'scale(1)';
+
+},10);
+
 visibleCount++;
 
 }else{
 
+card.style.opacity = '0';
+card.style.transform = 'scale(.95)';
+
+setTimeout(()=>{
 card.style.display = 'none';
+},200);
 
 }
 
