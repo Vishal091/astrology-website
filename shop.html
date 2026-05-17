@@ -404,7 +404,25 @@ right:-80px;
 pointer-events:none;
 
 }
+<a href="cart.html" class="floating-cart" id="floatingCart">
 
+<div class="floating-cart-icon">
+🛒
+</div>
+
+<div class="floating-cart-info">
+
+<span id="floatingCartCount">
+0 Items
+</span>
+
+<strong id="floatingCartTotal">
+₹0
+</strong>
+
+</div>
+
+</a>
 /* FOOTER */
 
 footer{
@@ -912,6 +930,133 @@ font-size:14px;
 }
 
 }
+/* FLOATING CART */
+
+.floating-cart{
+
+position:fixed;
+
+right:22px;
+bottom:22px;
+
+z-index:9999;
+
+display:flex;
+
+align-items:center;
+
+gap:14px;
+
+padding:
+16px 20px;
+
+border-radius:80px;
+
+text-decoration:none;
+
+background:
+linear-gradient(
+135deg,
+#8b111c,
+#b3262e
+);
+
+color:white;
+
+box-shadow:
+0 15px 40px rgba(139,17,28,0.35);
+
+transition:.35s;
+
+animation:floatCart 2.5s infinite ease-in-out;
+
+}
+
+.floating-cart:hover{
+
+transform:
+translateY(-4px)
+scale(1.03);
+
+}
+
+.floating-cart-icon{
+
+font-size:24px;
+
+}
+
+.floating-cart-info{
+
+display:flex;
+
+flex-direction:column;
+
+line-height:1.2;
+
+}
+
+#floatingCartCount{
+
+font-size:13px;
+
+opacity:.85;
+
+}
+
+#floatingCartTotal{
+
+font-size:18px;
+
+}
+
+/* FLOAT ANIMATION */
+
+@keyframes floatCart{
+
+0%{
+transform:translateY(0px);
+}
+
+50%{
+transform:translateY(-5px);
+}
+
+100%{
+transform:translateY(0px);
+}
+
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.floating-cart{
+
+right:14px;
+bottom:14px;
+
+padding:
+14px 18px;
+
+gap:12px;
+
+}
+
+.floating-cart-icon{
+
+font-size:22px;
+
+}
+
+#floatingCartTotal{
+
+font-size:16px;
+
+}
+
+}
 </style>
 </head>
 
@@ -1398,11 +1543,50 @@ document.getElementById(
 'cartCount'
 ).innerText = cart.length;
 
+document.getElementById(
+'floatingCartCount'
+).innerText =
+cart.length + ' Items';
+
+let total = 0;
+
+cart.forEach(item => {
+total += item.price;
+});
+
+document.getElementById(
+'floatingCartTotal'
+).innerText =
+'₹' + total;
+
 }
+function toggleFloatingCart(){
+
+const floatingCart =
+document.getElementById(
+'floatingCart'
+);
+
+if(cart.length === 0){
+
+floatingCart.style.display =
+'none';
+
+}else{
+
+floatingCart.style.display =
+'flex';
+
+}
+
+}
+
+toggleFloatingCart();
 function addToCart(name, price){
 cart.push({name, price})
 localStorage.setItem("cart", JSON.stringify(cart))
 updateCartCount();
+toggleFloatingCart();
 alert(name + " added to cart 🛒")
 }
 
