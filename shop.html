@@ -1284,42 +1284,7 @@ alert(name + " added to cart 🛒")
 }
 
 // AUTO APPLY DISCOUNT TO 5-7 PRODUCTS PER CATEGORY
-function applySmartDiscount(){
 
-document.querySelectorAll(".shop-container").forEach(section => {
-
-let products = section.querySelectorAll(".product-card")
-
-// pick random 5–7 items
-let selected = [...products]
-.sort(() => 0.5 - Math.random())
-.slice(0, Math.floor(Math.random()*3)+5)
-
-selected.forEach(card => {
-
-let box = card.querySelector(".conversion-box")
-box.style.display = "block"
-
-let price = parseInt(card.querySelector("p").innerText.replace("₹",""))
-
-let oldPrice = price + Math.floor(Math.random()*500 + 200)
-let left = Math.floor(Math.random()*5)+1
-let bought = Math.floor(Math.random()*150)+20
-
-box.innerHTML = `
-<h4 class="old-price">₹${oldPrice}</h4>
-<h4 class="new-price">₹${price}</h4>
-<div class="urgency">⚡ Only ${left} left</div>
-<div class="social-proof">🔥 ${bought} bought today</div>
-`
-
-})
-
-})
-
-}
-
-applySmartDiscount()
 // LIVE SEARCH
 
 <script>
@@ -1425,27 +1390,7 @@ noResults
 
 </script>
 
-<script>
 
-function generateReviews(){
-
-document.querySelectorAll(".product-card").forEach(card => {
-
-let rating = (4 + Math.random()).toFixed(1) // 4.0–5.0
-let count = Math.floor(Math.random()*2000)+100
-
-let stars = "★★★★★"
-
-// update UI
-card.querySelector(".rating-text").innerText = rating + " (" + count + " reviews)"
-
-})
-
-}
-
-generateReviews()
-
-</script>
 
 
 <footer>
