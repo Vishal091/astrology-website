@@ -460,6 +460,93 @@ margin-bottom:15px;
 color:#16a34a;
 
 }
+/* CHECKOUT FORM */
+
+.checkout-form{
+
+margin-bottom:30px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:14px;
+
+}
+
+.checkout-form h3{
+
+font-size:22px;
+
+margin-bottom:6px;
+
+color:#8b111c;
+
+}
+
+.checkout-form input,
+.checkout-form textarea{
+
+width:100%;
+
+padding:16px;
+
+border-radius:16px;
+
+border:
+1px solid rgba(139,17,28,0.1);
+
+font-family:'Poppins',sans-serif;
+
+font-size:14px;
+
+background:white;
+
+transition:.3s;
+
+}
+
+.checkout-form textarea{
+
+height:100px;
+
+resize:none;
+
+}
+
+.checkout-form input:focus,
+.checkout-form textarea:focus{
+
+outline:none;
+
+border-color:#8b111c;
+
+box-shadow:
+0 0 0 4px rgba(139,17,28,0.08);
+
+}
+
+.form-grid{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:12px;
+
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.form-grid{
+
+grid-template-columns:1fr;
+
+}
+
+}
 </style>
 
 </head>
@@ -491,7 +578,58 @@ id="cartItems"
 </div>
 
 <div class="cart-summary">
+<div class="checkout-form">
 
+<h3>
+Customer Details
+</h3>
+
+<input
+type="text"
+id="customerName"
+placeholder="Full Name"
+/>
+
+<input
+type="tel"
+id="customerPhone"
+placeholder="Phone Number"
+/>
+
+<input
+type="email"
+id="customerEmail"
+placeholder="Email Address"
+/>
+
+<textarea
+id="customerAddress"
+placeholder="Full Address"
+></textarea>
+
+<div class="form-grid">
+
+<input
+type="text"
+id="customerCity"
+placeholder="City"
+/>
+
+<input
+type="text"
+id="customerState"
+placeholder="State"
+/>
+
+</div>
+
+<input
+type="text"
+id="customerPincode"
+placeholder="Pincode"
+/>
+
+</div>
 <h2>
 Order Summary
 </h2>
@@ -776,7 +914,58 @@ renderCart();
 
 }
 function payNow(){
+const name =
+document.getElementById(
+'customerName'
+).value.trim();
 
+const phone =
+document.getElementById(
+'customerPhone'
+).value.trim();
+
+const email =
+document.getElementById(
+'customerEmail'
+).value.trim();
+
+const address =
+document.getElementById(
+'customerAddress'
+).value.trim();
+
+const city =
+document.getElementById(
+'customerCity'
+).value.trim();
+
+const state =
+document.getElementById(
+'customerState'
+).value.trim();
+
+const pincode =
+document.getElementById(
+'customerPincode'
+).value.trim();
+
+if(
+!name ||
+!phone ||
+!email ||
+!address ||
+!city ||
+!state ||
+!pincode
+){
+
+alert(
+'Please fill all customer details'
+);
+
+return;
+
+}
 if(cart.length === 0){
 return;
 }
@@ -814,7 +1003,34 @@ image:
 "hanuman-logo.jpeg",
 
 handler: function (response) {
+const orderData = {
 
+customer: {
+
+name,
+phone,
+email,
+address,
+city,
+state,
+pincode
+
+},
+
+cart,
+
+paymentId:
+response.razorpay_payment_id,
+
+date:
+new Date().toISOString()
+
+};
+
+localStorage.setItem(
+'latestOrder',
+JSON.stringify(orderData)
+);
 localStorage.removeItem('cart');
 
 alert(
@@ -828,11 +1044,11 @@ window.location.href =
 
 prefill: {
 
-name: "",
+name: name,
 
-email: "",
+email: email,
 
-contact: ""
+contact: phone
 
 },
 
