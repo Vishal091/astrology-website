@@ -1322,6 +1322,12 @@ box.innerHTML = `
 applySmartDiscount()
 // LIVE SEARCH
 
+<script>
+
+// LIVE SEARCH
+
+window.addEventListener('DOMContentLoaded', () => {
+
 const searchInput =
 document.getElementById(
 'productSearch'
@@ -1337,7 +1343,9 @@ searchInput.addEventListener(
 function(){
 
 const searchTerm =
-this.value.toLowerCase().trim();
+this.value
+.toLowerCase()
+.trim();
 
 let visibleCount = 0;
 
@@ -1369,15 +1377,11 @@ showNoResults(visibleCount);
 function showNoResults(count){
 
 const existing =
-document.querySelector(
+document.querySelectorAll(
 '.no-results'
 );
 
-if(existing){
-
-existing.remove();
-
-}
+existing.forEach(el => el.remove());
 
 if(count === 0){
 
@@ -1401,7 +1405,7 @@ No Products Found
 </h3>
 
 <p>
-Try searching for:
+Try:
 Pyrite, Rudraksha, Bracelet, Crystal...
 </p>
 
@@ -1416,6 +1420,9 @@ noResults
 }
 
 }
+
+});
+
 </script>
 
 <script>
