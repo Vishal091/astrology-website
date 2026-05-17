@@ -582,6 +582,136 @@ gap:15px;
 }
 
 }
+/* SEARCH */
+
+.search-section{
+
+padding:40px 5% 20px;
+
+display:flex;
+
+justify-content:center;
+
+}
+
+.search-wrapper{
+
+position:relative;
+
+width:100%;
+max-width:700px;
+
+}
+
+#productSearch{
+
+width:100%;
+
+padding:
+18px 60px 18px 24px;
+
+border:none;
+
+border-radius:60px;
+
+font-size:16px;
+
+font-family:'Poppins',sans-serif;
+
+background:
+rgba(255,255,255,0.95);
+
+box-shadow:
+0 10px 30px rgba(0,0,0,0.06);
+
+border:
+1px solid rgba(139,17,28,0.08);
+
+transition:.3s;
+
+}
+
+#productSearch:focus{
+
+outline:none;
+
+border-color:#8b111c;
+
+box-shadow:
+0 0 0 5px rgba(139,17,28,0.08);
+
+}
+
+.search-icon{
+
+position:absolute;
+
+right:22px;
+top:50%;
+
+transform:translateY(-50%);
+
+font-size:20px;
+
+opacity:.7;
+
+}
+
+/* EMPTY STATE */
+
+.no-results{
+
+grid-column:1/-1;
+
+background:white;
+
+padding:60px 20px;
+
+border-radius:30px;
+
+text-align:center;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,0.05);
+
+}
+
+.no-results h3{
+
+font-size:30px;
+
+margin-bottom:10px;
+
+color:#8b111c;
+
+}
+
+.no-results p{
+
+color:#666;
+
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.search-section{
+
+padding:25px 20px 10px;
+
+}
+
+#productSearch{
+
+font-size:15px;
+
+padding:
+16px 55px 16px 20px;
+
+}
+
+}
 </style>
 </head>
 
@@ -599,7 +729,21 @@ gap:15px;
 </nav>
 </header>
 <div class="trust-strip">
+<section class="search-section">
 
+<div class="search-wrapper">
+
+<input
+type="text"
+id="productSearch"
+placeholder="Search bracelets, rudraksha, crystals..."
+/>
+
+<span class="search-icon">🔍</span>
+
+</div>
+
+</section>
 <div>🚚 Free Shipping</div>
 
 <div>💳 COD Available</div>
@@ -1058,7 +1202,102 @@ box.innerHTML = `
 }
 
 applySmartDiscount()
+// LIVE SEARCH
 
+const searchInput =
+document.getElementById(
+'productSearch'
+);
+
+const productCards =
+document.querySelectorAll(
+'.product-card'
+);
+
+searchInput.addEventListener(
+'input',
+function(){
+
+const searchTerm =
+this.value.toLowerCase().trim();
+
+let visibleCount = 0;
+
+productCards.forEach(card => {
+
+const title =
+card.querySelector('h3')
+.innerText
+.toLowerCase();
+
+if(title.includes(searchTerm)){
+
+card.style.display = 'block';
+
+visibleCount++;
+
+}else{
+
+card.style.display = 'none';
+
+}
+
+});
+
+showNoResults(visibleCount);
+
+});
+
+function showNoResults(count){
+
+const existing =
+document.querySelector(
+'.no-results'
+);
+
+if(existing){
+
+existing.remove();
+
+}
+
+if(count === 0){
+
+const containers =
+document.querySelectorAll(
+'.shop-container'
+);
+
+containers.forEach(container => {
+
+const noResults =
+document.createElement('div');
+
+noResults.className =
+'no-results';
+
+noResults.innerHTML = `
+
+<h3>
+No Products Found
+</h3>
+
+<p>
+Try searching for:
+Pyrite, Rudraksha, Bracelet, Crystal...
+</p>
+
+`;
+
+container.appendChild(
+noResults
+);
+
+});
+
+}
+
+}
 </script>
 
 <script>
