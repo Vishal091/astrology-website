@@ -5,7 +5,12 @@
 <link rel="stylesheet" href="style.css">
 
 <style>
-
+*{
+-webkit-tap-highlight-color: transparent;
+-webkit-user-select: none;
+user-select: none;
+box-sizing:border-box;
+}
 body{
 background:#120000;
 color:white;
@@ -85,16 +90,18 @@ box-shadow:0 0 30px rgba(255,215,0,0.2);
 }
 
 .card h3{
-font-size:26px;
+font-size:32px;
 margin-bottom:15px;
-color:#fff;
-font-weight:700;
-line-height:1.4;
+color:#FFD700;
+font-weight:800;
+line-height:1.3;
 }
 
 .card p{
-color:rgba(255,255,255,0.75);
-line-height:1.7;
+color:rgba(255,255,255,0.82);
+line-height:1.8;
+font-size:17px;
+margin:0;
 }
 
 .badge{
@@ -125,14 +132,21 @@ margin-top:15px;
 
 .book-btn{
 width:100%;
-margin-top:22px;
-padding:14px;
+margin-top:26px;
+padding:18px;
 border:none;
-border-radius:14px;
-background:linear-gradient(to right,#ffcc00,#ff9900);
-color:black;
-font-weight:700;
-font-size:16px;
+border-radius:18px;
+
+background:linear-gradient(
+90deg,
+#c0392b,
+#FFD700
+);
+
+color:white;
+font-weight:800;
+font-size:18px;
+
 cursor:pointer;
 transition:0.3s;
 }
@@ -207,7 +221,10 @@ font-size:28px;
 }
 
 .price{
-font-size:28px;
+font-size:52px;
+font-weight:900;
+color:#FFD700;
+margin-top:15px;
 }
 
 }
@@ -699,128 +716,9 @@ const db =
 getFirestore(app);
 
 
-/* SERVICES DATA */
 
-const services = [
 
-{
-name:"Rahu Ketu Grah Shanti",
-category:"Pooja",
-price:3000,
-oldPrice:6000,
-badge:"VIP POOJA",
-description:"Powerful pooja to reduce Rahu-Ketu dosh and negativity."
-},
 
-{
-name:"Kaal Sarp Dosh Nivaran",
-category:"Pooja",
-price:7000,
-oldPrice:14000,
-badge:"DOSH NIVARAN",
-description:"Removes Kaal Sarp dosh causing delays and instability."
-},
-
-{
-name:"Maha Rudrabhishek",
-category:"Pooja",
-price:5000,
-oldPrice:10000,
-badge:"SHIVA ENERGY",
-description:"Powerful Shiva ritual for protection and prosperity."
-},
-
-{
-name:"Navgrah Shanti",
-category:"Pooja",
-price:7000,
-oldPrice:14000,
-badge:"PLANETARY",
-description:"Balances all nine planets for peace and success."
-},
-
-{
-name:"Relationship Healing",
-category:"Love",
-price:5000,
-oldPrice:10000,
-badge:"LOVE",
-description:"Healing for emotional balance and relationship harmony."
-},
-
-{
-name:"Twin Flame Healing",
-category:"Love",
-price:6000,
-oldPrice:12000,
-badge:"SOULMATE",
-description:"Restores emotional and spiritual relationship balance."
-},
-
-{
-name:"Money Magnet Healing",
-category:"Healing",
-price:11000,
-oldPrice:22000,
-badge:"WEALTH",
-description:"Abundance healing for wealth attraction and prosperity."
-},
-
-{
-name:"Career Healing",
-category:"Healing",
-price:11000,
-oldPrice:22000,
-badge:"CAREER",
-description:"Energy balancing for professional success."
-},
-
-{
-name:"General Nazar Removal",
-category:"Evil Eye",
-price:1100,
-oldPrice:2200,
-badge:"NAZAR",
-description:"Traditional cleansing for evil eye and negativity."
-},
-
-{
-name:"Business Nazar",
-category:"Evil Eye",
-price:1100,
-oldPrice:2200,
-badge:"BUSINESS",
-description:"Business energy protection and cleansing ritual."
-},
-
-{
-name:"Birth Time Rectification",
-category:"Astrology",
-price:2500,
-oldPrice:5000,
-badge:"VEDIC",
-description:"Correct your birth time for accurate kundli analysis."
-},
-
-{
-name:"Kundli Matching",
-category:"Astrology",
-price:1500,
-oldPrice:3000,
-badge:"MATCHING",
-description:"Detailed marriage compatibility analysis."
-},
-
-{
-name:"Home Vastu Consultation",
-category:"Vastu",
-price:5000,
-oldPrice:10000,
-badge:"HOME",
-description:"Improve positivity and harmony in your home."
-}
-
-];
 
 
 /* IMPORT */
