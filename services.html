@@ -654,6 +654,209 @@ font-size:28px;
 
 </div>
 </div>
+<script type="module">
+
+import {
+
+initializeApp
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+
+getFirestore,
+collection,
+addDoc
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+const firebaseConfig = {
+
+apiKey: "YOUR_API_KEY",
+
+authDomain: "YOUR_AUTH_DOMAIN",
+
+projectId: "YOUR_PROJECT_ID",
+
+storageBucket: "YOUR_STORAGE_BUCKET",
+
+messagingSenderId: "YOUR_SENDER_ID",
+
+appId: "YOUR_APP_ID"
+
+};
+
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+
+/* SERVICES DATA */
+
+const services = [
+
+{
+name:"Rahu Ketu Grah Shanti",
+category:"Pooja",
+price:3000,
+oldPrice:6000,
+badge:"VIP POOJA",
+description:"Powerful pooja to reduce Rahu-Ketu dosh and negativity."
+},
+
+{
+name:"Kaal Sarp Dosh Nivaran",
+category:"Pooja",
+price:7000,
+oldPrice:14000,
+badge:"DOSH NIVARAN",
+description:"Removes Kaal Sarp dosh causing delays and instability."
+},
+
+{
+name:"Maha Rudrabhishek",
+category:"Pooja",
+price:5000,
+oldPrice:10000,
+badge:"SHIVA ENERGY",
+description:"Powerful Shiva ritual for protection and prosperity."
+},
+
+{
+name:"Navgrah Shanti",
+category:"Pooja",
+price:7000,
+oldPrice:14000,
+badge:"PLANETARY",
+description:"Balances all nine planets for peace and success."
+},
+
+{
+name:"Relationship Healing",
+category:"Love",
+price:5000,
+oldPrice:10000,
+badge:"LOVE",
+description:"Healing for emotional balance and relationship harmony."
+},
+
+{
+name:"Twin Flame Healing",
+category:"Love",
+price:6000,
+oldPrice:12000,
+badge:"SOULMATE",
+description:"Restores emotional and spiritual relationship balance."
+},
+
+{
+name:"Money Magnet Healing",
+category:"Healing",
+price:11000,
+oldPrice:22000,
+badge:"WEALTH",
+description:"Abundance healing for wealth attraction and prosperity."
+},
+
+{
+name:"Career Healing",
+category:"Healing",
+price:11000,
+oldPrice:22000,
+badge:"CAREER",
+description:"Energy balancing for professional success."
+},
+
+{
+name:"General Nazar Removal",
+category:"Evil Eye",
+price:1100,
+oldPrice:2200,
+badge:"NAZAR",
+description:"Traditional cleansing for evil eye and negativity."
+},
+
+{
+name:"Business Nazar",
+category:"Evil Eye",
+price:1100,
+oldPrice:2200,
+badge:"BUSINESS",
+description:"Business energy protection and cleansing ritual."
+},
+
+{
+name:"Birth Time Rectification",
+category:"Astrology",
+price:2500,
+oldPrice:5000,
+badge:"VEDIC",
+description:"Correct your birth time for accurate kundli analysis."
+},
+
+{
+name:"Kundli Matching",
+category:"Astrology",
+price:1500,
+oldPrice:3000,
+badge:"MATCHING",
+description:"Detailed marriage compatibility analysis."
+},
+
+{
+name:"Home Vastu Consultation",
+category:"Vastu",
+price:5000,
+oldPrice:10000,
+badge:"HOME",
+description:"Improve positivity and harmony in your home."
+}
+
+];
+
+
+/* IMPORT */
+
+async function importServices(){
+
+for(const service of services){
+
+await addDoc(
+
+collection(db,'services'),
+
+service
+
+);
+
+console.log(
+'Imported:',
+service.name
+);
+
+}
+
+alert(
+'All Services Imported'
+);
+
+}
+
+window.importServices =
+importServices;
+
+</script>
+<button onclick="importServices()">
+Import Services
+</button>
 <script>
 
 /* MOBILE MENU */
