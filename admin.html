@@ -1083,9 +1083,6 @@ onclick="importServices()"
 ⬆ Import Services
 </button>
 
-</div>
-⬆ Import Services
-</button>
 
 </div>
 
@@ -1643,6 +1640,8 @@ alert(
 );
 
 loadServices();
+
+}
 /* ===== ADD SERVICE ===== */
 
 window.openAddService =
@@ -2290,7 +2289,12 @@ snapshot.forEach(docSnap=>{
 
 const service =
 docSnap.data();
+window.adminServices =
+window.adminServices || {};
 
+window.adminServices[
+docSnap.id
+] = service;
 servicesList.innerHTML += `
 
 <div class="product-admin-card">
@@ -2340,7 +2344,12 @@ onclick="changeServiceImage('${docSnap.id}')"
 >
 Image
 </button>
-
+<button
+class="edit-btn"
+onclick="changeServiceImage('${docSnap.id}')"
+>
+Image
+</button>
 <button
 class="delete-btn"
 onclick="deleteService('${docSnap.id}')"
@@ -2375,12 +2384,7 @@ docSnap.data();
 
 const id =
 docSnap.id;
-window.adminServices =
-window.adminServices || {};
 
-window.adminServices[
-docSnap.id
-] = service;
 window.adminProducts =
 window.adminProducts || {};
 
