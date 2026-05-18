@@ -1129,7 +1129,7 @@ Send
 
 </div>
 
-
+<script src="services-data.js"></script>
 <script type="module">
 
 /* ===== FIREBASE ===== */
@@ -1547,81 +1547,8 @@ if(
 )
 ) return;
 
-const existingServices = [
-
-{
-name:"Rahu Ketu Grah Shanti",
-category:"Pooja",
-badge:"VIP POOJA",
-price:3000,
-oldPrice:6000,
-description:"Powerful pooja to reduce Rahu-Ketu dosh and negativity."
-},
-
-{
-name:"Kaal Sarp Dosh Nivaran",
-category:"Pooja",
-badge:"DOSH NIVARAN",
-price:7000,
-oldPrice:14000,
-description:"Special ritual to remove Kaal Sarp dosh and life obstacles."
-},
-
-{
-name:"Maha Rudrabhishek",
-category:"Pooja",
-badge:"SHIVA ENERGY",
-price:5000,
-oldPrice:10000,
-description:"Powerful Shiva ritual for protection and prosperity."
-},
-
-{
-name:"Relationship Healing",
-category:"Love",
-badge:"LOVE",
-price:5000,
-oldPrice:10000,
-description:"Healing for emotional balance and relationship harmony."
-},
-
-{
-name:"Money Magnet Healing",
-category:"Healing",
-badge:"WEALTH",
-price:11000,
-oldPrice:22000,
-description:"Abundance healing for wealth attraction and prosperity."
-},
-
-{
-name:"General Nazar Removal",
-category:"Evil Eye",
-badge:"NAZAR",
-price:1100,
-oldPrice:2200,
-description:"Traditional cleansing for evil eye and negativity."
-},
-
-{
-name:"Birth Time Rectification",
-category:"Astrology",
-badge:"VEDIC",
-price:2500,
-oldPrice:5000,
-description:"Correct your birth time for accurate kundli analysis."
-},
-
-{
-name:"Home Vastu Consultation",
-category:"Vastu",
-badge:"HOME",
-price:5000,
-oldPrice:10000,
-description:"Improve positivity and harmony in your home."
-}
-
-];
+const existingServices =
+ALL_SERVICES;
 
 for(const service of existingServices){
 
