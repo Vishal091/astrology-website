@@ -190,7 +190,7 @@ gap:34px;
 .card{
 
 position:relative;
-
+min-height:auto;
 background:
 rgba(255,255,255,0.84);
 
@@ -300,10 +300,11 @@ transform:scale(1.05);
 
 }
 .service-content{
-display:flex;
-flex-direction:column;
-flex:1;
-justify-content:space-between;
+padding:6px 2px 0;
+}
+.price-box{
+margin-top:14px;
+margin-bottom:18px;
 }
 .card h3{
 
@@ -699,90 +700,7 @@ margin-top:10px;
 
 
 </div>
-<script type="module">
 
-import {
-
-initializeApp
-
-}
-
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-
-getFirestore,
-collection,
-addDoc
-
-}
-
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
-const firebaseConfig = {
-
-apiKey: "YOUR_API_KEY",
-
-authDomain: "YOUR_AUTH_DOMAIN",
-
-projectId: "YOUR_PROJECT_ID",
-
-storageBucket: "YOUR_STORAGE_BUCKET",
-
-messagingSenderId: "YOUR_SENDER_ID",
-
-appId: "YOUR_APP_ID"
-
-};
-
-
-const app =
-initializeApp(firebaseConfig);
-
-const db =
-getFirestore(app);
-
-
-
-
-
-
-
-/* IMPORT */
-
-async function importServices(){
-
-for(const service of services){
-
-await addDoc(
-
-collection(db,'services'),
-
-service
-
-);
-
-console.log(
-'Imported:',
-service.name
-);
-
-}
-
-alert(
-'All Services Imported'
-);
-
-}
-
-window.importServices =
-importServices;
-
-</script>
-<button onclick="importServices()">
-Import Services
-</button>
 <script>
 
 /* MOBILE MENU */
@@ -808,7 +726,6 @@ navbar.classList.toggle("scrolled", window.scrollY > 50);
 class="whatsapp-float">
 💬
 </a>
-```html
 <script type="module">
 
 import { initializeApp }
