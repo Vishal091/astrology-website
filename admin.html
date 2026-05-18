@@ -1964,7 +1964,20 @@ const category =
 prompt(
 'Category:\nbracelets\nrudraksha\ncrystals\nspiritual'
 );
+const description =
+prompt(
+'Product Description'
+);
 
+const benefits =
+prompt(
+'Benefits'
+);
+
+const zodiac =
+prompt(
+'Best Zodiac Signs'
+);
 const input =
 document.createElement('input');
 
@@ -2026,7 +2039,9 @@ category:
 category.toLowerCase(),
 
 image:imageUrl,
-
+description,
+benefits,
+zodiac,
 createdAt:
 serverTimestamp()
 
