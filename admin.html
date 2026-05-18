@@ -201,20 +201,221 @@ color:#999;
 
 @media(max-width:768px){
 
+/* MAIN LAYOUT */
+
 .main{
-grid-template-columns:1fr;
+
+display:flex;
+
+flex-direction:column;
+
+height:auto;
+
 }
+
+/* SIDEBAR */
 
 .sidebar{
-height:220px;
+
+width:100%;
+
+height:auto;
+
+border-right:none;
+
+border-bottom:
+1px solid rgba(255,255,255,0.08);
+
 }
 
-.message{
-max-width:90%;
+/* MENU */
+
+.sidebar-menu{
+
+flex-direction:row;
+
+overflow-x:auto;
+
+padding:10px;
+
+}
+
+.menu-item{
+
+min-width:max-content;
+
+font-size:14px;
+
+padding:12px 16px;
+
+}
+
+/* SIDEBAR TITLE */
+
+.sidebar-title{
+
+font-size:16px;
+
+padding:14px 18px;
+
+}
+
+/* CHAT AREA */
+
+.chat-area{
+
+height:auto;
+
+min-height:100vh;
+
+}
+
+/* CHAT TOP */
+
+.chat-top{
+
+padding:14px 16px;
+
 }
 
 .chat-top h2{
+
 font-size:18px;
+
+}
+
+/* MESSAGES */
+
+.messages{
+
+padding:14px;
+
+}
+
+/* MESSAGE */
+
+.message{
+
+max-width:90%;
+
+font-size:14px;
+
+}
+
+/* INPUT */
+
+.chat-input{
+
+padding:12px;
+
+gap:8px;
+
+}
+
+.chat-input input{
+
+padding:12px;
+
+font-size:14px;
+
+}
+
+.chat-input button{
+
+padding:12px 18px;
+
+font-size:14px;
+
+}
+
+/* PRODUCTS */
+
+.products-container{
+
+padding:14px;
+
+}
+
+.products-header{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:14px;
+
+}
+
+.products-header h2{
+
+font-size:22px;
+
+}
+
+.product-admin-card{
+
+padding:14px;
+
+}
+
+.product-admin-card h3{
+
+font-size:18px;
+
+}
+
+/* PRODUCT BUTTONS */
+
+.product-admin-actions{
+
+flex-direction:column;
+
+}
+
+/* ORDER BUTTONS */
+
+.order-actions{
+
+flex-direction:column;
+
+}
+
+/* ORDER CARD */
+
+.order-card{
+
+padding:14px;
+
+}
+
+/* HEADER */
+
+.header{
+
+padding:14px 16px;
+
+flex-direction:column;
+
+gap:12px;
+
+align-items:flex-start;
+
+}
+
+.logo{
+
+font-size:22px;
+
+}
+
+/* BADGE */
+
+.admin-badge{
+
+font-size:13px;
+
+padding:8px 14px;
+
 }
 
 }
@@ -515,7 +716,7 @@ margin-top:14px;
 flex:1;
 
 padding:12px;
-
+width:100%;
 border:none;
 
 border-radius:12px;
@@ -550,6 +751,18 @@ display:none;
 flex-direction:column;
 
 height:100%;
+
+}
+*{
+
+box-sizing:border-box;
+
+}
+
+html,
+body{
+
+overflow-x:hidden;
 
 }
 </style>
