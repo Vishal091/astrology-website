@@ -808,6 +808,151 @@ navbar.classList.toggle("scrolled", window.scrollY > 50);
 class="whatsapp-float">
 💬
 </a>
+```html
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+getDocs
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* FIREBASE */
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyA2ytO0jnhM9baGrByUS1jgSc47q6xJ64s",
+
+authDomain: "astrodhani-935c8.firebaseapp.com",
+
+projectId: "astrodhani-935c8",
+
+storageBucket: "astrodhani-935c8.firebasestorage.app",
+
+messagingSenderId: "158324229234",
+
+appId: "1:158324229234:web:bff8d74888b356be362eeb"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+/* LOAD SERVICES */
+
+async function loadServices(){
+
+const snapshot =
+await getDocs(
+collection(db,'services')
+);
+
+snapshot.forEach(doc=>{
+
+const service = doc.data();
+
+let targetGrid = '';
+
+switch(
+(service.category || '').toLowerCase()
+){
+
+case 'pooja':
+targetGrid = 'poojaGrid';
+break;
+
+case 'love':
+targetGrid = 'loveGrid';
+break;
+
+case 'evil':
+targetGrid = 'evilGrid';
+break;
+
+case 'healing':
+targetGrid = 'healingGrid';
+break;
+
+case 'astrology':
+targetGrid = 'astrologyGrid';
+break;
+
+case 'vastu':
+targetGrid = 'vastuGrid';
+break;
+
+default:
+targetGrid = 'poojaGrid';
+
+}
+
+const grid =
+document.getElementById(targetGrid);
+
+if(!grid) return;
+
+grid.innerHTML += `
+
+<div class="card">
+
+<div class="service-image-wrap">
+
+<img
+src="${service.image || 'https://via.placeholder.com/500'}"
+class="service-image"
+>
+
+<div class="badge">
+${service.badge || 'SERVICE'}
+</div>
+
+</div>
+
+<div class="service-content">
+
+<h3>
+${service.name || ''}
+</h3>
+
+<p>
+${service.description || ''}
+</p>
+
+<div class="price-box">
+
+<p class="old">
+₹${service.oldPrice || ''}
+</p>
+
+<p class="price">
+₹${service.price || ''}
+</p>
+
+</div>
+
+<button class="book-btn">
+Book Now
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+loadServices();
+
+</script>
+
 
 </body>
 </html>
