@@ -1720,58 +1720,87 @@ loadServices();
 /* ===== EDIT SERVICE ===== */
 
 window.editService =
-async function(id){
+function(id){
 
 const service =
 window.adminServices[id];
 
 if(!service) return;
 
-const name =
-prompt(
-'Service Name',
-service.name
-);
+document.getElementById(
+'serviceModal'
+).style.display =
+'flex';
 
-const price =
-prompt(
-'Price',
-service.price
-);
+document.getElementById(
+'serviceName'
+).value =
+service.name || '';
 
-const oldPrice =
-prompt(
-'Old Price',
-service.oldPrice
-);
+document.getElementById(
+'servicePrice'
+).value =
+service.price || '';
 
-const category =
-prompt(
-'Category',
-service.category
-);
+document.getElementById(
+'serviceOldPrice'
+).value =
+service.oldPrice || '';
 
-const badge =
-prompt(
-'Badge',
-service.badge
-);
+document.getElementById(
+'serviceCategory'
+).value =
+service.category || '';
 
-const description =
-prompt(
-'Description',
-service.description
-);
+document.getElementById(
+'serviceBadge'
+).value =
+service.badge || '';
+
+document.getElementById(
+'serviceDescription'
+).value =
+service.description || '';
+
+document.getElementById(
+'saveServiceBtn'
+).onclick =
+async function(){
 
 await updateDoc(
 doc(db,'services',id),
 {
-name,
-price,
-oldPrice,
-category,
-badge,
-description
+
+name:
+document.getElementById(
+'serviceName'
+).value,
+
+price:
+document.getElementById(
+'servicePrice'
+).value,
+
+oldPrice:
+document.getElementById(
+'serviceOldPrice'
+).value,
+
+category:
+document.getElementById(
+'serviceCategory'
+).value,
+
+badge:
+document.getElementById(
+'serviceBadge'
+).value,
+
+description:
+document.getElementById(
+'serviceDescription'
+).value
+
 }
 );
 
@@ -1779,7 +1808,11 @@ alert(
 'Service Updated'
 );
 
+closeServiceModal();
+
 loadServices();
+
+};
 
 }
 
@@ -2551,6 +2584,15 @@ document.getElementById(
 ).style.display = 'none';
 
 }
+window.closeServiceModal =
+function(){
+
+document.getElementById(
+'serviceModal'
+).style.display =
+'none';
+
+}
 window.changeProductImage =
 async function(id){
 
@@ -2858,6 +2900,68 @@ placeholder="Zodiac Compatibility"
 id="saveEditBtn"
 >
 Save Changes
+</button>
+
+</div>
+
+</div>
+<div
+id="serviceModal"
+class="edit-modal"
+>
+
+<div class="edit-modal-content">
+
+<span
+class="close-edit-modal"
+onclick="closeServiceModal()"
+>
+×
+</span>
+
+<h2>
+Edit Service
+</h2>
+
+<input
+type="text"
+id="serviceName"
+placeholder="Service Name"
+/>
+
+<input
+type="number"
+id="servicePrice"
+placeholder="Price"
+/>
+
+<input
+type="number"
+id="serviceOldPrice"
+placeholder="Old Price"
+/>
+
+<input
+type="text"
+id="serviceCategory"
+placeholder="Category"
+/>
+
+<input
+type="text"
+id="serviceBadge"
+placeholder="Badge"
+/>
+
+<textarea
+id="serviceDescription"
+placeholder="Description"
+></textarea>
+
+<button
+id="saveServiceBtn"
+>
+Save Service
 </button>
 
 </div>
