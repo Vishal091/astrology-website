@@ -765,6 +765,136 @@ body{
 overflow-x:hidden;
 
 }
+/* EDIT MODAL */
+
+.edit-modal{
+
+position:fixed;
+
+inset:0;
+
+background:
+rgba(0,0,0,0.75);
+
+display:none;
+
+justify-content:center;
+
+align-items:center;
+
+z-index:99999;
+
+padding:20px;
+
+}
+
+.edit-modal-content{
+
+background:
+linear-gradient(
+135deg,
+#1a0606,
+#2b0b0b
+);
+
+width:100%;
+
+max-width:520px;
+
+padding:28px;
+
+border-radius:28px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:16px;
+
+position:relative;
+
+border:
+1px solid rgba(255,215,0,0.12);
+
+}
+
+.edit-modal-content h2{
+
+color:#FFD700;
+
+margin-bottom:10px;
+
+}
+
+.edit-modal-content input,
+.edit-modal-content textarea{
+
+width:100%;
+
+padding:16px;
+
+border:none;
+
+border-radius:18px;
+
+background:
+rgba(255,255,255,0.06);
+
+color:white;
+
+font-size:15px;
+
+font-family:'Poppins',sans-serif;
+
+}
+
+.edit-modal-content textarea{
+
+min-height:120px;
+
+resize:none;
+
+}
+
+#saveEditBtn{
+
+padding:16px;
+
+border:none;
+
+border-radius:18px;
+
+font-size:16px;
+
+font-weight:700;
+
+cursor:pointer;
+
+background:
+linear-gradient(
+45deg,
+#FFD700,
+#ffb700
+);
+
+color:black;
+
+}
+
+.close-edit-modal{
+
+position:absolute;
+
+top:14px;
+right:18px;
+
+font-size:34px;
+
+cursor:pointer;
+
+color:#FFD700;
+
+}
 </style>
 </head>
 <body>
@@ -1800,10 +1930,10 @@ ${product.name}
 
 <button
 class="edit-btn"
-onclick="editProduct(
-'${id}',
-'${product.price}'
-)"
+onclick='editProduct(
+"${id}",
+${JSON.stringify(product)}
+)'
 >
 Edit
 </button>
@@ -1837,24 +1967,101 @@ Delete
 }
 
 window.editProduct =
-async function(id,currentPrice){
+function(id,product){
 
-const newPrice =
-prompt(
-'Enter new price',
-currentPrice
-);
+document.getElementById(
+'editModal'
+).style.display = 'flex';
 
-if(!newPrice) return;
+document.getElementById(
+'editName'
+).value =
+product.name || '';
+
+document.getElementById(
+'editPrice'
+).value =
+product.price || '';
+
+document.getElementById(
+'editCategory'
+).value =
+product.category || '';
+
+document.getElementById(
+'editDescription'
+).value =
+product.description || '';
+
+document.getElementById(
+'editBenefits'
+).value =
+product.benefits || '';
+
+document.getElementById(
+'editZodiac'
+).value =
+product.zodiac || '';
+
+document.getElementById(
+'saveEditBtn'
+).onclick =
+async function(){
 
 await updateDoc(
 doc(db,'products',id),
 {
-price:newPrice
+
+name:
+document.getElementById(
+'editName'
+).value,
+
+price:
+document.getElementById(
+'editPrice'
+).value,
+
+category:
+document.getElementById(
+'editCategory'
+).value,
+
+description:
+document.getElementById(
+'editDescription'
+).value,
+
+benefits:
+document.getElementById(
+'editBenefits'
+).value,
+
+zodiac:
+document.getElementById(
+'editZodiac'
+).value
+
 }
 );
 
+alert(
+'Product Updated'
+);
+
+closeEditModal();
+
 loadProducts();
+
+};
+
+}
+window.closeEditModal =
+function(){
+
+document.getElementById(
+'editModal'
+).style.display = 'none';
 
 }
 window.changeProductImage =
@@ -2108,7 +2315,67 @@ window.location.href =
 
 }
 </script>
+<div
+id="editModal"
+class="edit-modal"
+>
 
+<div class="edit-modal-content">
+
+<span
+class="close-edit-modal"
+onclick="closeEditModal()"
+>
+×
+</span>
+
+<h2>
+Edit Product
+</h2>
+
+<input
+type="text"
+id="editName"
+placeholder="Product Name"
+/>
+
+<input
+type="number"
+id="editPrice"
+placeholder="Price"
+/>
+
+<input
+type="text"
+id="editCategory"
+placeholder="Category"
+/>
+
+<textarea
+id="editDescription"
+placeholder="Description"
+></textarea>
+
+<textarea
+id="editBenefits"
+placeholder="Benefits"
+></textarea>
+
+<input
+type="text"
+id="editZodiac"
+placeholder="Zodiac Compatibility"
+/>
+
+<button
+id="saveEditBtn"
+>
+Save Changes
+</button>
+
+</div>
+
+</div>
 </body>
 </html>
 
