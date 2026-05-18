@@ -386,6 +386,136 @@ background:#FFD700;
 color:black;
 
 }
+/* PRODUCTS */
+
+.products-container{
+
+padding:16px;
+
+}
+
+.products-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:18px;
+
+}
+
+.products-header h2{
+
+margin:0;
+
+font-size:22px;
+
+color:#FFD700;
+
+}
+
+.add-product-btn{
+
+padding:12px 18px;
+
+border:none;
+
+border-radius:14px;
+
+cursor:pointer;
+
+font-weight:700;
+
+background:
+linear-gradient(
+45deg,
+#FFD700,
+#ffb700
+);
+
+color:black;
+
+}
+
+.product-admin-card{
+
+background:
+rgba(255,255,255,0.04);
+
+border:
+1px solid rgba(255,255,255,0.06);
+
+border-radius:18px;
+
+padding:18px;
+
+margin-bottom:14px;
+
+}
+
+.product-admin-card h3{
+
+margin:0 0 10px;
+
+font-size:18px;
+
+color:#FFD700;
+
+}
+
+.product-admin-card p{
+
+margin:6px 0;
+
+font-size:14px;
+
+color:#ddd;
+
+}
+
+.product-admin-actions{
+
+display:flex;
+
+gap:10px;
+
+margin-top:14px;
+
+}
+
+.product-admin-actions button{
+
+flex:1;
+
+padding:12px;
+
+border:none;
+
+border-radius:12px;
+
+cursor:pointer;
+
+font-weight:700;
+
+}
+
+.edit-btn{
+
+background:#FFD700;
+
+color:black;
+
+}
+
+.delete-btn{
+
+background:#dc2626;
+
+color:white;
+
+}
 </style>
 </head>
 <body>
@@ -443,7 +573,13 @@ id="ordersTab"
 >
 🛒 Orders
 </div>
-
+<div
+class="menu-item"
+onclick="showSection('products')"
+id="productsTab"
+>
+📦 Products
+</div>
 </div>
 
 <div class="sidebar-title"
@@ -482,7 +618,33 @@ onkeyup="filterOrders()"
 </div>
 
 </div>
+<div
+id="productsSection"
+style="display:none;"
+>
 
+<div class="products-container">
+
+<div class="products-header">
+
+<h2>
+📦 Product Management
+</h2>
+
+<button
+class="add-product-btn"
+onclick="openAddProduct()"
+>
++ Add Product
+</button>
+
+</div>
+
+<div id="productsList"></div>
+
+</div>
+
+</div>
 <!-- ===== CHAT ===== -->
 
 <div class="chat-area">
@@ -615,7 +777,12 @@ document.getElementById(
 section === 'orders'
 ? 'block'
 : 'none';
-
+document.getElementById(
+'productsSection'
+).style.display =
+section === 'products'
+? 'block'
+: 'none';
 document.getElementById(
 'consultationsTab'
 ).classList.remove('active');
@@ -623,7 +790,9 @@ document.getElementById(
 document.getElementById(
 'ordersTab'
 ).classList.remove('active');
-
+document.getElementById(
+'productsTab'
+).classList.remove('active');
 document.getElementById(
 section + 'Tab'
 ).classList.add('active');
@@ -631,9 +800,14 @@ section + 'Tab'
 document.getElementById(
 'sidebarDynamicTitle'
 ).innerText =
+
 section === 'consultations'
 ? '👥 Active Users'
-: '🛒 Recent Orders';
+
+: section === 'orders'
+? '🛒 Recent Orders'
+
+: '📦 Products';
 
 }
 let currentUser = "";
@@ -881,6 +1055,146 @@ card.innerText
 });
 
 }
+/* ===== PRODUCTS ===== */
+
+const products = [
+
+{
+name:'Money Magnet Bracelet',
+price:'449',
+category:'Bracelets'
+},
+
+{
+name:'Pyrite Bracelet',
+price:'599',
+category:'Bracelets'
+},
+
+{
+name:'7 Chakra Bracelet',
+price:'399',
+category:'Bracelets'
+},
+
+{
+name:'5 Mukhi Rudraksha',
+price:'799',
+category:'Rudraksha'
+}
+
+];
+
+const productsList =
+document.getElementById(
+'productsList'
+);
+
+function loadProducts(){
+
+productsList.innerHTML = '';
+
+products.forEach((product,index)=>{
+
+productsList.innerHTML += `
+
+<div class="product-admin-card">
+
+<h3>
+${product.name}
+</h3>
+
+<p>
+💰 ₹${product.price}
+</p>
+
+<p>
+📂 ${product.category}
+</p>
+
+<div class="product-admin-actions">
+
+<button
+class="edit-btn"
+onclick="editProduct(${index})"
+>
+Edit
+</button>
+
+<button
+class="delete-btn"
+onclick="deleteProduct(${index})"
+>
+Delete
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+window.editProduct = function(index){
+
+const newPrice =
+prompt(
+'Enter new price',
+products[index].price
+);
+
+if(newPrice){
+
+products[index].price =
+newPrice;
+
+loadProducts();
+
+}
+
+}
+
+window.deleteProduct = function(index){
+
+if(confirm('Delete product?')){
+
+products.splice(index,1);
+
+loadProducts();
+
+}
+
+}
+
+window.openAddProduct = function(){
+
+const name =
+prompt('Product name');
+
+if(!name) return;
+
+const price =
+prompt('Product price');
+
+const category =
+prompt('Category');
+
+products.push({
+
+name,
+price,
+category
+
+});
+
+loadProducts();
+
+}
+
+loadProducts();
 /* ===== SEND REPLY ===== */
 
 window.sendReply = async function(){
