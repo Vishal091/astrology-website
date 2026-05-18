@@ -959,6 +959,13 @@ id="productsTab"
 >
 📦 Products
 </div>
+<div
+class="menu-item"
+onclick="showSection('services')"
+id="servicesTab"
+>
+🪔 Services
+</div>
 </div>
 
 <div class="sidebar-title"
@@ -1042,7 +1049,38 @@ onclick="importProducts()"
 
 </div>
 </div>
+<div
+id="servicesSection"
+style="
+display:none;
+width:100%;
+height:100%;
+overflow-y:auto;
+"
+>
 
+<div class="products-container">
+
+<div class="products-header">
+
+<h2>
+🪔 Services Management
+</h2>
+
+<button
+class="add-product-btn"
+onclick="importServices()"
+>
+⬆ Import Services
+</button>
+
+</div>
+
+<div id="servicesList"></div>
+
+</div>
+
+</div>
 <div class="chat-top">
 
 <div>
@@ -1205,6 +1243,12 @@ section === 'products'
 ? 'flex'
 : 'none';
 document.getElementById(
+'servicesSection'
+).style.display =
+section === 'services'
+? 'block'
+: 'none';
+document.getElementById(
 'consultationsTab'
 ).classList.remove('active');
 
@@ -1213,6 +1257,9 @@ document.getElementById(
 ).classList.remove('active');
 document.getElementById(
 'productsTab'
+).classList.remove('active');
+document.getElementById(
+'servicesTab'
 ).classList.remove('active');
 document.getElementById(
 section + 'Tab'
@@ -1228,6 +1275,8 @@ section === 'consultations'
 : section === 'orders'
 ? '🛒 Recent Orders'
 
+: section === 'services'
+? '🪔 Services'
 : '📦 Products';
 
 }
@@ -1474,6 +1523,113 @@ card.innerText
 : 'none';
 
 });
+
+}
+/* ===== IMPORT SERVICES ===== */
+
+window.importServices =
+async function(){
+
+if(
+!confirm(
+'Import all services?'
+)
+) return;
+
+const existingServices = [
+
+{
+name:'Rahu Ketu Grah Shanti',
+price:'3000',
+oldPrice:'6000',
+category:'Pooja',
+badge:'VIP POOJA',
+description:'Powerful pooja for Rahu-Ketu dosh and negativity.'
+},
+
+{
+name:'Kaal Sarp Dosh Nivaran',
+price:'7000',
+oldPrice:'14000',
+category:'Pooja',
+badge:'DOSH NIVARAN',
+description:'Removes Kaal Sarp dosh causing delays and instability.'
+},
+
+{
+name:'Maha Rudrabhishek',
+price:'5000',
+oldPrice:'10000',
+category:'Pooja',
+badge:'SHIVA ENERGY',
+description:'Powerful Shiva ritual for protection and prosperity.'
+},
+
+{
+name:'Relationship Healing',
+price:'5000',
+oldPrice:'10000',
+category:'Love',
+badge:'LOVE',
+description:'Healing for emotional balance and relationship harmony.'
+},
+
+{
+name:'Money Magnet Healing',
+price:'11000',
+oldPrice:'22000',
+category:'Healing',
+badge:'WEALTH',
+description:'Abundance healing for wealth attraction and prosperity.'
+},
+
+{
+name:'General Nazar Removal',
+price:'1100',
+oldPrice:'2200',
+category:'Evil Eye',
+badge:'NAZAR',
+description:'Traditional cleansing for evil eye and negativity.'
+},
+
+{
+name:'Birth Time Rectification',
+price:'2500',
+oldPrice:'5000',
+category:'Astrology',
+badge:'VEDIC',
+description:'Correct your birth time for accurate kundli analysis.'
+},
+
+{
+name:'Home Vastu Consultation',
+price:'5000',
+oldPrice:'10000',
+category:'Vastu',
+badge:'HOME',
+description:'Improve positivity and harmony in your home.'
+}
+
+];
+
+for(const service of existingServices){
+
+await addDoc(
+collection(db,'services'),
+{
+...service,
+createdAt:
+serverTimestamp()
+}
+);
+
+}
+
+alert(
+'Services Imported Successfully'
+);
+
+loadServices();
 
 }
 /* ===== IMPORT PRODUCTS ===== */
@@ -1882,7 +2038,62 @@ document.getElementById(
 );
 loadProducts();
 
+/* ===== LOAD SERVICES ===== */
 
+const servicesList =
+document.getElementById(
+'servicesList'
+);
+
+async function loadServices(){
+
+if(!servicesList) return;
+
+servicesList.innerHTML = '';
+
+const snapshot =
+await getDocs(
+collection(db,'services')
+);
+
+snapshot.forEach(docSnap=>{
+
+const service =
+docSnap.data();
+
+servicesList.innerHTML += `
+
+<div class="product-admin-card">
+
+<h3>
+${service.name}
+</h3>
+
+<p>
+💰 ₹${service.price}
+</p>
+
+<p>
+📂 ${service.category}
+</p>
+
+<p>
+🏷 ${service.badge}
+</p>
+
+<p>
+${service.description}
+</p>
+
+</div>
+
+`;
+
+});
+
+}
+
+loadServices();
 
 async function loadProducts(){
 
