@@ -1,5 +1,4 @@
 const ALL_SERVICES = [
-  const ALL_SERVICES = [
 
 /* ================= POOJA ================= */
 
@@ -640,4 +639,4 @@ description:"Activates abundance energy and prosperity."
 }
 
 ];
-  ];
+
