@@ -1920,5 +1920,103 @@ Product Added
 </div>
 
 </div>
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+
+getFirestore,
+collection,
+getDocs
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* FIREBASE */
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyA2ytO0jnhM9baGrByUS1jgSc47q6xJ64s",
+
+authDomain: "astrodhani-935c8.firebaseapp.com",
+
+projectId: "astrodhani-935c8",
+
+storageBucket: "astrodhani-935c8.firebasestorage.app",
+
+messagingSenderId: "158324229234",
+
+appId: "1:158324229234:web:bff8d74888b356be362eeb"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+/* LOAD FIREBASE PRODUCTS */
+
+async function loadFirebaseProducts(){
+
+const snapshot =
+await getDocs(
+collection(db,'products')
+);
+
+const productsGrid =
+document.querySelector(
+'.category-section[data-category="bracelets"] .shop-container'
+);
+snapshot.forEach(doc=>{
+
+const product =
+doc.data();
+
+productsGrid.innerHTML += `
+
+<div
+class="product-card"
+data-category="${product.category}"
+>
+
+<div class="product-badge badge-trending">
+NEW
+</div>
+
+<h3>
+🔮 ${product.name}
+</h3>
+
+<p>
+₹${product.price}
+</p>
+
+<button
+onclick="
+addToCart(
+'${product.name}',
+${product.price}
+)
+"
+>
+Add to Cart
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+loadFirebaseProducts();
+
+</script>
 </body>
 </html>
