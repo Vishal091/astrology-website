@@ -126,11 +126,22 @@ font-size:22px;
 }
 
 }
-</style>
-</head>
-
-<body>
-<div class="bg-glow"></div>
+.whatsapp-float{
+position:fixed;
+bottom:25px;
+right:25px;
+width:60px;
+height:60px;
+border-radius:50%;
+background:#25D366;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+text-decoration:none;
+z-index:999;
+box-shadow:0 0 20px rgba(0,0,0,0.3);
+}
 .bg-glow{
 position:fixed;
 width:500px;
@@ -142,6 +153,12 @@ transform:translateX(-50%);
 z-index:-1;
 pointer-events:none;
 }
+</style>
+</head>
+
+<body>
+<div class="bg-glow"></div>
+
 <header class="navbar" id="navbar">
 
 <!-- LOGO -->
@@ -383,21 +400,6 @@ navbar.classList.toggle("scrolled", window.scrollY > 50);
 class="whatsapp-float">
 💬
 </a>
-.whatsapp-float{
-position:fixed;
-bottom:25px;
-right:25px;
-width:60px;
-height:60px;
-border-radius:50%;
-background:#25D366;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:28px;
-text-decoration:none;
-z-index:999;
-box-shadow:0 0 20px rgba(0,0,0,0.3);
-}
+
 </body>
 </html>
