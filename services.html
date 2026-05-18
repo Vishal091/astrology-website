@@ -73,14 +73,28 @@ gap:28px;
 
 .card{
 background:linear-gradient(145deg,#1b0000,#2d0000);
-padding:25px;
-border-radius:22px;
-border:1px solid rgba(255,215,0,0.15);
-text-align:left;
+
+padding:30px;
+
+border-radius:32px;
+
+border:1px solid rgba(255,215,0,0.12);
+
 transition:0.4s;
+
 position:relative;
+
 overflow:hidden;
-box-shadow:0 0 25px rgba(0,0,0,0.3);
+
+box-shadow:0 0 25px rgba(0,0,0,0.35);
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:space-between;
+
+min-height:460px;
 }
 
 .card:hover{
@@ -90,11 +104,11 @@ box-shadow:0 0 30px rgba(255,215,0,0.2);
 }
 
 .card h3{
-font-size:32px;
-margin-bottom:15px;
+font-size:40px;
+margin:25px 0 18px;
 color:#FFD700;
 font-weight:800;
-line-height:1.3;
+line-height:1.2;
 }
 
 .card p{
@@ -125,16 +139,20 @@ margin-top:10px;
 
 .old{
 text-decoration:line-through;
-color:#888;
-font-size:15px;
-margin-top:15px;
+color:#777;
+font-size:18px;
+margin-top:20px;
 }
 
 .book-btn{
 width:100%;
-margin-top:26px;
+
+margin-top:28px;
+
 padding:18px;
+
 border:none;
+
 border-radius:18px;
 
 background:linear-gradient(
@@ -144,10 +162,13 @@ background:linear-gradient(
 );
 
 color:white;
+
 font-weight:800;
-font-size:18px;
+
+font-size:20px;
 
 cursor:pointer;
+
 transition:0.3s;
 }
 
@@ -191,7 +212,17 @@ box-shadow:0 0 20px rgba(0,0,0,0.3);
 /* MOBILE */
 
 @media(max-width:768px){
+.card{
+min-height:auto;
+}
 
+.card h3{
+font-size:28px;
+}
+
+.price{
+font-size:42px;
+}
 .services-hero{
 padding:80px 20px;
 }
@@ -221,10 +252,10 @@ font-size:28px;
 }
 
 .price{
-font-size:52px;
+font-size:54px;
 font-weight:900;
 color:#FFD700;
-margin-top:15px;
+margin-top:10px;
 }
 
 }
