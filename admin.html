@@ -1897,7 +1897,11 @@ snapshot.forEach(docSnap=>{
 
 const product =
 docSnap.data();
+window.adminProducts =
+window.adminProducts || {};
 
+window.adminProducts[id] =
+product;
 const id =
 docSnap.id;
 
@@ -1930,10 +1934,7 @@ ${product.name}
 
 <button
 class="edit-btn"
-onclick='editProduct(
-"${id}",
-${JSON.stringify(product)}
-)'
+onclick="editProduct('${id}')"
 >
 Edit
 </button>
@@ -1967,8 +1968,12 @@ Delete
 }
 
 window.editProduct =
-function(id,product){
+function(id){
 
+const product =
+window.adminProducts[id];
+
+if(!product) return;
 document.getElementById(
 'editModal'
 ).style.display = 'flex';
