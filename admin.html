@@ -541,6 +541,17 @@ background:#dc2626;
 color:white;
 
 }
+#productsSection{
+
+flex:1;
+
+display:none;
+
+flex-direction:column;
+
+height:100%;
+
+}
 </style>
 </head>
 <body>
@@ -642,6 +653,7 @@ onkeyup="filterOrders()"
 
 </div>
 
+</div>
 
 
 <!-- ===== CHAT ===== -->
@@ -725,7 +737,6 @@ Send
 
 </div>
 
-</div>
 
 <script type="module">
 
@@ -847,7 +858,7 @@ document.getElementById(
 'productsSection'
 ).style.display =
 section === 'products'
-? 'block'
+? 'flex'
 : 'none';
 document.getElementById(
 'consultationsTab'
