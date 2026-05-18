@@ -1125,6 +1125,166 @@ bottom:90px;
 }
 
 }
+/* PRODUCT MODAL */
+
+.product-modal{
+
+position:fixed;
+
+inset:0;
+
+background:
+rgba(0,0,0,0.75);
+
+display:none;
+
+justify-content:center;
+
+align-items:center;
+
+z-index:9999;
+
+padding:20px;
+
+}
+
+.product-modal-content{
+
+background:
+linear-gradient(
+135deg,
+#1a0606,
+#2b0b0b
+);
+
+width:100%;
+
+max-width:520px;
+
+max-height:90vh;
+
+overflow-y:auto;
+
+border-radius:28px;
+
+padding:24px;
+
+position:relative;
+
+border:
+1px solid rgba(255,215,0,0.15);
+
+}
+
+.close-modal{
+
+position:absolute;
+
+top:14px;
+
+right:18px;
+
+font-size:34px;
+
+cursor:pointer;
+
+color:#FFD700;
+
+}
+
+.modal-image{
+
+width:100%;
+
+height:320px;
+
+object-fit:cover;
+
+border-radius:22px;
+
+margin-bottom:20px;
+
+}
+
+#modalName{
+
+font-size:30px;
+
+margin-bottom:10px;
+
+color:#fff;
+
+}
+
+.modal-price{
+
+font-size:28px;
+
+font-weight:700;
+
+color:#FFD700;
+
+margin-bottom:18px;
+
+}
+
+#modalDescription{
+
+line-height:1.7;
+
+color:#ddd;
+
+margin-bottom:18px;
+
+}
+
+.modal-box{
+
+background:
+rgba(255,255,255,0.05);
+
+padding:16px;
+
+border-radius:18px;
+
+margin-bottom:16px;
+
+}
+
+.modal-box h3{
+
+margin-top:0;
+
+color:#FFD700;
+
+}
+
+.modal-cart-btn{
+
+width:100%;
+
+padding:16px;
+
+border:none;
+
+border-radius:18px;
+
+font-size:17px;
+
+font-weight:700;
+
+cursor:pointer;
+
+background:
+linear-gradient(
+45deg,
+#FFD700,
+#ffb700
+);
+
+color:black;
+
+}
 </style>
 </head>
 
@@ -1542,6 +1702,63 @@ section.style.display = 'none';
 </div>
 
 </a>
+<div
+id="productModal"
+class="product-modal"
+>
+
+<div class="product-modal-content">
+
+<span
+class="close-modal"
+onclick="closeProductModal()"
+>
+×
+</span>
+
+<img
+id="modalImage"
+class="modal-image"
+/>
+
+<h2 id="modalName"></h2>
+
+<div class="modal-price"
+id="modalPrice">
+</div>
+
+<p id="modalDescription"></p>
+
+<div class="modal-box">
+
+<h3>
+✨ Benefits
+</h3>
+
+<p id="modalBenefits"></p>
+
+</div>
+
+<div class="modal-box">
+
+<h3>
+♈ Zodiac Compatibility
+</h3>
+
+<p id="modalZodiac"></p>
+
+</div>
+
+<button
+id="modalCartBtn"
+class="modal-cart-btn"
+>
+Add To Cart
+</button>
+
+</div>
+
+</div>
 <footer>
 
 <p>
@@ -1636,6 +1853,7 @@ productsGrid.innerHTML += `
 <div
 class="product-card"
 data-category="${product.category}"
+onclick='openProductModal(${JSON.stringify(product)})'
 >
 
 <div class="product-badge badge-trending">
@@ -1661,6 +1879,7 @@ margin-bottom:18px;
 
 <button
 onclick="
+event.stopPropagation();
 addToCart(
 '${product.name}',
 ${product.price}
@@ -1679,6 +1898,72 @@ Add to Cart
 }
 
 loadFirebaseProducts();
+
+</script>
+<script>
+
+window.openProductModal =
+function(product){
+
+document.getElementById(
+'productModal'
+).style.display = 'flex';
+
+document.getElementById(
+'modalImage'
+).src =
+product.image || '';
+
+document.getElementById(
+'modalName'
+).innerText =
+product.name;
+
+document.getElementById(
+'modalPrice'
+).innerText =
+'₹' + product.price;
+
+document.getElementById(
+'modalDescription'
+).innerText =
+product.description ||
+'Premium spiritual product';
+
+document.getElementById(
+'modalBenefits'
+).innerText =
+product.benefits ||
+'Positive energy & spiritual growth';
+
+document.getElementById(
+'modalZodiac'
+).innerText =
+product.zodiac ||
+'Suitable for all zodiac signs';
+
+document.getElementById(
+'modalCartBtn'
+).onclick =
+function(){
+
+addToCart(
+product.name,
+product.price
+);
+
+};
+
+}
+
+window.closeProductModal =
+function(){
+
+document.getElementById(
+'productModal'
+).style.display = 'none';
+
+}
 
 </script>
 </body>
