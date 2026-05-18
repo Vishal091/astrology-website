@@ -1895,15 +1895,17 @@ collection(db,'products')
 
 snapshot.forEach(docSnap=>{
 
-const product =
+cconst product =
 docSnap.data();
+
+const id =
+docSnap.id;
+
 window.adminProducts =
 window.adminProducts || {};
 
 window.adminProducts[id] =
 product;
-const id =
-docSnap.id;
 
 productsList.innerHTML += `
 
