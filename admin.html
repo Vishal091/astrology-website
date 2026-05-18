@@ -390,16 +390,33 @@ color:black;
 
 .products-container{
 
-padding:16px;
+flex:1;
 
-height:100%;
+padding:20px;
 
 overflow-y:auto;
 
-padding-bottom:140px;
+background:
+linear-gradient(
+135deg,
+#120505,
+#2a0c0c
+);
+
+display:flex;
+
+flex-direction:column;
 
 }
+#productsSection{
 
+display:none;
+
+flex:1;
+
+overflow-y:auto;
+
+}
 .products-header{
 
 display:flex;
@@ -624,12 +641,19 @@ onkeyup="filterOrders()"
 </div>
 
 
+
+<!-- ===== CHAT ===== -->
+
+<div class="chat-area">
 <div
 id="productsSection"
 style="display:none;"
 >
 
-<div class="products-container">
+<div
+class="products-container"
+id="productsContainer"
+>
 
 <div class="products-header">
 
@@ -662,10 +686,6 @@ onclick="importProducts()"
 </div>
 </div>
 </div>
-<!-- ===== CHAT ===== -->
-
-<div class="chat-area">
-
 <div class="chat-top">
 
 <div>
@@ -790,6 +810,29 @@ document.getElementById(
 ).style.display =
 section === 'consultations'
 ? 'block'
+: 'none';
+
+
+
+document.querySelector(
+'.chat-top'
+).style.display =
+section === 'consultations'
+? 'flex'
+: 'none';
+
+document.querySelector(
+'.messages'
+).style.display =
+section === 'consultations'
+? 'flex'
+: 'none';
+
+document.querySelector(
+'.chat-input'
+).style.display =
+section === 'consultations'
+? 'flex'
 : 'none';
 
 document.getElementById(
