@@ -1067,10 +1067,23 @@ overflow-y:auto;
 🪔 Services Management
 </h2>
 
+<div style="display:flex;gap:10px;">
+
+<button
+class="add-product-btn"
+onclick="openAddService()"
+>
++ Add Service
+</button>
+
 <button
 class="add-product-btn"
 onclick="importServices()"
 >
+⬆ Import Services
+</button>
+
+</div>
 ⬆ Import Services
 </button>
 
@@ -1630,7 +1643,224 @@ alert(
 );
 
 loadServices();
+/* ===== ADD SERVICE ===== */
 
+window.openAddService =
+async function(){
+
+const name =
+prompt('Service Name');
+
+if(!name) return;
+
+const price =
+prompt('Price');
+
+const oldPrice =
+prompt('Old Price');
+
+const category =
+prompt(
+'Category:\nPooja\nHealing\nLove\nAstrology\nVastu'
+);
+
+const badge =
+prompt('Badge');
+
+const description =
+prompt('Description');
+
+await addDoc(
+collection(db,'services'),
+{
+name,
+price,
+oldPrice,
+category,
+badge,
+description,
+createdAt:
+serverTimestamp()
+}
+);
+
+alert(
+'Service Added'
+);
+
+loadServices();
+
+}
+
+
+/* ===== DELETE SERVICE ===== */
+
+window.deleteService =
+async function(id){
+
+if(
+!confirm(
+'Delete service?'
+)
+) return;
+
+await deleteDoc(
+doc(db,'services',id)
+);
+
+alert(
+'Service Deleted'
+);
+
+loadServices();
+
+}
+
+
+/* ===== EDIT SERVICE ===== */
+
+window.editService =
+async function(id){
+
+const service =
+window.adminServices[id];
+
+if(!service) return;
+
+const name =
+prompt(
+'Service Name',
+service.name
+);
+
+const price =
+prompt(
+'Price',
+service.price
+);
+
+const oldPrice =
+prompt(
+'Old Price',
+service.oldPrice
+);
+
+const category =
+prompt(
+'Category',
+service.category
+);
+
+const badge =
+prompt(
+'Badge',
+service.badge
+);
+
+const description =
+prompt(
+'Description',
+service.description
+);
+
+await updateDoc(
+doc(db,'services',id),
+{
+name,
+price,
+oldPrice,
+category,
+badge,
+description
+}
+);
+
+alert(
+'Service Updated'
+);
+
+loadServices();
+
+}
+
+
+/* ===== SERVICE IMAGE ===== */
+
+window.changeServiceImage =
+async function(id){
+
+const input =
+document.createElement('input');
+
+input.type = 'file';
+
+input.accept = 'image/*';
+
+input.click();
+
+input.onchange =
+async function(e){
+
+const file =
+e.target.files[0];
+
+if(!file) return;
+
+try{
+
+alert('Uploading image...');
+
+const formData =
+new FormData();
+
+formData.append(
+'file',
+file
+);
+
+formData.append(
+'upload_preset',
+'astrodhani_products'
+);
+
+const response =
+await fetch(
+'https://api.cloudinary.com/v1_1/dbycg93fl/image/upload',
+{
+method:'POST',
+body:formData
+}
+);
+
+const data =
+await response.json();
+
+await updateDoc(
+doc(db,'services',id),
+{
+image:data.secure_url
+}
+);
+
+alert(
+'Image Updated'
+);
+
+loadServices();
+
+}catch(err){
+
+console.log(err);
+
+alert(
+'Upload Failed'
+);
+
+}
+
+};
+
+}
 }
 /* ===== IMPORT PRODUCTS ===== */
 
@@ -2065,6 +2295,17 @@ servicesList.innerHTML += `
 
 <div class="product-admin-card">
 
+<img
+src="${service.image || ''}"
+style="
+width:100%;
+height:180px;
+object-fit:cover;
+border-radius:16px;
+margin-bottom:14px;
+"
+/>
+
 <h3>
 ${service.name}
 </h3>
@@ -2084,7 +2325,30 @@ ${service.name}
 <p>
 ${service.description}
 </p>
+<div class="product-admin-actions">
 
+<button
+class="edit-btn"
+onclick="editService('${docSnap.id}')"
+>
+Edit
+</button>
+
+<button
+class="edit-btn"
+onclick="changeServiceImage('${docSnap.id}')"
+>
+Image
+</button>
+
+<button
+class="delete-btn"
+onclick="deleteService('${docSnap.id}')"
+>
+Delete
+</button>
+
+</div>
 </div>
 
 `;
@@ -2111,7 +2375,12 @@ docSnap.data();
 
 const id =
 docSnap.id;
+window.adminServices =
+window.adminServices || {};
 
+window.adminServices[
+docSnap.id
+] = service;
 window.adminProducts =
 window.adminProducts || {};
 
