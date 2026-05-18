@@ -218,7 +218,174 @@ font-size:18px;
 }
 
 }
+/* MENU */
 
+.sidebar-menu{
+
+padding:14px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:10px;
+
+border-bottom:
+1px solid rgba(255,255,255,0.08);
+
+}
+
+.menu-item{
+
+padding:14px 16px;
+
+border-radius:14px;
+
+cursor:pointer;
+
+font-weight:600;
+
+transition:.3s;
+
+background:
+rgba(255,255,255,0.03);
+
+}
+
+.menu-item:hover{
+
+background:
+rgba(255,215,0,0.08);
+
+}
+
+.menu-item.active{
+
+background:
+linear-gradient(
+45deg,
+#FFD700,
+#ffb700
+);
+
+color:black;
+
+}
+/* ORDERS */
+
+.orders-container{
+
+padding:14px;
+
+}
+
+.orders-header input{
+
+width:100%;
+
+padding:14px;
+
+border:none;
+
+border-radius:14px;
+
+outline:none;
+
+font-size:14px;
+
+margin-bottom:14px;
+
+}
+
+.order-card{
+
+padding:16px;
+
+border-radius:16px;
+
+margin-bottom:12px;
+
+background:
+rgba(255,255,255,0.04);
+
+border:
+1px solid rgba(255,255,255,0.06);
+
+}
+
+.order-card h3{
+
+margin:0 0 8px;
+
+font-size:16px;
+
+color:#FFD700;
+
+}
+
+.order-card p{
+
+margin:4px 0;
+
+font-size:13px;
+
+color:#ddd;
+
+}
+
+.order-total{
+
+font-size:18px;
+
+font-weight:700;
+
+margin-top:10px;
+
+color:#22c55e;
+
+}
+
+.order-actions{
+
+display:flex;
+
+gap:10px;
+
+margin-top:12px;
+
+}
+
+.order-btn{
+
+flex:1;
+
+padding:10px;
+
+border:none;
+
+border-radius:12px;
+
+cursor:pointer;
+
+font-weight:600;
+
+}
+
+.whatsapp-btn{
+
+background:#25D366;
+
+color:white;
+
+}
+
+.copy-btn{
+
+background:#FFD700;
+
+color:black;
+
+}
 </style>
 </head>
 <body>
@@ -259,11 +426,60 @@ Logout
 
 <div class="sidebar">
 
-<div class="sidebar-title">
+<div class="sidebar-menu">
+
+<div
+class="menu-item active"
+onclick="showSection('consultations')"
+id="consultationsTab"
+>
+💬 Consultations
+</div>
+
+<div
+class="menu-item"
+onclick="showSection('orders')"
+id="ordersTab"
+>
+🛒 Orders
+</div>
+
+</div>
+
+<div class="sidebar-title"
+id="sidebarDynamicTitle">
 👥 Active Users
 </div>
 
+<div id="consultationsSection">
+
 <div id="userList"></div>
+
+</div>
+
+<div
+id="ordersSection"
+style="display:none;"
+>
+
+<div class="orders-container">
+
+<div class="orders-header">
+
+<input
+type="text"
+id="orderSearch"
+placeholder="Search orders..."
+onkeyup="filterOrders()"
+/>
+
+</div>
+
+<div id="ordersList"></div>
+
+</div>
+
+</div>
 
 </div>
 
@@ -384,7 +600,42 @@ window.location.href =
 
 });
 /* ===== GLOBAL ===== */
+window.showSection = function(section){
 
+document.getElementById(
+'consultationsSection'
+).style.display =
+section === 'consultations'
+? 'block'
+: 'none';
+
+document.getElementById(
+'ordersSection'
+).style.display =
+section === 'orders'
+? 'block'
+: 'none';
+
+document.getElementById(
+'consultationsTab'
+).classList.remove('active');
+
+document.getElementById(
+'ordersTab'
+).classList.remove('active');
+
+document.getElementById(
+section + 'Tab'
+).classList.add('active');
+
+document.getElementById(
+'sidebarDynamicTitle'
+).innerText =
+section === 'consultations'
+? '👥 Active Users'
+: '🛒 Recent Orders';
+
+}
 let currentUser = "";
 
 const userList =
@@ -505,7 +756,114 @@ messagesDiv.scrollHeight;
 });
 
 }
+/* ===== SAMPLE ORDERS ===== */
 
+const sampleOrders = [
+
+{
+name:'Rahul Sharma',
+phone:'9876543210',
+products:'Pyrite Bracelet x1',
+total:'₹449'
+},
+
+{
+name:'Priya Verma',
+phone:'9123456780',
+products:'7 Chakra Bracelet x2',
+total:'₹798'
+}
+
+];
+
+const ordersList =
+document.getElementById(
+'ordersList'
+);
+
+function loadOrders(){
+
+ordersList.innerHTML = '';
+
+sampleOrders.forEach(order=>{
+
+ordersList.innerHTML += `
+
+<div class="order-card">
+
+<h3>
+${order.name}
+</h3>
+
+<p>
+📞 ${order.phone}
+</p>
+
+<p>
+🛒 ${order.products}
+</p>
+
+<div class="order-total">
+${order.total}
+</div>
+
+<div class="order-actions">
+
+<button
+class="order-btn whatsapp-btn"
+onclick="
+window.open(
+'https://wa.me/91${order.phone}'
+)
+"
+>
+WhatsApp
+</button>
+
+<button
+class="order-btn copy-btn"
+onclick="
+navigator.clipboard.writeText(
+'${order.products}'
+)
+"
+>
+Copy
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+loadOrders();
+
+window.filterOrders = function(){
+
+const search =
+document.getElementById(
+'orderSearch'
+).value.toLowerCase();
+
+document.querySelectorAll(
+'.order-card'
+).forEach(card=>{
+
+card.style.display =
+card.innerText
+.toLowerCase()
+.includes(search)
+? 'block'
+: 'none';
+
+});
+
+}
 /* ===== SEND REPLY ===== */
 
 window.sendReply = async function(){
