@@ -390,7 +390,7 @@ color:black;
 
 .products-container{
 
-flex:1;
+width:100%;
 
 padding:20px;
 
@@ -412,7 +412,9 @@ flex-direction:column;
 
 display:none;
 
-flex:1;
+width:100%;
+
+height:100%;
 
 overflow-y:auto;
 
@@ -685,7 +687,7 @@ onclick="importProducts()"
 
 </div>
 </div>
-</div>
+
 <div class="chat-top">
 
 <div>
@@ -1338,12 +1340,13 @@ alert(
 loadProducts();
 
 }
-loadProducts();
-
 const productsList =
 document.getElementById(
 'productsList'
 );
+loadProducts();
+
+
 
 async function loadProducts(){
 
