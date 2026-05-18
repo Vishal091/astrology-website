@@ -703,7 +703,11 @@ addDoc,
 query,
 orderBy,
 onSnapshot,
-serverTimestamp
+serverTimestamp,
+doc,
+updateDoc,
+deleteDoc,
+getDocs
 
 }
 
@@ -1055,46 +1059,29 @@ card.innerText
 });
 
 }
-/* ===== PRODUCTS ===== */
-
-const products = [
-
-{
-name:'Money Magnet Bracelet',
-price:'449',
-category:'Bracelets'
-},
-
-{
-name:'Pyrite Bracelet',
-price:'599',
-category:'Bracelets'
-},
-
-{
-name:'7 Chakra Bracelet',
-price:'399',
-category:'Bracelets'
-},
-
-{
-name:'5 Mukhi Rudraksha',
-price:'799',
-category:'Rudraksha'
-}
-
-];
+loadProducts();
 
 const productsList =
 document.getElementById(
 'productsList'
 );
 
-function loadProducts(){
+async function loadProducts(){
 
 productsList.innerHTML = '';
 
-products.forEach((product,index)=>{
+const snapshot =
+await getDocs(
+collection(db,'products')
+);
+
+snapshot.forEach(docSnap=>{
+
+const product =
+docSnap.data();
+
+const id =
+docSnap.id;
 
 productsList.innerHTML += `
 
@@ -1116,14 +1103,19 @@ ${product.name}
 
 <button
 class="edit-btn"
-onclick="editProduct(${index})"
+onclick="editProduct(
+'${id}',
+'${product.price}'
+)"
 >
 Edit
 </button>
 
 <button
 class="delete-btn"
-onclick="deleteProduct(${index})"
+onclick="deleteProduct(
+'${id}'
+)"
 >
 Delete
 </button>
@@ -1138,38 +1130,43 @@ Delete
 
 }
 
-window.editProduct = function(index){
+window.editProduct =
+async function(id,currentPrice){
 
 const newPrice =
 prompt(
 'Enter new price',
-products[index].price
+currentPrice
 );
 
-if(newPrice){
+if(!newPrice) return;
 
-products[index].price =
-newPrice;
+await updateDoc(
+doc(db,'products',id),
+{
+price:newPrice
+}
+);
 
 loadProducts();
 
 }
 
-}
+window.deleteProduct =
+async function(id){
 
-window.deleteProduct = function(index){
+if(!confirm('Delete product?'))
+return;
 
-if(confirm('Delete product?')){
-
-products.splice(index,1);
+await deleteDoc(
+doc(db,'products',id)
+);
 
 loadProducts();
 
 }
 
-}
-
-window.openAddProduct = function(){
+window.openAddProduct = async function(){
 
 const name =
 prompt('Product name');
@@ -1182,15 +1179,20 @@ prompt('Product price');
 const category =
 prompt('Category');
 
-products.push({
+await addDoc(
+collection(db,'products'),
+{
 
 name,
 price,
-category
+category,
+createdAt:
+serverTimestamp()
 
-});
+}
+);
 
-loadProducts();
+alert('Product Added');
 
 }
 
