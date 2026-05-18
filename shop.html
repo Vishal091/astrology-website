@@ -1849,9 +1849,14 @@ collection(db,'products')
 
 
 snapshot.forEach(doc=>{
-
+const productId = doc.id;
 const product =
 doc.data();
+window.allProducts =
+window.allProducts || {};
+
+window.allProducts[productId] =
+product;
 const category =
 (product.category || '')
 .toLowerCase();
@@ -1867,7 +1872,7 @@ productsGrid.innerHTML += `
 <div
 class="product-card"
 data-category="${product.category}"
-onclick='openProductModal(${JSON.stringify(product)})'
+onclick="openProductModal('${doc.id}')"
 >
 
 <div class="product-badge badge-trending">
@@ -1917,8 +1922,12 @@ loadFirebaseProducts();
 <script>
 
 window.openProductModal =
-function(product){
+function(productId){
 
+const product =
+window.allProducts[productId];
+
+if(!product) return;
 document.getElementById(
 'productModal'
 ).style.display = 'flex';
