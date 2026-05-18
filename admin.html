@@ -1547,340 +1547,80 @@ if(
 )
 ) return;
 
-const existingServices[
-  {
-    "name": "Rahu Ketu Grah Shanti",
-    "category": "Pooja",
-    "badge": "VIP POOJA",
-    "price": 3000,
-    "oldPrice": 6000,
-    "description": "Powerful pooja to reduce Rahu-Ketu dosh and negativity."
-  },
-  {
-    "name": "Kaal Sarp Dosh Nivaran",
-    "category": "Pooja",
-    "badge": "DOSH NIVARAN",
-    "price": 7000,
-    "oldPrice": 14000,
-    "description": "Special ritual to remove Kaal Sarp dosh and life obstacles."
-  },
-  {
-    "name": "Maha Rudrabhishek",
-    "category": "Pooja",
-    "badge": "SHIVA ENERGY",
-    "price": 5000,
-    "oldPrice": 10000,
-    "description": "Powerful Shiva ritual for protection and prosperity."
-  },
-  {
-    "name": "Rog Rin Nivaran",
-    "category": "Pooja",
-    "badge": "HEALTH & DEBT",
-    "price": 5000,
-    "oldPrice": 10000,
-    "description": "Pooja for relief from disease, debt and financial stress."
-  },
-  {
-    "name": "Maha Mrityunjaya Jaap",
-    "category": "Pooja",
-    "badge": "LIFE PROTECTION",
-    "price": 11000,
-    "oldPrice": 22000,
-    "description": "Ancient mantra ritual for protection, healing and longevity."
-  },
-  {
-    "name": "Navgrah Shanti",
-    "category": "Pooja",
-    "badge": "PLANETARY",
-    "price": 7000,
-    "oldPrice": 14000,
-    "description": "Balances all nine planets for peace and prosperity."
-  },
-  {
-    "name": "Pitra Dosh Shanti",
-    "category": "Pooja",
-    "badge": "ANCESTRAL",
-    "price": 3000,
-    "oldPrice": 6000,
-    "description": "Removes ancestral karmic blockages and negativity."
-  },
-  {
-    "name": "Loan Mukti Pooja",
-    "category": "Pooja",
-    "badge": "DEBT RELIEF",
-    "price": 3000,
-    "oldPrice": 6000,
-    "description": "Specialized ritual for debt relief and money flow."
-  },
-  {
-    "name": "Lakshmi Narayan Pooja",
-    "category": "Pooja",
-    "badge": "WEALTH",
-    "price": 5000,
-    "oldPrice": 10000,
-    "description": "Attract wealth, prosperity and harmony."
-  },
-  {
-    "name": "Santaan Praapti Pooja",
-    "category": "Pooja",
-    "badge": "CHILD BLESSING",
-    "price": 6000,
-    "oldPrice": 12000,
-    "description": "Blessings for fertility and healthy child energy."
-  },
+const existingServices = [
 
-  {
-    "name": "Relationship Healing",
-    "category": "Love",
-    "badge": "LOVE",
-    "price": 5000,
-    "oldPrice": 10000,
-    "description": "Healing for emotional balance and relationship harmony."
-  },
-  {
-    "name": "Twin Flame Healing",
-    "category": "Love",
-    "badge": "SOULMATE",
-    "price": 6000,
-    "oldPrice": 12000,
-    "description": "Restores emotional and spiritual relationship balance."
-  },
-  {
-    "name": "Soulmate Attraction Healing",
-    "category": "Love",
-    "badge": "ATTRACTION",
-    "price": 4000,
-    "oldPrice": 8000,
-    "description": "Manifest soulmate attraction and connection."
-  },
-  {
-    "name": "Vivah Badha Nivaran",
-    "category": "Love",
-    "badge": "MARRIAGE",
-    "price": 3000,
-    "oldPrice": 6000,
-    "description": "Removes obstacles delaying marriage and relationships."
-  },
-  {
-    "name": "Divine Marriage Blessing",
-    "category": "Love",
-    "badge": "BLESSINGS",
-    "price": 5000,
-    "oldPrice": 10000,
-    "description": "Blessings for successful and peaceful married life."
-  },
-  {
-    "name": "Love Attraction Healing",
-    "category": "Love",
-    "badge": "ATTRACTION",
-    "price": 4500,
-    "oldPrice": 9000,
-    "description": "Attract positivity and emotional connection."
-  },
+{
+name:"Rahu Ketu Grah Shanti",
+category:"Pooja",
+badge:"VIP POOJA",
+price:3000,
+oldPrice:6000,
+description:"Powerful pooja to reduce Rahu-Ketu dosh and negativity."
+},
 
-  {
-    "name": "Money Magnet Healing",
-    "category": "Healing",
-    "badge": "WEALTH",
-    "price": 11000,
-    "oldPrice": 22000,
-    "description": "Abundance healing for wealth attraction and prosperity."
-  },
-  {
-    "name": "Business Healing",
-    "category": "Healing",
-    "badge": "BUSINESS",
-    "price": 1500,
-    "oldPrice": 3000,
-    "description": "Healing for business growth, profits and stability."
-  },
-  {
-    "name": "Career Healing",
-    "category": "Healing",
-    "badge": "CAREER",
-    "price": 11000,
-    "oldPrice": 22000,
-    "description": "Energy balancing for professional success."
-  },
-  {
-    "name": "Finance Healing",
-    "category": "Healing",
-    "badge": "FINANCE",
-    "price": 11000,
-    "oldPrice": 22000,
-    "description": "Healing for financial stability and money flow."
-  },
-  {
-    "name": "Legal Healing",
-    "category": "Healing",
-    "badge": "LEGAL",
-    "price": 11000,
-    "oldPrice": 22000,
-    "description": "Spiritual support for legal and court issues."
-  },
-  {
-    "name": "Heart Chakra Healing",
-    "category": "Healing",
-    "badge": "CHAKRA",
-    "price": 4000,
-    "oldPrice": 8000,
-    "description": "Restores emotional balance and inner peace."
-  },
-  {
-    "name": "Aura Cleansing",
-    "category": "Healing",
-    "badge": "AURA",
-    "price": 3500,
-    "oldPrice": 7000,
-    "description": "Deep aura purification and energy balancing."
-  },
-  {
-    "name": "Theta Healing",
-    "category": "Healing",
-    "badge": "THETA",
-    "price": 6000,
-    "oldPrice": 12000,
-    "description": "Subconscious spiritual healing for transformation."
-  },
-  {
-    "name": "Reiki Healing",
-    "category": "Healing",
-    "badge": "REIKI",
-    "price": 5000,
-    "oldPrice": 10000,
-    "description": "Universal energy healing for peace and positivity."
-  },
+{
+name:"Kaal Sarp Dosh Nivaran",
+category:"Pooja",
+badge:"DOSH NIVARAN",
+price:7000,
+oldPrice:14000,
+description:"Special ritual to remove Kaal Sarp dosh and life obstacles."
+},
 
-  {
-    "name": "General Nazar Removal",
-    "category": "Evil Eye",
-    "badge": "NAZAR",
-    "price": 1100,
-    "oldPrice": 2200,
-    "description": "Traditional cleansing for evil eye and negativity."
-  },
-  {
-    "name": "Relationship Nazar Removal",
-    "category": "Evil Eye",
-    "badge": "RELATIONSHIP",
-    "price": 1100,
-    "oldPrice": 2200,
-    "description": "Removes negative energy affecting relationships."
-  },
-  {
-    "name": "Career Nazar Removal",
-    "category": "Evil Eye",
-    "badge": "CAREER",
-    "price": 500,
-    "oldPrice": 1000,
-    "description": "Spiritual cleansing for career obstacles and negativity."
-  },
-  {
-    "name": "Business Nazar Removal",
-    "category": "Evil Eye",
-    "badge": "BUSINESS",
-    "price": 1100,
-    "oldPrice": 2200,
-    "description": "Business energy protection and cleansing ritual."
-  },
-  {
-    "name": "Family Nazar Removal",
-    "category": "Evil Eye",
-    "badge": "FAMILY",
-    "price": 1100,
-    "oldPrice": 2200,
-    "description": "Protective spiritual cleansing for family peace."
-  },
-  {
-    "name": "Kids Nazar Removal",
-    "category": "Evil Eye",
-    "badge": "KIDS",
-    "price": 500,
-    "oldPrice": 1000,
-    "description": "Protective ritual for children from negativity."
-  },
+{
+name:"Maha Rudrabhishek",
+category:"Pooja",
+badge:"SHIVA ENERGY",
+price:5000,
+oldPrice:10000,
+description:"Powerful Shiva ritual for protection and prosperity."
+},
 
-  {
-    "name": "Birth Time Rectification",
-    "category": "Astrology",
-    "badge": "VEDIC",
-    "price": 2500,
-    "oldPrice": 5000,
-    "description": "Correct your birth time for accurate kundli analysis."
-  },
-  {
-    "name": "Kundli Matching",
-    "category": "Astrology",
-    "badge": "MATCHING",
-    "price": 1500,
-    "oldPrice": 3000,
-    "description": "Detailed marriage compatibility analysis."
-  },
-  {
-    "name": "Past Life Regression",
-    "category": "Astrology",
-    "badge": "PAST LIFE",
-    "price": 6000,
-    "oldPrice": 12000,
-    "description": "Explore karmic patterns and soul journey insights."
-  },
-  {
-    "name": "Face Reading Consultation",
-    "category": "Astrology",
-    "badge": "FACE READING",
-    "price": 2000,
-    "oldPrice": 4000,
-    "description": "Ancient face analysis for personality and destiny insights."
-  },
-  {
-    "name": "Akashic Records Reading",
-    "category": "Astrology",
-    "badge": "AKASHIC",
-    "price": 7000,
-    "oldPrice": 14000,
-    "description": "Deep soul guidance and karmic insight session."
-  },
-  {
-    "name": "Numerology Consultation",
-    "category": "Astrology",
-    "badge": "NUMEROLOGY",
-    "price": 2500,
-    "oldPrice": 5000,
-    "description": "Numerology-based destiny and personality guidance."
-  },
+{
+name:"Relationship Healing",
+category:"Love",
+badge:"LOVE",
+price:5000,
+oldPrice:10000,
+description:"Healing for emotional balance and relationship harmony."
+},
 
-  {
-    "name": "Home Vastu Consultation",
-    "category": "Vastu",
-    "badge": "HOME",
-    "price": 5000,
-    "oldPrice": 10000,
-    "description": "Improve positivity and harmony in your home."
-  },
-  {
-    "name": "Office Vastu Consultation",
-    "category": "Vastu",
-    "badge": "OFFICE",
-    "price": 6000,
-    "oldPrice": 12000,
-    "description": "Optimize office energy for growth and success."
-  },
-  {
-    "name": "Business Vastu Guidance",
-    "category": "Vastu",
-    "badge": "BUSINESS",
-    "price": 7000,
-    "oldPrice": 14000,
-    "description": "Business vastu optimization for profits and growth."
-  },
-  {
-    "name": "Shop Vastu Analysis",
-    "category": "Vastu",
-    "badge": "COMMERCIAL",
-    "price": 4000,
-    "oldPrice": 8000,
-    "description": "Commercial shop energy and vastu correction guidance."
-  }
+{
+name:"Money Magnet Healing",
+category:"Healing",
+badge:"WEALTH",
+price:11000,
+oldPrice:22000,
+description:"Abundance healing for wealth attraction and prosperity."
+},
+
+{
+name:"General Nazar Removal",
+category:"Evil Eye",
+badge:"NAZAR",
+price:1100,
+oldPrice:2200,
+description:"Traditional cleansing for evil eye and negativity."
+},
+
+{
+name:"Birth Time Rectification",
+category:"Astrology",
+badge:"VEDIC",
+price:2500,
+oldPrice:5000,
+description:"Correct your birth time for accurate kundli analysis."
+},
+
+{
+name:"Home Vastu Consultation",
+category:"Vastu",
+badge:"HOME",
+price:5000,
+oldPrice:10000,
+description:"Improve positivity and harmony in your home."
+}
+
 ];
 
 for(const service of existingServices){
