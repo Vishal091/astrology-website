@@ -631,12 +631,23 @@ style="display:none;"
 📦 Product Management
 </h2>
 
+<div style="display:flex; gap:10px;">
+
 <button
 class="add-product-btn"
 onclick="openAddProduct()"
 >
 + Add Product
 </button>
+
+<button
+class="add-product-btn"
+onclick="importProducts()"
+>
+⬆ Import Existing
+</button>
+
+</div>
 
 </div>
 
@@ -1057,6 +1068,225 @@ card.innerText
 : 'none';
 
 });
+
+}
+/* ===== IMPORT PRODUCTS ===== */
+
+window.importProducts =
+async function(){
+
+if(
+!confirm(
+'Import all existing products?'
+)
+) return;
+
+const existingProducts = [
+
+/* BRACELETS */
+
+{
+name:'Money Magnet Bracelet',
+price:'399',
+category:'bracelets'
+},
+
+{
+name:'Dhan Yog Bracelet',
+price:'499',
+category:'bracelets'
+},
+
+{
+name:'Pyrite Bracelet',
+price:'449',
+category:'bracelets'
+},
+
+{
+name:'Love Attraction Bracelet',
+price:'349',
+category:'bracelets'
+},
+
+{
+name:'Evil Eye Bracelet',
+price:'299',
+category:'bracelets'
+},
+
+{
+name:'7 Chakra Bracelet',
+price:'399',
+category:'bracelets'
+},
+
+{
+name:'Tiger Eye Bracelet',
+price:'399',
+category:'bracelets'
+},
+
+{
+name:'Amethyst Bracelet',
+price:'349',
+category:'bracelets'
+},
+
+{
+name:'Obsidian Bracelet',
+price:'399',
+category:'bracelets'
+},
+
+{
+name:'Lapis Bracelet',
+price:'449',
+category:'bracelets'
+},
+
+{
+name:'Jade Bracelet',
+price:'399',
+category:'bracelets'
+},
+
+{
+name:'Citrine Bracelet',
+price:'449',
+category:'bracelets'
+},
+
+{
+name:'Healing Bracelet',
+price:'299',
+category:'bracelets'
+},
+
+{
+name:'Protection Bracelet',
+price:'349',
+category:'bracelets'
+},
+
+{
+name:'Premium Bracelet',
+price:'599',
+category:'bracelets'
+},
+
+/* RUDRAKSHA */
+
+{
+name:'1 Mukhi Rudraksha',
+price:'3999',
+category:'rudraksha'
+},
+
+{
+name:'2 Mukhi Rudraksha',
+price:'1999',
+category:'rudraksha'
+},
+
+{
+name:'3 Mukhi Rudraksha',
+price:'999',
+category:'rudraksha'
+},
+
+{
+name:'4 Mukhi Rudraksha',
+price:'799',
+category:'rudraksha'
+},
+
+{
+name:'5 Mukhi Rudraksha',
+price:'399',
+category:'rudraksha'
+},
+
+{
+name:'6 Mukhi Rudraksha',
+price:'499',
+category:'rudraksha'
+},
+
+{
+name:'7 Mukhi Rudraksha',
+price:'599',
+category:'rudraksha'
+},
+
+{
+name:'8 Mukhi Rudraksha',
+price:'699',
+category:'rudraksha'
+},
+
+{
+name:'9 Mukhi Rudraksha',
+price:'899',
+category:'rudraksha'
+},
+
+{
+name:'10 Mukhi Rudraksha',
+price:'999',
+category:'rudraksha'
+},
+
+{
+name:'11 Mukhi Rudraksha',
+price:'1499',
+category:'rudraksha'
+},
+
+{
+name:'12 Mukhi Rudraksha',
+price:'1999',
+category:'rudraksha'
+},
+
+{
+name:'Gauri Shankar Rudraksha',
+price:'4999',
+category:'rudraksha'
+},
+
+{
+name:'Rudraksha Mala',
+price:'799',
+category:'rudraksha'
+},
+
+{
+name:'Rudraksha Bracelet',
+price:'499',
+category:'rudraksha'
+}
+
+];
+
+for(const product of existingProducts){
+
+await addDoc(
+collection(db,'products'),
+{
+...product,
+createdAt:
+serverTimestamp()
+}
+);
+
+}
+
+alert(
+'Products Imported Successfully'
+);
+
+loadProducts();
 
 }
 loadProducts();
