@@ -756,55 +756,60 @@ messagesDiv.scrollHeight;
 });
 
 }
-/* ===== SAMPLE ORDERS ===== */
+/* ===== LOAD REAL ORDERS ===== */
 
-const sampleOrders = [
-
-{
-name:'Rahul Sharma',
-phone:'9876543210',
-products:'Pyrite Bracelet x1',
-total:'₹449'
-},
-
-{
-name:'Priya Verma',
-phone:'9123456780',
-products:'7 Chakra Bracelet x2',
-total:'₹798'
-}
-
-];
+const SHEET_API =
+'https://script.google.com/macros/s/AKfycbzLtLSyTc6mICyMm4SumcSbZBtqpF0ZJSla4LWolkzjIoZeqhTY7PZs1d9eau4bn8hb/exec';
 
 const ordersList =
 document.getElementById(
 'ordersList'
 );
 
-function loadOrders(){
+async function loadOrders(){
+
+try{
+
+const res =
+await fetch(SHEET_API);
+
+const orders =
+await res.json();
 
 ordersList.innerHTML = '';
 
-sampleOrders.forEach(order=>{
+orders.reverse().forEach(order=>{
 
 ordersList.innerHTML += `
 
 <div class="order-card">
 
 <h3>
-${order.name}
+${order.Name || 'Customer'}
 </h3>
 
 <p>
-📞 ${order.phone}
+📞 ${order.Phone || ''}
 </p>
 
 <p>
-🛒 ${order.products}
+📧 ${order.Email || ''}
+</p>
+
+<p>
+📍 ${order.Address || ''}
+</p>
+
+<p>
+🛒 ${order.Products || ''}
+</p>
+
+<p>
+💳 ${order["Payment ID"] || ''}
 </p>
 
 <div class="order-total">
-${order.total}
+₹${order.Total || 0}
 </div>
 
 <div class="order-actions">
@@ -813,7 +818,7 @@ ${order.total}
 class="order-btn whatsapp-btn"
 onclick="
 window.open(
-'https://wa.me/91${order.phone}'
+'https://wa.me/91${order.Phone}'
 )
 "
 >
@@ -824,7 +829,7 @@ WhatsApp
 class="order-btn copy-btn"
 onclick="
 navigator.clipboard.writeText(
-'${order.products}'
+'${order.Products}'
 )
 "
 >
@@ -838,6 +843,18 @@ Copy
 `;
 
 });
+
+}catch(error){
+
+console.log(error);
+
+ordersList.innerHTML = `
+<p style="padding:20px;">
+Failed to load orders
+</p>
+`;
+
+}
 
 }
 
