@@ -1968,15 +1968,21 @@ await getDocs(
 collection(db,'products')
 );
 
-const productsGrid =
-document.querySelector(
-'.category-section[data-category="bracelets"] .shop-container'
-);
+
 snapshot.forEach(doc=>{
 
 const product =
 doc.data();
+const category =
+(product.category || '')
+.toLowerCase();
 
+const productsGrid =
+document.querySelector(
+`.category-section[data-category="${category}"] .shop-container`
+);
+
+if(!productsGrid) return;
 productsGrid.innerHTML += `
 
 <div
