@@ -4092,10 +4092,50 @@ document.getElementById(
 'astrologerName'
 ).value,
 
-image:
+const file =
+
 document.getElementById(
-'astrologerImage'
-).value,
+'astrologerImageFile'
+).files[0];
+
+let image = '';
+
+if(file){
+
+const formData =
+new FormData();
+
+formData.append(
+'file',
+file
+);
+
+formData.append(
+'upload_preset',
+'astrodhani'
+);
+
+const response =
+await fetch(
+
+'https://api.cloudinary.com/v1_1/dvrrk5h2a/image/upload',
+
+{
+method:'POST',
+body:formData
+}
+
+);
+
+const data =
+await response.json();
+
+image =
+data.secure_url;
+
+}
+
+
 
 expertise:
 document.getElementById(
@@ -4202,9 +4242,10 @@ document.getElementById(
 astro.name || '';
 
 document.getElementById(
-'astrologerImage'
-).value =
-astro.image || '';
+'astrologerImageFile'
+).value = '';
+
+
 
 document.getElementById(
 'astrologerExpertise'
@@ -4816,10 +4857,17 @@ placeholder="Astrologer Name"
 />
 
 <input
-type="text"
-id="astrologerImage"
-placeholder="Image URL"
+type="file"
+id="astrologerImageFile"
+accept="image/*"
 />
+
+<input
+type="hidden"
+id="astrologerImage"
+/>
+
+
 
 <input
 type="text"
