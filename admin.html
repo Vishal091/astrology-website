@@ -1008,6 +1008,13 @@ id="testimonialsTab"
 >
 ⭐ Testimonials
 </div>
+<div
+class="menu-item"
+onclick="showSection('blogs')"
+id="blogsTab"
+>
+📝 Blogs
+</div>
 </div>
 
 <div class="sidebar-title"
@@ -1167,6 +1174,45 @@ onclick="openAddTestimonial()"
 </div>
 
 </div>
+
+<div
+id="blogsSection"
+style="
+display:none;
+width:100%;
+height:100%;
+overflow-y:auto;
+"
+>
+
+<div class="products-container">
+
+<div class="products-header">
+
+<h2>
+📝 Blogs Management
+</h2>
+
+<button
+class="add-product-btn"
+onclick="openAddBlogModal()"
+>
++ Add Blog
+</button>
+
+</div>
+
+<div
+id="blogsList"
+class="products-grid"
+>
+
+</div>
+
+</div>
+
+</div>
+
 
 <div class="chat-top">
 
@@ -1342,6 +1388,12 @@ section === 'testimonials'
 ? 'block'
 : 'none';
 document.getElementById(
+'blogsSection'
+).style.display =
+section === 'blogs'
+? 'block'
+: 'none';
+document.getElementById(
 'consultationsTab'
 ).classList.remove('active');
 
@@ -1356,6 +1408,9 @@ document.getElementById(
 ).classList.remove('active');
 document.getElementById(
 'testimonialsTab'
+).classList.remove('active');
+document.getElementById(
+'blogsTab'
 ).classList.remove('active');
 document.getElementById(
 section + 'Tab'
@@ -1379,7 +1434,11 @@ section === 'consultations'
 
 : section === 'testimonials'
 ? '⭐ Testimonials'
+: section === 'testimonials'
+? '⭐ Testimonials'
 
+: section === 'blogs'
+? '📝 Blogs'
 : 'Dashboard';
 
 }
@@ -3255,6 +3314,180 @@ ${service.name}
 loadTestimonialOptions();
 
 
+const blogsList =
+document.getElementById(
+'blogsList'
+);
+
+window.openAddBlogModal =
+function(){
+
+document.getElementById(
+'blogModal'
+).style.display =
+'flex';
+
+}
+
+window.submitBlog =
+async function(){
+
+try{
+
+const file =
+document.getElementById(
+'blogImage'
+).files[0];
+
+let imageUrl = '';
+
+if(file){
+
+const formData =
+new FormData();
+
+formData.append(
+'file',
+file
+);
+
+formData.append(
+'upload_preset',
+'astrodhani_products'
+);
+
+const response =
+await fetch(
+'https://api.cloudinary.com/v1_1/dbycg93fl/image/upload',
+{
+method:'POST',
+body:formData
+}
+);
+
+const data =
+await response.json();
+
+imageUrl =
+data.secure_url;
+
+}
+
+await addDoc(
+collection(db,'blogs'),
+{
+
+title:
+document.getElementById(
+'blogTitle'
+).value,
+
+slug:
+document.getElementById(
+'blogSlug'
+).value,
+
+category:
+document.getElementById(
+'blogCategory'
+).value,
+
+excerpt:
+document.getElementById(
+'blogExcerpt'
+).value,
+
+content:
+document.getElementById(
+'blogContent'
+).value,
+
+image:imageUrl,
+
+createdAt:
+serverTimestamp()
+
+}
+);
+
+alert(
+'Blog Published'
+);
+
+document.getElementById(
+'blogModal'
+).style.display =
+'none';
+
+loadBlogs();
+
+}catch(err){
+
+console.log(err);
+
+alert(
+'Failed To Publish'
+);
+
+}
+
+}
+
+async function loadBlogs(){
+
+if(!blogsList)
+return;
+
+blogsList.innerHTML = '';
+
+const snapshot =
+await getDocs(
+collection(db,'blogs')
+);
+
+snapshot.forEach(docSnap=>{
+
+const blog =
+docSnap.data();
+
+blogsList.innerHTML += `
+
+<div class="product-admin-card">
+
+<img
+src="${blog.image || ''}"
+style="
+width:100%;
+height:220px;
+object-fit:cover;
+border-radius:18px;
+margin-bottom:16px;
+"
+/>
+
+<h3>
+${blog.title}
+</h3>
+
+<p>
+📂 ${blog.category}
+</p>
+
+<p>
+${blog.excerpt}
+</p>
+
+</div>
+
+`;
+
+});
+
+}
+
+loadBlogs();
+
+
 </script>
 <div
 id="editModal"
@@ -3594,6 +3827,74 @@ Add Testimonial
 
 </div>
 
+
+
+<div
+id="blogModal"
+class="edit-modal"
+>
+
+<div class="edit-modal-content">
+
+<span
+class="close-edit-modal"
+onclick="
+document.getElementById(
+'blogModal'
+).style.display='none'
+"
+>
+×
+</span>
+
+<h2>
+Add Blog
+</h2>
+
+<input
+type="text"
+id="blogTitle"
+placeholder="Blog Title"
+/>
+
+<input
+type="text"
+id="blogSlug"
+placeholder="Slug"
+>
+
+<input
+type="text"
+id="blogCategory"
+placeholder="Category"
+/>
+
+<textarea
+id="blogExcerpt"
+placeholder="Short Excerpt"
+></textarea>
+
+<textarea
+id="blogContent"
+placeholder="Full Blog Content"
+style="min-height:220px;"
+></textarea>
+
+<input
+type="file"
+id="blogImage"
+/>
+
+<button
+onclick="submitBlog()"
+id="saveEditBtn"
+>
+Publish Blog
+</button>
+
+</div>
+
+</div>
 
 
 
