@@ -1085,7 +1085,10 @@ collection(db,'services')
 
 snapshot.forEach(doc=>{
 
-const service = doc.data();
+const service = {
+id:doc.id,
+...doc.data()
+};
 
 let targetGrid = '';
 
@@ -1168,9 +1171,12 @@ ${service.description || ''}
 
 <button
 class="book-btn"
-onclick='openServiceModal(${JSON.stringify(service)})'
+onclick="
+window.location.href=
+'service-details.html?id=${service.id}'
+"
 >
-Book Now
+View Details
 </button>
 
 </div>
