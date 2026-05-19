@@ -1176,6 +1176,8 @@ overflow-y:auto;
 🔮 Manage Astrologers
 </h2>
 
+<div style="display:flex;gap:12px;">
+
 <button
 class="add-product-btn"
 onclick="openAstrologerModal()"
@@ -1185,14 +1187,21 @@ onclick="openAstrologerModal()"
 
 </button>
 
-</div>
-
-<div
-id="astrologersList"
-class="products-grid"
+<button
+class="add-product-btn"
+onclick="openBulkAstrologerModal()"
+style="
+background:#ff9800;
+"
 >
 
+⚡ Bulk Import
+
+</button>
+
 </div>
+
+
 
 </div>
 
@@ -4223,6 +4232,115 @@ loadAstrologers();
 
 }
 
+/* ===== BULK IMPORT ===== */
+
+window.openBulkAstrologerModal =
+function(){
+
+document.getElementById(
+'bulkAstrologerModal'
+).style.display =
+'flex';
+
+}
+
+/* IMPORT */
+
+window.importBulkAstrologers =
+async function(){
+
+const raw =
+document.getElementById(
+'bulkAstrologersData'
+).value;
+
+if(!raw.trim()){
+
+alert('Paste astrologers data');
+
+return;
+
+}
+
+const lines =
+raw.split('\n');
+
+for(const line of lines){
+
+if(!line.trim())
+continue;
+
+const parts =
+line.split('|');
+
+if(parts.length < 8)
+continue;
+
+const [
+
+name,
+expertise,
+languages,
+experience,
+price,
+rating,
+about,
+image
+
+] = parts;
+
+await addDoc(
+collection(db,'astrologers'),
+{
+
+name:name?.trim() || '',
+
+expertise:
+expertise?.trim() || '',
+
+languages:
+languages?.trim() || '',
+
+experience:
+experience?.trim() || '',
+
+price:
+price?.trim() || '',
+
+rating:
+rating?.trim() || '',
+
+about:
+about?.trim() || '',
+
+image:
+image?.trim() || '',
+
+createdAt:
+serverTimestamp()
+
+}
+);
+
+}
+
+alert(
+'Astrologers Imported Successfully'
+);
+
+document.getElementById(
+'bulkAstrologerModal'
+).style.display =
+'none';
+
+document.getElementById(
+'bulkAstrologersData'
+).value = '';
+
+loadAstrologers();
+
+}
+
 
 </script>
 <div
@@ -4724,6 +4842,69 @@ Save Astrologer
 </div>
 
 </div>
+<!-- ===== BULK ASTROLOGER IMPORT ===== -->
+
+<div
+id="bulkAstrologerModal"
+class="edit-modal"
+style="display:none;"
+>
+
+<div class="edit-modal-content">
+
+<span
+class="close-edit-modal"
+onclick="
+document.getElementById(
+'bulkAstrologerModal'
+).style.display='none'
+"
+>
+×
+</span>
+
+<h2>
+⚡ Bulk Import Astrologers
+</h2>
+
+<p style="margin-bottom:15px;opacity:.8;">
+
+Format:
+Name|Expertise|Languages|Experience|Price|Rating|About|ImageURL
+
+</p>
+
+<textarea
+id="bulkAstrologersData"
+style="
+width:100%;
+height:350px;
+padding:16px;
+border-radius:12px;
+background:#111;
+color:white;
+border:none;
+resize:none;
+"
+placeholder="
+Rahul Sharma|Vedic Astrology|Hindi, English|12 Years|25|4.9|Expert in career astrology|https://image.jpg
+"
+></textarea>
+
+<button
+class="save-product-btn"
+style="margin-top:20px;"
+onclick="importBulkAstrologers()"
+>
+
+Import Astrologers
+
+</button>
+
+</div>
+
+</div>
+
 
 
 </body>
