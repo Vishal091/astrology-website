@@ -1269,6 +1269,7 @@ orderBy,
 onSnapshot,
 serverTimestamp,
 doc,
+getDoc,
 updateDoc,
 deleteDoc,
 getDocs
@@ -3318,7 +3319,7 @@ const blogsList =
 document.getElementById(
 'blogsList'
 );
-
+let editingBlogId = null;
 window.openAddBlogModal =
 function(){
 
@@ -3373,9 +3374,8 @@ data.secure_url;
 
 }
 
-await addDoc(
-collection(db,'blogs'),
-{
+
+const blogData = {
 
 title:
 document.getElementById(
@@ -3407,8 +3407,24 @@ image:imageUrl,
 createdAt:
 serverTimestamp()
 
-}
+};
+
+if(editingBlogId){
+
+await updateDoc(
+doc(db,'blogs',editingBlogId),
+blogData
 );
+
+}else{
+
+await addDoc(
+collection(db,'blogs'),
+blogData
+);
+
+}
+
 
 alert(
 'Blog Published'
@@ -3418,7 +3434,17 @@ document.getElementById(
 'blogModal'
 ).style.display =
 'none';
+editingBlogId = null;
 
+document.getElementById(
+'blogModalTitle'
+).innerText =
+'Add Blog';
+
+document.getElementById(
+'blogSubmitBtn'
+).innerText =
+'Publish Blog';
 loadBlogs();
 
 }catch(err){
@@ -3476,7 +3502,41 @@ ${blog.title}
 <p>
 ${blog.excerpt}
 </p>
+<div
+style="
+display:flex;
+gap:12px;
+margin-top:18px;
+"
+>
 
+<button
+class="edit-product-btn"
+onclick="
+editBlog(
+'${docSnap.id}'
+)
+"
+>
+
+Edit
+
+</button>
+
+<button
+class="delete-product-btn"
+onclick="
+deleteBlog(
+'${docSnap.id}'
+)
+"
+>
+
+Delete
+
+</button>
+
+</div>
 </div>
 
 `;
@@ -3486,6 +3546,89 @@ ${blog.excerpt}
 }
 
 loadBlogs();
+
+
+window.editBlog =
+async function(id){
+
+const blogRef =
+doc(db,'blogs',id);
+
+const blogSnap =
+await getDoc(blogRef);
+
+if(!blogSnap.exists()) return;
+
+const blog =
+blogSnap.data();
+
+editingBlogId = id;
+
+document.getElementById(
+'blogModal'
+).style.display =
+'flex';
+
+document.getElementById(
+'blogModalTitle'
+).innerText =
+'Edit Blog';
+
+document.getElementById(
+'blogSubmitBtn'
+).innerText =
+'Update Blog';
+
+document.getElementById(
+'blogTitle'
+).value =
+blog.title || '';
+
+document.getElementById(
+'blogSlug'
+).value =
+blog.slug || '';
+
+document.getElementById(
+'blogCategory'
+).value =
+blog.category || '';
+
+document.getElementById(
+'blogExcerpt'
+).value =
+blog.excerpt || '';
+
+document.getElementById(
+'blogContent'
+).value =
+blog.content || '';
+
+}
+
+
+window.deleteBlog =
+async function(id){
+
+const confirmDelete =
+confirm(
+'Delete this blog?'
+);
+
+if(!confirmDelete)
+return;
+
+await deleteDoc(
+doc(db,'blogs',id)
+);
+
+alert(
+'Blog Deleted'
+);
+
+loadBlogs();
+
+}
 
 
 </script>
@@ -3847,7 +3990,7 @@ document.getElementById(
 ×
 </span>
 
-<h2>
+<h2 id="blogModalTitle">
 Add Blog
 </h2>
 
@@ -3887,7 +4030,7 @@ id="blogImage"
 
 <button
 onclick="submitBlog()"
-id="saveEditBtn"
+id="blogSubmitBtn"
 >
 Publish Blog
 </button>
