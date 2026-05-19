@@ -1,0 +1,680 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Astrodhani Blog</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+body{
+
+margin:0;
+
+font-family:'Poppins',sans-serif;
+
+background:
+linear-gradient(
+180deg,
+#fff7ed,
+#fff1f2
+);
+
+color:#4c0519;
+
+overflow-x:hidden;
+
+}
+
+/* NAVBAR */
+
+.navbar{
+
+position:sticky;
+
+top:0;
+
+z-index:9999;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:18px 40px;
+
+background:
+rgba(74,12,12,0.92);
+
+backdrop-filter:blur(12px);
+
+}
+
+.logo{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+font-size:24px;
+
+font-weight:800;
+
+color:#FFD700;
+
+}
+
+.logo img{
+
+width:50px;
+height:50px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+}
+
+nav{
+
+display:flex;
+
+gap:28px;
+
+}
+
+nav a{
+
+text-decoration:none;
+
+color:white;
+
+font-weight:600;
+
+}
+
+nav a:hover{
+
+color:#FFD700;
+
+}
+
+/* HERO */
+
+.blog-hero{
+
+position:relative;
+
+padding:100px 20px;
+
+background:
+linear-gradient(
+135deg,
+#7f1d1d,
+#991b1b,
+#450a0a
+);
+
+color:white;
+
+overflow:hidden;
+
+}
+
+.blog-hero-content{
+
+max-width:1200px;
+
+margin:auto;
+
+position:relative;
+
+z-index:2;
+
+}
+
+.blog-category{
+
+display:inline-block;
+
+padding:10px 18px;
+
+border-radius:40px;
+
+font-size:13px;
+
+font-weight:700;
+
+margin-bottom:24px;
+
+background:
+linear-gradient(
+135deg,
+#f59e0b,
+#FFD700
+);
+
+color:#4c0519;
+
+}
+
+.blog-title{
+
+font-size:64px;
+
+line-height:1.1;
+
+font-weight:800;
+
+margin-bottom:24px;
+
+}
+
+.blog-meta{
+
+font-size:16px;
+
+opacity:.85;
+
+}
+
+/* ARTICLE */
+
+.article-container{
+
+max-width:950px;
+
+margin:auto;
+
+padding:70px 20px;
+
+}
+
+.article-image{
+
+width:100%;
+
+border-radius:30px;
+
+margin-bottom:40px;
+
+box-shadow:
+0 20px 50px rgba(0,0,0,0.12);
+
+}
+
+.article-content{
+
+font-size:18px;
+
+line-height:2;
+
+color:#444;
+
+background:white;
+
+padding:40px;
+
+border-radius:30px;
+
+box-shadow:
+0 15px 40px rgba(0,0,0,0.08);
+
+white-space:pre-wrap;
+
+}
+
+/* CTA */
+
+.blog-cta{
+
+margin-top:50px;
+
+padding:40px;
+
+border-radius:30px;
+
+background:
+linear-gradient(
+135deg,
+#7f1d1d,
+#991b1b
+);
+
+color:white;
+
+text-align:center;
+
+}
+
+.blog-cta h2{
+
+font-size:40px;
+
+margin-bottom:18px;
+
+}
+
+.blog-cta button{
+
+padding:16px 30px;
+
+border:none;
+
+border-radius:16px;
+
+font-size:17px;
+
+font-weight:700;
+
+cursor:pointer;
+
+background:
+linear-gradient(
+135deg,
+#f59e0b,
+#FFD700
+);
+
+color:#4c0519;
+
+}
+
+/* FOOTER */
+
+.footer{
+
+background:
+linear-gradient(
+135deg,
+#2a0000,
+#5c0713
+);
+
+color:white;
+
+padding:70px 20px 30px;
+
+margin-top:80px;
+
+}
+
+.footer-content{
+
+max-width:1200px;
+
+margin:auto;
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(240px,1fr));
+
+gap:40px;
+
+}
+
+.footer h3,
+.footer h4{
+
+color:#FFD700;
+
+margin-bottom:18px;
+
+}
+
+.footer a{
+
+display:block;
+
+margin-bottom:10px;
+
+text-decoration:none;
+
+color:white;
+
+}
+
+.footer-bottom{
+
+text-align:center;
+
+margin-top:50px;
+
+padding-top:20px;
+
+border-top:
+1px solid rgba(255,255,255,0.1);
+
+opacity:.7;
+
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.navbar{
+
+padding:16px 18px;
+
+}
+
+nav{
+
+display:none;
+
+}
+
+.blog-title{
+
+font-size:40px;
+
+}
+
+.article-content{
+
+padding:28px;
+
+font-size:16px;
+
+line-height:1.9;
+
+}
+
+.blog-cta h2{
+
+font-size:30px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<header class="navbar">
+
+<div class="logo">
+
+<img src="hanuman-logo.jpeg">
+
+<span>
+Astrodhani
+</span>
+
+</div>
+
+<nav>
+
+<a href="index.html">
+Home
+</a>
+
+<a href="services.html">
+Services
+</a>
+
+<a href="shop.html">
+Shop
+</a>
+
+<a href="blogs.html">
+Blogs
+</a>
+
+</nav>
+
+</header>
+
+<!-- HERO -->
+
+<div class="blog-hero">
+
+<div class="blog-hero-content">
+
+<div
+class="blog-category"
+id="blogCategory"
+>
+Astrology
+</div>
+
+<h1
+class="blog-title"
+id="blogTitle"
+>
+Loading...
+</h1>
+
+<div
+class="blog-meta"
+id="blogDate"
+>
+Astrodhani Editorial
+</div>
+
+</div>
+
+</div>
+
+<!-- ARTICLE -->
+
+<div class="article-container">
+
+<img
+id="blogImage"
+class="article-image"
+src=""
+>
+
+<div
+class="article-content"
+id="blogContent"
+>
+
+Loading article...
+
+</div>
+
+<!-- CTA -->
+
+<div class="blog-cta">
+
+<h2>
+Need Personal Guidance?
+</h2>
+
+<p>
+Talk with expert astrologers for personalized solutions.
+</p>
+
+<br>
+
+<button
+onclick="
+window.location.href='services.html'
+"
+>
+
+Consult Now
+
+</button>
+
+</div>
+
+</div>
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+<div class="footer-content">
+
+<div>
+
+<h3>
+Astrodhani
+</h3>
+
+<p>
+Premium astrology solutions for love, wealth and spiritual growth.
+</p>
+
+</div>
+
+<div>
+
+<h4>
+Quick Links
+</h4>
+
+<a href="services.html">
+Services
+</a>
+
+<a href="shop.html">
+Shop
+</a>
+
+<a href="blogs.html">
+Blogs
+</a>
+
+</div>
+
+<div>
+
+<h4>
+Support
+</h4>
+
+<p>
+support@astrodhani.com
+</p>
+
+<p>
++91 8708833177
+</p>
+
+</div>
+
+</div>
+
+<div class="footer-bottom">
+
+© 2026 Astrodhani
+
+</div>
+
+</footer>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+doc,
+getDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyA2ytO0jnhM9baGrByUS1jgSc47q6xJ64s",
+
+authDomain: "astrodhani-935c8.firebaseapp.com",
+
+projectId: "astrodhani-935c8",
+
+storageBucket: "astrodhani-935c8.firebasestorage.app",
+
+messagingSenderId: "158324229234",
+
+appId: "1:158324229234:web:bff8d74888b356be362eeb"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+/* GET BLOG ID */
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+const blogId =
+params.get('id');
+
+/* LOAD BLOG */
+
+async function loadBlog(){
+
+const blogRef =
+doc(db,'blogs',blogId);
+
+const blogSnap =
+await getDoc(blogRef);
+
+if(!blogSnap.exists()) return;
+
+const blog =
+blogSnap.data();
+
+/* SEO */
+
+document.title =
+blog.title +
+' | Astrodhani';
+
+/* CONTENT */
+
+document.getElementById(
+'blogTitle'
+).innerText =
+blog.title || '';
+
+document.getElementById(
+'blogCategory'
+).innerText =
+blog.category || 'Astrology';
+
+document.getElementById(
+'blogContent'
+).innerText =
+blog.content || '';
+
+document.getElementById(
+'blogImage'
+).src =
+blog.image || '';
+
+}
+
+loadBlog();
+
+</script>
+
+</body>
+</html>
+
