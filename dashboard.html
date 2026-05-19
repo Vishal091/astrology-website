@@ -234,6 +234,52 @@ line-height:1.7;
 
 }
 
+.profile-input{
+
+width:100%;
+
+margin-top:10px;
+
+padding:14px;
+
+border:none;
+
+border-radius:12px;
+
+background:
+rgba(255,255,255,.08);
+
+color:white;
+
+font-size:15px;
+
+}
+
+.save-profile-btn{
+
+margin-top:30px;
+
+padding:16px 28px;
+
+border:none;
+
+border-radius:14px;
+
+background:
+linear-gradient(
+135deg,
+#FFD700,
+#ff9900
+);
+
+font-weight:800;
+
+cursor:pointer;
+
+font-size:16px;
+
+}
+
 .logout-btn{
 
 margin-top:30px;
@@ -369,12 +415,10 @@ class="section active"
 Name
 </div>
 
-<div
-class="value"
-id="userName"
->
--
-</div>
+<input
+id="profileName"
+class="profile-input"
+/>
 
 </div>
 
@@ -384,35 +428,80 @@ id="userName"
 Email
 </div>
 
-<div
-class="value"
-id="userEmail"
->
--
-</div>
+<input
+id="profileEmail"
+class="profile-input"
+disabled
+/>
 
 </div>
 
 <div class="info-box">
 
 <div class="label">
-User ID
+Phone
 </div>
 
-<div
-class="value"
-id="userId"
+<input
+id="profilePhone"
+class="profile-input"
+/>
+
+</div>
+
+<div class="info-box">
+
+<div class="label">
+Date Of Birth
+</div>
+
+<input
+type="date"
+id="profileDob"
+class="profile-input"
+/>
+
+</div>
+
+<div class="info-box">
+
+<div class="label">
+Birth Time
+</div>
+
+<input
+type="time"
+id="profileBirthTime"
+class="profile-input"
+/>
+
+</div>
+
+<div class="info-box">
+
+<div class="label">
+Birth Place
+</div>
+
+<input
+id="profileBirthPlace"
+class="profile-input"
+/>
+
+</div>
+
+</div>
+
+<button
+onclick="saveProfile()"
+class="save-profile-btn"
 >
--
-</div>
 
-</div>
+Save Profile
 
-</div>
+</button>
 
-</div>
 
-</div>
 
 <!-- ORDERS -->
 
@@ -507,7 +596,10 @@ collection,
 query,
 where,
 getDocs,
-orderBy
+orderBy,
+doc,
+getDoc,
+setDoc
 }
 from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -602,20 +694,10 @@ return;
 
 /* PROFILE */
 
-document.getElementById(
-'userName'
-).innerText =
-user.displayName || 'Astrodhani User';
 
-document.getElementById(
-'userEmail'
-).innerText =
-user.email;
+loadProfile(user);
 
-document.getElementById(
-'userId'
-).innerText =
-user.uid;
+
 
 /* LOAD ORDERS */
 
@@ -809,6 +891,118 @@ Amount:
 `;
 
 });
+
+}
+
+/* ===== LOAD PROFILE ===== */
+
+async function loadProfile(user){
+
+const ref =
+doc(db,'users',user.uid);
+
+const snap =
+await getDoc(ref);
+
+const data =
+snap.exists()
+? snap.data()
+: {};
+
+document.getElementById(
+'profileName'
+).value =
+
+data.name ||
+user.displayName ||
+'';
+
+document.getElementById(
+'profileEmail'
+).value =
+user.email || '';
+
+document.getElementById(
+'profilePhone'
+).value =
+data.phone || '';
+
+document.getElementById(
+'profileDob'
+).value =
+data.dob || '';
+
+document.getElementById(
+'profileBirthTime'
+).value =
+data.birthTime || '';
+
+document.getElementById(
+'profileBirthPlace'
+).value =
+data.birthPlace || '';
+
+}
+
+/* ===== SAVE PROFILE ===== */
+
+window.saveProfile =
+async function(){
+
+const user =
+auth.currentUser;
+
+if(!user)
+return;
+
+await setDoc(
+
+doc(db,'users',user.uid),
+
+{
+
+name:
+document.getElementById(
+'profileName'
+).value,
+
+email:
+document.getElementById(
+'profileEmail'
+).value,
+
+phone:
+document.getElementById(
+'profilePhone'
+).value,
+
+dob:
+document.getElementById(
+'profileDob'
+).value,
+
+birthTime:
+document.getElementById(
+'profileBirthTime'
+).value,
+
+birthPlace:
+document.getElementById(
+'profileBirthPlace'
+).value,
+
+updatedAt:
+new Date()
+
+},
+
+{merge:true}
+
+);
+
+alert(
+'Profile Updated Successfully'
+);
 
 }
 
