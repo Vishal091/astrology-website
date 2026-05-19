@@ -2894,16 +2894,49 @@ window.location.href =
 "admin-login.html";
 
 }
+
 window.updateOrderStatus =
 async function(
 paymentId,
 newStatus
 ){
 
-alert(
-'Order status updated to ' +
-newStatus
+try{
+
+await fetch(
+SHEET_API,
+{
+
+method:'POST',
+
+body:JSON.stringify({
+
+action:'updateStatus',
+
+paymentId:paymentId,
+
+status:newStatus
+
+})
+
+}
 );
+
+loadOrders();
+
+alert(
+'Status Updated'
+);
+
+}catch(err){
+
+console.log(err);
+
+alert(
+'Failed To Update'
+);
+
+}
 
 }
 </script>
