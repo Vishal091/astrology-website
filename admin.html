@@ -1001,6 +1001,16 @@ id="servicesTab"
 >
 🪔 Services
 </div>
+
+<div
+class="menu-item"
+onclick="showSection('astrologersSection')"
+>
+
+🔮 Astrologers
+
+</div>
+
 <div
 class="menu-item"
 onclick="showSection('testimonials')"
@@ -1141,6 +1151,40 @@ onclick="importServices()"
 </div>
 
 </div>
+<!-- ===== ASTROLOGERS SECTION ===== -->
+
+<div
+id="astrologersSection"
+class="admin-section"
+style="display:none;"
+>
+
+<div class="products-header">
+
+<h2>
+🔮 Manage Astrologers
+</h2>
+
+<button
+class="add-product-btn"
+onclick="openAstrologerModal()"
+>
+
++ Add Astrologer
+
+</button>
+
+</div>
+
+<div
+id="astrologersList"
+class="products-grid"
+>
+
+</div>
+
+</div>
+
 
 <div
 id="testimonialsSection"
@@ -3535,6 +3579,14 @@ document.getElementById(
 'blogsList'
 );
 let editingBlogId = null;
+let editingAstrologerId = null;
+
+const astrologersList =
+document.getElementById(
+'astrologersList'
+);
+
+
 window.openAddBlogModal =
 function(){
 
@@ -3842,6 +3894,305 @@ alert(
 );
 
 loadBlogs();
+
+}
+
+/* ===== ASTROLOGERS ===== */
+
+window.openAstrologerModal =
+function(){
+
+editingAstrologerId = null;
+
+document.getElementById(
+'astrologerModal'
+).style.display =
+'flex';
+
+document.getElementById(
+'astrologerModalTitle'
+).innerText =
+'Add Astrologer';
+
+document.getElementById(
+'saveAstrologerBtn'
+).innerText =
+'Save Astrologer';
+
+}
+
+/* LOAD */
+
+async function loadAstrologers(){
+
+if(!astrologersList)
+return;
+
+astrologersList.innerHTML = '';
+
+const snapshot =
+await getDocs(
+collection(db,'astrologers')
+);
+
+snapshot.forEach(docSnap=>{
+
+const astro = {
+
+id:docSnap.id,
+
+...docSnap.data()
+
+};
+
+astrologersList.innerHTML += `
+
+<div class="product-admin-card">
+
+<img
+src="${astro.image || ''}"
+class="admin-product-image"
+/>
+
+<h3>
+${astro.name || ''}
+</h3>
+
+<p>
+⭐ ${astro.rating || '5'}
+</p>
+
+<p>
+🪔 ${astro.expertise || ''}
+</p>
+
+<p>
+🌐 ${astro.languages || ''}
+</p>
+
+<p>
+📅 ${astro.experience || ''}
+</p>
+
+<p>
+💰 ₹${astro.price || ''}
+</p>
+
+<div class="product-admin-actions">
+
+<button
+class="edit-product-btn"
+onclick="
+editAstrologer(
+'${astro.id}'
+)
+"
+>
+
+Edit
+
+</button>
+
+<button
+class="delete-product-btn"
+onclick="
+deleteAstrologer(
+'${astro.id}'
+)
+"
+>
+
+Delete
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+loadAstrologers();
+
+/* SAVE */
+
+window.saveAstrologer =
+async function(){
+
+const data = {
+
+name:
+document.getElementById(
+'astrologerName'
+).value,
+
+image:
+document.getElementById(
+'astrologerImage'
+).value,
+
+expertise:
+document.getElementById(
+'astrologerExpertise'
+).value,
+
+languages:
+document.getElementById(
+'astrologerLanguages'
+).value,
+
+experience:
+document.getElementById(
+'astrologerExperience'
+).value,
+
+price:
+document.getElementById(
+'astrologerPrice'
+).value,
+
+rating:
+document.getElementById(
+'astrologerRating'
+).value,
+
+about:
+document.getElementById(
+'astrologerAbout'
+).value,
+
+createdAt:
+serverTimestamp()
+
+};
+
+if(editingAstrologerId){
+
+await updateDoc(
+
+doc(
+db,
+'astrologers',
+editingAstrologerId
+),
+
+data
+
+);
+
+}else{
+
+await addDoc(
+collection(db,'astrologers'),
+data
+);
+
+}
+
+document.getElementById(
+'astrologerModal'
+).style.display =
+'none';
+
+loadAstrologers();
+
+}
+
+/* EDIT */
+
+window.editAstrologer =
+async function(id){
+
+const snap =
+await getDoc(
+doc(db,'astrologers',id)
+);
+
+if(!snap.exists()) return;
+
+const astro =
+snap.data();
+
+editingAstrologerId = id;
+
+document.getElementById(
+'astrologerModal'
+).style.display =
+'flex';
+
+document.getElementById(
+'astrologerModalTitle'
+).innerText =
+'Edit Astrologer';
+
+document.getElementById(
+'saveAstrologerBtn'
+).innerText =
+'Update Astrologer';
+
+document.getElementById(
+'astrologerName'
+).value =
+astro.name || '';
+
+document.getElementById(
+'astrologerImage'
+).value =
+astro.image || '';
+
+document.getElementById(
+'astrologerExpertise'
+).value =
+astro.expertise || '';
+
+document.getElementById(
+'astrologerLanguages'
+).value =
+astro.languages || '';
+
+document.getElementById(
+'astrologerExperience'
+).value =
+astro.experience || '';
+
+document.getElementById(
+'astrologerPrice'
+).value =
+astro.price || '';
+
+document.getElementById(
+'astrologerRating'
+).value =
+astro.rating || '';
+
+document.getElementById(
+'astrologerAbout'
+).value =
+astro.about || '';
+
+}
+
+/* DELETE */
+
+window.deleteAstrologer =
+async function(id){
+
+const ok =
+confirm(
+'Delete astrologer?'
+);
+
+if(!ok) return;
+
+await deleteDoc(
+doc(db,'astrologers',id)
+);
+
+loadAstrologers();
 
 }
 
@@ -4254,6 +4605,194 @@ Publish Blog
 
 </div>
 
+
+<!-- ===== ASTROLOGER MODAL ===== -->
+
+<div
+id="astrologerModal"
+class="product-modal"
+style="display:none;"
+>
+
+<div class="product-modal-content">
+
+<h2 id="astrologerModalTitle">
+
+Add Astrologer
+
+</h2>
+
+<input
+type="text"
+id="astrologerName"
+placeholder="Astrologer Name"
+/>
+
+<input
+type="text"
+id="astrologerImage"
+placeholder="Image URL"
+/>
+
+<input
+type="text"
+id="astrologerExpertise"
+placeholder="Expertise"
+/>
+
+<input
+type="text"
+id="astrologerLanguages"
+placeholder="Languages"
+/>
+
+<input
+type="text"
+id="astrologerExperience"
+placeholder="Experience"
+/>
+
+<input
+type="text"
+id="astrologerPrice"
+placeholder="Consultation Price"
+/>
+
+<input
+type="text"
+id="astrologerRating"
+placeholder="Rating"
+/>
+
+<textarea
+id="astrologerAbout"
+placeholder="About Astrologer"
+></textarea>
+
+<div
+style="
+display:flex;
+gap:12px;
+margin-top:20px;
+"
+>
+
+<button
+class="save-product-btn"
+onclick="saveAstrologer()"
+id="saveAstrologerBtn"
+>
+
+Save Astrologer
+
+</button>
+
+<button
+class="cancel-product-btn"
+onclick="
+document.getElementById(
+'astrologerModal'
+).style.display='none'
+"
+>
+
+Cancel
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ===== ASTROLOGER MODAL ===== -->
+
+<div
+id="astrologerModal"
+class="edit-modal"
+style="display:none;"
+>
+
+<div class="edit-modal-content">
+
+<span
+class="close-edit-modal"
+onclick="
+document.getElementById(
+'astrologerModal'
+).style.display='none'
+"
+>
+×
+</span>
+
+<h2 id="astrologerModalTitle">
+
+Add Astrologer
+
+</h2>
+
+<input
+type="text"
+id="astrologerName"
+placeholder="Astrologer Name"
+/>
+
+<input
+type="text"
+id="astrologerImage"
+placeholder="Image URL"
+/>
+
+<input
+type="text"
+id="astrologerExpertise"
+placeholder="Expertise"
+/>
+
+<input
+type="text"
+id="astrologerLanguages"
+placeholder="Languages"
+/>
+
+<input
+type="text"
+id="astrologerExperience"
+placeholder="Experience"
+/>
+
+<input
+type="text"
+id="astrologerPrice"
+placeholder="Consultation Price"
+/>
+
+<input
+type="text"
+id="astrologerRating"
+placeholder="Rating"
+/>
+
+<textarea
+id="astrologerAbout"
+placeholder="About Astrologer"
+></textarea>
+
+<button
+id="saveAstrologerBtn"
+onclick="saveAstrologer()"
+>
+
+Save Astrologer
+
+</button>
+
+</div>
+
+</div>
 
 
 </body>
