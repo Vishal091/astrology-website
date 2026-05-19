@@ -1572,50 +1572,11 @@ loadServices();
 }
 /* ===== ADD SERVICE ===== */
 
-window.openAddService =
-async function(){
+window.openAddService = function(){
 
-const name =
-prompt('Service Name');
-
-if(!name) return;
-
-const price =
-prompt('Price');
-
-const oldPrice =
-prompt('Old Price');
-
-const category =
-prompt(
-'Category:\nPooja\nHealing\nLove\nAstrology\nVastu'
-);
-
-const badge =
-prompt('Badge');
-
-const description =
-prompt('Description');
-
-await addDoc(
-collection(db,'services'),
-{
-name,
-price,
-oldPrice,
-category,
-badge,
-description,
-createdAt:
-serverTimestamp()
-}
-);
-
-alert(
-'Service Added'
-);
-
-loadServices();
+document.getElementById(
+'addServiceModal'
+).style.display = 'flex';
 
 }
 
@@ -2598,71 +2559,20 @@ alert(
 };
 
 }
-window.deleteProduct =
-async function(id){
 
-if(!confirm('Delete product?'))
-return;
-
-await deleteDoc(
-doc(db,'products',id)
-);
-
-loadProducts();
-
-}
-
-window.openAddProduct =
+window.submitNewProduct =
 async function(){
-
-const name =
-prompt('Product name');
-
-if(!name) return;
-
-const price =
-prompt('Product price');
-
-const category =
-prompt(
-'Category:\nbracelets\nrudraksha\ncrystals\nspiritual'
-);
-const description =
-prompt(
-'Product Description'
-);
-
-const benefits =
-prompt(
-'Benefits'
-);
-
-const zodiac =
-prompt(
-'Best Zodiac Signs'
-);
-const input =
-document.createElement('input');
-
-input.type = 'file';
-
-input.accept = 'image/*';
-
-input.click();
-
-input.onchange =
-async function(e){
-
-const file =
-e.target.files[0];
-
-if(!file) return;
 
 try{
 
-alert('Uploading image...');
+const file =
+document.getElementById(
+'addProductImage'
+).files[0];
 
-/* CLOUDINARY UPLOAD */
+let imageUrl = '';
+
+if(file){
 
 const formData =
 new FormData();
@@ -2689,31 +2599,58 @@ body:formData
 const data =
 await response.json();
 
-const imageUrl =
+imageUrl =
 data.secure_url;
+
+}
 
 await addDoc(
 collection(db,'products'),
 {
 
-name,
-price,
+name:
+document.getElementById(
+'addProductName'
+).value,
+
+price:
+document.getElementById(
+'addProductPrice'
+).value,
+
 category:
-category.toLowerCase(),
+document.getElementById(
+'addProductCategory'
+).value,
+
+description:
+document.getElementById(
+'addProductDescription'
+).value,
+
+benefits:
+document.getElementById(
+'addProductBenefits'
+).value,
+
+zodiac:
+document.getElementById(
+'addProductZodiac'
+).value,
 
 image:imageUrl,
-description,
-benefits,
-zodiac,
+
 createdAt:
 serverTimestamp()
 
 }
 );
 
-alert(
-'Product Added Successfully'
-);
+alert('Product Added');
+
+document.getElementById(
+'addProductModal'
+).style.display='none';
 
 loadProducts();
 
@@ -2721,13 +2658,135 @@ loadProducts();
 
 console.log(err);
 
-alert(
-'Upload Failed'
-);
+alert('Failed');
 
 }
 
-};
+}
+
+window.submitNewService =
+async function(){
+
+try{
+
+const file =
+document.getElementById(
+'addServiceImage'
+).files[0];
+
+let imageUrl = '';
+
+if(file){
+
+const formData =
+new FormData();
+
+formData.append(
+'file',
+file
+);
+
+formData.append(
+'upload_preset',
+'astrodhani_products'
+);
+
+const response =
+await fetch(
+'https://api.cloudinary.com/v1_1/dbycg93fl/image/upload',
+{
+method:'POST',
+body:formData
+}
+);
+
+const data =
+await response.json();
+
+imageUrl =
+data.secure_url;
+
+}
+
+await addDoc(
+collection(db,'services'),
+{
+
+name:
+document.getElementById(
+'addServiceName'
+).value,
+
+price:
+document.getElementById(
+'addServicePrice'
+).value,
+
+oldPrice:
+document.getElementById(
+'addServiceOldPrice'
+).value,
+
+category:
+document.getElementById(
+'addServiceCategory'
+).value,
+
+badge:
+document.getElementById(
+'addServiceBadge'
+).value,
+
+description:
+document.getElementById(
+'addServiceDescription'
+).value,
+
+image:imageUrl,
+
+createdAt:
+serverTimestamp()
+
+}
+);
+
+alert('Service Added');
+
+document.getElementById(
+'addServiceModal'
+).style.display='none';
+
+loadServices();
+
+}catch(err){
+
+console.log(err);
+
+alert('Failed');
+
+}
+
+}
+
+window.deleteProduct =
+async function(id){
+
+if(!confirm('Delete product?'))
+return;
+
+await deleteDoc(
+doc(db,'products',id)
+);
+
+loadProducts();
+
+}
+
+window.openAddProduct = function(){
+
+document.getElementById(
+'addProductModal'
+).style.display = 'flex';
 
 }
 
@@ -2894,6 +2953,154 @@ Save Service
 </div>
 
 </div>
+
+<div
+id="addProductModal"
+class="edit-modal"
+>
+
+<div class="edit-modal-content">
+
+<span
+class="close-edit-modal"
+onclick="
+document.getElementById(
+'addProductModal'
+).style.display='none'
+"
+>
+×
+</span>
+
+<h2>
+Add Product
+</h2>
+
+<input
+type="text"
+id="addProductName"
+placeholder="Product Name"
+/>
+
+<input
+type="number"
+id="addProductPrice"
+placeholder="Price"
+/>
+
+<input
+type="text"
+id="addProductCategory"
+placeholder="Category"
+/>
+
+<textarea
+id="addProductDescription"
+placeholder="Description"
+></textarea>
+
+<textarea
+id="addProductBenefits"
+placeholder="Benefits"
+></textarea>
+
+<input
+type="text"
+id="addProductZodiac"
+placeholder="Zodiac"
+/>
+
+<input
+type="file"
+id="addProductImage"
+/>
+
+<button
+onclick="submitNewProduct()"
+id="saveEditBtn"
+>
+Add Product
+</button>
+
+</div>
+
+</div>
+
+<div
+id="addServiceModal"
+class="edit-modal"
+>
+
+<div class="edit-modal-content">
+
+<span
+class="close-edit-modal"
+onclick="
+document.getElementById(
+'addServiceModal'
+).style.display='none'
+"
+>
+×
+</span>
+
+<h2>
+Add Service
+</h2>
+
+<input
+type="text"
+id="addServiceName"
+placeholder="Service Name"
+/>
+
+<input
+type="number"
+id="addServicePrice"
+placeholder="Price"
+/>
+
+<input
+type="number"
+id="addServiceOldPrice"
+placeholder="Old Price"
+/>
+
+<input
+type="text"
+id="addServiceCategory"
+placeholder="Category"
+/>
+
+<input
+type="text"
+id="addServiceBadge"
+placeholder="Badge"
+/>
+
+<textarea
+id="addServiceDescription"
+placeholder="Description"
+></textarea>
+
+<input
+type="file"
+id="addServiceImage"
+/>
+
+<button
+onclick="submitNewService()"
+id="saveEditBtn"
+>
+Add Service
+</button>
+
+</div>
+
+</div>
+
+
+
 </body>
 </html>
 
