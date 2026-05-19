@@ -721,7 +721,10 @@ loadConsultations(user.uid);
 /* ===== LOAD ORDERS ===== */
 
 async function loadOrders(userId){
-
+console.log(
+'Logged In UID:',
+userId
+);
 const ordersList =
 document.getElementById(
 'ordersList'
@@ -731,11 +734,15 @@ const q = query(
 
 collection(db,'orders'),
 
-where('userId','==',userId),
-
-orderBy('createdAt','desc')
+where(
+'userId',
+'==',
+userId
+)
 
 );
+
+
 
 const snapshot =
 await getDocs(q);
@@ -795,6 +802,8 @@ ${Array.isArray(order.products)
 
 }
 
+
+
 /* ===== LOAD CONSULTATIONS ===== */
 
 async function loadConsultations(userId){
@@ -817,6 +826,11 @@ orderBy('createdAt','desc')
 
 const snapshot =
 await getDocs(q);
+console.log(
+'Orders Count:',
+snapshot.size
+);
+
 
 if(snapshot.empty){
 
