@@ -3617,10 +3617,7 @@ document.getElementById(
 let editingBlogId = null;
 let editingAstrologerId = null;
 
-const astrologersList =
-document.getElementById(
-'astrologersList'
-);
+
 
 
 window.openAddBlogModal =
@@ -3959,7 +3956,13 @@ document.getElementById(
 
 /* LOAD */
 
+
 async function loadAstrologers(){
+
+const astrologersList =
+document.getElementById(
+'astrologersList'
+);
 
 if(!astrologersList)
 return;
