@@ -1,0 +1,650 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Astrodhani Service Details</title>
+
+<link rel="stylesheet" href="style.css">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+
+margin:0;
+
+font-family:'Poppins',sans-serif;
+
+background:
+linear-gradient(
+180deg,
+#fff7ed,
+#fff1f2
+);
+
+color:#4c0519;
+
+overflow-x:hidden;
+
+}
+
+/* HERO */
+
+.service-hero{
+
+position:relative;
+
+padding:90px 20px;
+
+background:
+linear-gradient(
+135deg,
+#7f1d1d,
+#991b1b,
+#450a0a
+);
+
+color:white;
+
+overflow:hidden;
+
+}
+
+.service-hero::before{
+
+content:'';
+
+position:absolute;
+
+width:700px;
+height:700px;
+
+background:
+radial-gradient(
+circle,
+rgba(255,215,0,0.15),
+transparent 70%
+);
+
+top:-300px;
+left:50%;
+
+transform:translateX(-50%);
+
+}
+
+.service-hero-content{
+
+position:relative;
+
+z-index:2;
+
+max-width:1300px;
+
+margin:auto;
+
+display:grid;
+
+grid-template-columns:
+1fr 1fr;
+
+gap:50px;
+
+align-items:center;
+
+}
+
+.service-image{
+
+width:100%;
+
+border-radius:30px;
+
+object-fit:cover;
+
+box-shadow:
+0 30px 60px rgba(0,0,0,0.35);
+
+}
+
+.service-info h1{
+
+font-size:58px;
+
+line-height:1.1;
+
+margin-bottom:18px;
+
+}
+
+.service-price{
+
+font-size:54px;
+
+font-weight:800;
+
+color:#FFD700;
+
+margin-bottom:22px;
+
+}
+
+.service-desc{
+
+font-size:18px;
+
+line-height:1.8;
+
+opacity:.92;
+
+margin-bottom:30px;
+
+}
+
+.service-btn{
+
+padding:18px 32px;
+
+border:none;
+
+border-radius:18px;
+
+font-size:18px;
+
+font-weight:700;
+
+cursor:pointer;
+
+background:
+linear-gradient(
+135deg,
+#f59e0b,
+#FFD700
+);
+
+color:#4c0519;
+
+box-shadow:
+0 16px 35px rgba(0,0,0,0.3);
+
+}
+
+/* BENEFITS */
+
+.benefits{
+
+max-width:1200px;
+
+margin:80px auto;
+
+padding:0 20px;
+
+}
+
+.benefits h2{
+
+font-size:42px;
+
+margin-bottom:40px;
+
+text-align:center;
+
+color:#7f1d1d;
+
+}
+
+.benefits-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(260px,1fr));
+
+gap:24px;
+
+}
+
+.benefit-card{
+
+background:white;
+
+padding:28px;
+
+border-radius:24px;
+
+box-shadow:
+0 15px 40px rgba(0,0,0,0.08);
+
+}
+
+.benefit-card h3{
+
+font-size:22px;
+
+margin-bottom:12px;
+
+color:#7f1d1d;
+
+}
+
+/* TESTIMONIALS */
+
+.testimonial-section{
+
+padding:80px 20px;
+
+background:white;
+
+}
+
+.testimonial-section h2{
+
+text-align:center;
+
+font-size:42px;
+
+margin-bottom:40px;
+
+color:#7f1d1d;
+
+}
+
+.testimonial-slider{
+
+display:flex;
+
+gap:24px;
+
+overflow-x:auto;
+
+scrollbar-width:none;
+
+}
+
+.testimonial-slider::-webkit-scrollbar{
+
+display:none;
+
+}
+
+.testimonial-card{
+
+min-width:320px;
+
+background:#fff7ed;
+
+padding:28px;
+
+border-radius:24px;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,0.06);
+
+}
+
+.testimonial-image{
+
+width:70px;
+height:70px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+margin-bottom:16px;
+
+border:4px solid #FFD700;
+
+}
+
+.testimonial-stars{
+
+font-size:20px;
+
+margin-bottom:14px;
+
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.service-hero-content{
+
+grid-template-columns:1fr;
+
+}
+
+.service-info h1{
+
+font-size:38px;
+
+}
+
+.service-price{
+
+font-size:40px;
+
+}
+
+.service-desc{
+
+font-size:16px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="service-hero">
+
+<div class="service-hero-content">
+
+<img
+id="serviceImage"
+class="service-image"
+src=""
+>
+
+<div class="service-info">
+
+<h1 id="serviceTitle">
+Loading...
+</h1>
+
+<div
+class="service-price"
+id="servicePrice"
+>
+₹0
+</div>
+
+<p
+class="service-desc"
+id="serviceDescription"
+>
+Loading description...
+</p>
+
+<button
+class="service-btn"
+onclick="addToCart()"
+>
+Add To Cart
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- BENEFITS -->
+
+<div class="benefits">
+
+<h2>
+✨ Benefits
+</h2>
+
+<div class="benefits-grid">
+
+<div class="benefit-card">
+<h3>✔ Removes Negativity</h3>
+<p>
+Eliminates negative energies and spiritual blockages.
+</p>
+</div>
+
+<div class="benefit-card">
+<h3>✔ Spiritual Protection</h3>
+<p>
+Protects against evil eye and harmful influences.
+</p>
+</div>
+
+<div class="benefit-card">
+<h3>✔ Peace & Prosperity</h3>
+<p>
+Attracts harmony, success and positive vibrations.
+</p>
+</div>
+
+<div class="benefit-card">
+<h3>✔ Expert Guidance</h3>
+<p>
+Performed by experienced Vedic astrologers.
+</p>
+</div>
+
+</div>
+
+</div>
+
+<!-- TESTIMONIALS -->
+
+<div class="testimonial-section">
+
+<h2>
+⭐ Client Experiences
+</h2>
+
+<div
+class="testimonial-slider"
+id="testimonialSlider"
+>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+doc,
+getDoc,
+collection,
+getDocs
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyA2ytO0jnhM9baGrByUS1jgSc47q6xJ64s",
+
+authDomain: "astrodhani-935c8.firebaseapp.com",
+
+projectId: "astrodhani-935c8",
+
+storageBucket: "astrodhani-935c8.firebasestorage.app",
+
+messagingSenderId: "158324229234",
+
+appId: "1:158324229234:web:bff8d74888b356be362eeb"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+/* GET SERVICE ID */
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+const serviceId =
+params.get('id');
+
+let currentService = null;
+
+/* LOAD SERVICE */
+
+async function loadService(){
+
+const serviceRef =
+doc(db,'services',serviceId);
+
+const serviceSnap =
+await getDoc(serviceRef);
+
+if(!serviceSnap.exists()) return;
+
+const service =
+serviceSnap.data();
+
+currentService = service;
+
+document.title =
+service.name +
+' | Astrodhani';
+
+document.getElementById(
+'serviceTitle'
+).innerText =
+service.name || '';
+
+document.getElementById(
+'servicePrice'
+).innerText =
+'₹' + (service.price || '');
+
+document.getElementById(
+'serviceDescription'
+).innerText =
+service.description || '';
+
+document.getElementById(
+'serviceImage'
+).src =
+service.image || '';
+
+loadTestimonials(service.name);
+
+}
+
+/* LOAD TESTIMONIALS */
+
+async function loadTestimonials(serviceName){
+
+const slider =
+document.getElementById(
+'testimonialSlider'
+);
+
+const snapshot =
+await getDocs(
+collection(db,'testimonials')
+);
+
+slider.innerHTML = '';
+
+snapshot.forEach(docSnap=>{
+
+const t =
+docSnap.data();
+
+if(t.service !== serviceName)
+return;
+
+slider.innerHTML += `
+
+<div class="testimonial-card">
+
+<img
+src="${t.image || ''}"
+class="testimonial-image"
+/>
+
+<div class="testimonial-stars">
+
+${'⭐'.repeat(
+Number(t.rating || 5)
+)}
+
+</div>
+
+<p>
+"${t.review}"
+</p>
+
+<h3>
+${t.name}
+</h3>
+
+<p>
+${t.city}
+</p>
+
+</div>
+
+`;
+
+});
+
+}
+
+/* ADD TO CART */
+
+window.addToCart =
+function(){
+
+let cart =
+JSON.parse(
+localStorage.getItem('cart')
+) || [];
+
+cart.push({
+
+type:'service',
+
+name:
+currentService.name,
+
+price:
+currentService.price,
+
+image:
+currentService.image,
+
+category:
+currentService.category,
+
+quantity:1
+
+});
+
+localStorage.setItem(
+'cart',
+JSON.stringify(cart)
+);
+
+alert(
+'Service Added To Cart'
+);
+
+}
+
+loadService();
+
+</script>
+
+</body>
+</html>
+```
