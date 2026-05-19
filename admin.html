@@ -3150,6 +3150,15 @@ document.getElementById(
 'testimonialService'
 ).value,
 
+productImage:
+selectedTestimonialImage,
+
+productLink:
+selectedTestimonialLink,
+
+type:
+selectedTestimonialType,
+
 review:
 document.getElementById(
 'testimonialReview'
@@ -3208,7 +3217,7 @@ testimonialsList.innerHTML += `
 <div class="product-admin-card">
 
 <img
-src="${t.image || ''}"
+src="${t.productImage || ''}"
 style="
 width:100px;
 height:100px;
@@ -3237,7 +3246,41 @@ ${t.name}
 <p>
 "${t.review}"
 </p>
+<div
+style="
+display:flex;
+gap:10px;
+margin-top:18px;
+"
+>
 
+<button
+class="edit-product-btn"
+onclick="
+editTestimonial(
+'${docSnap.id}'
+)
+"
+>
+
+Edit
+
+</button>
+
+<button
+class="delete-product-btn"
+onclick="
+deleteTestimonial(
+'${docSnap.id}'
+)
+"
+>
+
+Delete
+
+</button>
+
+</div>
 </div>
 
 `;
@@ -3247,6 +3290,27 @@ ${t.name}
 }
 
 loadTestimonials();
+window.deleteTestimonial =
+async function(id){
+
+const ok =
+confirm(
+'Delete testimonial?'
+);
+
+if(!ok) return;
+
+await deleteDoc(
+doc(db,'testimonials',id)
+);
+
+alert(
+'Deleted'
+);
+
+loadTestimonials();
+
+}
 async function loadTestimonialOptions(){
 
 const dropdown =
@@ -3278,9 +3342,21 @@ docSnap.data();
 
 dropdown.innerHTML += `
 
-<option value="${product.name}">
+<option
+
+value="${product.name}"
+
+data-image="${product.image || ''}"
+
+data-link="product-details.html?id=${docSnap.id}"
+
+data-type="product"
+
+>
+
 🛍 Product:
 ${product.name}
+
 </option>
 
 `;
@@ -3301,9 +3377,21 @@ docSnap.data();
 
 dropdown.innerHTML += `
 
-<option value="${service.name}">
+<option
+
+value="${service.name}"
+
+data-image="${service.image || ''}"
+
+data-link="service-details.html?id=${docSnap.id}"
+
+data-type="service"
+
+>
+
 🪔 Service:
 ${service.name}
+
 </option>
 
 `;
@@ -3313,8 +3401,35 @@ ${service.name}
 }
 
 loadTestimonialOptions();
+document
+.getElementById(
+'testimonialService'
+)
+.addEventListener(
+'change',
+function(){
 
+const selected =
+this.options[
+this.selectedIndex
+];
 
+selectedTestimonialImage =
+selected.dataset.image || '';
+
+selectedTestimonialLink =
+selected.dataset.link || '';
+
+selectedTestimonialType =
+selected.dataset.type || '';
+
+}
+);
+let selectedTestimonialImage = '';
+
+let selectedTestimonialLink = '';
+
+let selectedTestimonialType = '';
 const blogsList =
 document.getElementById(
 'blogsList'
