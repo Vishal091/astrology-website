@@ -1436,19 +1436,20 @@ document.getElementById(
 section === 'services'
 ? 'block'
 : 'none';
-if(section==='astrologers'){
-
 document.getElementById(
 'astrologersSection'
-).style.display='block';
+).style.display =
+section === 'astrologers'
+? 'block'
+: 'none';
 
-document.getElementById(
-'astrologersTab'
-).classList.add('active');
+if(section === 'astrologers'){
 
 loadAstrologers();
 
 }
+
+
 document.getElementById(
 'testimonialsSection'
 ).style.display =
