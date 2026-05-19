@@ -1442,6 +1442,19 @@ document.getElementById(
 section === 'services'
 ? 'block'
 : 'none';
+if(section==='astrologers'){
+
+document.getElementById(
+'astrologersSection'
+).style.display='block';
+
+document.getElementById(
+'astrologersTab'
+).classList.add('active');
+
+loadAstrologers();
+
+}
 document.getElementById(
 'testimonialsSection'
 ).style.display =
@@ -1466,6 +1479,9 @@ document.getElementById(
 ).classList.remove('active');
 document.getElementById(
 'servicesTab'
+).classList.remove('active');
+document.getElementById(
+'astrologersTab'
 ).classList.remove('active');
 document.getElementById(
 'testimonialsTab'
