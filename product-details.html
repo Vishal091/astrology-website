@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Astrodhani Product</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Segoe UI,sans-serif;
+background:#f8f5f2;
+color:#222;
+}
+
+.header{
+padding:20px;
+background:#5c0713;
+color:white;
+font-size:24px;
+font-weight:700;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:40px 20px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:40px;
+}
+
+.product-image img{
+width:100%;
+border-radius:24px;
+}
+
+.product-info h1{
+font-size:42px;
+margin:0 0 20px;
+color:#5c0713;
+}
+
+.price{
+font-size:34px;
+font-weight:700;
+color:#d97706;
+margin-bottom:20px;
+}
+
+.description{
+line-height:1.8;
+font-size:18px;
+margin-bottom:30px;
+}
+
+.buy-btn{
+padding:16px 30px;
+border:none;
+border-radius:14px;
+background:linear-gradient(45deg,#FFD700,#ffb700);
+font-size:18px;
+font-weight:700;
+cursor:pointer;
+}
+
+.reviews{
+max-width:1200px;
+margin:40px auto;
+padding:20px;
+}
+
+.review-card{
+background:white;
+padding:20px;
+border-radius:20px;
+margin-bottom:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+.review-card h3{
+margin:0;
+color:#5c0713;
+}
+
+@media(max-width:768px){
+
+.container{
+grid-template-columns:1fr;
+}
+
+.product-info h1{
+font-size:32px;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+🔮 Astrodhani
+</div>
+
+<div class="container">
+
+<div class="product-image">
+<img id="productImage">
+</div>
+
+<div class="product-info">
+
+<h1 id="productName"></h1>
+
+<div class="price">
+₹<span id="productPrice"></span>
+</div>
+
+<div
+class="description"
+id="productDescription"
+></div>
+
+<button class="buy-btn">
+Buy Now
+</button>
+
+</div>
+
+</div>
+
+<div class="reviews">
+
+<h2>
+Customer Reviews
+</h2>
+
+<div id="reviewsContainer"></div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+
+getFirestore,
+doc,
+getDoc,
+collection,
+getDocs
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyA2ytO0jnhM9baGrByUS1jgSc47q6xJ64s",
+
+authDomain: "astrodhani-935c8.firebaseapp.com",
+
+projectId: "astrodhani-935c8",
+
+storageBucket: "astrodhani-935c8.firebasestorage.app",
+
+messagingSenderId: "158324229234",
+
+appId: "1:158324229234:web:bff8d74888b356be362eeb"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+const params =
+new URLSearchParams(window.location.search);
+
+const productId =
+params.get('id');
+
+async function loadProduct(){
+
+const productRef =
+doc(db,'products',productId);
+
+const productSnap =
+await getDoc(productRef);
+
+if(!productSnap.exists()){
+
+document.body.innerHTML =
+'<h1>Product Not Found</h1>';
+
+return;
+
+}
+
+const product =
+productSnap.data();
+
+document.getElementById(
+'productImage'
+).src =
+product.image || '';
+
+document.getElementById(
+'productName'
+).innerText =
+product.name || '';
+
+document.getElementById(
+'productPrice'
+).innerText =
+product.price || '';
+
+document.getElementById(
+'productDescription'
+).innerText =
+product.description || '';
+
+loadReviews(product.name);
+
+}
+
+async function loadReviews(productName){
+
+const snapshot =
+await getDocs(
+collection(db,'testimonials')
+);
+
+const container =
+document.getElementById(
+'reviewsContainer'
+);
+
+snapshot.forEach(docSnap=>{
+
+const review =
+docSnap.data();
+
+if(review.service !== productName)
+return;
+
+container.innerHTML += `
+
+<div class="review-card">
+
+<h3>
+${review.name}
+</h3>
+
+<p>
+⭐ ${review.rating}/5
+</p>
+
+<p>
+"${review.review}"
+</p>
+
+</div>
+
+`;
+
+});
+
+}
+
+loadProduct();
+
+</script>
+
+</body>
+</html>
