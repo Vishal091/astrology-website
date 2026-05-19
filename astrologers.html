@@ -461,10 +461,24 @@ astrologersGrid.innerHTML += `
 Online
 </div>
 
+${
+astro.image &&
+!astro.image.includes('randomuser.me')
+
+? `
+
 <img
-src="${astro.image || ''}"
+src="${astro.image}"
 class="photo"
 >
+
+`
+
+: ''
+
+}
+
+
 
 <div class="name">
 
