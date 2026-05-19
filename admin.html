@@ -1423,8 +1423,14 @@ if(el){
 
 el.style.display =
 sec === section
-? 'block'
+? (
+sec === 'products'
+? 'flex'
+: 'block'
+)
 : 'none';
+
+
 
 }
 
@@ -1488,6 +1494,12 @@ if(section === 'astrologers'){
 loadAstrologers();
 
 }
+if(section === 'products'){
+
+loadProducts();
+
+}
+
 
 if(section === 'blogs'){
 
