@@ -679,11 +679,195 @@ View Profile
 </div>
 
 </div>
-<script>
+
+<script type="module">
+
+import {
+initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+getDocs
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* ===== FIREBASE ===== */
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyA2ytO0jnhM9baGrByUS1jgSc47q6xJ64s",
+
+authDomain:
+"astrodhani-935c8.firebaseapp.com",
+
+projectId:
+"astrodhani-935c8",
+
+storageBucket:
+"astrodhani-935c8.firebasestorage.app",
+
+messagingSenderId:
+"158324229234",
+
+appId:
+"1:158324229234:web:bff8d74888b356be362eeb"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+/* ===== GRID ===== */
+
+const astrologersGrid =
+document.getElementById(
+'astrologersGrid'
+);
+
+/* ===== LOAD ASTROLOGERS ===== */
+
+async function loadAstrologers(){
+
+const snapshot =
+await getDocs(
+collection(db,'astrologers')
+);
+
+astrologersGrid.innerHTML = '';
+
+snapshot.forEach(docSnap=>{
+
+const astro = {
+
+id:docSnap.id,
+
+...docSnap.data()
+
+};
+
+astrologersGrid.innerHTML += `
+
+<div class="card">
+
+<div class="top">
+
+<div class="online">
+Online
+</div>
+
+<img
+src="${astro.image || ''}"
+class="photo"
+>
+
+<div class="name">
+
+${astro.name || ''}
+
+</div>
+
+<div class="exp">
+
+${astro.experience || ''}
+
+</div>
+
+<div class="price">
+
+₹${astro.price || ''}/min
+
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="label">
+🔮 Expertise
+</div>
+
+<div class="tags">
+
+<div class="tag">
+
+${astro.expertise || ''}
+
+</div>
+
+</div>
+
+<div class="label">
+🌐 Languages
+</div>
+
+<div class="text">
+
+${astro.languages || ''}
+
+</div>
+
+<div class="label">
+📖 About
+</div>
+
+<div class="text">
+
+${astro.about || ''}
+
+</div>
+
+<div class="buttons">
+
+<button
+class="btn chat-btn"
+onclick="
+startConsultation(
+'${astro.name}'
+)
+"
+>
+
+Chat Now
+
+</button>
+
+<button
+class="btn profile-btn"
+onclick="
+openProfile(
+'${astro.id}'
+)
+"
+>
+
+View Profile
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
 
 /* ===== START CONSULTATION ===== */
 
-function startConsultation(astrologer){
+window.startConsultation =
+function(astrologer){
 
 localStorage.setItem(
 
@@ -700,7 +884,8 @@ window.location.href =
 
 /* ===== OPEN PROFILE ===== */
 
-function openProfile(id){
+window.openProfile =
+function(id){
 
 window.location.href =
 
@@ -708,6 +893,12 @@ window.location.href =
 
 }
 
+/* ===== INIT ===== */
+
+loadAstrologers();
+
 </script>
+
+
 </body>
 </html>
