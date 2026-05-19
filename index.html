@@ -2472,7 +2472,12 @@ loadTestimonials();
 
 /* ===== FEATURED BLOGS ===== */
 
+
+
+
 async function loadFeaturedBlogs(){
+
+try{
 
 const grid =
 document.getElementById(
@@ -2481,10 +2486,21 @@ document.getElementById(
 
 if(!grid) return;
 
-const snapshot =
-await getDocs(
-collection(db,'blogs')
+/* QUERY LATEST BLOGS */
+
+const q = query(
+
+collection(db,'blogs'),
+
+orderBy(
+'createdAt',
+'desc'
+)
+
 );
+
+const snapshot =
+await getDocs(q);
 
 grid.innerHTML = '';
 
@@ -2554,9 +2570,101 @@ count++;
 
 });
 
+/* VIEW ALL BUTTON */
+
+grid.innerHTML += `
+
+<div
+style="
+display:flex;
+justify-content:center;
+align-items:center;
+"
+>
+
+<div
+style="
+background:linear-gradient(
+135deg,
+#7f1d1d,
+#f59e0b
+);
+padding:40px;
+border-radius:30px;
+color:white;
+text-align:center;
+width:100%;
+max-width:320px;
+box-shadow:
+0 20px 50px rgba(0,0,0,0.12);
+"
+>
+
+<h3
+style="
+font-size:30px;
+margin-bottom:14px;
+"
+>
+
+✨ More Blogs
+
+</h3>
+
+<p
+style="
+line-height:1.7;
+margin-bottom:24px;
+"
+>
+
+Explore more astrology wisdom and remedies.
+
+</p>
+
+<button
+
+onclick="
+window.location.href='blogs.html'
+"
+
+style="
+padding:14px 24px;
+border:none;
+border-radius:14px;
+background:white;
+color:#7f1d1d;
+font-weight:700;
+cursor:pointer;
+"
+>
+
+View All Blogs
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}catch(err){
+
+console.log(
+'Featured blogs error:',
+err
+);
+
+}
+
 }
 
 loadFeaturedBlogs();
+
+
+
+
 </script>
 
 </body>
