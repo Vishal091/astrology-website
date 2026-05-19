@@ -754,7 +754,31 @@ Continue Shopping
 
 </section>
 
-<script>
+
+<script type="module">
+
+import {
+initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+serverTimestamp
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+getAuth
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
 
 let cart = [];
 
@@ -1048,6 +1072,38 @@ JSON.stringify(cart)
 renderCart();
 
 }
+/* ===== FIREBASE ===== */
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyA2ytO0jnhM9baGrByUS1jgSc47q6xJ64s",
+
+authDomain:
+"astrodhani-935c8.firebaseapp.com",
+
+projectId:
+"astrodhani-935c8",
+
+storageBucket:
+"astrodhani-935c8.firebasestorage.app",
+
+messagingSenderId:
+"158324229234",
+
+appId:
+"1:158324229234:web:bff8d74888b356be362eeb"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+const auth =
+getAuth(app);
+
 
 
 const ORDER_API =
@@ -1163,6 +1219,9 @@ cart.map(item =>
 
 const orderData = {
 
+userId:
+auth.currentUser?.uid || '',
+
 name,
 phone,
 email,
@@ -1172,15 +1231,26 @@ state,
 pincode,
 
 products,
+
 cartData: cart,
+
 total,
 
 paymentId:
-response.razorpay_payment_id
+response.razorpay_payment_id,
+
+status:'Paid',
+
+createdAt:
+new Date().toISOString()
 
 };
 
+
+
 try{
+
+/* GOOGLE SHEET API */
 
 await fetch(ORDER_API,{
 
@@ -1190,7 +1260,27 @@ body:JSON.stringify(orderData)
 
 });
 
+/* FIRESTORE */
+
+await addDoc(
+collection(db,'orders'),
+{
+
+...orderData,
+
+createdAt:
+serverTimestamp()
+
+}
+);
+
 }catch(error){
+
+console.log(error);
+
+}
+
+catch(error){
 
 console.log(error);
 
