@@ -4187,35 +4187,6 @@ loadAstrologers();
 }
 
 
-if(editingAstrologerId){
-
-await updateDoc(
-
-doc(
-db,
-'astrologers',
-editingAstrologerId
-),
-
-data
-
-);
-
-}else{
-
-await addDoc(
-collection(db,'astrologers'),
-data
-);
-
-}
-
-document.getElementById(
-'astrologerModal'
-).style.display =
-'none';
-
-loadAstrologers();
 
 
 
