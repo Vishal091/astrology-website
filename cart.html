@@ -975,7 +975,10 @@ document.getElementById(
 '₹' + finalTotal;
 
 }
-function applyCoupon(){
+window.applyCoupon =
+function(){
+
+
 
 const code =
 document.getElementById(
@@ -1018,7 +1021,11 @@ message.style.color =
 updateSummary();
 
 }
-function increaseQty(index){
+
+window.increaseQty =
+function(index){
+
+
 
 if(cart[index].type === 'service'){
 return;
@@ -1034,7 +1041,10 @@ saveCart();
 
 }
 
-function decreaseQty(index){
+
+window.decreaseQty =
+function(index){
+
 
 if(!cart[index].qty){
 cart[index].qty = 1;
@@ -1054,7 +1064,10 @@ saveCart();
 
 }
 
-function removeItem(index){
+
+window.removeItem =
+function(index){
+
 
 cart.splice(index,1);
 
@@ -1108,7 +1121,10 @@ getAuth(app);
 
 const ORDER_API =
 'https://script.google.com/macros/s/AKfycbzLtLSyTc6mICyMm4SumcSbZBtqpF0ZJSla4LWolkzjIoZeqhTY7PZs1d9eau4bn8hb/exec';
-function payNow(){
+
+window.payNow =
+function(){
+
 const name =
 document.getElementById(
 'customerName'
