@@ -993,6 +993,13 @@ id="servicesTab"
 >
 🪔 Services
 </div>
+<div
+class="menu-item"
+onclick="showSection('testimonials')"
+id="testimonialsTab"
+>
+⭐ Testimonials
+</div>
 </div>
 
 <div class="sidebar-title"
@@ -1119,6 +1126,40 @@ onclick="importServices()"
 </div>
 
 </div>
+
+<div
+id="testimonialsSection"
+style="
+display:none;
+width:100%;
+height:100%;
+overflow-y:auto;
+"
+>
+
+<div class="products-container">
+
+<div class="products-header">
+
+<h2>
+⭐ Testimonials Management
+</h2>
+
+<button
+class="add-product-btn"
+onclick="openAddTestimonial()"
+>
++ Add Testimonial
+</button>
+
+</div>
+
+<div id="testimonialsList"></div>
+
+</div>
+
+</div>
+
 <div class="chat-top">
 
 <div>
@@ -1287,6 +1328,12 @@ section === 'services'
 ? 'block'
 : 'none';
 document.getElementById(
+'testimonialsSection'
+).style.display =
+section === 'testimonials'
+? 'block'
+: 'none';
+document.getElementById(
 'consultationsTab'
 ).classList.remove('active');
 
@@ -1298,6 +1345,9 @@ document.getElementById(
 ).classList.remove('active');
 document.getElementById(
 'servicesTab'
+).classList.remove('active');
+document.getElementById(
+'testimonialsTab'
 ).classList.remove('active');
 document.getElementById(
 section + 'Tab'
@@ -1317,6 +1367,9 @@ section === 'consultations'
 ? '🪔 Services'
 : '📦 Products';
 
+
+: section === 'testimonials'
+? '⭐ Testimonials'
 }
 let currentUser = "";
 
@@ -2939,6 +2992,188 @@ alert(
 }
 
 }
+
+const testimonialsList =
+document.getElementById(
+'testimonialsList'
+);
+
+window.openAddTestimonial =
+function(){
+
+document.getElementById(
+'testimonialModal'
+).style.display =
+'flex';
+
+}
+
+window.submitTestimonial =
+async function(){
+
+try{
+
+const file =
+document.getElementById(
+'testimonialImage'
+).files[0];
+
+let imageUrl = '';
+
+if(file){
+
+const formData =
+new FormData();
+
+formData.append(
+'file',
+file
+);
+
+formData.append(
+'upload_preset',
+'astrodhani_products'
+);
+
+const response =
+await fetch(
+'https://api.cloudinary.com/v1_1/dbycg93fl/image/upload',
+{
+method:'POST',
+body:formData
+}
+);
+
+const data =
+await response.json();
+
+imageUrl =
+data.secure_url;
+
+}
+
+await addDoc(
+collection(db,'testimonials'),
+{
+
+name:
+document.getElementById(
+'testimonialName'
+).value,
+
+city:
+document.getElementById(
+'testimonialCity'
+).value,
+
+rating:
+document.getElementById(
+'testimonialRating'
+).value,
+
+service:
+document.getElementById(
+'testimonialService'
+).value,
+
+review:
+document.getElementById(
+'testimonialReview'
+).value,
+
+image:imageUrl,
+
+createdAt:
+serverTimestamp()
+
+}
+);
+
+alert(
+'Testimonial Added'
+);
+
+document.getElementById(
+'testimonialModal'
+).style.display =
+'none';
+
+loadTestimonials();
+
+}catch(err){
+
+console.log(err);
+
+alert(
+'Failed'
+);
+
+}
+
+}
+
+async function loadTestimonials(){
+
+if(!testimonialsList)
+return;
+
+testimonialsList.innerHTML = '';
+
+const snapshot =
+await getDocs(
+collection(db,'testimonials')
+);
+
+snapshot.forEach(docSnap=>{
+
+const t =
+docSnap.data();
+
+testimonialsList.innerHTML += `
+
+<div class="product-admin-card">
+
+<img
+src="${t.image || ''}"
+style="
+width:100px;
+height:100px;
+border-radius:50%;
+object-fit:cover;
+margin-bottom:14px;
+"
+/>
+
+<h3>
+${t.name}
+</h3>
+
+<p>
+📍 ${t.city}
+</p>
+
+<p>
+⭐ ${t.rating}/5
+</p>
+
+<p>
+🪔 ${t.service}
+</p>
+
+<p>
+"${t.review}"
+</p>
+
+</div>
+
+`;
+
+});
+
+}
+
+loadTestimonials();
+
 </script>
 <div
 id="editModal"
@@ -3208,6 +3443,74 @@ Add Service
 </div>
 
 </div>
+
+<div
+id="testimonialModal"
+class="edit-modal"
+>
+
+<div class="edit-modal-content">
+
+<span
+class="close-edit-modal"
+onclick="
+document.getElementById(
+'testimonialModal'
+).style.display='none'
+"
+>
+×
+</span>
+
+<h2>
+Add Testimonial
+</h2>
+
+<input
+type="text"
+id="testimonialName"
+placeholder="Customer Name"
+/>
+
+<input
+type="text"
+id="testimonialCity"
+placeholder="City"
+/>
+
+<input
+type="number"
+id="testimonialRating"
+placeholder="Rating (1-5)"
+/>
+
+<input
+type="text"
+id="testimonialService"
+placeholder="Service/Product"
+/>
+
+<textarea
+id="testimonialReview"
+placeholder="Review"
+></textarea>
+
+<input
+type="file"
+id="testimonialImage"
+/>
+
+<button
+onclick="submitTestimonial()"
+id="saveEditBtn"
+>
+Add Testimonial
+</button>
+
+</div>
+
+</div>
+
 
 
 
