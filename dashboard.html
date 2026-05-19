@@ -721,48 +721,45 @@ loadConsultations(user.uid);
 /* ===== LOAD ORDERS ===== */
 
 async function loadOrders(userId){
-console.log(
-'Logged In UID:',
-userId
-);
+
 const ordersList =
+
 document.getElementById(
 'ordersList'
 );
 
-const q = query(
-
-collection(db,'orders'),
-
-where(
-'userId',
-'==',
+console.log(
+'Logged In UID:',
 userId
-)
-
 );
 
-
+try{
 
 const snapshot =
-await getDocs(q);
 
-if(snapshot.empty){
+await getDocs(
+collection(db,'orders')
+);
 
-ordersList.innerHTML =
-
-'<p>No orders yet.</p>';
-
-return;
-
-}
+console.log(
+'Orders Count:',
+snapshot.size
+);
 
 ordersList.innerHTML = '';
+
+let found = false;
 
 snapshot.forEach(docSnap=>{
 
 const order =
 docSnap.data();
+
+console.log(order);
+
+if(order.userId === userId){
+
+found = true;
 
 ordersList.innerHTML += `
 
@@ -784,13 +781,7 @@ Amount:
 
 <div class="order-products">
 
-${Array.isArray(order.products)
-
-? order.products.join('<br>')
-
-: order.products || ''
-
-}
+${order.products || ''}
 
 </div>
 
@@ -798,9 +789,30 @@ ${Array.isArray(order.products)
 
 `;
 
+}
+
 });
 
+if(!found){
+
+ordersList.innerHTML =
+
+'<p>No orders yet.</p>';
+
 }
+
+}catch(error){
+
+console.error(error);
+
+ordersList.innerHTML =
+
+'<p>Failed to load orders.</p>';
+
+}
+
+}
+
 
 
 
