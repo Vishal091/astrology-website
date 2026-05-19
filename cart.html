@@ -745,7 +745,7 @@ Proceed to Payment
 
 <button
 class="shop-btn"
-onclick="window.location.href='shop.html'"
+onclick="window.location.href='index.html'"
 >
 Continue Shopping
 </button>
@@ -796,7 +796,7 @@ Add spiritual products to begin your journey.
 
 <button
 class="shop-btn"
-onclick="window.location.href='shop.html'"
+onclick="window.location.href='index.html'"
 >
 Shop Now
 </button>
@@ -815,17 +815,68 @@ cart.forEach((item,index)=>{
 
 cartItems.innerHTML += `
 
+
 <div class="cart-card">
 
+<div
+style="
+display:flex;
+gap:18px;
+align-items:center;
+"
+>
+
+<img
+src="${item.image || 'https://dummyimage.com/300'}"
+style="
+width:100px;
+height:100px;
+object-fit:cover;
+border-radius:20px;
+"
+>
+
 <div class="cart-info">
+
+<div
+style="
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:10px;
+"
+>
 
 <h3>
 ${item.name}
 </h3>
 
+<span
+style="
+background:
+linear-gradient(
+135deg,
+#8b111c,
+#f59e0b
+);
+color:white;
+padding:6px 12px;
+border-radius:30px;
+font-size:11px;
+font-weight:700;
+text-transform:uppercase;
+"
+>
+${item.type || 'product'}
+</span>
+
+</div>
+
 <p>
 ₹${item.price}
 </p>
+
+</div>
 
 </div>
 
@@ -859,6 +910,8 @@ Remove
 </div>
 
 </div>
+
+
 
 `;
 
@@ -942,6 +995,10 @@ updateSummary();
 
 }
 function increaseQty(index){
+
+if(cart[index].type === 'service'){
+return;
+}
 
 if(!cart[index].qty){
 cart[index].qty = 1;
@@ -1099,7 +1156,9 @@ Number(item.price) *
 
 const products =
 cart.map(item =>
-`${item.name} x${item.qty || 1}`
+
+`[${item.type || 'product'}] ${item.name} x${item.qty || 1}`
+
 ).join(', ');
 
 const orderData = {
@@ -1113,7 +1172,7 @@ state,
 pincode,
 
 products,
-
+cartData: cart,
 total,
 
 paymentId:
