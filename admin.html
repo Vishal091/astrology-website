@@ -4085,13 +4085,6 @@ loadAstrologers();
 window.saveAstrologer =
 async function(){
 
-const data = {
-
-name:
-document.getElementById(
-'astrologerName'
-).value,
-
 const file =
 
 document.getElementById(
@@ -4127,15 +4120,20 @@ body:formData
 
 );
 
-const data =
+const cloudinaryData =
 await response.json();
 
 image =
-data.secure_url;
+cloudinaryData.secure_url;
 
 }
 
+const data = {
 
+name:
+document.getElementById(
+'astrologerName'
+).value,
 
 expertise:
 document.getElementById(
@@ -4167,10 +4165,27 @@ document.getElementById(
 'astrologerAbout'
 ).value,
 
+image:image,
+
 createdAt:
 serverTimestamp()
 
 };
+
+await addDoc(
+collection(db,'astrologers'),
+data
+);
+
+document.getElementById(
+'astrologerModal'
+).style.display =
+'none';
+
+loadAstrologers();
+
+}
+
 
 if(editingAstrologerId){
 
