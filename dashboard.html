@@ -219,15 +219,28 @@ font-weight:700;
 .order-card{
 
 background:
-rgba(255,255,255,.04);
+rgba(255,255,255,.06);
 
-padding:18px;
+border:
+1px solid rgba(255,255,255,.08);
 
-border-radius:18px;
+padding:24px;
 
-margin-bottom:18px;
+border-radius:22px;
+
+margin-bottom:20px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:12px;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,.25);
 
 }
+
 
 .order-products{
 
@@ -512,7 +525,7 @@ Save Profile
 
 <div
 id="ordersSection"
-class="section"
+class="section active"
 >
 
 <div class="card">
@@ -521,7 +534,14 @@ class="section"
 📦 My Orders
 </h2>
 
-<div id="ordersList">
+<div
+id="ordersList"
+style="
+display:flex;
+flex-direction:column;
+gap:20px;
+"
+>
 
 Loading orders...
 
@@ -530,6 +550,8 @@ Loading orders...
 </div>
 
 </div>
+
+
 
 <!-- CONSULTATIONS -->
 
