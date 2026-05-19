@@ -3126,9 +3126,8 @@ data.secure_url;
 
 }
 
-await addDoc(
-collection(db,'testimonials'),
-{
+
+const testimonialData = {
 
 name:
 document.getElementById(
@@ -3150,6 +3149,11 @@ document.getElementById(
 'testimonialService'
 ).value,
 
+review:
+document.getElementById(
+'testimonialReview'
+).value,
+
 productImage:
 selectedTestimonialImage,
 
@@ -3159,18 +3163,35 @@ selectedTestimonialLink,
 type:
 selectedTestimonialType,
 
-review:
-document.getElementById(
-'testimonialReview'
-).value,
-
-image:imageUrl,
-
 createdAt:
 serverTimestamp()
 
-}
+};
+
+if(editingTestimonialId){
+
+await updateDoc(
+
+doc(
+db,
+'testimonials',
+editingTestimonialId
+),
+
+testimonialData
+
 );
+
+}else{
+
+await addDoc(
+collection(db,'testimonials'),
+testimonialData
+);
+
+}
+
+
 
 alert(
 'Testimonial Added'
@@ -3180,7 +3201,17 @@ document.getElementById(
 'testimonialModal'
 ).style.display =
 'none';
+editingTestimonialId = null;
 
+document.getElementById(
+'testimonialModalTitle'
+).innerText =
+'Add Testimonial';
+
+document.getElementById(
+'testimonialSubmitBtn'
+).innerText =
+'Add Testimonial';
 loadTestimonials();
 
 }catch(err){
@@ -3290,6 +3321,74 @@ Delete
 }
 
 loadTestimonials();
+
+window.editTestimonial =
+async function(id){
+
+const docRef =
+doc(db,'testimonials',id);
+
+const snap =
+await getDoc(docRef);
+
+if(!snap.exists()) return;
+
+const t =
+snap.data();
+
+editingTestimonialId = id;
+
+document.getElementById(
+'testimonialModal'
+).style.display =
+'flex';
+
+document.getElementById(
+'testimonialModalTitle'
+).innerText =
+'Edit Testimonial';
+
+document.getElementById(
+'testimonialSubmitBtn'
+).innerText =
+'Update Testimonial';
+
+document.getElementById(
+'testimonialName'
+).value =
+t.name || '';
+
+document.getElementById(
+'testimonialCity'
+).value =
+t.city || '';
+
+document.getElementById(
+'testimonialRating'
+).value =
+t.rating || '';
+
+document.getElementById(
+'testimonialService'
+).value =
+t.service || '';
+
+document.getElementById(
+'testimonialReview'
+).value =
+t.review || '';
+
+selectedTestimonialImage =
+t.productImage || '';
+
+selectedTestimonialLink =
+t.productLink || '';
+
+selectedTestimonialType =
+t.type || '';
+
+}
+
 window.deleteTestimonial =
 async function(id){
 
@@ -3430,6 +3529,7 @@ let selectedTestimonialImage = '';
 let selectedTestimonialLink = '';
 
 let selectedTestimonialType = '';
+let editingTestimonialId = null;
 const blogsList =
 document.getElementById(
 'blogsList'
@@ -4034,7 +4134,7 @@ document.getElementById(
 ×
 </span>
 
-<h2>
+<h2 id="testimonialModalTitle">
 Add Testimonial
 </h2>
 
@@ -4076,7 +4176,7 @@ id="testimonialImage"
 
 <button
 onclick="submitTestimonial()"
-id="saveEditBtn"
+id="testimonialSubmitBtn"
 >
 Add Testimonial
 </button>
