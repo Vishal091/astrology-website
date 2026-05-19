@@ -533,7 +533,34 @@ font-size:13px;
 color:#ddd;
 
 }
+.order-status-select{
 
+width:100%;
+
+padding:12px;
+
+border:none;
+
+border-radius:12px;
+
+margin-bottom:12px;
+
+font-weight:700;
+
+background:
+linear-gradient(
+135deg,
+#8b111c,
+#f59e0b
+);
+
+color:white;
+
+cursor:pointer;
+
+outline:none;
+
+}
 .order-total{
 
 font-size:18px;
@@ -1442,7 +1469,45 @@ ordersList.innerHTML += `
 <h3>
 ${order.Name || 'Customer'}
 </h3>
+<select
+class="order-status-select"
+onchange="
+updateOrderStatus(
+'${order["Payment ID"]}',
+this.value
+)
+"
+>
 
+<option
+value="NEW"
+${order.Status === 'NEW' ? 'selected' : ''}
+>
+NEW
+</option>
+
+<option
+value="PROCESSING"
+${order.Status === 'PROCESSING' ? 'selected' : ''}
+>
+PROCESSING
+</option>
+
+<option
+value="COMPLETED"
+${order.Status === 'COMPLETED' ? 'selected' : ''}
+>
+COMPLETED
+</option>
+
+<option
+value="CANCELLED"
+${order.Status === 'CANCELLED' ? 'selected' : ''}
+>
+CANCELLED
+</option>
+
+</select>
 <p>
 📞 ${order.Phone || ''}
 </p>
@@ -2827,6 +2892,18 @@ await signOut(auth);
 
 window.location.href =
 "admin-login.html";
+
+}
+window.updateOrderStatus =
+async function(
+paymentId,
+newStatus
+){
+
+alert(
+'Order status updated to ' +
+newStatus
+);
 
 }
 </script>
