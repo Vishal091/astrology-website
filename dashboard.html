@@ -621,6 +621,9 @@ user.uid;
 
 loadOrders(user.uid);
 
+loadConsultations(user.uid);
+
+
 }
 );
 
@@ -700,6 +703,115 @@ ${Array.isArray(order.products)
 });
 
 }
+
+/* ===== LOAD CONSULTATIONS ===== */
+
+async function loadConsultations(userId){
+
+const consultationsList =
+
+document.getElementById(
+'consultationsList'
+);
+
+const q = query(
+
+collection(db,'consultations'),
+
+where('userId','==',userId),
+
+orderBy('createdAt','desc')
+
+);
+
+const snapshot =
+await getDocs(q);
+
+if(snapshot.empty){
+
+consultationsList.innerHTML =
+
+`
+
+<div class="order-card">
+
+<h3>
+No Consultations Yet
+</h3>
+
+<p>
+Book your first astrology consultation.
+</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+consultationsList.innerHTML = '';
+
+snapshot.forEach(docSnap=>{
+
+const consultation =
+docSnap.data();
+
+consultationsList.innerHTML += `
+
+<div class="order-card">
+
+<h3>
+
+🔮
+${consultation.astrologerName || 'Astrologer'}
+
+</h3>
+
+<p>
+
+Type:
+${consultation.type || 'Chat'}
+
+</p>
+
+<p>
+
+Status:
+${consultation.status || 'Pending'}
+
+</p>
+
+<p>
+
+Date:
+${consultation.date || 'Upcoming'}
+
+</p>
+
+<p>
+
+Time:
+${consultation.time || '-'}
+
+</p>
+
+<p>
+
+Amount:
+₹${consultation.amount || 0}
+
+</p>
+
+</div>
+
+`;
+
+});
+
+}
+
 
 </script>
 
