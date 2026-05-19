@@ -533,10 +533,28 @@ return;
 const astro =
 snap.data();
 
+if(
+astro.image &&
+!astro.image.includes(
+'randomuser.me'
+)
+){
+
 document.getElementById(
 'astroImage'
 ).src =
-astro.image || '';
+astro.image;
+
+}else{
+
+document.getElementById(
+'astroImage'
+).style.display =
+'none';
+
+}
+
+
 
 document.getElementById(
 'astroName'
