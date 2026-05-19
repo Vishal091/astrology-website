@@ -1363,13 +1363,17 @@ section === 'consultations'
 : section === 'orders'
 ? '🛒 Recent Orders'
 
+: section === 'products'
+? '📦 Products'
+
 : section === 'services'
 ? '🪔 Services'
-: '📦 Products';
-
 
 : section === 'testimonials'
 ? '⭐ Testimonials'
+
+: 'Dashboard';
+
 }
 let currentUser = "";
 
