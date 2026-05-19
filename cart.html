@@ -821,31 +821,22 @@ cartItems.innerHTML += `
 <div
 style="
 display:flex;
-gap:20px;
+gap:18px;
 align-items:center;
-flex:1;
-min-width:0;
 "
 >
 
 <img
 src="${item.image || 'https://dummyimage.com/300'}"
 style="
-width:130px;
-height:130px;
-flex-shrink:0;
+width:100px;
+height:100px;
 object-fit:cover;
 border-radius:20px;
 "
 >
 
-<div
-class="cart-info"
-style="
-flex:1;
-min-width:0;
-"
->
+<div class="cart-info">
 
 <div
 style="
@@ -856,16 +847,10 @@ margin-bottom:10px;
 "
 >
 
-<h3
-style="
-font-size:30px;
-line-height:1.2;
-word-break:break-word;
-margin-bottom:10px;
-"
->
+<h3>
 ${item.name}
 </h3>
+
 <span
 style="
 background:
@@ -895,12 +880,7 @@ ${item.type || 'product'}
 
 </div>
 
-<div
-class="cart-actions"
-style="
-flex-shrink:0;
-"
->
+<div class="cart-actions">
 
 <button
 class="qty-btn"
