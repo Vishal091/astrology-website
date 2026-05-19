@@ -499,7 +499,272 @@ transform:translateX(-50%);
 z-index:-1;
 pointer-events:none;
 }
+.service-modal{
 
+position:fixed;
+
+inset:0;
+
+background:
+rgba(0,0,0,0.75);
+
+backdrop-filter:blur(8px);
+
+display:none;
+
+justify-content:center;
+
+align-items:center;
+
+z-index:999999;
+
+padding:20px;
+
+overflow-y:auto;
+
+}
+
+.service-modal-content{
+
+background:
+linear-gradient(
+180deg,
+#fff,
+#fff7ed
+);
+
+width:100%;
+
+max-width:950px;
+
+border-radius:34px;
+
+overflow:hidden;
+
+position:relative;
+
+box-shadow:
+0 30px 80px rgba(0,0,0,0.3);
+
+animation:
+modalPop .35s ease;
+
+}
+
+@keyframes modalPop{
+
+from{
+
+opacity:0;
+transform:scale(.92);
+
+}
+
+to{
+
+opacity:1;
+transform:scale(1);
+
+}
+
+}
+
+.service-modal-grid{
+
+display:grid;
+
+grid-template-columns:
+1fr 1fr;
+
+}
+
+.service-modal-image{
+
+width:100%;
+height:100%;
+min-height:620px;
+
+object-fit:cover;
+
+display:block;
+
+}
+
+.service-modal-body{
+
+padding:42px;
+
+}
+
+.service-modal-body h2{
+
+font-size:42px;
+
+line-height:1.15;
+
+margin-bottom:18px;
+
+color:#7a1018;
+
+}
+
+.service-modal-price{
+
+font-size:54px;
+
+font-weight:800;
+
+background:
+linear-gradient(
+135deg,
+#b91c1c,
+#f59e0b
+);
+
+-webkit-background-clip:text;
+
+-webkit-text-fill-color:transparent;
+
+margin-bottom:22px;
+
+}
+
+.service-modal-desc{
+
+font-size:15px;
+
+line-height:1.8;
+
+color:#555;
+
+margin-bottom:26px;
+
+}
+
+.service-benefits{
+
+display:flex;
+
+flex-direction:column;
+
+gap:14px;
+
+margin-bottom:30px;
+
+}
+
+.service-benefit{
+
+display:flex;
+
+gap:12px;
+
+align-items:flex-start;
+
+font-size:15px;
+
+color:#444;
+
+}
+
+.service-benefit span{
+
+color:#22c55e;
+
+font-size:18px;
+
+font-weight:700;
+
+}
+
+.service-modal-btn{
+
+width:100%;
+
+padding:18px;
+
+border:none;
+
+border-radius:18px;
+
+font-size:17px;
+
+font-weight:700;
+
+cursor:pointer;
+
+color:white;
+
+background:
+linear-gradient(
+135deg,
+#8b111c,
+#f59e0b
+);
+
+box-shadow:
+0 16px 35px rgba(139,17,28,0.22);
+
+transition:.3s;
+
+}
+
+.service-modal-btn:hover{
+
+transform:translateY(-2px);
+
+}
+
+.close-service-modal{
+
+position:absolute;
+
+top:18px;
+right:22px;
+
+font-size:42px;
+
+cursor:pointer;
+
+color:#7a1018;
+
+z-index:5;
+
+}
+
+@media(max-width:768px){
+
+.service-modal-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.service-modal-image{
+
+min-height:320px;
+
+}
+
+.service-modal-body{
+
+padding:26px;
+
+}
+
+.service-modal-body h2{
+
+font-size:30px;
+
+}
+
+.service-modal-price{
+
+font-size:42px;
+
+}
+
+}
 /* WHATSAPP */
 
 .whatsapp-float{
@@ -853,7 +1118,10 @@ ${service.description || ''}
 
 </div>
 
-<button class="book-btn">
+<button
+class="book-btn"
+onclick='openServiceModal(${JSON.stringify(service)})'
+>
 Book Now
 </button>
 
@@ -870,6 +1138,151 @@ Book Now
 loadServices();
 
 </script>
+
+<div
+class="service-modal"
+id="serviceModal"
+>
+
+<div class="service-modal-content">
+
+<span
+class="close-service-modal"
+onclick="closeServiceModal()"
+>
+×
+</span>
+
+<div class="service-modal-grid">
+
+<img
+id="modalServiceImage"
+class="service-modal-image"
+src=""
+>
+
+<div class="service-modal-body">
+
+<h2 id="modalServiceTitle">
+Service Name
+</h2>
+
+<div
+class="service-modal-price"
+id="modalServicePrice"
+>
+₹5000
+</div>
+
+<p
+class="service-modal-desc"
+id="modalServiceDescription"
+>
+Description
+</p>
+
+<div class="service-benefits">
+
+<div class="service-benefit">
+<span>✔</span>
+<div>
+Removes negative energies and blockages
+</div>
+</div>
+
+<div class="service-benefit">
+<span>✔</span>
+<div>
+Activates positivity and abundance
+</div>
+</div>
+
+<div class="service-benefit">
+<span>✔</span>
+<div>
+Performed by experienced Vedic experts
+</div>
+</div>
+
+<div class="service-benefit">
+<span>✔</span>
+<div>
+Personalized spiritual guidance included
+</div>
+</div>
+
+</div>
+
+<button
+class="service-modal-btn"
+id="modalWhatsappBtn"
+>
+Book on WhatsApp
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+window.openServiceModal =
+function(service){
+
+document.getElementById(
+'serviceModal'
+).style.display =
+'flex';
+
+document.getElementById(
+'modalServiceImage'
+).src =
+service.image || '';
+
+document.getElementById(
+'modalServiceTitle'
+).innerText =
+service.name || '';
+
+document.getElementById(
+'modalServicePrice'
+).innerText =
+'₹' + (service.price || '');
+
+document.getElementById(
+'modalServiceDescription'
+).innerText =
+service.description || '';
+
+document.getElementById(
+'modalWhatsappBtn'
+).onclick =
+function(){
+
+const text =
+`Hello Astrodhani, I want to book ${service.name}`;
+
+window.open(
+`https://wa.me/918708833177?text=${encodeURIComponent(text)}`
+);
+
+};
+
+}
+
+window.closeServiceModal =
+function(){
+
+document.getElementById(
+'serviceModal'
+).style.display =
+'none';
+
+}
+
 
 
 </body>
