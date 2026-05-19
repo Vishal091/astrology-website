@@ -2422,17 +2422,31 @@ collection(db,'testimonials')
 
 slider.innerHTML = '';
 
+let count = 0;
+
 snapshot.forEach(docSnap=>{
+
+if(count >= 4)
+return;
 
 const t =
 docSnap.data();
 
 slider.innerHTML += `
 
-<div class="testimonial-card">
+<div
+class="testimonial-card"
+onclick="
+window.location.href=
+'${t.productLink || '#'}'
+"
+style="
+cursor:pointer;
+"
+>
 
 <img
-src="${t.image || ''}"
+src="${t.productImage || ''}"
 class="testimonial-image"
 />
 
@@ -2469,7 +2483,7 @@ ${t.service}
 `;
 
 });
-
+count++;
 }
 
 loadTestimonials();
