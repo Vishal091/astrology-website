@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,449 +6,281 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0"
+>
 
-<title>Astrologer Profile | Astrodhani</title>
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<title>
+Astrodhani Astrologer
+</title>
 
 <style>
 
-/* ===== BODY ===== */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
 body{
 
-margin:0;
-font-family:'Segoe UI',sans-serif;
+font-family:
+Segoe UI,sans-serif;
 
 background:
 linear-gradient(
 135deg,
-#f8eeee,
-#f3e4e4
+#120202,
+#1d0505,
+#300808
 );
 
-color:#fff;
-
-overflow-x:hidden;
+color:white;
 
 }
 
-/* ===== HEADER ===== */
+/* ===== NAVBAR ===== */
 
-.header{
-
-background:
-linear-gradient(
-135deg,
-#7a0c18,
-#a31621
-);
-
-padding:18px 30px;
+.navbar{
 
 display:flex;
+
 justify-content:space-between;
+
 align-items:center;
 
-box-shadow:
-0 10px 30px rgba(0,0,0,0.2);
+padding:20px 7%;
+
+background:#3b0606;
 
 position:sticky;
+
 top:0;
-z-index:999;
+
+z-index:1000;
 
 }
 
 .logo{
 
-font-size:28px;
-font-weight:700;
+font-size:32px;
+
+font-weight:800;
+
 color:#FFD700;
 
 }
 
-.back-btn{
+.nav-links{
 
-padding:10px 18px;
+display:flex;
 
-border:none;
-
-border-radius:12px;
-
-cursor:pointer;
-
-font-weight:700;
-
-background:
-linear-gradient(
-45deg,
-#FFD700,
-#ffb700
-);
+gap:24px;
 
 }
 
-/* ===== CONTAINER ===== */
+.nav-links a{
 
-.container{
+text-decoration:none;
 
-width:92%;
+color:white;
+
+font-weight:600;
+
+}
+
+/* ===== PROFILE ===== */
+
+.profile-wrapper{
+
 max-width:1300px;
 
-margin:40px auto;
+margin:auto;
 
-}
-
-/* ===== HERO ===== */
-
-.hero{
+padding:70px 5%;
 
 display:grid;
 
 grid-template-columns:
-350px 1fr;
+420px 1fr;
 
-gap:35px;
+gap:60px;
 
-align-items:center;
+align-items:start;
+
+}
+
+.profile-card{
 
 background:
-linear-gradient(
-145deg,
-#12052a,
-#1d1142
-);
+rgba(255,255,255,.05);
 
-border-radius:32px;
-
-padding:35px;
-
-box-shadow:
-0 25px 50px rgba(0,0,0,0.25);
-
-}
-
-/* ===== IMAGE ===== */
-
-.hero img{
-
-width:100%;
-max-width:320px;
-
-border-radius:28px;
-
-border:5px solid #FFD700;
-
-box-shadow:
-0 20px 40px rgba(255,215,0,0.2);
-
-}
-
-/* ===== INFO ===== */
-
-.info h1{
-
-margin:0;
-
-font-size:42px;
-
-color:#FFD700;
-
-}
-
-.verified{
-
-display:inline-flex;
-align-items:center;
-gap:8px;
-
-background:#16a34a;
-
-padding:8px 14px;
+border:
+1px solid rgba(255,255,255,.08);
 
 border-radius:30px;
 
-margin-top:15px;
+padding:30px;
 
-font-size:14px;
-font-weight:700;
+position:sticky;
 
-}
-
-.meta{
-
-display:flex;
-flex-wrap:wrap;
-gap:18px;
-
-margin-top:25px;
+top:120px;
 
 }
 
-.meta-box{
+.profile-image{
 
-background:
-rgba(255,255,255,0.08);
+width:100%;
 
-padding:14px 18px;
+height:460px;
 
-border-radius:18px;
+object-fit:cover;
 
-font-size:15px;
+border-radius:24px;
+
+margin-bottom:24px;
 
 }
 
-.price{
-
-margin-top:25px;
+.profile-name{
 
 font-size:38px;
-font-weight:700;
 
-color:#fff;
+font-weight:800;
 
-}
-
-/* ===== BUTTONS ===== */
-
-.buttons{
-
-display:flex;
-gap:16px;
-
-margin-top:30px;
-
-flex-wrap:wrap;
+margin-bottom:10px;
 
 }
 
-.btn{
+.profile-rating{
 
-padding:16px 28px;
+color:#FFD700;
+
+font-size:18px;
+
+margin-bottom:16px;
+
+}
+
+.profile-price{
+
+font-size:30px;
+
+font-weight:800;
+
+margin-bottom:24px;
+
+color:#ffcc00;
+
+}
+
+.consult-btn{
+
+width:100%;
+
+padding:18px;
 
 border:none;
 
 border-radius:16px;
 
-font-size:16px;
-font-weight:700;
+background:
+linear-gradient(
+135deg,
+#FFD700,
+#ff9900
+);
+
+font-size:18px;
+
+font-weight:800;
 
 cursor:pointer;
 
-transition:0.3s;
+}
+
+/* ===== DETAILS ===== */
+
+.details{
+
+display:flex;
+
+flex-direction:column;
+
+gap:28px;
 
 }
 
-.chat-btn{
+.info-box{
 
 background:
-linear-gradient(
-45deg,
-#FFD700,
-#ffb700
-);
-
-color:black;
-
-}
-
-.call-btn{
-
-background:
-linear-gradient(
-45deg,
-#16a34a,
-#22c55e
-);
-
-color:white;
-
-}
-
-.wallet-btn{
-
-background:
-rgba(255,255,255,0.08);
-
-color:white;
+rgba(255,255,255,.05);
 
 border:
-1px solid rgba(255,255,255,0.1);
+1px solid rgba(255,255,255,.06);
+
+border-radius:24px;
+
+padding:30px;
 
 }
 
-.btn:hover{
+.info-box h2{
 
-transform:
-translateY(-4px);
+font-size:28px;
 
-}
-
-/* ===== SECTION ===== */
-
-.section{
-
-margin-top:35px;
-
-background:
-linear-gradient(
-145deg,
-#12052a,
-#1d1142
-);
-
-border-radius:30px;
-
-padding:35px;
-
-box-shadow:
-0 20px 40px rgba(0,0,0,0.2);
-
-}
-
-.section h2{
-
-margin-top:0;
+margin-bottom:18px;
 
 color:#FFD700;
 
-font-size:30px;
-
 }
 
-/* ===== ABOUT ===== */
-
-.about{
+.info-text{
 
 line-height:1.9;
 
-font-size:16px;
+font-size:17px;
 
-color:#ddd;
+color:#eee;
 
 }
-
-/* ===== TAGS ===== */
 
 .tags{
 
 display:flex;
-flex-wrap:wrap;
-gap:14px;
 
-margin-top:20px;
+gap:12px;
+
+flex-wrap:wrap;
+
+margin-top:18px;
 
 }
 
 .tag{
 
-padding:12px 18px;
+padding:10px 18px;
 
-border-radius:30px;
+border-radius:999px;
 
-background:
-rgba(255,215,0,0.12);
-
-border:
-1px solid rgba(255,215,0,0.2);
+background:#4c0519;
 
 font-size:14px;
 
 }
 
-/* ===== STATS ===== */
+/* ===== FOOTER ===== */
 
-.stats{
+.footer{
 
-display:grid;
+margin-top:80px;
 
-grid-template-columns:
-repeat(auto-fit,minmax(220px,1fr));
-
-gap:25px;
-
-margin-top:20px;
-
-}
-
-.stat{
-
-background:
-rgba(255,255,255,0.06);
-
-padding:25px;
-
-border-radius:24px;
+padding:60px 20px;
 
 text-align:center;
 
-}
-
-.stat h3{
-
-margin:0;
-
-font-size:34px;
-
-color:#FFD700;
-
-}
-
-.stat p{
-
-margin-top:10px;
-
-color:#ddd;
-
-}
-
-/* ===== REVIEWS ===== */
-
-.review{
-
-background:
-rgba(255,255,255,0.06);
-
-padding:22px;
-
-border-radius:22px;
-
-margin-top:20px;
-
-}
-
-.review-top{
-
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-}
-
-.review-name{
-
-font-weight:700;
-
-font-size:17px;
-
-}
-
-.stars{
-
-color:#FFD700;
-
-}
-
-.review p{
-
-margin-top:14px;
-
-line-height:1.7;
-
-color:#ddd;
+background:#3b0606;
 
 }
 
@@ -455,35 +288,25 @@ color:#ddd;
 
 @media(max-width:900px){
 
-.hero{
+.profile-wrapper{
 
 grid-template-columns:1fr;
 
-text-align:center;
+}
+
+.profile-card{
+
+position:relative;
+
+top:0;
 
 }
 
-.hero img{
+.navbar{
 
-margin:auto;
+flex-direction:column;
 
-}
-
-.info h1{
-
-font-size:34px;
-
-}
-
-.meta{
-
-justify-content:center;
-
-}
-
-.buttons{
-
-justify-content:center;
+gap:16px;
 
 }
 
@@ -495,449 +318,288 @@ justify-content:center;
 
 <body>
 
-<!-- ===== HEADER ===== -->
+<!-- ===== NAVBAR ===== -->
 
-<div class="header">
+<nav class="navbar">
 
 <div class="logo">
 🔮 Astrodhani
 </div>
 
-<button class="back-btn"
-onclick="history.back()">
+<div class="nav-links">
 
-← Back
+<a href="index.html">
+Home
+</a>
+
+<a href="astrologers.html">
+Astrologers
+</a>
+
+<a href="services.html">
+Services
+</a>
+
+</div>
+
+</nav>
+
+<!-- ===== PROFILE ===== -->
+
+<div class="profile-wrapper">
+
+<div class="profile-card">
+
+<img
+id="astroImage"
+class="profile-image"
+>
+
+<div
+id="astroName"
+class="profile-name"
+></div>
+
+<div
+id="astroRating"
+class="profile-rating"
+></div>
+
+<div
+id="astroPrice"
+class="profile-price"
+></div>
+
+<button
+class="consult-btn"
+id="consultBtn"
+>
+
+Consult Now
 
 </button>
 
 </div>
 
-<div class="container">
+<div class="details">
 
-<!-- ===== HERO ===== -->
-
-<div class="hero">
-
-<img id="astroImage"
-src="">
-
-<div class="info">
-
-<h1 id="astroName">
-
-Astrologer Name
-
-</h1>
-
-<div class="verified">
-
-<i class="fa-solid fa-circle-check"></i>
-
-Verified Astrologer
-
-</div>
-
-<div class="meta">
-
-<div class="meta-box"
-id="astroExperience">
-
-Experience
-
-</div>
-
-<div class="meta-box"
-id="astroLanguages">
-
-Languages
-
-</div>
-
-<div class="meta-box">
-⭐ 4.9 Rating
-</div>
-
-<div class="meta-box">
-👥 25K+ Consultations
-</div>
-
-</div>
-
-<div class="price"
-id="astroPrice">
-
-₹0/min
-
-</div>
-
-<div class="buttons">
-
-<button class="btn chat-btn"
-onclick="startConsultation()">
-
-💬 Chat Now
-
-</button>
-
-<button class="btn call-btn">
-
-📞 Call Now
-
-</button>
-
-<button class="btn wallet-btn">
-
-💰 Recharge Wallet
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ===== ABOUT ===== -->
-
-<div class="section">
-
-<h2>
-📖 About Astrologer
-</h2>
-
-<div class="about"
-id="astroAbout">
-
-</div>
-
-<!-- ===== EXPERTISE ===== -->
-
-<div class="section">
+<div class="info-box">
 
 <h2>
 🔮 Expertise
 </h2>
 
-<div class="tags"
-id="astroTags">
+<div
+id="astroExpertise"
+class="tags"
+></div>
 
 </div>
 
-</div>
-
-<!-- ===== STATS ===== -->
-
-<div class="section">
+<div class="info-box">
 
 <h2>
-📊 Astrologer Stats
+🌐 Languages
 </h2>
 
-<div class="stats">
-
-<div class="stat">
-
-<h3>
-12+
-</h3>
-
-<p>
-Years Experience
-</p>
+<div
+id="astroLanguages"
+class="info-text"
+></div>
 
 </div>
 
-<div class="stat">
-
-<h3>
-25K+
-</h3>
-
-<p>
-Consultations
-</p>
-
-</div>
-
-<div class="stat">
-
-<h3>
-4.9⭐
-</h3>
-
-<p>
-Average Rating
-</p>
-
-</div>
-
-<div class="stat">
-
-<h3>
-18K+
-</h3>
-
-<p>
-Followers
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ===== REVIEWS ===== -->
-
-<div class="section">
+<div class="info-box">
 
 <h2>
-💬 User Reviews
+📅 Experience
 </h2>
 
-<div class="review">
-
-<div class="review-top">
-
-<div class="review-name">
-Priya Sharma
-</div>
-
-<div class="stars">
-★★★★★
-</div>
+<div
+id="astroExperience"
+class="info-text"
+></div>
 
 </div>
+
+<div class="info-box">
+
+<h2>
+📖 About
+</h2>
+
+<div
+id="astroAbout"
+class="info-text"
+></div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+
+<footer class="footer">
+
+<h2>
+🔮 Astrodhani
+</h2>
 
 <p>
-
-Very accurate predictions and simple remedies. Her guidance helped me overcome relationship problems and mental stress.
-
+Ancient Vedic Wisdom For Modern Life
 </p>
 
-</div>
+</footer>
 
-<div class="review">
+<script type="module">
 
-<div class="review-top">
-
-<div class="review-name">
-Rahul Verma
-</div>
-
-<div class="stars">
-★★★★★
-</div>
-
-</div>
-
-<p>
-
-Amazing experience. Positive energy and powerful spiritual guidance. Highly recommended for career and financial consultation.
-
-</p>
-
-</div>
-
-<div class="review">
-
-<div class="review-top">
-
-<div class="review-name">
-Simran Kaur
-</div>
-
-<div class="stars">
-★★★★★
-</div>
-
-</div>
-
-<p>
-
-Very humble astrologer. Face reading and tarot predictions were surprisingly accurate. Thank you for your guidance.
-
-</p>
-
-</div>
-
-</div>
-
-</div>
-<script>
-
-/* ===== ASTROLOGERS DATA ===== */
-
-const astrologers = {
-
-neetu:{
-
-name:
-"Acharya Neetu Sharma Ji",
-
-image:
-"image.png",
-
-experience:
-"🕉 12+ Years Experience",
-
-languages:
-"🌐 Hindi, English, Punjabi",
-
-price:
-"₹100/min",
-
-about:
-`Acharya Neetu Sharma Ji is a renowned Vedic Astrologer and Spiritual Consultant known for providing accurate guidance and powerful spiritual remedies for various life problems.`,
-
-tags:[
-
-"Vedic Astrology",
-"Tarot",
-"Palmistry",
-"Numerology",
-"Face Reading",
-"Vastu"
-
-]
-
-},
-
-rajkumar:{
-
-name:
-"Acharya Rajkumar Ji",
-
-image:
-"https://ui-avatars.com/api/?name=Rajkumar&background=7b000f&color=fff",
-
-experience:
-"🕉 30+ Years Experience",
-
-languages:
-"🌐 Hindi, English, Haryanvi",
-
-price:
-"₹100/min",
-
-about:
-`Highly experienced Vedic Astrologer known for accurate guidance and effective spiritual remedies.`,
-
-tags:[
-
-"Vedic Astrology"
-
-]
-
-},
-
-shivani:{
-
-name:
-"Acharya Shivani Ji",
-
-image:
-"https://ui-avatars.com/api/?name=Shivani&background=7b000f&color=fff",
-
-experience:
-"🕉 7+ Years Experience",
-
-languages:
-"🌐 Hindi, English",
-
-price:
-"₹75/min",
-
-about:
-`Professional Vedic Astrologer and Tarot Reader helping people gain positivity and confidence.`,
-
-tags:[
-
-"Vedic Astrology",
-"Tarot Reading",
-"Face Reading"
-
-]
-
+import {
+initializeApp
 }
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+doc,
+getDoc
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* ===== FIREBASE ===== */
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyA2ytO0jnhM9baGrByUS1jgSc47q6xJ64s",
+
+authDomain:
+"astrodhani-935c8.firebaseapp.com",
+
+projectId:
+"astrodhani-935c8",
+
+storageBucket:
+"astrodhani-935c8.firebasestorage.app",
+
+messagingSenderId:
+"158324229234",
+
+appId:
+"1:158324229234:web:bff8d74888b356be362eeb"
 
 };
 
-/* ===== GET URL PARAM ===== */
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+/* ===== GET ID ===== */
 
 const params =
 new URLSearchParams(
 window.location.search
 );
 
-const id =
-params.get("id") || "neetu";
+const astrologerId =
+params.get('id');
 
-const astro =
-astrologers[id];
+/* ===== LOAD PROFILE ===== */
 
-/* ===== LOAD DATA ===== */
+async function loadAstrologer(){
 
-document.getElementById(
-"astroName"
-).innerText = astro.name;
-
-document.getElementById(
-"astroImage"
-).src = astro.image;
-
-document.getElementById(
-"astroExperience"
-).innerText =
-astro.experience;
-
-document.getElementById(
-"astroLanguages"
-).innerText =
-astro.languages;
-
-document.getElementById(
-"astroPrice"
-).innerText =
-astro.price;
-
-document.getElementById(
-"astroAbout"
-).innerText =
-astro.about;
-
-/* ===== TAGS ===== */
-
-const tagsDiv =
-document.getElementById(
-"astroTags"
+const snap =
+await getDoc(
+doc(
+db,
+'astrologers',
+astrologerId
+)
 );
 
-astro.tags.forEach(tag=>{
+if(!snap.exists()){
 
-tagsDiv.innerHTML +=
+document.body.innerHTML =
+'<h1>Astrologer Not Found</h1>';
 
-`<div class="tag">${tag}</div>`;
-
-});
-
-/* ===== CHAT ===== */
-
-function startConsultation(){
-
-localStorage.setItem(
-
-"selectedAstrologer",
-
-astro.name
-
-);
-
-window.location.href =
-"index.html?chat=true";
+return;
 
 }
 
+const astro =
+snap.data();
+
+document.getElementById(
+'astroImage'
+).src =
+astro.image || '';
+
+document.getElementById(
+'astroName'
+).innerText =
+astro.name || '';
+
+document.getElementById(
+'astroRating'
+).innerText =
+`⭐ ${astro.rating || '5'} Rating`;
+
+document.getElementById(
+'astroPrice'
+).innerText =
+`₹${astro.price || ''}/min`;
+
+document.getElementById(
+'astroLanguages'
+).innerText =
+astro.languages || '';
+
+document.getElementById(
+'astroExperience'
+).innerText =
+astro.experience || '';
+
+document.getElementById(
+'astroAbout'
+).innerText =
+astro.about || '';
+
+document.getElementById(
+'astroExpertise'
+).innerHTML =
+
+`<div class="tag">
+${astro.expertise || ''}
+</div>`;
+
+document
+.getElementById(
+'consultBtn'
+)
+.addEventListener(
+'click',
+()=>{
+
+localStorage.setItem(
+'selectedAstrologer',
+astro.name
+);
+
+window.location.href =
+'index.html?chat=true';
+
+}
+);
+
+}
+
+loadAstrologer();
+
 </script>
+
 </body>
 </html>
