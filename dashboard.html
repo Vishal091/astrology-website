@@ -1,41 +1,708 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<title>Dashboard - Astrodhani</title>
-<link rel="stylesheet" href="style.css">
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0"
+>
+
+<title>
+My Dashboard • Astrodhani
+</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+
+font-family:
+Segoe UI,sans-serif;
+
+background:
+linear-gradient(
+135deg,
+#120202,
+#1d0505,
+#300808
+);
+
+color:white;
+
+}
+
+/* ===== LAYOUT ===== */
+
+.dashboard{
+
+display:grid;
+
+grid-template-columns:
+280px 1fr;
+
+min-height:100vh;
+
+}
+
+/* ===== SIDEBAR ===== */
+
+.sidebar{
+
+background:#220606;
+
+padding:30px 20px;
+
+border-right:
+1px solid rgba(255,255,255,.08);
+
+}
+
+.logo{
+
+font-size:32px;
+
+font-weight:800;
+
+color:#FFD700;
+
+margin-bottom:40px;
+
+}
+
+.menu{
+
+display:flex;
+
+flex-direction:column;
+
+gap:14px;
+
+}
+
+.menu button{
+
+padding:16px;
+
+border:none;
+
+border-radius:14px;
+
+background:
+rgba(255,255,255,.05);
+
+color:white;
+
+font-size:16px;
+
+cursor:pointer;
+
+text-align:left;
+
+transition:.3s;
+
+}
+
+.menu button:hover,
+.menu button.active{
+
+background:
+linear-gradient(
+135deg,
+#FFD700,
+#ff9900
+);
+
+color:black;
+
+font-weight:700;
+
+}
+
+/* ===== CONTENT ===== */
+
+.content{
+
+padding:40px;
+
+}
+
+.section{
+
+display:none;
+
+}
+
+.section.active{
+
+display:block;
+
+}
+
+.card{
+
+background:
+rgba(255,255,255,.05);
+
+border:
+1px solid rgba(255,255,255,.08);
+
+border-radius:24px;
+
+padding:24px;
+
+margin-bottom:24px;
+
+}
+
+.card h2{
+
+margin-bottom:20px;
+
+color:#FFD700;
+
+}
+
+.profile-info{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(220px,1fr));
+
+gap:20px;
+
+}
+
+.info-box{
+
+background:
+rgba(255,255,255,.04);
+
+padding:18px;
+
+border-radius:16px;
+
+}
+
+.label{
+
+font-size:13px;
+
+opacity:.7;
+
+margin-bottom:6px;
+
+}
+
+.value{
+
+font-size:18px;
+
+font-weight:700;
+
+}
+
+.order-card{
+
+background:
+rgba(255,255,255,.04);
+
+padding:18px;
+
+border-radius:18px;
+
+margin-bottom:18px;
+
+}
+
+.order-products{
+
+margin-top:10px;
+
+opacity:.85;
+
+line-height:1.7;
+
+}
+
+.logout-btn{
+
+margin-top:30px;
+
+width:100%;
+
+padding:16px;
+
+border:none;
+
+border-radius:14px;
+
+background:#ff3b30;
+
+color:white;
+
+font-weight:700;
+
+cursor:pointer;
+
+}
+
+/* ===== MOBILE ===== */
+
+@media(max-width:900px){
+
+.dashboard{
+
+grid-template-columns:1fr;
+
+}
+
+.sidebar{
+
+border-right:none;
+
+border-bottom:
+1px solid rgba(255,255,255,.08);
+
+}
+
+}
+
+</style>
+
 </head>
 
 <body>
 
-<header class="navbar">
+<div class="dashboard">
+
+<!-- ===== SIDEBAR ===== -->
+
+<div class="sidebar">
+
 <div class="logo">
-<img src="hanuman-logo.jpeg">
-Astrodhani
+🔮 Astrodhani
 </div>
-</header>
 
-<div class="container">
+<div class="menu">
 
-<h1>📊 Your Dashboard</h1>
+<button
+class="menu-btn active"
+onclick="showSection('profile')"
+>
+
+👤 My Profile
+
+</button>
+
+<button
+class="menu-btn"
+onclick="showSection('orders')"
+>
+
+📦 My Orders
+
+</button>
+
+<button
+class="menu-btn"
+onclick="showSection('consultations')"
+>
+
+🔮 Consultations
+
+</button>
+
+<button
+class="menu-btn"
+onclick="showSection('settings')"
+>
+
+⚙️ Settings
+
+</button>
+
+</div>
+
+<button
+class="logout-btn"
+onclick="logout()"
+>
+
+Logout
+
+</button>
+
+</div>
+
+<!-- ===== CONTENT ===== -->
+
+<div class="content">
+
+<!-- PROFILE -->
+
+<div
+id="profileSection"
+class="section active"
+>
 
 <div class="card">
-<h3>👤 User Info</h3>
-<p>Email: <span id="userEmail">Loading...</span></p>
+
+<h2>
+👤 My Profile
+</h2>
+
+<div class="profile-info">
+
+<div class="info-box">
+
+<div class="label">
+Name
 </div>
+
+<div
+class="value"
+id="userName"
+>
+-
+</div>
+
+</div>
+
+<div class="info-box">
+
+<div class="label">
+Email
+</div>
+
+<div
+class="value"
+id="userEmail"
+>
+-
+</div>
+
+</div>
+
+<div class="info-box">
+
+<div class="label">
+User ID
+</div>
+
+<div
+class="value"
+id="userId"
+>
+-
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ORDERS -->
+
+<div
+id="ordersSection"
+class="section"
+>
 
 <div class="card">
-<h3>🛒 My Orders</h3>
-<p>No orders yet</p>
+
+<h2>
+📦 My Orders
+</h2>
+
+<div id="ordersList">
+
+Loading orders...
+
 </div>
+
+</div>
+
+</div>
+
+<!-- CONSULTATIONS -->
+
+<div
+id="consultationsSection"
+class="section"
+>
 
 <div class="card">
-<h3>🔮 Your Services</h3>
-<p>Coming soon...</p>
+
+<h2>
+🔮 My Consultations
+</h2>
+
+<p>
+Consultation history will appear here.
+</p>
+
+</div>
+
+</div>
+
+<!-- SETTINGS -->
+
+<div
+id="settingsSection"
+class="section"
+>
+
+<div class="card">
+
+<h2>
+⚙️ Settings
+</h2>
+
+<p>
+More account settings coming soon.
+</p>
+
+</div>
+
 </div>
 
 </div>
 
-<script type="module" src="auth.js"></script>
+</div>
+
+<script type="module">
+
+/* ===== FIREBASE ===== */
+
+import {
+initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getAuth,
+onAuthStateChanged,
+signOut
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+getFirestore,
+collection,
+query,
+where,
+getDocs,
+orderBy
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* CONFIG */
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyA2ytO0jnhM9baGrByUS1jgSc47q6xJ64s",
+
+authDomain:
+"astrodhani-935c8.firebaseapp.com",
+
+projectId:
+"astrodhani-935c8",
+
+storageBucket:
+"astrodhani-935c8.firebasestorage.app",
+
+messagingSenderId:
+"158324229234",
+
+appId:
+"1:158324229234:web:bff8d74888b356be362eeb"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const auth =
+getAuth(app);
+
+const db =
+getFirestore(app);
+
+/* ===== SIDEBAR ===== */
+
+window.showSection =
+function(section){
+
+document
+.querySelectorAll('.section')
+.forEach(sec=>{
+
+sec.classList.remove('active');
+
+});
+
+document
+.querySelectorAll('.menu-btn')
+.forEach(btn=>{
+
+btn.classList.remove('active');
+
+});
+
+document.getElementById(
+section + 'Section'
+).classList.add('active');
+
+event.target.classList.add('active');
+
+}
+
+/* ===== LOGOUT ===== */
+
+window.logout =
+async function(){
+
+await signOut(auth);
+
+window.location.href =
+'index.html';
+
+}
+
+/* ===== AUTH ===== */
+
+onAuthStateChanged(
+auth,
+async(user)=>{
+
+if(!user){
+
+window.location.href =
+'login.html';
+
+return;
+
+}
+
+/* PROFILE */
+
+document.getElementById(
+'userName'
+).innerText =
+user.displayName || 'Astrodhani User';
+
+document.getElementById(
+'userEmail'
+).innerText =
+user.email;
+
+document.getElementById(
+'userId'
+).innerText =
+user.uid;
+
+/* LOAD ORDERS */
+
+loadOrders(user.uid);
+
+}
+);
+
+/* ===== LOAD ORDERS ===== */
+
+async function loadOrders(userId){
+
+const ordersList =
+document.getElementById(
+'ordersList'
+);
+
+const q = query(
+
+collection(db,'orders'),
+
+where('userId','==',userId),
+
+orderBy('createdAt','desc')
+
+);
+
+const snapshot =
+await getDocs(q);
+
+if(snapshot.empty){
+
+ordersList.innerHTML =
+
+'<p>No orders yet.</p>';
+
+return;
+
+}
+
+ordersList.innerHTML = '';
+
+snapshot.forEach(docSnap=>{
+
+const order =
+docSnap.data();
+
+ordersList.innerHTML += `
+
+<div class="order-card">
+
+<h3>
+💳 ${order.status || 'Paid'}
+</h3>
+
+<p>
+Payment ID:
+${order.paymentId || ''}
+</p>
+
+<p>
+Amount:
+₹${order.total || 0}
+</p>
+
+<div class="order-products">
+
+${Array.isArray(order.products)
+
+? order.products.join('<br>')
+
+: order.products || ''
+
+}
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+</script>
 
 </body>
 </html>
+
