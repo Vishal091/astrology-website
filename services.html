@@ -1215,9 +1215,9 @@ Personalized spiritual guidance included
 
 <button
 class="service-modal-btn"
-id="modalWhatsappBtn"
+onclick="addServiceToCart()"
 >
-Book on WhatsApp
+Add To Cart
 </button>
 
 </div>
@@ -1231,7 +1231,7 @@ Book on WhatsApp
 <script>
 window.openServiceModal =
 function(service){
-
+window.currentService = service;
 document.getElementById(
 'serviceModal'
 ).style.display =
@@ -1257,21 +1257,54 @@ document.getElementById(
 ).innerText =
 service.description || '';
 
-document.getElementById(
-'modalWhatsappBtn'
-).onclick =
-function(){
 
-const text =
-`Hello Astrodhani, I want to book ${service.name}`;
-
-window.open(
-`https://wa.me/918708833177?text=${encodeURIComponent(text)}`
-);
-
-};
 
 }
+
+window.addServiceToCart =
+function(){
+
+let cart =
+JSON.parse(
+localStorage.getItem('cart')
+) || [];
+
+cart.push({
+
+type:'service',
+
+name:
+window.currentService.name,
+
+price:
+window.currentService.price,
+
+image:
+window.currentService.image,
+
+category:
+window.currentService.category,
+
+quantity:1
+
+});
+
+localStorage.setItem(
+'cart',
+JSON.stringify(cart)
+);
+
+alert(
+'Service Added To Cart'
+);
+
+document.getElementById(
+'serviceModal'
+).style.display =
+'none';
+
+}
+
 
 window.closeServiceModal =
 function(){
