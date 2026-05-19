@@ -1217,7 +1217,60 @@ theme: {
 
 color: "#8b111c"
 
+},
+
+method: {
+
+upi: true,
+
+card: true,
+
+netbanking: true,
+
+wallet: true,
+
+emi: false,
+
+paylater: false
+
+},
+
+config: {
+
+display: {
+
+blocks: {
+
+upi: {
+
+name: 'Pay using UPI',
+
+instruments: [
+
+{
+
+method: 'upi'
+
 }
+
+]
+
+}
+
+},
+
+sequence: ['block.upi'],
+
+preferences: {
+
+show_default_blocks: true
+
+}
+
+}
+
+}
+
 
 };
 
