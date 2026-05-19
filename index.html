@@ -393,6 +393,192 @@ font-size:32px;
 }
 
 }
+/* ===== FEATURED BLOGS ===== */
+
+.featured-blogs{
+
+padding:90px 20px;
+
+background:
+linear-gradient(
+180deg,
+#fff7ed,
+#fff1f2
+);
+
+}
+
+.section-header{
+
+text-align:center;
+
+margin-bottom:60px;
+
+}
+
+.section-header h2{
+
+font-size:48px;
+
+color:#7f1d1d;
+
+margin-bottom:16px;
+
+}
+
+.section-header p{
+
+font-size:18px;
+
+opacity:.75;
+
+}
+
+.featured-blogs-grid{
+
+width:92%;
+
+max-width:1400px;
+
+margin:auto;
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(320px,1fr));
+
+gap:34px;
+
+}
+
+.featured-blog-card{
+
+background:white;
+
+border-radius:30px;
+
+overflow:hidden;
+
+box-shadow:
+0 20px 50px rgba(0,0,0,0.08);
+
+transition:.4s;
+
+}
+
+.featured-blog-card:hover{
+
+transform:
+translateY(-10px);
+
+}
+
+.featured-blog-image{
+
+width:100%;
+
+height:240px;
+
+object-fit:cover;
+
+}
+
+.featured-blog-content{
+
+padding:28px;
+
+}
+
+.featured-blog-category{
+
+display:inline-block;
+
+padding:8px 16px;
+
+border-radius:40px;
+
+font-size:12px;
+
+font-weight:700;
+
+margin-bottom:18px;
+
+background:
+linear-gradient(
+135deg,
+#8b111c,
+#f59e0b
+);
+
+color:white;
+
+}
+
+.featured-blog-title{
+
+font-size:28px;
+
+font-weight:800;
+
+line-height:1.3;
+
+margin-bottom:14px;
+
+color:#7f1d1d;
+
+}
+
+.featured-blog-excerpt{
+
+font-size:15px;
+
+line-height:1.8;
+
+color:#555;
+
+margin-bottom:24px;
+
+}
+
+.featured-blog-btn{
+
+padding:14px 24px;
+
+border:none;
+
+border-radius:14px;
+
+cursor:pointer;
+
+font-weight:700;
+
+background:
+linear-gradient(
+135deg,
+#8b111c,
+#f59e0b
+);
+
+color:white;
+
+}
+
+@media(max-width:768px){
+
+.section-header h2{
+
+font-size:36px;
+
+}
+
+.featured-blog-title{
+
+font-size:24px;
+
+}
+
+}
+
 
 /* ===== CHAT ===== */
 .chat-modal{
@@ -1269,6 +1455,32 @@ id="testimonialSlider"
 </div>
 
 </div>
+
+<!-- ===== FEATURED BLOGS ===== -->
+
+<section class="featured-blogs">
+
+<div class="section-header">
+
+<h2>
+📝 Latest From Astrodhani
+</h2>
+
+<p>
+Spiritual wisdom, astrology remedies and cosmic guidance
+</p>
+
+</div>
+
+<div
+class="featured-blogs-grid"
+id="featuredBlogsGrid"
+>
+
+</div>
+
+</section>
+
 
 <!-- ===== SERVICES ===== -->
 <div class="section">
@@ -2258,6 +2470,93 @@ ${t.service}
 
 loadTestimonials();
 
+/* ===== FEATURED BLOGS ===== */
+
+async function loadFeaturedBlogs(){
+
+const grid =
+document.getElementById(
+'featuredBlogsGrid'
+);
+
+if(!grid) return;
+
+const snapshot =
+await getDocs(
+collection(db,'blogs')
+);
+
+grid.innerHTML = '';
+
+let count = 0;
+
+snapshot.forEach(docSnap=>{
+
+if(count >= 3)
+return;
+
+const blog = {
+
+id:docSnap.id,
+
+...docSnap.data()
+
+};
+
+grid.innerHTML += `
+
+<div class="featured-blog-card">
+
+<img
+src="${blog.image || ''}"
+class="featured-blog-image"
+/>
+
+<div class="featured-blog-content">
+
+<div class="featured-blog-category">
+
+${blog.category || 'Astrology'}
+
+</div>
+
+<div class="featured-blog-title">
+
+${blog.title || ''}
+
+</div>
+
+<div class="featured-blog-excerpt">
+
+${blog.excerpt || ''}
+
+</div>
+
+<button
+class="featured-blog-btn"
+onclick="
+window.location.href=
+'blog-details.html?id=${blog.id}'
+"
+>
+
+Read More
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+count++;
+
+});
+
+}
+
+loadFeaturedBlogs();
 </script>
 
 </body>
