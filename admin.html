@@ -854,7 +854,8 @@ margin-bottom:10px;
 }
 
 .edit-modal-content input,
-.edit-modal-content textarea{
+.edit-modal-content textarea,
+.edit-modal-content select{
 
 width:100%;
 
@@ -3003,7 +3004,9 @@ document.getElementById(
 );
 
 window.openAddTestimonial =
-function(){
+async function(){
+
+await loadTestimonialOptions();
 
 document.getElementById(
 'testimonialModal'
@@ -3177,6 +3180,73 @@ ${t.name}
 }
 
 loadTestimonials();
+async function loadTestimonialOptions(){
+
+const dropdown =
+document.getElementById(
+'testimonialService'
+);
+
+if(!dropdown) return;
+
+/* RESET */
+
+dropdown.innerHTML = `
+<option value="">
+Select Product / Service
+</option>
+`;
+
+/* PRODUCTS */
+
+const productsSnapshot =
+await getDocs(
+collection(db,'products')
+);
+
+productsSnapshot.forEach(docSnap=>{
+
+const product =
+docSnap.data();
+
+dropdown.innerHTML += `
+
+<option value="${product.name}">
+🛍 Product:
+${product.name}
+</option>
+
+`;
+
+});
+
+/* SERVICES */
+
+const servicesSnapshot =
+await getDocs(
+collection(db,'services')
+);
+
+servicesSnapshot.forEach(docSnap=>{
+
+const service =
+docSnap.data();
+
+dropdown.innerHTML += `
+
+<option value="${service.name}">
+🪔 Service:
+${service.name}
+</option>
+
+`;
+
+});
+
+}
+
+loadTestimonialOptions();
+
 
 </script>
 <div
@@ -3488,11 +3558,13 @@ id="testimonialRating"
 placeholder="Rating (1-5)"
 />
 
-<input
-type="text"
-id="testimonialService"
-placeholder="Service/Product"
-/>
+<select id="testimonialService">
+
+<option value="">
+Select Product / Service
+</option>
+
+</select>
 
 <textarea
 id="testimonialReview"
