@@ -199,6 +199,37 @@ font-size:15px;
 transition:.3s;
 
 }
+.astro-select{
+
+width:100%;
+
+padding:16px 18px;
+
+border:none;
+
+outline:none;
+
+border-radius:16px;
+
+background:
+rgba(255,255,255,.08);
+
+color:white;
+
+font-size:15px;
+
+margin-top:2px;
+
+}
+
+.astro-select option{
+
+background:#220606;
+
+color:white;
+
+}
+
 
 .input-group input:focus{
 
@@ -318,12 +349,36 @@ Begin your cosmic journey with Astrodhani
 
 <div class="input-group">
 
+<label>Full Name</label>
+
+<input
+id="name"
+type="text"
+placeholder="Enter your full name"
+>
+
+</div>
+
+<div class="input-group">
+
 <label>Email Address</label>
 
 <input
 id="email"
 type="email"
 placeholder="Enter your email"
+>
+
+</div>
+
+<div class="input-group">
+
+<label>Phone Number</label>
+
+<input
+id="phone"
+type="tel"
+placeholder="Enter your phone number"
 >
 
 </div>
@@ -339,6 +394,125 @@ placeholder="Create password"
 >
 
 </div>
+
+<div class="input-group">
+
+<label>Confirm Password</label>
+
+<input
+id="confirmPassword"
+type="password"
+placeholder="Confirm password"
+>
+
+</div>
+
+<h3
+style="
+margin:25px 0 15px;
+color:#FFD700;
+"
+>
+
+✨ Astrology Details
+
+</h3>
+
+<div class="input-group">
+
+<label>Date Of Birth</label>
+
+<input
+id="dob"
+type="date"
+>
+
+</div>
+
+<div class="input-group">
+
+<label>Birth Time</label>
+
+<input
+id="birthTime"
+type="time"
+>
+
+</div>
+
+<div class="input-group">
+
+<label>Birth Place</label>
+
+<input
+id="birthPlace"
+type="text"
+placeholder="City, State"
+>
+
+</div>
+
+<div class="input-group">
+
+<label>Gender</label>
+
+<select
+id="gender"
+class="astro-select"
+>
+
+<option value="">
+Select Gender
+</option>
+
+<option>
+Male
+</option>
+
+<option>
+Female
+</option>
+
+<option>
+Other
+</option>
+
+</select>
+
+</div>
+
+<div
+style="
+display:flex;
+align-items:center;
+gap:10px;
+margin-top:15px;
+"
+>
+
+<input
+type="checkbox"
+id="terms"
+style="
+width:18px;
+height:18px;
+"
+>
+
+<label
+for="terms"
+style="
+font-size:14px;
+color:rgba(255,255,255,.75);
+"
+>
+
+I agree to Terms & Conditions
+
+</label>
+
+</div>
+
 
 <button onclick="signup()">
 
