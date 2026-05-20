@@ -1731,13 +1731,25 @@ return;
 if(!data.sessionId)
 return;
 
+/* UNIQUE USER ONLY */
+
 users.set(
-data.sessionId,
+
+data.userName,
+
 {
-name:data.userName || 'Guest User',
-sessionId:data.sessionId
+
+name:
+data.userName || 'Guest User',
+
+sessionId:
+data.sessionId
+
 }
+
 );
+
+
 
 
 });
