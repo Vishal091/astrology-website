@@ -194,6 +194,195 @@ color:#7B1E1E;
 .profile-footer a:hover{
 background:#FFF5F5;
 }
+/* ===== CHAT ===== */
+
+.chat-modal{
+
+position:fixed;
+
+inset:0;
+
+background:
+rgba(0,0,0,.7);
+
+display:none;
+
+justify-content:center;
+
+align-items:center;
+
+z-index:99999;
+
+padding:20px;
+
+backdrop-filter:blur(8px);
+
+}
+
+.chat-box{
+
+width:100%;
+max-width:520px;
+
+background:
+linear-gradient(
+135deg,
+#220606,
+#3b0606
+);
+
+border-radius:28px;
+
+padding:28px;
+
+color:white;
+
+}
+
+.chat-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:25px;
+
+}
+
+.chat-header h2{
+
+color:#FFD700;
+
+}
+
+.chat-header span{
+
+font-size:28px;
+
+cursor:pointer;
+
+}
+
+.chat-box input{
+
+width:100%;
+
+padding:16px;
+
+border:none;
+
+outline:none;
+
+border-radius:14px;
+
+background:
+rgba(255,255,255,.08);
+
+color:white;
+
+margin-bottom:16px;
+
+}
+
+.chat-box button{
+
+width:100%;
+
+padding:16px;
+
+border:none;
+
+border-radius:14px;
+
+background:
+linear-gradient(
+135deg,
+#FFD700,
+#ff9900
+);
+
+font-weight:700;
+
+cursor:pointer;
+
+}
+
+.messages{
+
+height:260px;
+
+overflow-y:auto;
+
+padding:15px;
+
+background:
+rgba(255,255,255,.05);
+
+border-radius:18px;
+
+margin-bottom:15px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:12px;
+
+}
+
+.chat-input{
+
+display:flex;
+
+gap:10px;
+
+margin-bottom:15px;
+
+}
+
+.chat-input input{
+
+margin:0;
+
+}
+
+.chat-input button{
+
+width:auto;
+
+padding:0 25px;
+
+}
+
+.timer{
+
+text-align:center;
+
+margin:12px 0;
+
+color:#FFD700;
+
+font-weight:700;
+
+}
+
+.upgrade-btn{
+
+margin-top:15px;
+
+background:
+linear-gradient(
+135deg,
+#ff4d4d,
+#ff0000
+) !important;
+
+color:white;
+
+}
+
 
 /* ===== HERO ===== */
 .hero{
@@ -1450,9 +1639,14 @@ Limited Offer
 
 <p>Talk to expert astrologers instantly</p>
 
-<button onclick="location.href='services.html'">
-Chat Now
+```html
+<button onclick="openChat()">
+
+💬 Free Chat
+
 </button>
+```
+
 
 </div>
 
@@ -2705,8 +2899,289 @@ document
 
 }
 );
+/* ===== CHAT ===== */
 
+let time = 120;
+let timerInterval;
+
+function openChat(){
+
+document.getElementById(
+"astroChat"
+).style.display = "flex";
+
+}
+
+function closeChat(){
+
+document.getElementById(
+"astroChat"
+).style.display = "none";
+
+}
+
+/* ===== START ===== */
+
+function startChat(){
+
+const name =
+document.getElementById("name").value;
+
+const dob =
+document.getElementById("dob").value;
+
+const tob =
+document.getElementById("tob").value;
+
+if(!name || !dob || !tob){
+
+alert(
+"Please fill all details 🙏"
+);
+
+return;
+
+}
+
+/* FREE LIMIT */
+
+const freeUsed =
+localStorage.getItem(
+"freeChatUsed"
+);
+
+if(freeUsed === "true"){
+
+alert(
+"Free consultation already used 🙏"
+);
+
+window.location.href =
+'astrologers.html';
+
+return;
+
+}
+
+document.getElementById(
+"userForm"
+).style.display = "none";
+
+document.getElementById(
+"chatArea"
+).style.display = "block";
+
+botReply(
+`Namaste ${name} 🙏
+How can I help you today?`
+);
+
+startFreeTimer();
+
+}
+
+/* ===== TIMER ===== */
+
+function startFreeTimer(){
+
+timerInterval = setInterval(()=>{
+
+time--;
+
+const min =
+Math.floor(time/60);
+
+const sec =
+time % 60;
+
+document.getElementById(
+"timer"
+).innerText =
+
+`${min}:${sec
+.toString()
+.padStart(2,'0')}`;
+
+if(time <= 0){
+
+clearInterval(
+timerInterval
+);
+
+localStorage.setItem(
+"freeChatUsed",
+"true"
+);
+
+alert(
+"Free session ended 🙏"
+);
+
+window.location.href =
+'astrologers.html';
+
+}
+
+},1000);
+
+}
+
+/* ===== SEND ===== */
+
+function sendMsg(){
+
+const input =
+document.getElementById(
+"userMsg"
+);
+
+const msg =
+input.value;
+
+if(!msg) return;
+
+addMsg(
+"You: " + msg
+);
+
+input.value = "";
+
+/* FAKE ASTRO REPLY */
+
+setTimeout(()=>{
+
+botReply(
+"Your planetary energies suggest positive changes ahead ✨"
+);
+
+},1000);
+
+}
+
+/* ===== ADD ===== */
+
+function addMsg(text){
+
+const div =
+document.createElement("div");
+
+div.innerText = text;
+
+document.getElementById(
+"messages"
+).appendChild(div);
+
+div.scrollIntoView();
+
+}
+
+function botReply(text){
+
+addMsg(
+"Astrologer: " + text
+);
+
+}
 </script>
+
+<!-- ===== FREE CHAT MODAL ===== -->
+
+<div
+id="astroChat"
+class="chat-modal"
+>
+
+<div class="chat-box">
+
+<div class="chat-header">
+
+<h2>
+🔮 Free Astrology Chat
+</h2>
+
+<span onclick="closeChat()">
+✕
+</span>
+
+</div>
+
+<div
+id="userForm"
+>
+
+<input
+id="name"
+placeholder="Your Name"
+>
+
+<input
+id="dob"
+type="date"
+>
+
+<input
+id="tob"
+type="time"
+>
+
+<button onclick="startChat()">
+
+Start Free Chat
+
+</button>
+
+</div>
+
+<div
+id="chatArea"
+style="display:none;"
+>
+
+<div
+id="messages"
+class="messages"
+>
+
+</div>
+
+<div class="chat-input">
+
+<input
+id="userMsg"
+placeholder="Type your message..."
+>
+
+<button onclick="sendMsg()">
+Send
+</button>
+
+</div>
+
+<div class="timer">
+
+⏳ Free session ends in:
+<span id="timer">
+2:00
+</span>
+
+</div>
+
+<button
+class="upgrade-btn"
+onclick="
+window.location.href='astrologers.html'
+"
+>
+
+Continue With Paid Consultation
+
+</button>
+
+</div>
+
+</div>
+
+</div>
 
 
 </body>
