@@ -128,17 +128,43 @@ height:50px;
 
 /* ===== PROFILE DROPDOWN ===== */
 .profile-dropdown{
-display:none;
+
 position:absolute;
-top:60px;
+
+top:70px;
+
 right:0;
+
+background:#2B0A0A;
+
+border-radius:18px;
+
+padding:18px;
+
 width:260px;
-background:white;
-border-radius:16px;
-box-shadow:0 20px 50px rgba(0,0,0,0.25);
+
+box-shadow:
+0 15px 40px rgba(0,0,0,.35);
+
+display:none;
+
+flex-direction:column;
+
+gap:14px;
+
 z-index:9999;
-overflow:hidden;
+
+border:
+1px solid rgba(255,255,255,.08);
+
 }
+
+.profile-dropdown.show{
+
+display:flex;
+
+}
+
 
 .profile-header{
 display:flex;
@@ -1295,7 +1321,7 @@ style="display:none;"
 
 <div
 class="avatar"
-onclick="toggleProfileDropdown()"
+onclick="toggleProfileDropdown(event)"
 id="avatarLetter"
 >
 
@@ -2932,25 +2958,20 @@ window.location.reload();
 /* ===== TOGGLE ===== */
 
 window.toggleProfileDropdown =
-function(){
+function(event){
+
+event.stopPropagation();
 
 document
 .getElementById(
 'profileDropdown'
 )
-.style.display =
-
-document
-.getElementById(
-'profileDropdown'
-)
-.style.display === 'block'
-
-? 'none'
-
-: 'block';
+.classList.toggle(
+'show'
+);
 
 }
+
 
 /* ===== CLOSE OUTSIDE ===== */
 
