@@ -1716,32 +1716,42 @@ orderBy("createdAt")
 
 onSnapshot(q,(snapshot)=>{
 
-const users = new Set();
+const users = new Map();
 
 
 snapshot.forEach(doc=>{
 
 const data = doc.data();
 
+/* ONLY USER MESSAGES */
+
+if(data.sender !== 'user')
+return;
+
 if(!data.sessionId)
 return;
 
-users.add(
-JSON.stringify({
+users.set(
+data.sessionId,
+{
 name:data.userName || 'Guest User',
 sessionId:data.sessionId
-})
+}
 );
+
 
 });
 
 
+
+
 userList.innerHTML = "";
 
-users.forEach(user=>{
 
-const parsed =
-JSON.parse(user);
+users.forEach(parsed=>{
+
+
+
 
 const div =
 document.createElement("div");
