@@ -105,6 +105,7 @@ box-shadow:
 .profile{
 position:relative;
 cursor:pointer;
+overflow:visible;
 }
 
 /* ===== AVATAR ===== */
@@ -1999,17 +2000,7 @@ showSlide(0);
 
 /* ===== PROFILE ===== */
 
-function toggleProfile(){
 
-let menu =
-document.getElementById("profileMenu");
-
-menu.style.display =
-menu.style.display==="block"
-? "none"
-: "block";
-
-}
 
 /* ===== CHAT ===== */
 
@@ -2928,6 +2919,26 @@ document
 );
 
 }
+window.addEventListener(
+'click',
+function(e){
+
+if(
+!e.target.closest('.profile')
+){
+
+document
+.getElementById(
+'profileDropdown'
+)
+?.classList.remove(
+'show'
+);
+
+}
+
+}
+);
 
 
 /* ===== CLOSE OUTSIDE ===== */
