@@ -26,22 +26,144 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// SIGNUP
-window.signup = function(){
+window.signup = async function(){
 
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+const name =
+document.getElementById("name").value;
 
-  createUserWithEmailAndPassword(auth, email, password)
-    .then(async (userCred) => {
+const email =
+document.getElementById("email").value;
 
-      await sendEmailVerification(userCred.user);
+const phone =
+document.getElementById("phone").value;
 
-      alert("📩 Verification email sent! Check your inbox.");
+const password =
+document.getElementById("password").value;
 
-    })
-    .catch(err => alert(err.message));
+const confirmPassword =
+document.getElementById("confirmPassword").value;
+
+const dob =
+document.getElementById("dob").value;
+
+const birthTime =
+document.getElementById("birthTime").value;
+
+const birthPlace =
+document.getElementById("birthPlace").value;
+
+const gender =
+document.getElementById("gender").value;
+
+const terms =
+document.getElementById("terms").checked;
+
+/* VALIDATION */
+
+if(
+!name ||
+!email ||
+!phone ||
+!password ||
+!confirmPassword
+){
+
+alert(
+"Please fill all required fields"
+);
+
+return;
+
 }
+
+if(password !== confirmPassword){
+
+alert(
+"Passwords do not match"
+);
+
+return;
+
+}
+
+if(password.length < 6){
+
+alert(
+"Password must be at least 6 characters"
+);
+
+return;
+
+}
+
+if(!terms){
+
+alert(
+"Please accept Terms & Conditions"
+);
+
+return;
+
+}
+
+try{
+
+const userCred =
+
+await createUserWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+/* SAVE USER PROFILE */
+
+await setDoc(
+
+doc(
+db,
+'users',
+userCred.user.uid
+),
+
+{
+
+name,
+email,
+phone,
+dob,
+birthTime,
+birthPlace,
+gender,
+
+createdAt:
+new Date()
+
+}
+
+);
+
+/* EMAIL VERIFY */
+
+await sendEmailVerification(
+userCred.user
+);
+
+alert(
+"📩 Verification email sent! Please check your inbox."
+);
+
+window.location =
+'login.html';
+
+}catch(err){
+
+alert(err.message);
+
+}
+
+}
+
 
 // LOGIN
 window.login = function(){
