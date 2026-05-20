@@ -1477,7 +1477,8 @@ doc,
 getDoc,
 updateDoc,
 deleteDoc,
-getDocs
+getDocs,
+where
 
 }
 
@@ -1717,50 +1718,72 @@ onSnapshot(q,(snapshot)=>{
 
 const users = new Set();
 
+
 snapshot.forEach(doc=>{
 
 const data = doc.data();
 
-users.add(data.user);
+if(!data.sessionId)
+return;
+
+users.add(
+JSON.stringify({
+name:data.userName || 'Guest User',
+sessionId:data.sessionId
+})
+);
 
 });
+
 
 userList.innerHTML = "";
 
 users.forEach(user=>{
 
+const parsed =
+JSON.parse(user);
+
 const div =
 document.createElement("div");
 
-div.className = "chat-user";
+div.className =
+"chat-user";
 
 div.innerHTML = `
-<h3>${user}</h3>
+<h3>${parsed.name}</h3>
 <p>Active Consultation</p>
 `;
 
 div.onclick = ()=>{
 
-currentUser = user;
+window.activeSessionId =
+parsed.sessionId;
 
-loadMessages(user);
+currentUser =
+parsed.name;
 
+loadMessages(
+parsed.sessionId
+);
 
 document.getElementById(
 "chatUserName"
-).innerText = user;
-
+).innerText =
+parsed.name;
 
 document.querySelectorAll(
 ".chat-user"
 ).forEach(el=>{
 
-el.classList.remove("active");
+el.classList.remove(
+"active"
+);
 
 });
 
-
-div.classList.add("active");
+div.classList.add(
+"active"
+);
 
 };
 
@@ -1768,15 +1791,24 @@ userList.appendChild(div);
 
 });
 
+
 });
 
 /* ===== LOAD MESSAGES ===== */
 
-function loadMessages(user){
+function loadMessages(sessionId){
 
 const q = query(
-collection(db,"consultations"),
-orderBy("createdAt")
+
+collection(
+db,
+"consultations"
+),
+
+orderBy(
+"createdAt"
+)
+
 );
 
 onSnapshot(q,(snapshot)=>{
@@ -1785,13 +1817,19 @@ messagesDiv.innerHTML = "";
 
 snapshot.forEach(doc=>{
 
-const data = doc.data();
+const data =
+doc.data();
 
-if(data.user !== user)
+if(
+data.sessionId !==
+sessionId
+)
 return;
 
 const div =
-document.createElement("div");
+document.createElement(
+"div"
+);
 
 if(data.sender === "admin"){
 
@@ -1805,10 +1843,12 @@ div.className =
 
 }
 
+div.innerText =
+data.message;
 
-div.innerText = data.message;
-
-messagesDiv.appendChild(div);
+messagesDiv.appendChild(
+div
+);
 
 });
 
@@ -1818,6 +1858,7 @@ messagesDiv.scrollHeight;
 });
 
 }
+
 /* ===== LOAD REAL ORDERS ===== */
 
 const SHEET_API =
@@ -3238,32 +3279,54 @@ document.getElementById(
 loadProducts();
 /* ===== SEND REPLY ===== */
 
-window.sendReply = async function(){
+window.sendReply =
+async function(){
 
-if(!currentUser)
+if(!window.activeSessionId)
 return;
 
 const input =
-document.getElementById("replyInput");
 
-const msg = input.value;
+document.getElementById(
+"replyInput"
+);
+
+const msg =
+input.value;
 
 if(!msg)
 return;
 
 await addDoc(
-collection(db,"consultations"),
+
+collection(
+db,
+"consultations"
+),
+
 {
-user:currentUser,
+
+sessionId:
+window.activeSessionId,
+
+userName:
+"Admin",
+
 message:msg,
+
 sender:"admin",
-createdAt:serverTimestamp()
+
+createdAt:
+serverTimestamp()
+
 }
+
 );
 
 input.value = "";
 
 }
+
 /* ===== LOGOUT ===== */
 
 window.logoutAdmin = async function(){
