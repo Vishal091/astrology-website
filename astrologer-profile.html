@@ -749,6 +749,20 @@ initializeApp
 }
 from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+getFirestore,
+collection,
+addDoc,
+serverTimestamp
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+getAuth
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
 getFirestore,
@@ -786,6 +800,11 @@ initializeApp(firebaseConfig);
 
 const db =
 getFirestore(app);
+
+const auth =
+getAuth(app);
+
+
 
 /* ===== GET ID ===== */
 
@@ -917,7 +936,23 @@ document
 /* ===== BOOK ===== */
 
 window.bookConsultation =
-function(){
+async function(){
+
+const user =
+auth.currentUser;
+
+if(!user){
+
+alert(
+'Please login first'
+);
+
+window.location.href =
+'login.html';
+
+return;
+
+}
 
 const type =
 
@@ -947,17 +982,68 @@ return;
 
 }
 
-alert(
-`Consultation Booked:
+try{
 
-${type}
-${date}
-${time}`
+await addDoc(
+
+collection(
+db,
+'consultations'
+),
+
+{
+
+userId:
+user.uid,
+
+userEmail:
+user.email,
+
+astrologerId:
+astrologerId,
+
+astrologerName:
+document.getElementById(
+'astroName'
+).innerText,
+
+consultationType:
+type,
+
+date,
+time,
+
+status:
+'Pending',
+
+paymentStatus:
+'Pending',
+
+createdAt:
+serverTimestamp()
+
+}
+
+);
+
+alert(
+'✅ Consultation Booked Successfully'
 );
 
 closeConsultationModal();
 
+}catch(err){
+
+console.error(err);
+
+alert(
+'Failed to book consultation'
+);
+
 }
+
+}
+
 
 
 </script>
