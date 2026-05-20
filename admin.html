@@ -1146,32 +1146,7 @@ id="sidebarDynamicTitle">
 <div id="userList"></div>
 
 </div>
-<!-- ===== BOOKINGS ===== -->
 
-<div
-id="bookingsSection"
-class="admin-section"
-style="display:none;"
->
-
-<div class="section-header">
-
-<h2>
-📅 Consultation Bookings
-</h2>
-
-</div>
-
-<div
-id="bookingsList"
-class="consultation-grid"
->
-
-Loading bookings...
-
-</div>
-
-</div>
 
 
 <div
@@ -1204,6 +1179,34 @@ onkeyup="filterOrders()"
 <!-- ===== CHAT ===== -->
 
 <div class="chat-area">
+
+<!-- ===== BOOKINGS ===== -->
+
+<div
+id="bookingsSection"
+class="admin-section"
+style="display:none;"
+>
+
+<div class="section-header">
+
+<h2>
+📅 Consultation Bookings
+</h2>
+
+</div>
+
+<div
+id="bookingsList"
+class="consultation-grid"
+>
+
+Loading bookings...
+
+</div>
+
+</div>
+  
 <div
 id="productsSection"
 style="display:none;"
@@ -4620,7 +4623,9 @@ ${data.time}
 <p>
 
 <strong>Amount:</strong>
-₹${data.amount}
+
+₹${data.amount || 0}
+
 
 </p>
 
