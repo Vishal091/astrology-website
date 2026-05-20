@@ -844,24 +844,7 @@ document.getElementById(
 ${astro.expertise || ''}
 </div>`;
 
-document
-.getElementById(
-'consultBtn'
-)
-.addEventListener(
-'click',
-()=>{
 
-localStorage.setItem(
-'selectedAstrologer',
-astro.name
-);
-
-window.location.href =
-'index.html?chat=true';
-
-}
-);
 
 }
 
