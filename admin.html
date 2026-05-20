@@ -1627,6 +1627,9 @@ document.getElementById(
 'blogsTab'
 ).classList.remove('active');
 document.getElementById(
+'bookingsTab'
+).classList.remove('active');
+document.getElementById(
 section + 'Tab'
 ).classList.add('active');
 if(section === 'bookings'){
@@ -1684,7 +1687,13 @@ section === 'consultations'
 
 : section === 'blogs'
 ? '📝 Blogs'
+
+: section === 'bookings'
+? '📅 Consultation Bookings'
+
 : 'Dashboard';
+
+
 
 }
 let currentUser = "";
