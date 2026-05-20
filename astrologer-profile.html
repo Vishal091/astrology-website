@@ -269,6 +269,161 @@ background:#4c0519;
 font-size:14px;
 
 }
+/* ===== CONSULTATION MODAL ===== */
+
+.consultation-modal{
+
+position:fixed;
+
+inset:0;
+
+background:
+rgba(0,0,0,.7);
+
+backdrop-filter:blur(8px);
+
+display:none;
+
+justify-content:center;
+
+align-items:center;
+
+z-index:99999;
+
+padding:20px;
+
+}
+
+.consultation-box{
+
+width:100%;
+max-width:520px;
+
+background:
+linear-gradient(
+135deg,
+#220606,
+#3b0606
+);
+
+border:
+1px solid rgba(255,255,255,.08);
+
+border-radius:28px;
+
+padding:32px;
+
+box-shadow:
+0 20px 60px rgba(0,0,0,.45);
+
+}
+
+.modal-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:30px;
+
+}
+
+.modal-header h2{
+
+color:#FFD700;
+
+font-size:28px;
+
+}
+
+.close-modal{
+
+background:none;
+
+border:none;
+
+color:white;
+
+font-size:26px;
+
+cursor:pointer;
+
+}
+
+.modal-form{
+
+display:flex;
+
+flex-direction:column;
+
+gap:22px;
+
+}
+
+.form-group{
+
+display:flex;
+
+flex-direction:column;
+
+gap:10px;
+
+}
+
+.form-group label{
+
+color:#FFD700;
+
+font-weight:600;
+
+}
+
+.form-group input,
+.form-group select{
+
+padding:16px;
+
+border:none;
+
+outline:none;
+
+border-radius:16px;
+
+background:
+rgba(255,255,255,.08);
+
+color:white;
+
+font-size:15px;
+
+}
+
+.book-btn{
+
+padding:18px;
+
+border:none;
+
+border-radius:18px;
+
+background:
+linear-gradient(
+135deg,
+#FFD700,
+#ff9900
+);
+
+font-size:17px;
+
+font-weight:800;
+
+cursor:pointer;
+
+margin-top:10px;
+
+}
 
 /* ===== FOOTER ===== */
 
@@ -373,7 +528,10 @@ class="profile-price"
 <button
 class="consult-btn"
 id="consultBtn"
+onclick="openConsultationModal()"
 >
+
+
 
 Consult Now
 
@@ -432,6 +590,98 @@ class="info-text"
 id="astroAbout"
 class="info-text"
 ></div>
+
+</div>
+
+</div>
+
+</div>
+<!-- ===== CONSULTATION MODAL ===== -->
+
+<div
+id="consultationModal"
+class="consultation-modal"
+>
+
+<div class="consultation-box">
+
+<div class="modal-header">
+
+<h2>
+🔮 Book Consultation
+</h2>
+
+<button
+class="close-modal"
+onclick="closeConsultationModal()"
+>
+
+✕
+
+</button>
+
+</div>
+
+<div class="modal-form">
+
+<div class="form-group">
+
+<label>
+Consultation Type
+</label>
+
+<select id="consultationType">
+
+<option>
+Chat Consultation
+</option>
+
+<option>
+Call Consultation
+</option>
+
+<option>
+Video Consultation
+</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label>
+Preferred Date
+</label>
+
+<input
+type="date"
+id="consultationDate"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>
+Preferred Time
+</label>
+
+<input
+type="time"
+id="consultationTime"
+>
+
+</div>
+
+<button
+class="book-btn"
+onclick="bookConsultation()"
+>
+
+Proceed To Booking
+
+</button>
 
 </div>
 
@@ -616,6 +866,77 @@ window.location.href =
 }
 
 loadAstrologer();
+/* ===== CONSULTATION MODAL ===== */
+
+window.openConsultationModal =
+function(){
+
+document
+.getElementById(
+'consultationModal'
+)
+.style.display =
+'flex';
+
+}
+
+window.closeConsultationModal =
+function(){
+
+document
+.getElementById(
+'consultationModal'
+)
+.style.display =
+'none';
+
+}
+
+/* ===== BOOK ===== */
+
+window.bookConsultation =
+function(){
+
+const type =
+
+document.getElementById(
+'consultationType'
+).value;
+
+const date =
+
+document.getElementById(
+'consultationDate'
+).value;
+
+const time =
+
+document.getElementById(
+'consultationTime'
+).value;
+
+if(!date || !time){
+
+alert(
+'Please select date and time'
+);
+
+return;
+
+}
+
+alert(
+`Consultation Booked:
+
+${type}
+${date}
+${time}`
+);
+
+closeConsultationModal();
+
+}
+
 
 </script>
 
