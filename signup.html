@@ -49,7 +49,12 @@ linear-gradient(
 #3d0b0b
 );
 
-overflow:hidden;
+
+overflow-y:auto;
+overflow-x:hidden;
+padding:40px 0;
+
+
 
 position:relative;
 
@@ -98,6 +103,10 @@ right:-150px;
 }
 
 .formbox{
+
+max-height:90vh;
+overflow-y:auto;
+
 
 position:relative;
 
@@ -313,11 +322,27 @@ text-decoration:underline;
 
 .formbox{
 
-margin:20px;
+
+margin:30px 15px;
+
+
 
 padding:35px 25px;
 
 }
+.formbox::-webkit-scrollbar{
+
+width:6px;
+
+}
+
+.formbox::-webkit-scrollbar-thumb{
+
+background:#FFD700;
+border-radius:20px;
+
+}
+
 
 h2{
 
