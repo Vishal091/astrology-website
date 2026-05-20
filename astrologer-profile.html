@@ -3,6 +3,8 @@
 <html lang="en">
 
 <head>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 
 <meta charset="UTF-8">
 
@@ -934,6 +936,7 @@ document
 
 /* ===== BOOK ===== */
 
+
 window.bookConsultation =
 async function(){
 
@@ -981,6 +984,44 @@ return;
 
 }
 
+/* ===== PRICING ===== */
+
+let amount = 199;
+
+if(type === 'Call Consultation'){
+amount = 499;
+}
+
+if(type === 'Video Consultation'){
+amount = 999;
+}
+
+/* ===== RAZORPAY ===== */
+
+const options = {
+
+key:
+'rzp_live_SnC4cMnOswIiWP',
+
+amount:
+amount * 100,
+
+currency:
+'INR',
+
+name:
+'Astrodhani',
+
+description:
+type,
+
+theme:{
+color:'#FFD700'
+},
+
+handler:
+async function(response){
+
 try{
 
 await addDoc(
@@ -1012,11 +1053,16 @@ type,
 date,
 time,
 
+amount,
+
+paymentId:
+response.razorpay_payment_id,
+
 status:
 'Pending',
 
 paymentStatus:
-'Pending',
+'Paid',
 
 createdAt:
 serverTimestamp()
@@ -1036,12 +1082,22 @@ closeConsultationModal();
 console.error(err);
 
 alert(
-'Failed to book consultation'
+'Failed to save consultation'
 );
 
 }
 
 }
+
+};
+
+const rzp =
+new Razorpay(options);
+
+rzp.open();
+
+}
+
 
 
 
