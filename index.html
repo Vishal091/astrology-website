@@ -70,6 +70,37 @@ align-items:center;
 gap:15px;
 position:relative;
 }
+.login-btn{
+
+padding:12px 22px;
+
+border:none;
+
+border-radius:40px;
+
+background:#FFD700;
+
+color:#7B1E1E;
+
+font-weight:700;
+
+cursor:pointer;
+
+font-size:15px;
+
+transition:.3s;
+
+}
+
+.login-btn:hover{
+
+transform:translateY(-2px);
+
+box-shadow:
+0 10px 20px rgba(255,215,0,.3);
+
+}
+
 
 .profile{
 position:relative;
@@ -1242,25 +1273,102 @@ Astrodhani
 
 <div class="nav-right">
 
-<div class="profile" onclick="toggleProfile()">
+<!-- LOGIN BUTTON -->
 
-<div class="avatar">
-<span class="avatarLetter">G</span>
+<button
+id="loginBtn"
+class="login-btn"
+onclick="openLogin()"
+>
+
+Login / Signup
+
+</button>
+
+<!-- PROFILE -->
+
+<div
+class="profile"
+id="profileArea"
+style="display:none;"
+>
+
+<div
+class="avatar"
+onclick="toggleProfileDropdown()"
+id="avatarLetter"
+>
+
+V
+
 </div>
 
-<div class="profile-dropdown" id="profileMenu">
+<div
+class="profile-dropdown"
+id="profileDropdown"
+>
 
 <div class="profile-header">
 
-<div class="avatar big">
-<span class="avatarLetter">G</span>
+<div
+class="avatar big"
+id="dropdownAvatar"
+>
+
+V
+
 </div>
 
 <div class="profile-info">
-<p id="userEmail">Guest</p>
+
+<p id="dropdownName">
+Astrodhani User
+</p>
+
+<small id="dropdownEmail">
+user@email.com
+</small>
+
 </div>
 
 </div>
+
+<div class="profile-links">
+
+<a href="dashboard.html">
+
+👤 My Dashboard
+
+</a>
+
+<a href="dashboard.html">
+
+📦 My Orders
+
+</a>
+
+</div>
+
+<div class="profile-footer">
+
+<a
+href="#"
+onclick="logout()"
+>
+
+🚪 Logout
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
 
 <div class="profile-links">
 <a href="dashboard.html">📊 Dashboard</a>
@@ -2684,6 +2792,190 @@ loadFeaturedBlogs();
 
 
 </script>
+<script type="module">
+
+import {
+initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getAuth,
+onAuthStateChanged,
+signOut
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+/* ===== FIREBASE ===== */
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyA2ytO0jnhM9baGrByUS1jgSc47q6xJ64s",
+
+authDomain:
+"astrodhani-935c8.firebaseapp.com",
+
+projectId:
+"astrodhani-935c8",
+
+storageBucket:
+"astrodhani-935c8.firebasestorage.app",
+
+messagingSenderId:
+"158324229234",
+
+appId:
+"1:158324229234:web:bff8d74888b356be362eeb"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const auth =
+getAuth(app);
+
+/* ===== AUTH STATE ===== */
+
+onAuthStateChanged(
+auth,
+(user)=>{
+
+const loginBtn =
+
+document.getElementById(
+'loginBtn'
+);
+
+const profileArea =
+
+document.getElementById(
+'profileArea'
+);
+
+if(user){
+
+loginBtn.style.display =
+'none';
+
+profileArea.style.display =
+'block';
+
+const initial =
+
+(
+user.displayName ||
+user.email ||
+'U'
+)
+.charAt(0)
+.toUpperCase();
+
+document.getElementById(
+'avatarLetter'
+).innerText =
+initial;
+
+document.getElementById(
+'dropdownAvatar'
+).innerText =
+initial;
+
+document.getElementById(
+'dropdownName'
+).innerText =
+
+user.displayName ||
+'Astrodhani User';
+
+document.getElementById(
+'dropdownEmail'
+).innerText =
+
+user.email || '';
+
+}else{
+
+loginBtn.style.display =
+'block';
+
+profileArea.style.display =
+'none';
+
+}
+
+});
+
+/* ===== LOGIN ===== */
+
+window.openLogin =
+function(){
+
+window.location.href =
+'login.html';
+
+}
+
+/* ===== LOGOUT ===== */
+
+window.logout =
+async function(){
+
+await signOut(auth);
+
+window.location.reload();
+
+}
+
+/* ===== TOGGLE ===== */
+
+window.toggleProfileDropdown =
+function(){
+
+document
+.getElementById(
+'profileDropdown'
+)
+.style.display =
+
+document
+.getElementById(
+'profileDropdown'
+)
+.style.display === 'block'
+
+? 'none'
+
+: 'block';
+
+}
+
+/* ===== CLOSE OUTSIDE ===== */
+
+window.addEventListener(
+'click',
+function(e){
+
+if(
+!e.target.closest('.profile')
+){
+
+document
+.getElementById(
+'profileDropdown'
+)
+.style.display =
+'none';
+
+}
+
+}
+);
+
+</script>
+
 
 </body>
 </html>
