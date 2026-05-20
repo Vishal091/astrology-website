@@ -2293,9 +2293,13 @@ clearInterval(timerInterval);
 document.getElementById("timer")
 .innerText = "Free Time Ended";
 
-botReply(
+
+addMsg(
+
 "⏰ Your free consultation has ended."
+'admin'
 );
+
 
 setTimeout(()=>{
 
@@ -2968,10 +2972,13 @@ sessionId;
 listenForReplies();
 
 
-botReply(
+addMsg(
 `Namaste ${name} 🙏
-How can I help you today?`
+Please wait while astrologer joins the chat.`,
+'admin'
 );
+
+
 
 startFreeTimer();
 
