@@ -541,8 +541,8 @@ ${astro.about || ''}
 <button
 class="btn chat-btn"
 onclick="
-startConsultation(
-'${astro.name}'
+openProfile(
+'${astro.id}'
 )
 "
 >
@@ -576,23 +576,7 @@ View Profile
 
 }
 
-/* ===== START CONSULTATION ===== */
 
-window.startConsultation =
-function(astrologer){
-
-localStorage.setItem(
-
-"selectedAstrologer",
-
-astrologer
-
-);
-
-window.location.href =
-"index.html?chat=true";
-
-}
 
 /* ===== OPEN PROFILE ===== */
 
