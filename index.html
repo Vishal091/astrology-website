@@ -2122,53 +2122,7 @@ showSlide(0);
 
 let shownMessages = new Set();
 
-function listenForReplies(){
 
-const currentUser =
-document.getElementById("name").value;
-
-const q = query(
-
-collection(db,"consultations"),
-
-orderBy("createdAt")
-
-);
-
-onSnapshot(q,(snapshot)=>{
-
-snapshot.forEach(doc=>{
-
-const data = doc.data();
-
-/* ONLY CURRENT USER */
-
-if(data.user !== currentUser)
-return;
-
-/* ONLY ADMIN */
-
-if(data.sender !== "admin")
-return;
-
-/* AVOID DUPLICATES */
-
-if(shownMessages.has(doc.id))
-return;
-
-shownMessages.add(doc.id);
-
-/* SHOW MESSAGE */
-
-addMsg(
-"Astrologer: " + data.message
-);
-
-});
-
-});
-
-}
 /* ===== TELEGRAM ALERT ===== */
 
 /* ===== TELEGRAM ALERT ===== */
@@ -3156,7 +3110,7 @@ div.scrollIntoView();
 
 /* ===== LIVE REPLIES ===== */
 
-function listenForReplies(){
+window.listenForReplies = function(){
 
 const sessionId =
 
@@ -3164,28 +3118,20 @@ localStorage.getItem(
 'chatSessionId'
 );
 
-onSnapshot(
-
-query(
+const q = query(
 
 collection(
 db,
 'consultations'
 ),
 
-where(
-'sessionId',
-'==',
-sessionId
-),
-
 orderBy(
 'createdAt'
 )
 
-),
+);
 
-(snapshot)=>{
+onSnapshot(q,(snapshot)=>{
 
 document.getElementById(
 'messages'
@@ -3196,6 +3142,11 @@ snapshot.forEach(doc=>{
 const data =
 doc.data();
 
+/* ONLY THIS SESSION */
+
+if(data.sessionId !== sessionId)
+return;
+
 addMsg(
 data.message,
 data.sender
@@ -3203,11 +3154,11 @@ data.sender
 
 });
 
-}
-
-);
+});
 
 }
+
+
 
 
 
