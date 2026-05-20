@@ -1,26 +1,366 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<title>Signup</title>
-<link rel="stylesheet" href="style.css">
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+Signup • Astrodhani
+</title>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet"
+>
+
+<style>
+
+/* SAME CSS AS LOGIN PAGE */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+
+font-family:'Poppins',sans-serif;
+
+min-height:100vh;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+background:
+linear-gradient(
+135deg,
+#120202,
+#220606,
+#3d0b0b
+);
+
+overflow:hidden;
+
+position:relative;
+
+}
+
+body::before{
+
+content:'';
+
+position:absolute;
+
+width:500px;
+height:500px;
+
+background:
+radial-gradient(
+circle,
+rgba(255,215,0,.18),
+transparent
+);
+
+top:-150px;
+left:-150px;
+
+}
+
+body::after{
+
+content:'';
+
+position:absolute;
+
+width:450px;
+height:450px;
+
+background:
+radial-gradient(
+circle,
+rgba(255,140,0,.12),
+transparent
+);
+
+bottom:-150px;
+right:-150px;
+
+}
+
+.formbox{
+
+position:relative;
+
+z-index:2;
+
+width:100%;
+max-width:430px;
+
+padding:45px;
+
+border-radius:28px;
+
+background:
+rgba(255,255,255,.06);
+
+backdrop-filter:blur(18px);
+
+border:
+1px solid rgba(255,255,255,.08);
+
+box-shadow:
+0 20px 60px rgba(0,0,0,.45);
+
+}
+
+.logo{
+
+text-align:center;
+
+font-size:42px;
+
+margin-bottom:10px;
+
+}
+
+h2{
+
+text-align:center;
+
+color:#FFD700;
+
+font-size:32px;
+
+margin-bottom:10px;
+
+}
+
+.subtitle{
+
+text-align:center;
+
+color:rgba(255,255,255,.7);
+
+margin-bottom:35px;
+
+font-size:15px;
+
+}
+
+.input-group{
+
+margin-bottom:22px;
+
+}
+
+.input-group label{
+
+display:block;
+
+margin-bottom:8px;
+
+color:#FFD700;
+
+font-size:14px;
+
+font-weight:500;
+
+}
+
+.input-group input{
+
+width:100%;
+
+padding:16px 18px;
+
+border:none;
+
+outline:none;
+
+border-radius:16px;
+
+background:
+rgba(255,255,255,.08);
+
+color:white;
+
+font-size:15px;
+
+transition:.3s;
+
+}
+
+.input-group input:focus{
+
+background:
+rgba(255,255,255,.12);
+
+box-shadow:
+0 0 0 2px rgba(255,215,0,.25);
+
+}
+
+button{
+
+width:100%;
+
+padding:17px;
+
+border:none;
+
+border-radius:18px;
+
+background:
+linear-gradient(
+135deg,
+#FFD700,
+#ff9900
+);
+
+color:#4b0909;
+
+font-size:17px;
+
+font-weight:700;
+
+cursor:pointer;
+
+transition:.3s;
+
+margin-top:10px;
+
+}
+
+button:hover{
+
+transform:translateY(-2px);
+
+box-shadow:
+0 15px 30px rgba(255,215,0,.25);
+
+}
+
+.form-footer{
+
+margin-top:28px;
+
+text-align:center;
+
+color:rgba(255,255,255,.75);
+
+font-size:14px;
+
+}
+
+.form-footer a{
+
+color:#FFD700;
+
+text-decoration:none;
+
+font-weight:600;
+
+}
+
+.form-footer a:hover{
+
+text-decoration:underline;
+
+}
+
+@media(max-width:500px){
+
+.formbox{
+
+margin:20px;
+
+padding:35px 25px;
+
+}
+
+h2{
+
+font-size:28px;
+
+}
+
+}
+
+</style>
+
 </head>
 
 <body>
 
 <div class="formbox">
-<h2>Signup</h2>
 
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
+<div class="logo">
+✨
+</div>
 
-<button onclick="signup()">Signup</button>
+<h2>
+Create Account
+</h2>
 
-<p>Already have account? <a href="login.html">Login</a></p>
+<p class="subtitle">
+Begin your cosmic journey with Astrodhani
+</p>
+
+<div class="input-group">
+
+<label>Email Address</label>
+
+<input
+id="email"
+type="email"
+placeholder="Enter your email"
+>
+
+</div>
+
+<div class="input-group">
+
+<label>Password</label>
+
+<input
+id="password"
+type="password"
+placeholder="Create password"
+>
+
+</div>
+
+<button onclick="signup()">
+
+Create Account
+
+</button>
+
+<div class="form-footer">
+
+Already have an account?
+
+<a href="login.html">
+
+Login
+
+</a>
+
+</div>
+
 </div>
 
 <script type="module" src="auth.js"></script>
-
-
 
 </body>
 </html>
