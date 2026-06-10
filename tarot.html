@@ -444,7 +444,7 @@ onclick="flipCard(this,1)">
 </div>
 
 <div class="card-back">
-<h3 id="cardTitle1">The Lovers</h3>
+<h3 id="cardTitle0">Past</h3>
 <p id="cardMeaning1">
 A strong emotional connection
 is approaching.
@@ -465,7 +465,7 @@ onclick="flipCard(this,2)">
 </div>
 
 <div class="card-back">
-<h3 id="cardTitle2">The Sun</h3>
+<h3 id="cardTitle2">Future</h3>
 <p id="cardMeaning2">
 Success and clarity are entering
 your life.
@@ -583,68 +583,122 @@ btn.classList.add("active");
 
 /* ===== TAROT DATA ===== */
 
-const tarotData={
-
-love:[
+const tarotCards = [
 
 {
-title:"The Lovers",
+title:"The Fool",
+upright:"New beginnings and exciting opportunities await.",
+reversed:"Avoid reckless decisions and think carefully."
+},
 
-upright:
-"A powerful romantic connection is entering your life.",
+{
+title:"The Magician",
+upright:"You have the power to manifest your goals.",
+reversed:"Hidden obstacles or self-doubt may slow progress."
+},
 
-reversed:
-"Emotional confusion or imbalance may affect relationships."
-
+{
+title:"The High Priestess",
+upright:"Trust your intuition and inner wisdom.",
+reversed:"Important truths may be hidden."
 },
 
 {
 title:"The Empress",
-
-upright:
-"Love and emotional nurturing are surrounding you.",
-
-reversed:
-"Emotional distance or insecurity may need attention."
-
+upright:"Growth, abundance and nurturing energy surround you.",
+reversed:"Neglecting self-care may affect progress."
 },
 
 {
-title:"Two of Cups",
+title:"The Emperor",
+upright:"Leadership and structure bring success.",
+reversed:"Avoid excessive control or rigidity."
+},
 
-upright:
-"Mutual attraction and understanding will strengthen relationships.",
+{
+title:"The Hierophant",
+upright:"Traditional wisdom guides your path.",
+reversed:"Challenge outdated beliefs."
+},
 
-reversed:
-"Miscommunication could create temporary emotional distance."
+{
+title:"The Lovers",
+upright:"Deep emotional connections strengthen.",
+reversed:"Relationship imbalance requires attention."
+},
 
+{
+title:"The Chariot",
+upright:"Determination leads to victory.",
+reversed:"Loss of direction may create delays."
+},
+
+{
+title:"Strength",
+upright:"Inner courage overcomes challenges.",
+reversed:"Self-doubt must be conquered."
+},
+
+{
+title:"Wheel of Fortune",
+upright:"Positive changes are approaching.",
+reversed:"Temporary setbacks may occur."
+},
+
+{
+title:"The Sun",
+upright:"Success, joy and clarity shine brightly.",
+reversed:"Avoid unrealistic expectations."
+},
+
+{
+title:"The Star",
+upright:"Hope and healing energies surround you.",
+reversed:"Faith in yourself must be restored."
 }
-
-],
-
-};
+];
 
 /* ===== CARD FLIP ===== */
 
 let flippedCount=0;
+let selectedCards = [];
 
+function generateReading(){
+document
+.querySelectorAll(".tarot-card")
+.forEach(card=>{
+
+card.classList.remove(
+"flipped"
+);
+
+card.querySelector(
+".card-back"
+).style.transform =
+"rotateY(180deg)";
+
+});
+selectedCards =
+[...tarotCards]
+.sort(()=>Math.random()-0.5)
+.slice(0,3);
+
+flippedCount = 0;
+
+document.getElementById(
+"resultSection"
+).style.display="none";
+
+}
 function flipCard(card,index){
 
 if(card.classList.contains("flipped"))
 return;
 
 card.classList.add("flipped");
-if(isReversed){
 
-card.querySelector(
-".card-back"
-).style.transform =
-
-"rotateY(180deg) rotate(180deg)";
-
-}
-const data=
-tarotData[currentCategory][index];
+const data =
+selectedCards[index];
 
 /* RANDOM ORIENTATION */
 
@@ -686,15 +740,7 @@ isReversed
 ? data.reversed
 : data.upright;
 
-/* MEANING */
 
-document.getElementById(
-`cardMeaning${index}`
-).innerText =
-
-isReversed
-? data.reversed
-: data.upright;
 
 flippedCount++;
 
@@ -766,7 +812,7 @@ color:"#7c3aed"
 new Razorpay(options).open();
 
 }
-
+generateReading();
 </script>
 
 </body>
