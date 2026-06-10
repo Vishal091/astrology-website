@@ -343,7 +343,27 @@ font-size:32px;
 }
 
 }
+.reading-summary{
 
+margin-top:30px;
+padding:25px;
+border-radius:20px;
+
+background:
+rgba(255,255,255,.05);
+
+line-height:1.8;
+
+color:white;
+
+}
+
+.reading-summary h2{
+
+color:#FFD700;
+margin-bottom:15px;
+
+}
 </style>
 </head>
 
@@ -521,7 +541,13 @@ overthinking upcoming decisions.
 </p>
 
 </div>
+<div class="reading-summary">
 
+<h2>Your Tarot Reading</h2>
+
+<p id="readingSummary"></p>
+
+</div>
 </div>
 
 <!-- ===== CTA ===== -->
@@ -690,6 +716,37 @@ document.getElementById(
 ).style.display="none";
 
 }
+function buildSummary(){
+
+const cards = selectedCards;
+
+const summary =
+
+`
+🔮 Past: ${cards[0].title}
+
+${cards[0].upright}
+
+<br><br>
+
+✨ Present: ${cards[1].title}
+
+${cards[1].upright}
+
+<br><br>
+
+🌟 Future: ${cards[2].title}
+
+${cards[2].upright}
+
+`;
+
+document.getElementById(
+"readingSummary"
+).innerHTML =
+summary;
+
+}
 function flipCard(card,index){
 
 if(card.classList.contains("flipped"))
@@ -745,7 +802,7 @@ isReversed
 flippedCount++;
 
 if(flippedCount===3){
-
+buildSummary();
 setTimeout(()=>{
 
 showReading();
